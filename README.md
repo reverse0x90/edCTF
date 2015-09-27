@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Ed-ctf
 
 This README outlines the details of collaborating on this Ember application.
