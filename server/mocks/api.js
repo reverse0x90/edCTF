@@ -45,6 +45,7 @@ module.exports = function(app) {
         points: 100,
         description: 'solve it bro', 
         solved: false,
+        num_solved: 0,
         links: {
           'binary': '/path/to/rev100',
         },
@@ -61,6 +62,7 @@ module.exports = function(app) {
       points: 100,
       description: 'solve it bro',
       solved: false,
+      num_solved: 0,
       links: {
         'binary': '/path/to/rev100',
       },
@@ -90,6 +92,8 @@ module.exports = function(app) {
         id: 1,
         teamname: 'team1',
         points: 500,
+        correct_flags: 0,
+        wrong_flags: 0,
         solved: [
           'Reversing 100',
           'Web 400',
@@ -104,6 +108,8 @@ module.exports = function(app) {
       id: req.params.id,
       teamname: 'team1',
       points: 500,
+      correct_flags: 0,
+      wrong_flags: 0,
       solved: [
         'Reversing 100',
         'Web 400',
