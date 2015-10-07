@@ -8,7 +8,7 @@ var Router = Ember.Router.extend({
 Router.map(function() {
   this.route('scoreboard');
   this.route('about');
-  this.route('auth');
+  this.route('login');
 });
 
 export default Router;
