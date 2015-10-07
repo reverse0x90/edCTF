@@ -10,5 +10,9 @@ export default Ember.Component.extend({
     toggleRegisterModal: function() {
       this.toggleProperty('isShowingRegisterModal');
     },
+    toggleLoginRegisterModals: function(){
+        this.toggleProperty('isShowingLoginModal');
+        this.toggleProperty('isShowingRegisterModal');
+    },
   }
 });
