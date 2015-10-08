@@ -5,5 +5,5 @@ export default DS.Model.extend({
   points: DS.attr('number'),
   correct_flags: DS.attr('number'),
   wrong_flags: DS.attr('number'),
-  solved: DS.attr(),
+  solved: DS.attr('array'),
 });
