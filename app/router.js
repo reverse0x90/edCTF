@@ -10,6 +10,9 @@ Router.map(function() {
   this.route('about');
   this.route('login');
   this.route('challenges');
+  this.route('challenges', function() {
+    this.route('challenge', {path: ':challenge_id'});
+  });
 });
 
 export default Router;

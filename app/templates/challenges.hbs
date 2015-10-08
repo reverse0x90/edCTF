@@ -1,7 +1,10 @@
 <h1>This is the challenge board page</h1>
 
-{{outlet}}
+{{#each challenge in content}}
+<button class="btn btn-primary" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
+{{/each}}
+
 
 {{#if isShowingChallengeModal}}
-  {{challenge-modal isShowingChallengeModal=isShowingChallengeModal}}
+  {{challenge-modal isShowingChallengeModal=isShowingChallengeModal challenge=challenge}}
 {{/if}}
