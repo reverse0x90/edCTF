@@ -7,8 +7,12 @@ export default Ember.Component.extend({
     openLoginModal: function() {
       this.set('isShowingLoginModal', true);
     },
-    openRegisterModal: function() {
-      this.set('isShowingRegisterModal', true);
+    closeLoginModal: function() {
+      this.set('isShowingLoginModal', false);
+    },
+    loginToRegisterModal: function(){
+        this.set('isShowingLoginModal', false);
+        this.set('isShowingRegisterModal', true);
     },
   }
 });

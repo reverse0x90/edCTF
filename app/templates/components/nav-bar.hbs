@@ -13,12 +13,12 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <li><a {{action "toggleRegisterModal"}}>Register</a></li>
-        <li><a {{action "toggleLoginModal"}}>Login</a></li>
+        <li><a {{action "openRegisterModal"}}>Register</a></li>
+        <li><a {{action "openLoginModal"}}>Login</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
 
-{{login-register-modal isShowingLoginModal=isShowingLoginModal isShowingRegisterModal=isShowingRegisterModal}}
+{{nav-modal isShowingLoginModal=isShowingLoginModal isShowingRegisterModal=isShowingRegisterModal}}
 

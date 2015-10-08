@@ -1,0 +1,9 @@
+<!-- Show Login or Register modals -->
+{{#if isShowingLoginModal}}
+  {{login-modal isShowingLoginModal=isShowingLoginModal isShowingRegisterModal=isShowingRegisterModal}}
+{{else}}
+  {{#if isShowingRegisterModal}}
+    {{register-modal isShowingRegisterModal=isShowingRegisterModal isShowingLoginModal=isShowingLoginModal}}
+  {{/if}}
+{{/if}}
+
