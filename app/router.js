@@ -9,6 +9,7 @@ Router.map(function() {
   this.route('scoreboard');
   this.route('about');
   this.route('login');
+  this.route('challenges');
 });
 
 export default Router;

@@ -1,0 +1,25 @@
+{{#modal-dialog close='closeChallengeModal' translucentOverlay=true}}
+  <div class="modal-content">
+
+  <button type="button" class="close" {{action "closeChallengeModal"}}>
+    <span aria-hidden="true">×</span>
+    <span class="sr-only">Close</span>
+  </button>
+
+  <div class="panel panel-primary">
+    <div class="panel-heading">{{challengeCategory}} - {{challengePoints}}</div>
+    <h2 class="form-signin-heading">{{challengeTitle}}</h2>
+    <br/>
+    {{challengeDescription}}
+    <br/>
+    <br/>
+    <form class="simple_form form-horizontal">
+      <label for="inputFlag" class="sr-only">flag</label>
+      flag: <input type="username" id="inputFlag" class="form-control" placeholder="flag" required autofocus>
+      <button class="btn btn-success btn-login-submit" type="submit">Submit</button>
+    </form>
+  </div>
+
+  </div>
+{{/modal-dialog}}
+
