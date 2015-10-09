@@ -1,3 +1,7 @@
+{{#if isShowingChallengeModal}}
+  {{challenge-modal isShowingChallengeModal=isShowingChallengeModal challenge=challenge}}
+{{/if}}
+
 <h1>This is the challenge board page</h1>
 
 {{#each content as |challenge|}}
@@ -5,6 +9,6 @@
 {{/each}}
 
 
-{{#if isShowingChallengeModal}}
-  {{challenge-modal isShowingChallengeModal=isShowingChallengeModal challenge=challenge}}
-{{/if}}
+<br/>
+<br/>
+<button {{action "openLoginModal"}}>Login</button>
