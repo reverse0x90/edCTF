@@ -1,6 +1,6 @@
 <h1>This is the challenge board page</h1>
 
-{{#each challenge in content}}
+{{#each content as |challenge|}}
 <button class="btn btn-primary" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
 {{/each}}
 

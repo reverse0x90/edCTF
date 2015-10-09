@@ -6,7 +6,7 @@ export default Ember.Controller.extend({
   actions: {
       openChallenge: function(challenge_id) {
         this.set('challenge', this.store.find('challenge', challenge_id)),
-        this.set('isShowingChallengeModal', true)
+        this.set('isShowingChallengeModal', true);
     },
   }
 });
