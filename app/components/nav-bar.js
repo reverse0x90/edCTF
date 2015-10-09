@@ -4,6 +4,10 @@ export default Ember.Component.extend({
   isShowingLoginModal: false,
   isShowingRegisterModal: false,
   actions: {
+  login: function(authenticationData) {
+      // Pass the authentication data up
+      this.sendAction('login', authenticationData);
+    },
     openLoginModal: function() {
       this.set('isShowingLoginModal', true);
     },
