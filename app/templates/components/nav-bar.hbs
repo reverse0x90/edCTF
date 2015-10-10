@@ -14,8 +14,12 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
+      {{#if authController.isAuthenticated}}
+        <li><a {{action "openLogoutModal"}}>Logout</a></li>
+      {{else}}
         <li><a {{action "openRegisterModal"}}>Register</a></li>
         <li><a {{action "openLoginModal"}}>Login</a></li>
+      {{/if}}
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

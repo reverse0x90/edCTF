@@ -10,6 +10,10 @@
     {{else}}
       {{#if modal.isTeam}}
         {{team-modal modal=modal team=team}}
+      {{else}}
+        {{#if modal.isLogout}}
+          {{logout-modal modal=modal logout="logout"}}
+        {{/if}}
       {{/if}}
     {{/if}}
   {{/if}}

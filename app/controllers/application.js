@@ -8,6 +8,9 @@ export default Ember.Controller.extend({
       this.get('authController').login(authenticationData);
       this.set('modal.isLogin', false);
     },
+    logout: function(authenticationData) {
+      this.get('authController').logout();
+    },
     openLoginModal: function() {
       this.set('modal.isLogin', true);
     },
