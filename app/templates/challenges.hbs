@@ -7,8 +7,3 @@
 {{#each content as |challenge|}}
 <button class="btn btn-primary" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
 {{/each}}
-
-
-<br/>
-<br/>
-<button {{action "openLoginModal"}}>Login</button>
