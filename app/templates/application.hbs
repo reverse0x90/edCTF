@@ -1,16 +1,18 @@
 <!-- Display Nav-bar -->
 {{nav-bar isShowingLoginModal=isShowingLoginModal isShowingRegisterModal=isShowingRegisterModal}}
 
-{{#if authcontroller.isAuthenticated}}
-  <!-- Show Login or Register modals -->
-  {{#if isShowingLoginModal}}
-    {{login-modal creds="getLoginCredentials" isShowingLoginModal=isShowingLoginModal isShowingRegisterModal=isShowingRegisterModal}}
-  {{else}}
-    {{#if isShowingRegisterModal}}
-      {{register-modal isShowingLoginModal=isShowingLoginModal isShowingRegisterModal=isShowingRegisterModal}}
-    {{/if}}
-  {{/if}}
-  {{outlet}}
+
+<!-- Show Login or Register modals -->
+{{#if isShowingLoginModal}}
+  {{login-modal login="login" isShowingLoginModal=isShowingLoginModal isShowingRegisterModal=isShowingRegisterModal}}
 {{else}}
-  {{login-modal creds="getLoginCredentials" isShowingLoginModal=true isShowingRegisterModal=isShowingRegisterModal}}
-{{/if}} 
+  {{#if isShowingRegisterModal}}
+    {{register-modal isShowingLoginModal=isShowingLoginModal isShowingRegisterModal=isShowingRegisterModal}}
+  {{/if}}
+{{/if}}
+
+
+
+<div class="container">
+  {{outlet}}
+</div>

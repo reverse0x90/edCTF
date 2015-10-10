@@ -1,3 +1,16 @@
 <h1>This is the scoreboard page</h1>
 
-{{outlet}}
+<h1>Top {{numberTopTeams}} Teams:</h1>
+{{#each topTeams as |team|}}
+<button>{{team.teamname}} - {{team.points}}</button>
+{{/each}}
+
+<br/>
+{{input value=newnumberTopTeams}}
+<button {{action "setTopTeams" newnumberTopTeams}}>Set top teams</button>
+<br/>
+
+<h1>All Teams:</h1>
+{{#each sortedTeams as |team|}}
+<h3>{{team.teamname}} - {{team.points}}</h3>
+{{/each}}

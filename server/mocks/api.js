@@ -56,22 +56,104 @@ module.exports = function(app) {
     res.send({
      'teams': [ 
         {
+          id: 0,
+          teamname: 'team0',
+          points: 198,
+        },
+        {
           id: 1,
           teamname: 'team1',
-          title: 'Solve it',
-          points: 500,
-          correct_flags: 2,
-          wrong_flags: 0,
-          solved: [ 'Reversing 100', 'Web 400'],
+          points: 409,
         },
         {
           id: 2,
           teamname: 'team2',
-          title: 'Solve it',
-          points: 1337,
-          correct_flags: 13,
-          wrong_flags: 9322,
-          solved: [ 'Reversing 783', 'Web 554'],
+          points: 40,
+        },
+        {
+          id: 3,
+          teamname: 'team3',
+          points: 816,
+        },
+        {
+          id: 4,
+          teamname: 'team4',
+          points: 716,
+        },
+        {
+          id: 5,
+          teamname: 'team5',
+          points: 693,
+        },
+        {
+          id: 6,
+          teamname: 'team6',
+          points: 684,
+        },
+        {
+          id: 7,
+          teamname: 'team7',
+          points: 406,
+        },
+        {
+          id: 8,
+          teamname: 'team8',
+          points: 302,
+        },
+        {
+          id: 9,
+          teamname: 'team9',
+          points: 184,
+        },
+        {
+          id: 10,
+          teamname: 'team10',
+          points: 438,
+        },
+        {
+          id: 11,
+          teamname: 'team11',
+          points: 919,
+        },
+        {
+          id: 12,
+          teamname: 'team12',
+          points: 286,
+        },
+        {
+          id: 13,
+          teamname: 'team13',
+          points: 791,
+        },
+        {
+          id: 14,
+          teamname: 'team14',
+          points: 914,
+        },
+        {
+          id: 15,
+          teamname: 'team15',
+          points: 351,
+        },
+        {
+          id: 16,
+          teamname: 'team16',
+          points: 769,
+        },
+        {
+          id: 17,
+          teamname: 'team17',
+          points: 693,
+        },
+        {
+          id: 18,
+          teamname: 'team18',
+          points: 105,
+        },
+        {
+          id: 19,
+          teamname: 'team19',
+          points: 186,
         },
       ]
     });
@@ -80,14 +162,13 @@ module.exports = function(app) {
   // GET teams/:id
   apiRouter.get('/teams/:id', function(req, res) {
     res.send({
-     'teams': [ 
+     'team': [ 
         {
           id: req.params.id,
-          teamname: 'team1',
-          title: 'Solve it',
-          points: 500,
-          correct_flags: 2,
-          wrong_flags: 0,
+          teamname: 'team'+req.params.id,
+          points: 100,
+          correct_flags: 10,
+          wrong_flags: 51,
           solved: [ 'Reversing 100', 'Web 400'],
         },
       ]
