@@ -15,8 +15,9 @@
     <br/>
     <form class="simple_form form-horizontal">
       <label for="inputFlag" class="sr-only">flag</label>
-      flag: <input type="username" id="inputFlag" class="form-control" placeholder="flag" required autofocus>
+      flag: <input type="username" id="inputFlag" class="form-control" placeholder="flag" autofocus>
       <button class="btn btn-success btn-login-submit" type="submit">Submit</button>
+      <button class="btn btn-danger btn-cancel-action" {{action 'closeChallengeModal'}}>Cancel</button>
     </form>
   </div>
 

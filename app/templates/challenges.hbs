@@ -1,9 +1,10 @@
-{{#if isShowingChallengeModal}}
-  {{challenge-modal isShowingChallengeModal=isShowingChallengeModal challenge=challenge}}
+{{#if authController.isAuthenticated}}
+  <h1>This is the challenge board page</h1>
+  
+  {{#each challenges as |challenge|}}
+  <button class="btn btn-primary" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
+  {{/each}}
+  
+{{else}}
+Please Login
 {{/if}}
-
-<h1>This is the challenge board page</h1>
-
-{{#each content as |challenge|}}
-<button class="btn btn-primary" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
-{{/each}}

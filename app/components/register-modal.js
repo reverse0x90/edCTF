@@ -1,18 +1,17 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  isShowingLoginModal: false,
-  isShowingRegisterModal: false,
+  modal: {},
   actions: {
     openRegisterModal: function() {
-      this.set('isShowingRegisterModal', true);
+      this.set('modal.isRegister', true);
     },
     closeRegisterModal: function() {
-      this.set('isShowingRegisterModal', false);
+      this.set('modal.isRegister', false);
     },
     registerToLoginModal: function(){
-        this.set('isShowingRegisterModal', false);
-        this.set('isShowingLoginModal', true);
+        this.set('modal.isRegister', false);
+        this.set('modal.isLogin', true);
     },
   }
 });

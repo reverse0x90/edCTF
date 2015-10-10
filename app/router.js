@@ -8,11 +8,11 @@ var Router = Ember.Router.extend({
 Router.map(function() {
   this.route('scoreboard');
   this.route('about');
-  this.route('login');
   this.route('challenges');
   this.route('challenges', function() {
     this.route('challenge', {path: ':challenge_id'});
   });
+  this.route('modal');
 });
 
 export default Router;

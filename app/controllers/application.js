@@ -1,19 +1,18 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  isShowingLoginModal: false,
-  isShowingRegisterModal: false,
-  authcontroller: null,
+  modal: {},
+  authController: undefined,
   actions: {
-    getLoginCredentials: function(authenticationData) {
-      this.get('authcontroller').login(authenticationData)
+    login: function(authenticationData) {
+      this.get('authController').login(authenticationData);
+      this.set('modal.isLogin', false);
     },
     openLoginModal: function() {
-      this.set('isShowingLoginModal', true);
-      
+      this.set('modal.isLogin', true);
     },
     openRegisterModal: function() {
-      this.set('isShowingRegisterModal', true);
+      this.set('modal.isRegister', true);
     },
   }
 });

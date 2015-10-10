@@ -1,0 +1,16 @@
+<!-- Show current modal -->
+{{#if modal.isLogin}}
+  {{login-modal modal=modal login="login"}}
+{{else}}
+  {{#if modal.isRegister}}
+    {{register-modal modal=modal login="login"}}
+  {{else}}
+    {{#if modal.isChallenge}}
+      {{challenge-modal modal=modal challenge=modal.challenge}}
+    {{else}}
+      {{#if modal.isTeam}}
+        {{team-modal modal=modal team=team}}
+      {{/if}}
+    {{/if}}
+  {{/if}}
+{{/if}}

@@ -1,12 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  foo: 'foo',
-  authcontroller: null,
   setupController: function (controller, model){
-    controller.set('foo', this.get('foo'));
-    controller.set('authcontroller', this.controllerFor('auth'));
-   
+    controller.set('authController', this.controllerFor('auth'));
+    controller.set('modal', this.controllerFor('modal').get('modal'));
   },
-
 });
