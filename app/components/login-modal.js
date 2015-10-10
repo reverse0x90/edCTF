@@ -3,11 +3,13 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   isShowingLoginModal: false,
   isShowingRegisterModal: false,
+  teamname: '',
+  password: '',
   actions: {
-    login: function() {
-      // Do the authentication stuff here
-      var authenticate = true;
-      this.sendAction('login', authenticate);
+    collectLoginCredentials: function() {
+      var teamname = this.get('teamname');
+      var password = this.get('password');
+      this.sendAction('creds', {'teamname': teamname, 'password': password });
     },
     openLoginModal: function() {
       this.set('isShowingLoginModal', true);

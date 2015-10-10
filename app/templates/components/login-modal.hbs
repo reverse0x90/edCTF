@@ -1,11 +1,11 @@
-{{#modal-dialog close='closeLoginModal' translucentOverlay=true}}
+{{#modal-dialog translucentOverlay=true}}
   <div class="well login-box">
-    <form class="form-signin">
+    <form class="form-signin" {{action "collectLoginCredentials" on="submit"}}>
       <h2 class="form-signin-heading">Sign in</h2>
       <label for="inputTeamName" class="sr-only">Team Name</label>
-      <input type="username" id="inputTeamName" class="form-control" placeholder="Team Name" required autofocus>
+      {{input type="text" value=teamname class="form-control" id="inputTeamName" placeholder="Team Name" required="true" autofocus="true"}}
       <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+      {{input type="password" value=password class="form-control" id="inputPassword" placeholder="Password"required="true" autofocus="true"}}
       <div class="checkbox">
         <label>
           <input type="checkbox" value="remember-me"> Remember me
@@ -13,7 +13,8 @@
       </div>
       <button class="btn btn-danger btn-cancel-action" {{action 'closeLoginModal'}}>Cancel</button>
       <button class="btn btn-warning" {{action "loginToRegisterModal"}}>Register</button>
-      <button class="btn btn-success btn-login-submit" type="submit" {{action "login"}}>Sign in</button>
+      <button class="btn btn-success btn-login-submit" type="submit">Sign in</button>
     </form>
   </div>
 {{/modal-dialog}}
+
