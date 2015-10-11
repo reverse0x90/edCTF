@@ -23,11 +23,7 @@
         <tr>
           <td><a {{action 'openTeamView' team.id}}>{{team.teamname}}</a></td>
           <td>{{team.points}}</td>
-          <td>
-            {{#each team.solved as |challenge|}}
-              {{challenge}},
-            {{/each}}
-          </td>
+          <td>{{team.solved}}</td>
         </tr>
       {{/each}}
     </tbody>
