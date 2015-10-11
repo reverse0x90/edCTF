@@ -1,5 +1,3 @@
-<h1>This is the scoreboard page</h1>
-
 <h1>Top {{numberTopTeams}} Teams:</h1>
 {{#each topTeams as |team|}}
 <button class="btn btn-primary" {{action 'openTeamView' team.id}}>{{team.teamname}} - {{team.points}}</button>
@@ -11,6 +9,23 @@
 <br/>
 
 <h1>All Teams:</h1>
-{{#each sortedTeams as |team|}}
-<button class="btn btn-primary" {{action 'openTeamView' team.id}}>{{team.teamname}} - {{team.points}}</button><br/>
-{{/each}}
+<div class="container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Team</th>
+        <th>Points</th>
+        <th>Challenges Solved</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each sortedTeams as |team|}}
+        <tr>
+          <td><a {{action 'openTeamView' team.id}}>{{team.teamname}}</a></td>
+          <td>{{team.points}}</td>
+          <td>{{team.solved}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
