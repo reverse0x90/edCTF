@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   challenge: {},
   modal: {},
+  flag: '',
   classNames: ['challenge-submit', 'challenge-cancel'],
   setup: function() {
     Ember.$('body').on('keyup.modal-dialog', (e) => {
@@ -20,7 +21,8 @@ export default Ember.Component.extend({
       this.set('modal.isChallenge', false);
     },
     submitFlag: function() {
-      console.log('From was submitted');
+      console.log('Flag was submitted with value: ', this.get('flag'));
+      this.set('flag', '');
     },
   }
 });
