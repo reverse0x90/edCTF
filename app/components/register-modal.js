@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   modal: {},
+  classNames: ['login-box-margin'],
   actions: {
     openRegisterModal: function() {
       this.set('modal.isRegister', true);

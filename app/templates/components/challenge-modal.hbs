@@ -1,23 +1,12 @@
-{{#modal-dialog close='closeChallengeModal' translucentOverlay=true}}
-  <div class="modal-dialog">
-    <div class="modal-header">
-      <button type="button" class="close" {{action "closeChallengeModal"}} aria-hidden="true">&times;</button>
-      <h2 class="modal-title">{{challenge.category}} - {{challenge.points}}</h2>
-      <h4>{{challenge.title}}</h4>
-    </div>
-
-    <div class="modal-body">
-      {{challenge.description}}
-      <br/>
-    </div>
-
-    <div class="modal-footer">
-      <form class="simple_form form-horizontal">
-        <label for="inputFlag" class="sr-only">flag</label>
-        <input type="username" id="inputFlag" class="form-control" placeholder="Flag" autofocus>
-        <button class="btn btn-danger btn-cancel-action" {{action 'closeChallengeModal'}}>Cancel</button>
-        <button class="btn btn-success btn-login-submit" type="submit">Submit</button>
-      </form>
-    </div>
-  </div>
+{{#modal-dialog close='closeChallengeModal' translucentOverlay=true container-class='challenge-style-modal-container'}}
+        <button type="button" class="close" {{action "closeChallengeModal"}} aria-hidden="true">&times;</button>
+        <h2 class="modal-title">{{challenge.category}} - {{challenge.points}}</h2>
+        <h4>{{challenge.title}}</h4>
+        <p>{{challenge.description}}</p>
+        <form class="simple_form form-horizontal" {{action "submitFlag" on="submit"}}>
+          <label for="inputFlag" class="sr-only">flag</label>
+          <input type="username" id="inputFlag" class="form-control" placeholder="Flag" autofocus>
+            <button class="btn btn-success btn-login-submit challenge-submit" type="submit">Submit</button>
+            <button class="btn btn-danger btn-cancel-action challenge-cancel" {{action 'closeChallengeModal'}}>Cancel</button> 
+        </form>
 {{/modal-dialog}}

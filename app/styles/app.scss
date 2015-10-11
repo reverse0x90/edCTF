@@ -1,2 +1,22 @@
 @import "ember-modal-dialog/ember-modal-structure";
 @import "ember-modal-dialog/ember-modal-appearance";
+
+
+.login-box-margin {
+  margin:0px;
+}
+
+.challenge-style-modal-container {
+  width: 50%;
+}
+
+.challenge-submit {
+  margin-top:2%;
+  margin-left:.5%; 
+  float:right; 
+}
+
+.challenge-cancel {
+  margin-top:2%; 
+  float:right;
+}

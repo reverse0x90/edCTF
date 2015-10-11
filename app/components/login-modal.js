@@ -4,6 +4,7 @@ export default Ember.Component.extend({
   modal: {},
   teamname: '',
   password: '',
+  classNames: ['login-box-margin'],
   actions: {
     submitLogin: function() {
       var teamname = this.get('teamname');
