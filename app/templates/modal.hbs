@@ -9,7 +9,7 @@
       {{challenge-modal modal=modal challenge=modal.challenge}}
     {{else}}
       {{#if modal.isTeam}}
-        {{team-modal modal=modal team=team}}
+        {{team-modal modal=modal team=modal.team}}
       {{else}}
         {{#if modal.isLogout}}
           {{logout-modal modal=modal logout="logout"}}

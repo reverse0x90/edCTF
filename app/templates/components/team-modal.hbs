@@ -1,1 +1,18 @@
-{{yield}}
+{{#modal-dialog close='closeTeamModal' translucentOverlay=true}}
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <button type="button" class="close" {{action 'closeTeamModal'}} aria-hidden="true">&times;</button>
+      <h4 class="modal-title">{{team.teamname}}</h4>
+    </div>
+
+    <div class="modal-body">
+      Points: {{team.points}}<br/>
+      Correct Flags: {{team.correct_flags}}<br/>
+      Wrong Flags: : {{team.wrong_flags}}<br/>
+      Solved:: {{team.solved}}<br/>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" {{action 'closeTeamModal'}}>Close</button>
+    </div>
+  </div>
+{{/modal-dialog}}

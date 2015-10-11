@@ -2,7 +2,7 @@
 
 <h1>Top {{numberTopTeams}} Teams:</h1>
 {{#each topTeams as |team|}}
-<button>{{team.teamname}} - {{team.points}}</button>
+<button class="btn btn-primary" {{action 'openTeamView' team.id}}>{{team.teamname}} - {{team.points}}</button>
 {{/each}}
 
 <br/>
@@ -12,5 +12,5 @@
 
 <h1>All Teams:</h1>
 {{#each sortedTeams as |team|}}
-<h3>{{team.teamname}} - {{team.points}}</h3>
+<button class="btn btn-primary" {{action 'openTeamView' team.id}}>{{team.teamname}} - {{team.points}}</button><br/>
 {{/each}}

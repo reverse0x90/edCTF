@@ -9,9 +9,7 @@ Router.map(function() {
   this.route('scoreboard');
   this.route('about');
   this.route('challenges');
-  this.route('challenges', function() {
-    this.route('challenge', {path: ':challenge_id'});
-  });
+  this.route('challenges', function() {});
   this.route('modal');
 });
 

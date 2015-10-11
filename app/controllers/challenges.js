@@ -7,8 +7,8 @@ export default Ember.Controller.extend({
     openLoginModal: function() {
       this.set('modal.isLogin', true);
     },
-    openChallenge: function(challenge_id) {
-      this.store.find('challenge', challenge_id).then((challenge) => {
+    openChallenge: function(id) {
+      this.store.find('challenge', id).then((challenge) => {
         this.set('modal.challenge', challenge);
       });
       this.set('modal.isChallenge', true);
