@@ -7,7 +7,6 @@ export default Ember.Component.extend({
   classNames: ['challenge-submit', 'challenge-cancel'],
   setupKeys: function() {
     Ember.$('body').on('keyup.modal-dialog', (e) => {
-      console.log(e.keyCode);
       if (e.keyCode === 27) {
         this.set('modal.isChallenge', false);
       }
