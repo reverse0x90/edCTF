@@ -1,23 +1,21 @@
 {{#modal-dialog translucentOverlay=true}}
-  <div class="well login-box login-box-margin">
-    <form class="form-signin">
-      <h2 class="form-signin-heading">Register</h2>
-      <label for="inputEmail" class="sr-only">Email</label>
-      Email:<input type="username" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
-      <label for="inputTeamName" class="sr-only">Team Name</label>
-      Team Name:<input type="username" id="inputTeamName" class="form-control" placeholder="Team Name" required autofocus>
-      <label for="inputPassword" class="sr-only">Password</label>
-      Password:<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-      <label for="inputPasswordConfirmation" class="sr-only">Confirm Password</label>
-      Password Confirmation:<input type="password" id="inputPasswordConfirmation" class="form-control" placeholder="Confirm Password" required>
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-      </div>
-      <button class="btn btn-danger btn-cancel-action" {{action 'closeRegisterModal'}}>Cancel</button>
-      <button class="btn btn-warning" {{action "registerToLoginModal"}}>Login</button>
-      <button class="btn btn-success btn-login-submit" type="submit">Register</button>
-    </form>
-  </div>
+  <form class="form-signin">
+    <h2 class="form-signin-heading">Register</h2>
+    <label for="inputEmail" class="sr-only">Email</label>
+    Email:<input type="username" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+    <label for="inputTeamName" class="sr-only">Team Name</label>
+    Team Name:<input type="username" id="inputTeamName" class="form-control" placeholder="Team Name" required autofocus>
+    <label for="inputPassword" class="sr-only">Password</label>
+    Password:<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+    <label for="inputPasswordConfirmation" class="sr-only">Confirm Password</label>
+    Password Confirmation:<input type="password" id="inputPasswordConfirmation" class="form-control" placeholder="Confirm Password" required>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>
+    </div>
+    <button class="btn btn-danger btn-cancel-action" {{action 'closeRegisterModal'}}>Cancel</button>
+    <button class="btn btn-warning" {{action "registerToLoginModal"}}>Login</button>
+    <button class="btn btn-success btn-login-submit" type="submit">Register</button>
+  </form>
 {{/modal-dialog}}

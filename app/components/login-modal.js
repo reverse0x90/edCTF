@@ -12,6 +12,7 @@ export default Ember.Component.extend({
     submitLogin: function() {
       var teamname = this.get('teamname');
       var password = this.get('password');
+      console.log("Login: ", teamname + password)
       this.sendAction('login', {'teamname': teamname, 'password': password });
     },
     openLoginModal: function() {
