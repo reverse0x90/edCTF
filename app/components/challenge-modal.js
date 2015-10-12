@@ -5,7 +5,7 @@ export default Ember.Component.extend({
   modal: {},
   flag: '',
   classNames: ['challenge-submit', 'challenge-cancel'],
-  setup: function() {
+  setupKeys: function() {
     Ember.$('body').on('keyup.modal-dialog', (e) => {
       console.log(e.keyCode);
       if (e.keyCode === 27) {
@@ -13,9 +13,12 @@ export default Ember.Component.extend({
       }
     });
   }.on('didInsertElement'),
-  teardown: function() {
+  teardownKeys: function() {
     Ember.$('body').off('keyup.modal-dialog');
   }.on('willDestroyElement'),
+  setupFocus: function() {
+    Ember.$('#inputFlag').focus()
+  }.on('didInsertElement'),
   actions: {
     closeChallengeModal: function() {
       this.set('modal.isChallenge', false);

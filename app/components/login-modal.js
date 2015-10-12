@@ -5,6 +5,9 @@ export default Ember.Component.extend({
   teamname: '',
   password: '',
   classNames: ['login-box-margin'],
+  setupFocus: function() {
+    Ember.$('#inputTeamName').focus()
+  }.on('didInsertElement'),
   actions: {
     submitLogin: function() {
       var teamname = this.get('teamname');

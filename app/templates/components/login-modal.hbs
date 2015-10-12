@@ -3,9 +3,9 @@
     <form class="form-signin" {{action "submitLogin" on="submit"}}>
       <h2 class="form-signin-heading">Sign in</h2>
       <label for="inputTeamName" class="sr-only">Team Name</label>
-      {{input type="text" value=teamname class="form-control" id="inputTeamName" placeholder="Team Name" required="true" autofocus="true"}}
+      {{input type="text" value=teamname class="form-control" id="inputTeamName" placeholder="Team Name" required="true" autofocus="autofocus"}}
       <label for="inputPassword" class="sr-only">Password</label>
-      {{input type="password" value=password class="form-control" id="inputPassword" placeholder="Password"required="true" autofocus="true"}}
+      {{input type="password" value=password class="form-control" id="inputPassword" placeholder="Password"required="required"}}
       <div class="checkbox">
         <label>
           <input type="checkbox" value="remember-me"> Remember me
