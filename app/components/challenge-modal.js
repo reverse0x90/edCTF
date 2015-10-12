@@ -16,7 +16,7 @@ export default Ember.Component.extend({
     Ember.$('body').off('keyup.modal-dialog');
   }.on('willDestroyElement'),
   setupFocus: function() {
-    Ember.$('#inputFlag').focus()
+    Ember.$('#inputFlag').focus();
   }.on('didInsertElement'),
   actions: {
     closeChallengeModal: function() {

@@ -4,7 +4,7 @@ export default Ember.Component.extend({
   modal: {},
   classNames: ['login-box-margin'],
   setupFocus: function() {
-    Ember.$('#inputEmail').focus()
+    Ember.$('#inputEmail').focus();
   }.on('didInsertElement'),
   actions: {
     openRegisterModal: function() {
