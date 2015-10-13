@@ -1,11 +1,12 @@
 {{#modal-dialog translucentOverlay=true}}
+  <div class="well login-box login-box-margin">
     <form class="form-signin">
       <h2 class="form-signin-heading">Sign in</h2>
        <div class="form-group">
-      {{input type="text" value=teamname enter="submitLogin" class="form-control" id="inputTeamName" placeholder="Team Name" required="true" autofocus="autofocus" }}
+        {{input type="text" value=teamname enter="submitLogin" class="form-control" id="inputTeamName" placeholder="Team Name" required="required" autofocus="autofocus" }}
       </div>
       <div class="form-group">
-      {{input type="password" value=password enter="submitLogin" class="form-control" id="inputPassword" placeholder="Password"required="required" }}
+        {{input type="password" value=password enter="submitLogin" class="form-control" id="inputPassword" placeholder="Password"required="required" }}
       </div>
       <div class="checkbox">
         <label>
@@ -15,7 +16,6 @@
       <button type="button" class="btn btn-danger btn-cancel-action" {{action 'closeLoginModal'}}>Cancel</button>
       <button type="button" class="btn btn-warning" {{action "loginToRegisterModal"}}>Register</button>
       <button type="button" class="btn btn-success btn-login-submit" {{action "submitLogin"}}>Sign in</button>
-    
     </form>
+  </div>
 {{/modal-dialog}}
-
