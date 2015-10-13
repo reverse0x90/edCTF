@@ -1,18 +1,10 @@
-Chart:
-{{line-chart data=thing options=options}}
-{{view rthing}}
+<h1>Top {{numberTopTeams}} Teams</h1>
+{{#if topteams}}
+  {{line-chart data=topteams options=options}}
+{{/if}}
 
-<h1>Top {{numberTopTeams}} Teams:</h1>
-{{#each topTeams as |team|}}
-<button class="btn btn-primary" {{action 'openTeamView' team.id}}>{{team.teamname}} - {{team.points}}</button>
-{{/each}}
 
-<br/>
-{{input value=newnumberTopTeams}}
-<button {{action "setTopTeams" newnumberTopTeams}}>Set top teams</button>
-<br/>
-
-<h1>All Teams:</h1>
+<h1>All Teams</h1>
 <div class="container">
   <table class="table">
     <thead>
