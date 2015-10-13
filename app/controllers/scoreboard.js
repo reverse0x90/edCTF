@@ -1,17 +1,64 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  init: function () {
+    this._super();
+    this.set('teams', this.store.findAll('team'));
+    this.set('sortedTeams', Ember.computed.sort('teams', function(a, b){
+      if (a.get('points') < b.get('points')) {
+        return 1;
+      } else if (a.get('points') > b.get('points')) {
+        return -1;
+      }
+      return 0;
+    }));
+    var teams = this.get('teams');
+    var topteams = [];
+    var top = ['Task','ME'];
+    console.log('teams');
+    console.log(teams);
+
+    teams.forEach( function(team){
+      top.push(team.get('teamname'));
+      console.log('team');
+      console.log(team);
+    });
+
+    var time1 = ['Time 1',0];
+    var time2 = ['Time 2',1000];
+    teams.forEach( function(team){
+      time1.push(0);
+      time2.push(team.get('points'));
+    });
+    topteams.push(top);
+    topteams.push(time1);
+    topteams.push(time2);
+    console.log('topteams');
+    console.log(topteams);
+    this.set('thing', topteams);
+  },
   modal: {},
   numberTopTeams: 0,
   topTeams: [],
-  sortedTeams: Ember.computed.sort('teams', function(a, b){
-    if (a.get('points') < b.get('points')) {
-      return 1;
-    } else if (a.get('points') > b.get('points')) {
-      return -1;
-    }
-    return 0;
-  }),
+  thing: [
+    ['Task', 'Hours per Day'],
+    ['Work', 11],
+    ['Eat', 2],
+    ['Commute', 2],
+    ['Watch TV', 2],
+    ['Sleep', 7],
+  ],
+  options: {
+    title: 'How I spend my days',
+    height: 300,
+    width: 400,
+ 
+    animation: {
+      startup: true,
+      easing: 'inAndOut',
+    },
+  },
+  sortedTeams: [],
   actions:{
     setTopTeams: function(n){
       if (!n){
