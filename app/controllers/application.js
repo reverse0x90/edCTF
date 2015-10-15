@@ -8,6 +8,10 @@ export default Ember.Controller.extend({
       this.get('authController').login(authenticationData);
       this.set('modal.isLogin', false);
     },
+    register: function(registrationData) {
+      this.get('authController').register(registrationData);
+      this.set('modal.isRegister', false);
+    },
     logout: function(authenticationData) {
       this.get('authController').logout();
     },

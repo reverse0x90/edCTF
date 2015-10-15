@@ -7,6 +7,10 @@ export default Ember.Controller.extend({
     credentials = null;
     this.set('isAuthenticated', true);
   },
+  register: function(registrationData){
+    // Do the registration stuff here
+    registrationData = null;
+  },
   logout: function(){
     // Do the authentication stuff here
     this.set('isAuthenticated', false);
