@@ -2,6 +2,9 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   isAuthenticated: false,
+  username: '',
+  errorMsg: '',
+  remember: false,
   currentTransition: null,
   whiteList: ['index', 'scoreboard', 'about'],
   inwhiteList: function(string){
@@ -19,8 +22,8 @@ export default Ember.Controller.extend({
     credentials = null;
     t.set('isAuthenticated', true);
     if ( currentTransition ) {
-      console.log("User has authenticated redirecting to: ", currentTransition.targetName)
-      t.set('currentTransition', null) 
+      console.log("User has authenticated redirecting to: ", currentTransition.targetName);
+      t.set('currentTransition', null);
       currentTransition.retry();
     }
   },
