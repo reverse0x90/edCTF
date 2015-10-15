@@ -11,12 +11,12 @@ export default Ember.Route.extend({
     var t = this;
     var auth = t.controllerFor('auth');
     var modal = t.controllerFor('modal');
-    console.log("targetName in application route:", transition.targetName);
+    console.log("targetName in application route: ", transition.targetName);
     if (!auth.inwhiteList(transition.targetName)) {
       if(!auth.isAuthenticated){
         auth.set('currentTransition', transition);
         transition.abort();
-        console.log('User is unauthenicated, redirecting');
+        console.log('User is unauthenicated, opening login modal');
         modal.set('modal.isLogin', true);  
         t.transitionTo('index');
       }
@@ -28,7 +28,6 @@ export default Ember.Route.extend({
   },  
   actions: {
     willTransition: function(transition){
-      console.log("targetName:", transition.targetName);
       this.authCheck(transition);
     }
   }

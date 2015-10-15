@@ -5,7 +5,6 @@ export default Ember.Controller.extend({
   authController: undefined,
   actions: {
     login: function(authenticationData) {
-      console.log("currentTransition", this.get('currentTransition'));
       this.get('authController').login(authenticationData);
       this.set('modal.isLogin', false);
     },

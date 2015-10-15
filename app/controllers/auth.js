@@ -19,7 +19,7 @@ export default Ember.Controller.extend({
     credentials = null;
     t.set('isAuthenticated', true);
     if ( currentTransition ) {
-      console.log("redirecting to: ", currentTransition.targetName)
+      console.log("User has authenticated redirecting to: ", currentTransition.targetName)
       t.set('currentTransition', null) 
       currentTransition.retry();
     }
