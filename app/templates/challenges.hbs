@@ -1,16 +1,21 @@
 {{#if authController.isAuthenticated}}
-
+<div class="container">
+  <h1>Challenges</h1>
+  <div>          
+    <table border="1" style="width:100%">
+      <tbody>
+        {{#each ctfs as |ctf|}}
+          {{#each ctf.categories as |category|}}
+          <tr>
+            <td><h2>{{category.name}}</h2></td>
+            {{#each category.challenges as |challenge|}}
+              <td> <button class="btn btn-primary" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button></td>
+            {{/each}}
+          </tr>
+          {{/each}}
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
 {{/if}}
-
-{{#each ctf in ctfs}}
-  {{#each category in ctf}}
-    Category: {{category}}
-    {{#each challenge in category}}
-      Challenge: {{challenge}}
-    {{/each}}
-  {{/each}}
-{{/each}}
-
-
-
-

@@ -54,12 +54,12 @@ module.exports = function(app) {
         {
           id: 1,
           name: 'Reversing',
-          challenges: ["1"],
+          challenges: [1],
         },
         {
           id: 2,
           name: 'Exploit',
-          challenges: ["2","3","4"],
+          challenges: [2,3,4],
         },
       ]
     });
@@ -71,7 +71,7 @@ module.exports = function(app) {
         {
           id: 1,
           name: 'edCTF',
-          categories: ["1","2"],
+          categories: [1,2],
         },
       ]
     });
@@ -79,30 +79,38 @@ module.exports = function(app) {
 
   // GET challenges/:id
   apiRouter.get('/challenges/:id', function(req, res) {
-    res.send({
-     'challenge': [ 
-        {
-          id: req.params.id,
-          title: 'Solve it',
-          points: 100,
-          description: 'Reverse it bro!',
-          solved: false,
-          num_solved: 0,
-        },
-      ]
-    });
+    var response = {};
+    if (req.params.id == 1) {
+      response = {'challenge': [ {id: req.params.id, title: 'Solve it', points: 100, description: 'Reverse it bro!', solved: false, num_solved: 0,}]}
+    }
+    else if (req.params.id == 2) {
+      response = {'challenge': [ {id: req.params.id, title: 'Solve it', points: 100, description: 'PWN it bro!', solved: false, num_solved: 0,}]}
+    }
+    else if (req.params.id == 3) {
+      response = {'challenge': [ {id: req.params.id, title: 'Solve it', points: 200, description: 'PWN it bro!', solved: false, num_solved: 0,}]}
+    }
+    else if (req.params.id == 4) {
+      response = {'challenge': [ {id: req.params.id, title: 'Solve it', points: 300, description: 'PWN it bro!', solved: false, num_solved: 0,}]}
+    }
+    else {
+      response = {'challenge': [ {id: req.params.id, title: 'Unknown', points: 1337, description: 'Unknown', solved: false, num_solved: 0,}]}
+    }
+    res.send(response);
   });
 
   apiRouter.get('/categories/:id', function(req, res) {
-    res.send({
-     'category': [ 
-        {
-          id: req.params.id,
-          name: 'Reversing',
-          challenges: ["1","2","3"]
-        },
-      ]
-    });
+    var response = {};
+    if (req.params.id == 1) {
+
+      response = {'category': [ {id: req.params.id, name: 'Reversing', challenges: [1]}]}
+    }
+    else if (req.params.id == 2) {
+      response = {'category': [ {id: req.params.id, name: 'Exploit', challenges: [2,3,4]}]}
+    }
+    else {
+      response = {'category': [ {id: req.params.id, name: 'Unknown', challenges: [99]}]}
+    }
+    res.send(response);
   });
 
   // GET teams
