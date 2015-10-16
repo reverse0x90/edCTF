@@ -1,8 +1,24 @@
 {{#if authController.isAuthenticated}}
-  <h1>This is the challenge board page</h1>
-  
-  {{#each challenges as |challenge|}}
-  <button class="btn btn-primary" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
-  {{/each}}
-  
+<div class="container">
+  <h1>Challenges</h1>
+  <div>          
+    <table border="1" style="width:100%">
+      <tbody>
+        {{#each uniqueCategories as |category|}}
+          <tr>
+            <td>{{category}}</td>
+            {{#each sortedChallenges as |challenge|}}
+              <td>
+              {{#if-equal param1=challenge.category param2=category}}
+                <button class="btn btn-primary" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
+              {{/if-equal}}
+              </td>
+            {{/each}}
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
 {{/if}}
+

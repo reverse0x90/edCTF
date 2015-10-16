@@ -30,6 +30,24 @@ module.exports = function(app) {
           solved: false,
           num_solved: 0,
         },
+        {
+          id: 3,
+          category: 'Exploit',
+          title: 'Solve it',
+          points:200,
+          description: 'PWN it bro!',
+          solved: false,
+          num_solved: 0,
+        },
+        {
+          id: 4,
+          category: 'Exploit',
+          title: 'Solve it',
+          points: 300,
+          description: 'PWN it bro!',
+          solved: false,
+          num_solved: 0,
+        },
       ]
     });
   });
