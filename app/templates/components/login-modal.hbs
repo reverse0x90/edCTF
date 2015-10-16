@@ -1,21 +1,46 @@
 {{#modal-dialog translucentOverlay=true}}
-  <div class="well login-box login-box-margin">
-    <form class="form-signin">
-      <h2 class="form-signin-heading">Sign in</h2>
-       <div class="form-group">
-        {{input type="text" value=teamname enter="submitLogin" class="form-control" id="inputTeamName" placeholder="Team Name" required="required" autofocus="autofocus" }}
-      </div>
-      <div class="form-group">
-        {{input type="password" value=password enter="submitLogin" class="form-control" id="inputPassword" placeholder="Password"required="required" }}
-      </div>
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-      </div>
-      <button type="button" class="btn btn-danger btn-cancel-action" {{action "closeLoginModal"}}>Cancel</button>
-      <button type="button" class="btn btn-warning" {{action "loginToRegisterModal"}}>Register</button>
-      <button type="button" class="btn btn-success btn-login-submit" {{action "submitLogin"}}>Sign in</button>
-    </form>
-  </div>
+   {{#if authController.errorMessage}}
+    <div class="well login-box login-box-margin">
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Sign in</h2>
+        <div class="form-group has-error">
+          <label class="control-label"><div class="alert alert-danger" style="padding: 5px; margin-bottom: 0px;" role="alert">{{authController.errorMessage}}</div></label>
+          {{input type="text" value=teamname enter="submitLogin" class="form-control" id="inputTeamName" placeholder="Team Name" required="required" autofocus="autofocus" }}
+        </div>
+        <div class="form-group has-error">
+          {{input type="password" value=password enter="submitLogin" class="form-control" id="inputPassword" placeholder="Password"required="required" }}
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button type="button" class="btn btn-danger btn-cancel-action" {{action "closeLoginModal"}}>Cancel</button>
+        <button type="button" class="btn btn-warning" {{action "loginToRegisterModal"}}>Register</button>
+        <button type="button" class="btn btn-success btn-login-submit" {{action "submitLogin"}}>Sign in</button>
+      </form>
+    </div>
+  {{else}}
+    <div class="well login-box login-box-margin">
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Sign in</h2>
+        <div class="form-group">
+          {{input type="text" value=teamname enter="submitLogin" class="form-control" id="inputTeamName" placeholder="Team Name" required="required" autofocus="autofocus" }}
+        </div>
+        <div class="form-group">
+          {{input type="password" value=password enter="submitLogin" class="form-control" id="inputPassword" placeholder="Password"required="required" }}
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button type="button" class="btn btn-danger btn-cancel-action" {{action "closeLoginModal"}}>Cancel</button>
+        <button type="button" class="btn btn-warning" {{action "loginToRegisterModal"}}>Register</button>
+        <button type="button" class="btn btn-success btn-login-submit" {{action "submitLogin"}}>Sign in</button>
+      </form>
+    </div>
+  {{/if}}
 {{/modal-dialog}}
+
+

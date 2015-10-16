@@ -3,9 +3,10 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   isAuthenticated: false,
   username: '',
-  errorMsg: '',
   remember: false,
   currentTransition: null,
+  errorMessage: '',
+  validator: Ember.inject.controller('validator'),
   whiteList: ['index', 'scoreboard', 'about'],
   inwhiteList: function(string){
     // Do the authentication stuff here
@@ -18,13 +19,23 @@ export default Ember.Controller.extend({
   },
   login: function(credentials){
     var t = this;
-    var currentTransition = this.get('currentTransition');
-    credentials = null;
-    t.set('isAuthenticated', true);
-    if ( currentTransition ) {
-      console.log("User has authenticated redirecting to: ", currentTransition.targetName);
-      t.set('currentTransition', null);
-      currentTransition.retry();
+    var currentTransition = t.get('currentTransition');
+    var validator = this.get('validator');
+
+    // Make sure the form is valid
+    if (!validator.isvalidLogin(credentials)) {
+      t.set('errorMessage', validator.get('error'));
+    }
+    // Form is value clear the error message field and authenticate the team
+    else {
+      t.set('errorMessage', '');
+      credentials = null;
+      t.set('isAuthenticated', true);
+      // If the the user was redirected to authenticate send them to the page they originally requested
+      if ( currentTransition ) {
+        t.set('currentTransition', null);
+        currentTransition.retry();
+      }
     }
   },
   register: function(registrationData){

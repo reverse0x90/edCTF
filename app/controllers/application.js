@@ -5,8 +5,15 @@ export default Ember.Controller.extend({
   authController: undefined,
   actions: {
     login: function(authenticationData) {
-      this.get('authController').login(authenticationData);
-      this.set('modal.isLogin', false);
+      var t = this;
+      var auth = t.get('authController')
+      
+      // Attempt to login the user
+      auth.login(authenticationData);
+      // If there was no error during authentication close the login modal 
+      if (!auth.get('errorMessage')) {
+        this.set('modal.isLogin', false);
+      }
     },
     register: function(registrationData) {
       this.get('authController').register(registrationData);

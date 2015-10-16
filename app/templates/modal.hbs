@@ -1,6 +1,6 @@
 <!-- Show current modal -->
 {{#if modal.isLogin}}
-  {{login-modal modal=modal sendLogin="login"}}
+  {{login-modal authController=authController modal=modal sendLogin="login"}}
 {{else}}
   {{#if modal.isRegister}}
     {{register-modal modal=modal sendRegister="register"}}
