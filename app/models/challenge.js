@@ -1,7 +1,7 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  category: DS.attr('string'),
+  category: DS.belongsTo('category'),
   title: DS.attr('string'),
   points: DS.attr('number'),
   description: DS.attr('string'),

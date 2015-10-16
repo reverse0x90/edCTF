@@ -14,7 +14,6 @@ module.exports = function(app) {
       'challenges': [ 
         {
           id: 1,
-          category: 'Reversing',
           title: 'Solve it',
           points: 100,
           description: 'Reverse it bro!',
@@ -23,7 +22,6 @@ module.exports = function(app) {
         },
         {
           id: 2,
-          category: 'Exploit',
           title: 'Solve it',
           points: 100,
           description: 'PWN it bro!',
@@ -32,7 +30,6 @@ module.exports = function(app) {
         },
         {
           id: 3,
-          category: 'Exploit',
           title: 'Solve it',
           points:200,
           description: 'PWN it bro!',
@@ -41,7 +38,6 @@ module.exports = function(app) {
         },
         {
           id: 4,
-          category: 'Exploit',
           title: 'Solve it',
           points: 300,
           description: 'PWN it bro!',
@@ -52,18 +48,58 @@ module.exports = function(app) {
     });
   });
 
+ apiRouter.get('/categories', function(req, res) {
+    res.send({
+      'categories': [ 
+        {
+          id: 1,
+          name: 'Reversing',
+          challenges: ["1"],
+        },
+        {
+          id: 2,
+          name: 'Exploit',
+          challenges: ["2","3","4"],
+        },
+      ]
+    });
+  });
+
+ apiRouter.get('/ctfs', function(req, res) {
+    res.send({
+      'ctfs': [ 
+        {
+          id: 1,
+          name: 'edCTF',
+          categories: ["1","2"],
+        },
+      ]
+    });
+  });
+
   // GET challenges/:id
   apiRouter.get('/challenges/:id', function(req, res) {
     res.send({
-     'challenges': [ 
+     'challenge': [ 
         {
           id: req.params.id,
-          category: 'Reversing',
           title: 'Solve it',
           points: 100,
           description: 'Reverse it bro!',
           solved: false,
           num_solved: 0,
+        },
+      ]
+    });
+  });
+
+  apiRouter.get('/categories/:id', function(req, res) {
+    res.send({
+     'category': [ 
+        {
+          id: req.params.id,
+          name: 'Reversing',
+          challenges: ["1","2","3"]
         },
       ]
     });
