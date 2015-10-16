@@ -7,8 +7,8 @@ export default Ember.Controller.extend({
     login: function(authenticationData) {
       var t = this;
       var auth = t.get('authController')
-      
-      // Attempt to login the user
+
+      // Attempt to login the team
       auth.login(authenticationData);
       // If there was no error during authentication close the login modal 
       if (!auth.get('errorMessage')) {
@@ -16,8 +16,17 @@ export default Ember.Controller.extend({
       }
     },
     register: function(registrationData) {
-      this.get('authController').register(registrationData);
-      this.set('modal.isRegister', false);
+      var t = this;
+      var auth = t.get('authController')
+      
+      // Attempt to register the team
+      auth.register(registrationData);
+
+      // If there was no error during registration close the register modal 
+      if (!auth.get('errorMessage')) {
+        this.set('modal.isRegister', false);
+      }
+      
     },
     logout: function(authenticationData) {
       this.get('authController').logout();

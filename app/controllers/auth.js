@@ -26,7 +26,7 @@ export default Ember.Controller.extend({
     if (!validator.isvalidLogin(credentials)) {
       t.set('errorMessage', validator.get('error'));
     }
-    // Form is value clear the error message field and authenticate the team
+    // Form is valid clear the error message field and authenticate the team
     else {
       t.set('errorMessage', '');
       credentials = null;
@@ -39,8 +39,21 @@ export default Ember.Controller.extend({
     }
   },
   register: function(registrationData){
-    // Do the registration stuff here
-    registrationData = null;
+    var t = this;
+    var validator = this.get('validator');
+    var authenticationData = {}
+
+    // Make sure the form is valid
+    if (!validator.isvalidRegister(registrationData)) {
+      t.set('errorMessage', validator.get('error'));
+    }
+    // Form is valid clear the error message field and register and login the team 
+    else {
+      t.set('errorMessage', '');
+      authenticationData = {'teamName': registrationData.teamName, 'password': registrationData.password };
+      registrationData = null;
+      this.login(authenticationData);
+    }
   },
   logout: function(){
     // Do the authentication stuff here

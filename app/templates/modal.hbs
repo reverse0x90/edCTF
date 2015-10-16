@@ -3,7 +3,7 @@
   {{login-modal authController=authController modal=modal sendLogin="login"}}
 {{else}}
   {{#if modal.isRegister}}
-    {{register-modal modal=modal sendRegister="register"}}
+    {{register-modal authController=authController modal=modal sendRegister="register"}}
   {{else}}
     {{#if modal.isChallenge}}
       {{challenge-modal modal=modal challenge=modal.challenge}}

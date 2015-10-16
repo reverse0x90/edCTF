@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   modal: {},
   authController: undefined,
-  teamname: '',
+  teamName: '',
   password: '',
   classNames: ['login-box-margin'],
   setupFocus: function() {
@@ -11,9 +11,9 @@ export default Ember.Component.extend({
   }.on('didInsertElement'),
   actions: {
     submitLogin: function() {
-      var teamname = this.get('teamname');
+      var teamName = this.get('teamname');
       var password = this.get('password');
-      this.sendAction('sendLogin', {'teamname': teamname, 'password': password });
+      this.sendAction('sendLogin', {'teamName': teamName, 'password': password });
     },
     openLoginModal: function() {
       this.set('modal.isLogin', true);
