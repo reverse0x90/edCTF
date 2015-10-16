@@ -6,13 +6,13 @@
       <tbody>
         {{#each uniqueCategories as |category|}}
           <tr>
-            <td>{{category}}</td>
+            <td><h2>{{category}}</h2></td>
             {{#each sortedChallenges as |challenge|}}
-              <td>
               {{#if-equal param1=challenge.category param2=category}}
+                <td>
                 <button class="btn btn-primary" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
+                 </td>
               {{/if-equal}}
-              </td>
             {{/each}}
           </tr>
         {{/each}}
