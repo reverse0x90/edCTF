@@ -11,7 +11,7 @@ export default Ember.Component.extend({
   }.on('didInsertElement'),
   actions: {
     submitLogin: function() {
-      var teamName = this.get('teamname');
+      var teamName = this.get('teamName');
       var password = this.get('password');
       this.sendAction('sendLogin', {'teamName': teamName, 'password': password });
     },

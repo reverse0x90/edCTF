@@ -6,6 +6,7 @@ export default Ember.Controller.extend({
   remember: false,
   currentTransition: null,
   errorMessage: '',
+  errorFields:{},
   validator: Ember.inject.controller('validator'),
   whiteList: ['index', 'scoreboard', 'about'],
   inwhiteList: function(string){
@@ -25,10 +26,12 @@ export default Ember.Controller.extend({
     // Make sure the form is valid
     if (!validator.isvalidLogin(credentials)) {
       t.set('errorMessage', validator.get('error'));
+      t.set('errorFields', validator.get('errorFields'));
     }
     // Form is valid clear the error message field and authenticate the team
     else {
       t.set('errorMessage', '');
+      t.set('errorFields', {});
       credentials = null;
       t.set('isAuthenticated', true);
       // If the the user was redirected to authenticate send them to the page they originally requested
@@ -46,10 +49,12 @@ export default Ember.Controller.extend({
     // Make sure the form is valid
     if (!validator.isvalidRegister(registrationData)) {
       t.set('errorMessage', validator.get('error'));
+      t.set('errorFields', validator.get('errorFields'));
     }
     // Form is valid clear the error message field and register and login the team 
     else {
       t.set('errorMessage', '');
+      t.set('errorFields', {});
       authenticationData = {'teamName': registrationData.teamName, 'password': registrationData.password };
       registrationData = null;
       this.login(authenticationData);
