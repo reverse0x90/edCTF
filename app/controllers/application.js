@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   modal: {},
   authController: undefined,
+  ctf: undefined,
   actions: {
     login: function(authenticationData) {
       var t = this;
