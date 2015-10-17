@@ -8,7 +8,7 @@ module.exports = function(app) {
       extended: true
   }));
 
- apiRouter.get('/ctfs', function(req, res) {
+ apiRouter.get('/ctfs/:id', function(req, res) {
     res.send({
       'ctfs': [ 
         {
