@@ -1,6 +1,6 @@
-{{#if scoreboard.topteams}}
-  <h1>Top {{scoreboard.numtopteams}} Teams</h1>
-  {{line-chart data=scoreboard.topteams options=options}}
+{{#if ctf.scoreboard.topteams}}
+  <h1>Top {{ctf.scoreboard.numtopteams}} Teams</h1>
+  {{line-chart data=ctf.scoreboard.topteams options=options}}
 {{/if}}
 
 <h1>All Teams</h1>
@@ -14,7 +14,7 @@
       </tr>
     </thead>
     <tbody>
-      {{#each scoreboard.teams as |team|}}
+      {{#each ctf.scoreboard.teams as |team|}}
         <tr>
           <td><a {{action 'openTeamView' team.id}}>{{team.teamname}}</a></td>
           <td>{{team.points}}</td>

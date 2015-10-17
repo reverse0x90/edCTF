@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   modal: {},
-  scoreboard: undefined,
+  ctf: undefined,
   options: {
     lineWidth: 0,
     width: 900,
