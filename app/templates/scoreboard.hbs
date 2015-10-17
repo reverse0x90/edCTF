@@ -1,9 +1,7 @@
-<h1>Top {{scoreboard.numtopteams}} Teams</h1>
-{{log 'top:' top}}
 {{#if topTeams}}
+  <h1>Top {{scoreboard.numtopteams}} Teams</h1>
   {{line-chart data=topTeams options=options}}
 {{/if}}
-
 
 <h1>All Teams</h1>
 <div class="container">

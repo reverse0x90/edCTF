@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   modal: {},
-  ctf: null,
+  ctf: undefined,
   actions: {
     openLoginModal: function() {
       this.set('modal.isLogin', true);

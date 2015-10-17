@@ -6,15 +6,19 @@ export default Ember.Controller.extend({
   numberTopTeams: function(){
     return this.get('scoreboard.numtopteams')
   }.property('numberTopTeams'),
+  topTeams: undefined,
   options: {
     lineWidth: 0,
     width: 900,
     height: 500,
     //selectionMode: 'multiple',
   },
-  topTeams: [],
-  top: function(){
+  teamsChange: function(){
     var teams = this.get('scoreboard.teams');
+    if(!teams){
+      return
+    }
+
     var numberTopTeams = this.get('scoreboard.numtopteams');
     var topteams = [];
 
@@ -26,30 +30,28 @@ export default Ember.Controller.extend({
     var time2 = ['Time 2'];
     var time3 = ['Time 3'];
 
-    // setting y-axis values as points
-    var i = 0;
-    teams = this.store.all('team').content;
-    //console.log('teams:',Object.keys(teams));
-    console.log('recad:',teams);
     
-      /*
-      if (i < numberTopTeams){
-        var max = team.get('points');
-        teamsNames.push(team.get('teamname'));
-        time1.push(0);
-        time2.push(max-Math.floor(Math.random() * (max-100)));
-        time3.push(max);
-      }
-      i++;
+    // setting top teams
+    teams = teams.filter(function(item, index, self) {
+      if (index < numberTopTeams){return true}
     });
-    */
+
+    // setting y-axis values as points
+    teams.forEach(function(team) {
+      var max = team.get('points');
+      teamsNames.push(team.get('teamname'));
+      time1.push(0);
+      time2.push(max-Math.floor(Math.random() * (max-100)));
+      time3.push(max);
+    });
+
     topteams.push(teamsNames);
     topteams.push(time1);
     topteams.push(time2);
     topteams.push(time3);
-
-    return topteams
-  }.property('top'),
+    
+    this.set('topTeams', topteams);
+  }.observes('scoreboard.teams').on('init'),
   actions:{
     setTopTeams: function(n){
       if (!n){
