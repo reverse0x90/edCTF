@@ -1,60 +1,55 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  init: function () {
-    this._super();
-    this.set('sortedTeams', Ember.computed.sort('scoreboard.teams', function(a, b){
-      if (a.get('points') < b.get('points')) {
-        return 1;
-      } else if (a.get('points') > b.get('points')) {
-        return -1;
-      }
-      return 0;
-    }));
-    
-    var teams = this.get('sortedTeams');
-    var my = this;
-    var numberTopTeams = 10
-    Ember.run.later(function(){
-      console.log(1);
-      var topteams = [];
-      var top = [''];
-      var time1 = ['Time 1'];
-      var time2 = ['Time 2'];
-      var time3 = ['Time 3'];
-      var i = 0;
-      teams.forEach(function(team){
-        if (i < numberTopTeams){
-          var max = team.get('points');
-          top.push(team.get('teamname'));
-          time1.push(0);
-          time2.push(max-Math.floor(Math.random() * (max-100)));
-          time3.push(max);
-        }
-        i++;
-      });
-
-      topteams.push(top);
-      topteams.push(time1);
-      topteams.push(time2);
-      topteams.push(time3);
-
-      var options = {
-        lineWidth: 0,
-        width: 900,
-        height: 500,
-        //selectionMode: 'multiple',
-      };
-
-      my.set('numberTopTeams', numberTopTeams);
-      my.set('options', options);
-      my.set('topteams', topteams);
-    }, 2);
-  },
   modal: {},
-  numberTopTeams: 0,
+  scoreboard: undefined,
+  numberTopTeams: function(){
+    return this.get('scoreboard.numtopteams')
+  }.property('numberTopTeams'),
+  options: {
+    lineWidth: 0,
+    width: 900,
+    height: 500,
+    //selectionMode: 'multiple',
+  },
   topTeams: [],
-  sortedTeams: [],
+  top: function(){
+    var teams = this.get('scoreboard.teams');
+    var numberTopTeams = this.get('scoreboard.numtopteams');
+    var topteams = [];
+
+    // x-axis name and team names 
+    var teamsNames = [''];
+
+    // temp times along x-axis
+    var time1 = ['Time 1'];
+    var time2 = ['Time 2'];
+    var time3 = ['Time 3'];
+
+    // setting y-axis values as points
+    var i = 0;
+    teams = this.store.all('team').content;
+    //console.log('teams:',Object.keys(teams));
+    console.log('recad:',teams);
+    
+      /*
+      if (i < numberTopTeams){
+        var max = team.get('points');
+        teamsNames.push(team.get('teamname'));
+        time1.push(0);
+        time2.push(max-Math.floor(Math.random() * (max-100)));
+        time3.push(max);
+      }
+      i++;
+    });
+    */
+    topteams.push(teamsNames);
+    topteams.push(time1);
+    topteams.push(time2);
+    topteams.push(time3);
+
+    return topteams
+  }.property('top'),
   actions:{
     setTopTeams: function(n){
       if (!n){
