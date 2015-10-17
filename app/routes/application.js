@@ -5,6 +5,9 @@ export default Ember.Route.extend({
     this.authCheck(transition);
     //will have other stuff here once its connected to restapi
   },
+  model: function(){
+    return this.store.find('ctf', 1);
+  },
   authCheck: function(transition){
     //Method to check user credentials and redirect if necessary
     var t = this;
@@ -21,6 +24,7 @@ export default Ember.Route.extend({
   },
   setupController: function (controller, model){
     controller.set('authController', this.controllerFor('auth'));
+    controller.set('ctf', model);
     controller.set('modal', this.controllerFor('modal').get('modal'));
   },  
   actions: {
