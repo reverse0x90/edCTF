@@ -6,6 +6,15 @@ export default Ember.Route.extend({
     //will have other stuff here once its connected to restapi
   },
   model: function(){
+    // Update the ctf model data every 5 minutes
+    var interval = 1000 * 60 * 5;
+    Ember.run.later(this, function() {
+      this.model().then(function(json) {
+        console.log(json)
+        this.controller.set('ctf', json);
+      }.bind(this));
+    }, interval);
+
     return this.store.find('ctf', 1);
   },
   authCheck: function(transition){
