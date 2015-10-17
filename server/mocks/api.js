@@ -61,6 +61,40 @@ module.exports = function(app) {
           name: 'Exploit',
           challenges: [2,3,4],
         },
+      ],
+      'challenges': [ 
+        {
+          id: 1,
+          title: 'Solve it',
+          points: 100,
+          description: 'Reverse it bro!',
+          solved: false,
+          num_solved: 0,
+        },
+        {
+          id: 2,
+          title: 'Solve it',
+          points: 100,
+          description: 'PWN it bro!',
+          solved: false,
+          num_solved: 0,
+        },
+        {
+          id: 3,
+          title: 'Solve it',
+          points:200,
+          description: 'PWN it bro!',
+          solved: false,
+          num_solved: 0,
+        },
+        {
+          id: 4,
+          title: 'Solve it',
+          points: 300,
+          description: 'PWN it bro!',
+          solved: false,
+          num_solved: 0,
+        },
       ]
     });
   });
@@ -72,6 +106,52 @@ module.exports = function(app) {
           id: 1,
           name: 'edCTF',
           categories: [1,2],
+        },
+      ],
+       'categories': [ 
+        {
+          id: 1,
+          name: 'Reversing',
+          challenges: [1],
+        },
+        {
+          id: 2,
+          name: 'Exploit',
+          challenges: [2,3,4],
+        },
+      ],
+      'challenges': [ 
+        {
+          id: 1,
+          title: 'Solve it',
+          points: 100,
+          description: 'Reverse it bro!',
+          solved: false,
+          num_solved: 0,
+        },
+        {
+          id: 2,
+          title: 'Solve it',
+          points: 100,
+          description: 'PWN it bro!',
+          solved: false,
+          num_solved: 0,
+        },
+        {
+          id: 3,
+          title: 'Solve it',
+          points:200,
+          description: 'PWN it bro!',
+          solved: false,
+          num_solved: 0,
+        },
+        {
+          id: 4,
+          title: 'Solve it',
+          points: 300,
+          description: 'PWN it bro!',
+          solved: false,
+          num_solved: 0,
         },
       ]
     });
