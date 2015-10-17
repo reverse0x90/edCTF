@@ -2,7 +2,7 @@ import DS from 'ember-data';
 
 export default DS.Model.extend({
   name: DS.attr('string'),
-  ctf: DS.belongsTo('ctf'),
+  challengeboard: DS.belongsTo('challengeboard'),
   challenges: DS.hasMany('challenge'),
 });
 

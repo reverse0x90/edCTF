@@ -7,49 +7,28 @@ module.exports = function(app) {
   apiRouter.use( bodyParser.urlencoded({     // to support URL-encoded bodies
       extended: true
   }));
-  
-  // GET challenges
- apiRouter.get('/challenges', function(req, res) {
+
+ apiRouter.get('/ctfs', function(req, res) {
     res.send({
-      'challenges': [ 
+      'ctfs': [ 
         {
           id: 1,
-          title: 'Solve it',
-          points: 100,
-          description: 'Reverse it bro!',
-          solved: false,
-          num_solved: 0,
+          name: 'edCTF',
+          challengeboard: [1],
+          scoreboard: [1],
         },
-        {
-          id: 2,
-          title: 'Solve it',
-          points: 100,
-          description: 'PWN it bro!',
-          solved: false,
-          num_solved: 0,
-        },
-        {
-          id: 3,
-          title: 'Solve it',
-          points:200,
-          description: 'PWN it bro!',
-          solved: false,
-          num_solved: 0,
-        },
-        {
-          id: 4,
-          title: 'Solve it',
-          points: 300,
-          description: 'PWN it bro!',
-          solved: false,
-          num_solved: 0,
-        },
-      ]
+      ],
     });
   });
 
- apiRouter.get('/categories', function(req, res) {
+  apiRouter.get('/challengeboards/:id', function(req, res) {
     res.send({
+      'challengeboards': [ 
+        {
+          id: 1,
+          categories: [1,2],
+        },
+      ],
       'categories': [ 
         {
           id: 1,
@@ -99,104 +78,16 @@ module.exports = function(app) {
     });
   });
 
- apiRouter.get('/ctfs', function(req, res) {
+  apiRouter.get('/scoreboards/:id', function(req, res) {
     res.send({
-      'ctfs': [ 
+      'scoreboards': [ 
         {
           id: 1,
-          name: 'edCTF',
-          categories: [1,2],
+          numtopteams: 10,
+          teams: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
         },
       ],
-       'categories': [ 
-        {
-          id: 1,
-          name: 'Reversing',
-          challenges: [1],
-        },
-        {
-          id: 2,
-          name: 'Exploit',
-          challenges: [2,3,4],
-        },
-      ],
-      'challenges': [ 
-        {
-          id: 1,
-          title: 'Solve it',
-          points: 100,
-          description: 'Reverse it bro!',
-          solved: false,
-          num_solved: 0,
-        },
-        {
-          id: 2,
-          title: 'Solve it',
-          points: 100,
-          description: 'PWN it bro!',
-          solved: false,
-          num_solved: 0,
-        },
-        {
-          id: 3,
-          title: 'Solve it',
-          points:200,
-          description: 'PWN it bro!',
-          solved: false,
-          num_solved: 0,
-        },
-        {
-          id: 4,
-          title: 'Solve it',
-          points: 300,
-          description: 'PWN it bro!',
-          solved: false,
-          num_solved: 0,
-        },
-      ]
-    });
-  });
-
-  // GET challenges/:id
-  apiRouter.get('/challenges/:id', function(req, res) {
-    var response = {};
-    if (req.params.id == 1) {
-      response = {'challenge': [ {id: req.params.id, title: 'Solve it', points: 100, description: 'Reverse it bro!', solved: false, num_solved: 0,}]}
-    }
-    else if (req.params.id == 2) {
-      response = {'challenge': [ {id: req.params.id, title: 'Solve it', points: 100, description: 'PWN it bro!', solved: false, num_solved: 0,}]}
-    }
-    else if (req.params.id == 3) {
-      response = {'challenge': [ {id: req.params.id, title: 'Solve it', points: 200, description: 'PWN it bro!', solved: false, num_solved: 0,}]}
-    }
-    else if (req.params.id == 4) {
-      response = {'challenge': [ {id: req.params.id, title: 'Solve it', points: 300, description: 'PWN it bro!', solved: false, num_solved: 0,}]}
-    }
-    else {
-      response = {'challenge': [ {id: req.params.id, title: 'Unknown', points: 1337, description: 'Unknown', solved: false, num_solved: 0,}]}
-    }
-    res.send(response);
-  });
-
-  apiRouter.get('/categories/:id', function(req, res) {
-    var response = {};
-    if (req.params.id == 1) {
-
-      response = {'category': [ {id: req.params.id, name: 'Reversing', challenges: [1]}]}
-    }
-    else if (req.params.id == 2) {
-      response = {'category': [ {id: req.params.id, name: 'Exploit', challenges: [2,3,4]}]}
-    }
-    else {
-      response = {'category': [ {id: req.params.id, name: 'Unknown', challenges: [99]}]}
-    }
-    res.send(response);
-  });
-
-  // GET teams
-  apiRouter.get('/teams', function(req, res) {
-    res.send({
-     'teams': [ 
+      'teams': [ 
         {
           id: 0,
           teamname: 'team0',
@@ -361,21 +252,5 @@ module.exports = function(app) {
     });
   });
 
-  // GET teams/:id
-  apiRouter.get('/teams/:id', function(req, res) {
-    res.send({
-     'team': [ 
-        {
-          id: req.params.id,
-          teamname: 'team'+req.params.id,
-          points: 100,
-          correct_flags: 10,
-          wrong_flags: 51,
-          solved: [ 'Reversing 100', 'Web 400'],
-        },
-      ]
-    });
-  });
-  
   app.use('/api/', apiRouter);
 };

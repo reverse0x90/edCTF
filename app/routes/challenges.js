@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   model: function(){
     var t = this;
-    return this.store.findAll('ctf');
+    return this.store.find('ctf', {name: "current"});
   },
   setupController: function (controller, model){
     controller.set('authController', this.controllerFor('auth'));
