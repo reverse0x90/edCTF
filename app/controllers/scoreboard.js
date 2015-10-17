@@ -3,8 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   init: function () {
     this._super();
-    this.set('teams', this.store.findAll('team'), function(){alert();});
-    this.set('sortedTeams', Ember.computed.sort('teams', function(a, b){
+    this.set('sortedTeams', Ember.computed.sort('scoreboard.teams', function(a, b){
       if (a.get('points') < b.get('points')) {
         return 1;
       } else if (a.get('points') > b.get('points')) {

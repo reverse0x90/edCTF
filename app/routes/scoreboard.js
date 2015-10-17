@@ -1,11 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  model: function(){
-    return this.store.findAll('team');
-  },
-  setupController: function (controller, model){
-    controller.set('teams', model);
+  setupController: function (controller){
     controller.set('modal', this.controllerFor('modal').get('modal'));
+    controller.set('scoreboard', this.controllerFor('application').get('ctf.scoreboard'));
   },
 });
