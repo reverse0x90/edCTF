@@ -5,12 +5,25 @@ export default Ember.Controller.extend({
   authController: undefined,
   ctf: undefined,
   init: function(){
-     this._super();
-     
+    this._super();
+
+    var reloadModels = function(parentRecord) {
+      parentRecord.reload();
+      parentRecord.eachRelationship(function(childRecord, childRelation){
+        if (childRelation.options && childRelation.options.async){
+          var id = parseInt(parentRecord.toJSON()[childRecord]);
+          var foundRecord = parentRecord.store.peekRecord(childRecord, id);
+          if (foundRecord){
+            foundRecord.reload();
+          }
+        }
+      });
+    };
+
     // update ctf model data every 5 minutes
     var interval = 1000 * 60 * 5;
     var modelReload = function() {
-      this.get('ctf').reload();
+      reloadModels(this.get('ctf'));
       Ember.run.later(this, modelReload, interval);
     };
     Ember.run.later(this, modelReload, interval);
