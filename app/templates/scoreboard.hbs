@@ -1,21 +1,14 @@
-{{#if ctf.scoreboard.topteams}}
-  {{#if ctf.scoreboard.topteams2}}
-    <h1>Top {{ctf.scoreboard.numtopteams}} Teams - c3</h1>
-    {{c3-chart
-      data=ctf.scoreboard.topteams2
-      axis=c3Options.axis
-      point=c3Options.point
-      grid=c3Options.grid
-    }}
-  {{/if}}
-
-  {{#if options}}
-    <h1>Top {{ctf.scoreboard.numtopteams}} Teams - google chart</h1>
-    {{line-chart data=ctf.scoreboard.topteams options=options}}
-  {{/if}}
+{{#if ctf.scoreboard.topteamsdata}}
+  <h3>Top {{ctf.scoreboard.numtopteams}} Teams</h3>
+  {{c3-chart
+    data=ctf.scoreboard.topteamsdata
+    axis=c3Options.axis
+    point=c3Options.point
+    grid=c3Options.grid
+  }}
 {{/if}}
 
-<h1>All Teams</h1>
+<br/>
 <div class="container">
   <table class="table" style="width:100%">
     <thead>

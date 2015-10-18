@@ -84,58 +84,7 @@ module.exports = function(app) {
         {
           id: 1,
           numtopteams: 10,
-          topteams: [
-            [
-              "",
-              "team0",
-              "team1",
-              "team2",
-              "team3",
-              "team4",
-              "team5",
-              "team6",
-              "team7",
-              "team8",
-              "team9",
-            ],[
-              "Time 1",
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-            ],[
-              "Time 2",
-              299,
-              732,
-              929,
-              670,
-              362,
-              490,
-              722,
-              632,
-              274,
-              768,
-            ],[
-              "Time 3",
-              1000,
-              975,
-              953,
-              933,
-              933,
-              918,
-              893,
-              876,
-              875,
-              872,
-            ]
-          ],
-          topteams2: {
+          topteamsdata: {
             x: 'x',
             //        xFormat: '%Y%m%d', // 'xFormat' can be used as custom format of 'x'
             columns: [
