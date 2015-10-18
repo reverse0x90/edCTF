@@ -1,10 +1,12 @@
 @import "ember-modal-dialog/ember-modal-structure";
 @import "ember-modal-dialog/ember-modal-appearance";
 
+/* style for login modal */
 .login-box-margin {
   margin:0px;
 }
 
+/* style for challenges modal */
 .challenge-style-modal-container {
   width: 50%;
 }
@@ -20,6 +22,7 @@
   float:right;
 }
 
+/* style for challenges page */
 .challengeButton {
   -moz-box-shadow:inset 0px 1px 0px 0px #97c4fe;
   -webkit-box-shadow:inset 0px 1px 0px 0px #97c4fe;
@@ -65,4 +68,17 @@
     border-bottom: 1px solid #CECECE;
     border-top: 1px solid #CECECE;
     border-collapse: collapse;
+}
+
+
+/* style for c3 graph */
+.c3 .c3-axis-y path, .c3 .c3-axis-y line {
+    stroke: none;
+}
+.c3 .c3-axis-x path, .c3 .c3-axis-x line {
+    stroke: #CECECE;
+}
+.c3-grid line {
+  stroke: #ECECEC;
+  stroke-dasharray: none;
 }

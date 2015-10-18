@@ -4,6 +4,39 @@ export default Ember.Controller.extend({
   modal: {},
   ctf: undefined,
   options: undefined,
+  c3Options: {
+    axis: {
+      x: {
+        tick: {
+          fit: true,
+          format: '%Y-%m-%d',
+          outer: false,
+        },
+        type: 'timeseries',
+      },
+      y: {
+        //show: false,
+        min: 0,
+        color: 'white',
+        padding: {
+          top:0,
+          bottom:0
+        },
+        tick: {
+          fit: true,
+          outer: false,
+        },
+      },
+    },
+    point: {
+      show: false
+    },
+    grid: {
+      y: {
+        show: true
+      },
+    },
+  },
   setOptions: function(){
     var options = {
       width: 1000,
