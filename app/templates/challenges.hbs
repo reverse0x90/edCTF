@@ -1,14 +1,14 @@
 {{#if authController.isAuthenticated}}
 <div class="container">
-  <h1>Challenges</h1>
+  <h1 class="text-center">Challenges</h1>
   <div>
-    <table border="1" style="width:100%">
+    <table border="0" style="width:100%">
       <tbody>
           {{#each ctf.challengeboard.categories as |category|}}
-          <tr>
+          <tr class="challenge-tr">
             <td><h2>{{category.name}}</h2></td>
             {{#each category.challenges as |challenge|}}
-              <td> <button class="btn btn-primary" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button></td>
+              <button class="challengeButton" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
             {{/each}}
           </tr>
           {{/each}}

@@ -32,13 +32,13 @@ module.exports = function(app) {
       'categories': [ 
         {
           id: 1,
-          name: 'Reversing',
-          challenges: [1],
+          name: 'Exploit',
+          challenges: [2,3,4],
         },
         {
           id: 2,
-          name: 'Exploit',
-          challenges: [2,3,4],
+          name: 'Reversing',
+          challenges: [1],
         },
       ],
       'challenges': [ 

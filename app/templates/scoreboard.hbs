@@ -1,11 +1,13 @@
 {{#if ctf.scoreboard.topteams}}
-  <h1>Top {{ctf.scoreboard.numtopteams}} Teams</h1>
-  {{line-chart data=ctf.scoreboard.topteams options=options}}
+  {{#if options}}
+    <h1>Top {{ctf.scoreboard.numtopteams}} Teams</h1>
+    {{line-chart data=ctf.scoreboard.topteams options=options}}
+  {{/if}}
 {{/if}}
 
 <h1>All Teams</h1>
 <div class="container">
-  <table class="table">
+  <table class="table" style="width:100%">
     <thead>
       <tr>
         <th>Team</th>
