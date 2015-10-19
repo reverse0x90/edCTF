@@ -6,6 +6,7 @@ export default Ember.Controller.extend({
     isRegister: false,
     isChallenge: false,
     isTeam: false,
+    isProfile: false,
     challenge: {},
     team: {},
   },
@@ -15,6 +16,7 @@ export default Ember.Controller.extend({
       this.set('modal.isRegister', false);
       this.set('modal.isChallenge', false);
       this.set('modal.isTeam', false);
+      this.set('modal.isProfile', false);
     },
   },
 });

@@ -11,8 +11,12 @@
       {{#if modal.isTeam}}
         {{team-modal modal=modal team=modal.team}}
       {{else}}
-        {{#if modal.isLogout}}
-          {{logout-modal modal=modal logout="logout"}}
+        {{#if modal.isProfile}}
+          {{profile-modal modal=modal}}
+        {{else}}
+          {{#if modal.isLogout}}
+            {{logout-modal modal=modal logout="logout"}}
+          {{/if}}
         {{/if}}
       {{/if}}
     {{/if}}

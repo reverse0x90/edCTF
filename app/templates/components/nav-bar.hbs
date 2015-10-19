@@ -15,6 +15,7 @@
 
       <ul class="nav navbar-nav navbar-right">
       {{#if authController.isAuthenticated}}
+        <li><a {{action "openProfileModal"}}>Profile</a></li>
         <li><a {{action "openLogoutModal"}}>Logout</a></li>
       {{else}}
         <li><a {{action "openRegisterModal"}}>Register</a></li>

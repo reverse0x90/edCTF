@@ -12,6 +12,9 @@ export default Ember.Component.extend({
     },
     openLogoutModal: function(){
       this.set('modal.isLogout', true);
-    }
+    },
+    openProfileModal: function(){
+      this.set('modal.isProfile', true);
+    },
   }
 });
