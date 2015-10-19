@@ -2,13 +2,13 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   isAuthenticated: false,
-  username: '',
   remember: false,
   currentTransition: null,
   errorMessage: '',
   errorFields:{},
   validator: Ember.inject.controller('validator'),
   whiteList: ['index', 'scoreboard', 'about'],
+  user: {},
   inwhiteList: function(string){
     // Do the authentication stuff here
     if ( this.get('whiteList').indexOf(string)>=0 ) {
@@ -32,7 +32,21 @@ export default Ember.Controller.extend({
     else {
       t.set('errorMessage', '');
       t.set('errorFields', {});
-      credentials = null;
+
+      // do server communication stuff..
+
+      // server will return this
+      var user = {
+        teamid: 1,
+        teamName: 'team1',
+        email: 'teamEmail@gmail.com',
+        points: 975,
+        correctFlags: 5,
+        wrongFlags: 30,
+        solved: ['Reversing 783', 'Reversing 783', 'Reversing 783', 'Reversing 783', 'Reversing 783'],
+      };
+      t.set('user', user);
+
       t.set('isAuthenticated', true);
       // If the the user was redirected to authenticate send them to the page they originally requested
       if ( currentTransition ) {
@@ -62,6 +76,7 @@ export default Ember.Controller.extend({
   },
   logout: function(){
     // Do the authentication stuff here
+    this.set('user', {});
     this.set('isAuthenticated', false);
   },
 });

@@ -4,6 +4,15 @@ export default Ember.Controller.extend({
   modal: {},
   authController: undefined,
   ctf: undefined,
+  user: {
+    teamid: 1,
+    teamName: '',
+    email: 'email@gmail.com',
+    points: 199,
+    correctFlags: 99,
+    wrongFlags: 1,
+    solved: [],
+  },
   init: function(){
     this._super();
 
@@ -37,6 +46,7 @@ export default Ember.Controller.extend({
       auth.login(authenticationData);
       // If there was no error during authentication close the login modal 
       if (!auth.get('errorMessage')) {
+        this.set('user', auth.user);
         this.set('modal.isLogin', false);
       }
     },
@@ -49,11 +59,13 @@ export default Ember.Controller.extend({
 
       // If there was no error during registration close the register modal 
       if (!auth.get('errorMessage')) {
+        this.set('user', auth.user);
         this.set('modal.isRegister', false);
       }
       
     },
     logout: function() {
+      this.set('user', {});
       this.get('authController').logout();
     },
     openLoginModal: function() {
