@@ -18,6 +18,15 @@ export default Ember.Controller.extend({
       return false;
     }
   },
+  isRemembered: function(){
+    console.log("Console log: ", localStorage.getItem("isAuthenticated"));
+    if (localStorage.getItem("isAuthenticated") == 'true') {
+      console.log("This Ran!")
+      this.set('isAuthenticated', true);
+    }
+
+    return this.get('isAuthenticated');
+  },
   login: function(credentials){
     var t = this;
     var currentTransition = t.get('currentTransition');
@@ -33,6 +42,7 @@ export default Ember.Controller.extend({
       t.set('errorMessage', '');
       t.set('errorFields', {});
 
+
       // do server communication stuff..
 
       // server will return this
@@ -43,11 +53,19 @@ export default Ember.Controller.extend({
         points: 975,
         correctFlags: 5,
         wrongFlags: 30,
-        solved: ['Reversing 783', 'Reversing 783', 'Reversing 783', 'Reversing 783', 'Reversing 783'],
+        solved: ['Reversing localStorage.setItem("lastname", "Smith");783', 'Reversing 783', 'Reversing 783', 'Reversing 783', 'Reversing 783'],
       };
       t.set('user', user);
 
+      // Set is authenticated to true
       t.set('isAuthenticated', true);
+
+      if (credentials.rememberMe == true) {
+        // If the user clicked the remember me check box set is auth in local storage
+        localStorage.setItem("isAuthenticated", true); 
+      }
+        
+
       // If the the user was redirected to authenticate send them to the page they originally requested
       if ( currentTransition ) {
         t.set('currentTransition', null);
@@ -78,5 +96,9 @@ export default Ember.Controller.extend({
     // Do the authentication stuff here
     this.set('user', {});
     this.set('isAuthenticated', false);
+    localStorage.removeItem('isAuthenticated');
+
+    // Redirect to the home page
+    this.transitionToRoute('application'); // or whatever route you want
   },
 });

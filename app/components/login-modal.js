@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   authController: undefined,
   teamName: '',
   password: '',
+  rememberMe: false,
   classNames: ['login-box-margin'],
   setupFocus: function() {
     Ember.$('#inputTeamName').focus();
@@ -13,7 +14,8 @@ export default Ember.Component.extend({
     submitLogin: function() {
       var teamName = this.get('teamName');
       var password = this.get('password');
-      this.sendAction('sendLogin', {'teamName': teamName, 'password': password });
+      var rememberMe = this.get('rememberMe');
+      this.sendAction('sendLogin', {'teamName': teamName, 'password': password, 'rememberMe': rememberMe});
     },
     openLoginModal: function() {
       this.set('modal.isLogin', true);

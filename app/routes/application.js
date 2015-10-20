@@ -4,6 +4,7 @@ export default Ember.Route.extend({
   beforeModel: function(transition){
     this.authCheck(transition);
     //will have other stuff here once its connected to restapi
+
   },
   model: function(){
     return this.store.find('ctf', 1);
@@ -13,12 +14,16 @@ export default Ember.Route.extend({
     var t = this;
     var auth = t.controllerFor('auth');
     var modal = t.controllerFor('modal');
+
+    // Check to see if you user checked the remember me box
+    auth.isRemembered()
+
     if (!auth.inwhiteList(transition.targetName)) {
-      if(!auth.isAuthenticated){
-        auth.set('currentTransition', transition);
-        transition.abort();
-        modal.set('modal.isLogin', true);  
-        t.transitionTo('index');
+      if(!auth.isRemembered()) {
+          auth.set('currentTransition', transition);
+          transition.abort();
+          modal.set('modal.isLogin', true);  
+          t.transitionTo('index');
       }
     }
   },
