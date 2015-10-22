@@ -4,18 +4,11 @@ export default Ember.Controller.extend({
   modal: {},
   authController: undefined,
   ctf: undefined,
-  user: {
-    teamid: 1,
-    teamName: '',
-    email: 'email@gmail.com',
-    points: 199,
-    correctFlags: 99,
-    wrongFlags: 1,
-    solved: [],
-  },
+  user: {},
   init: function(){
     this._super();
 
+    // Function to reload async models (currently ember doesn't support this well)
     var reloadModels = function(parentRecord) {
       parentRecord.reload();
       parentRecord.eachRelationship(function(childRecord, childRelation){
@@ -29,7 +22,7 @@ export default Ember.Controller.extend({
       });
     };
 
-    // update ctf model data every 5 minutes
+    // Update ctf model data every 5 minutes
     var interval = 1000 * 60 * 5;
     var modelReload = function() {
       reloadModels(this.get('ctf'));

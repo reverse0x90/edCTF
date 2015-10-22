@@ -10,7 +10,6 @@ export default Ember.Controller.extend({
   whiteList: ['index', 'scoreboard', 'about'],
   user: {},
   inwhiteList: function(string){
-    // Do the authentication stuff here
     if ( this.get('whiteList').indexOf(string)>=0 ) {
       return true;
     }
@@ -19,9 +18,7 @@ export default Ember.Controller.extend({
     }
   },
   isRemembered: function(){
-    console.log("Console log: ", localStorage.getItem("isAuthenticated"));
     if (localStorage.getItem("isAuthenticated") == 'true') {
-      console.log("This Ran!")
       this.set('isAuthenticated', true);
     }
 
@@ -42,10 +39,9 @@ export default Ember.Controller.extend({
       t.set('errorMessage', '');
       t.set('errorFields', {});
 
+      // Do server communication stuff..
 
-      // do server communication stuff..
-
-      // server will return this
+      // Server will return somthing like this
       var user = {
         teamid: 1,
         teamName: 'team1',
@@ -60,12 +56,11 @@ export default Ember.Controller.extend({
       // Set is authenticated to true
       t.set('isAuthenticated', true);
 
+      // If the user clicked the remember me check box set is auth in local storage
       if (credentials.rememberMe == true) {
-        // If the user clicked the remember me check box set is auth in local storage
         localStorage.setItem("isAuthenticated", true); 
       }
         
-
       // If the the user was redirected to authenticate send them to the page they originally requested
       if ( currentTransition ) {
         t.set('currentTransition', null);
@@ -93,12 +88,12 @@ export default Ember.Controller.extend({
     }
   },
   logout: function(){
-    // Do the authentication stuff here
+    // Do the deauthentication stuff here
     this.set('user', {});
     this.set('isAuthenticated', false);
     localStorage.removeItem('isAuthenticated');
 
     // Redirect to the home page
-    this.transitionToRoute('application'); // or whatever route you want
+    this.transitionToRoute('application');
   },
 });

@@ -23,7 +23,6 @@ export default Ember.Component.extend({
       this.set('modal.isChallenge', false);
     },
     submitFlag: function() {
-      console.log('Flag was submitted with value: ', this.get('flag'));
       this.set('flag', '');
     },
   }
