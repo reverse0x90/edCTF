@@ -6,7 +6,7 @@
     {{register-modal authController=authController modal=modal sendRegister="register"}}
   {{else}}
     {{#if modal.isChallenge}}
-      {{challenge-modal modal=modal challenge=modal.challenge}}
+      {{challenge-modal validatorController=validatorController modal=modal challenge=modal.challenge}}
     {{else}}
       {{#if modal.isTeam}}
         {{team-modal modal=modal team=modal.team}}

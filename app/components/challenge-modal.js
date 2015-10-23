@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   modal: {},
   flag: '',
   classNames: ['challenge-submit', 'challenge-cancel'],
+  validatorController: undefined,
   setupKeys: function() {
     Ember.$('body').on('keyup.modal-dialog', (e) => {
       if (e.keyCode === 27) {
@@ -23,6 +24,7 @@ export default Ember.Component.extend({
       this.set('modal.isChallenge', false);
     },
     submitFlag: function() {
+      console.log(this.get('validatorController').isvalidFlag(this.get('flag')));
       this.set('flag', '');
     },
   }
