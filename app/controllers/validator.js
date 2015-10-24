@@ -57,7 +57,6 @@ export default Ember.Controller.extend({
   isvalidFlag: function(flag){
     if ( flag.length === 0 ) {
       this.set('error', "Flag can not be blank");
-      this.set('errorFields', {'flag': true});
       return false;
     }
     else {
