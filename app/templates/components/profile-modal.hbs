@@ -1,0 +1,28 @@
+{{#modal-dialog close='closeProfileModal' translucentOverlay=true}}
+  {{yield}}
+
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <button type="button" class="close" {{action 'closeProfileModal'}} aria-hidden="true">&times;</button>
+      <h2 class="modal-title">Team: {{user.teamName}}</h2>
+    </div>
+
+    <div class="modal-body">
+      Points: {{user.points}}<br/>
+      Correct Flags: {{user.correctFlags}}<br/>
+      Wrong Flags: {{user.wrongFlags}}<br/>
+      Solved: {{user.solved}}<br/>
+    </div>
+
+    <form class="form">
+      Email:{{input type="text" value=teamEmail enter="submitRegister" class="form-control" id="inputEmail" placeholder=user.email}}
+      <br/>
+      Password:{{input type="password" value=password enter="submitRegister" class="form-control" id="inputPassword" placeholder="Password"}}
+      <br/>
+      Password Confirmation:{{input type="password" value=confirmPassword enter="submitProfile" class="form-control" id="inputPasswordConfirmation" placeholder="Confirm Password"}}
+    </form>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" {{action 'closeProfileModal'}}>Close</button>
+    </div>
+  </div>
+{{/modal-dialog}}

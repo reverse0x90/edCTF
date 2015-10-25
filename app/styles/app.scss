@@ -1,0 +1,92 @@
+@import "ember-modal-dialog/ember-modal-structure";
+@import "ember-modal-dialog/ember-modal-appearance";
+
+/* style for login modal */
+.login-box-margin {
+  margin:0px;
+}
+
+/* style for challenges modal */
+.challenge-style-modal-container {
+  width: 50%;
+}
+
+.challenge-submit {
+  margin-top:2%;
+  margin-left:.5%;
+  float:right;
+}
+
+.challenge-cancel {
+  margin-top:2%;
+  float:right;
+}
+
+/* style for challenges page */
+.challengeButton {
+    padding: 14px 24px;
+    margin: .2em;
+    border: 0 none;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+ 
+.challengeButton:focus, .challengeButton:active:focus, .challengeButton.active:focus {
+    outline: 0 none;
+}
+ 
+.challengeButton-unsolved {
+    background: #0D4F8B;
+    color: #ffffff;
+}
+
+.challengeButton-unsolved:hover, .challengeButton-unsolved:focus, .challengeButton-unsolved:active, .challengeButton-unsolved.active, .open > .dropdown-toggle.btn-primary {
+    background: #33a6cc;
+}
+
+.challengeButton-solved {
+    background: #009900;
+    color: #ffffff;
+}
+
+.challengeButton-solved:hover, .challengeButton-solved:focus, .challengeButton-solved:active, .challengeButton-solved.active, .open > .dropdown-toggle.btn-primary {
+    background: #32CD32;
+}
+ 
+.challengeButton-primary:active, .challengeButton-primary.active {
+    background: #007299;
+    box-shadow: none;
+}
+
+.challengeButton.sharp {
+  border-radius:0;
+}
+
+.challengeButton-xlarge {
+  padding:23px 67px;
+  font-size: 24px;
+  line-height: 1.33;
+  border-radius: 6px
+}
+
+.challenge-tr {
+    border-collapse: collapse;
+}
+
+table{
+    width:100%;
+}
+
+
+/* style for c3 graph */
+.c3 .c3-axis-y path, .c3 .c3-axis-y line {
+    stroke: none;
+}
+.c3 .c3-axis-x path, .c3 .c3-axis-x line {
+    stroke: #CECECE;
+}
+.c3-grid line {
+  stroke: #ECECEC;
+  stroke-dasharray: none;
+}

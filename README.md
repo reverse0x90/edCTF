@@ -1,7 +1,6 @@
-# Ed-CTF
+# edCTF
 
-This README outlines the details of collaborating on this Ember and Django application.
-A short introduction of this app could easily go here.
+edCTF is a generic web application to host jeopardy-style CTF competitions.  It uses both the EmberJS and Django frameworks.
 
 ## Prerequisites
 

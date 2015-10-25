@@ -1,0 +1,39 @@
+{{#modal-dialog translucentOverlay=true}}
+    <div class="well login-box login-box-margin">
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Sign in</h2>
+        {{#if authController.errorMessage}}
+         <label class="control-label"><div class="alert alert-danger" style="padding: 5px; margin-bottom: 0px;" role="alert">{{authController.errorMessage}}</div></label>
+         {{/if}}
+
+        {{#if authController.errorFields.teamName}} 
+          <div class="form-group has-error">  
+            {{input type="text" value=teamName enter="submitLogin" class="form-control" id="inputTeamName" placeholder="Team Name"}}
+          </div>
+        {{else}}
+          <div class="form-group">
+            {{input type="text" value=teamName enter="submitLogin" class="form-control" id="inputTeamName" placeholder="Team Name"}}
+          </div>
+        {{/if}}
+
+        {{#if authController.errorFields.password}}
+          <div class="form-group has-error">
+            {{input type="password" value=password enter="submitLogin" class="form-control" id="inputPassword" placeholder="Password"}}
+          </div>
+        {{else}}
+          <div class="form-group">
+            {{input type="password" value=password enter="submitLogin" class="form-control" id="inputPassword" placeholder="Password"}}
+          </div>
+        {{/if}}
+
+        <div class="checkbox">
+          <label>
+           {{input type="checkbox" checked=rememberMe}} Remember me
+          </label>
+        </div>
+        <button type="button" class="btn btn-danger btn-cancel-action" {{action "closeLoginModal"}}>Cancel</button>
+        <button type="button" class="btn btn-warning" {{action "loginToRegisterModal"}}>Register</button>
+        <button type="button" class="btn btn-success btn-login-submit" {{action "submitLogin"}}>Sign in</button>
+      </form>
+    </div>
+{{/modal-dialog}}

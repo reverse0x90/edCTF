@@ -1,0 +1,24 @@
+<!-- Show current modal -->
+{{#if modal.isLogin}}
+  {{login-modal authController=authController modal=modal sendLogin="login"}}
+{{else}}
+  {{#if modal.isRegister}}
+    {{register-modal authController=authController modal=modal sendRegister="register"}}
+  {{else}}
+    {{#if modal.isChallenge}}
+      {{challenge-modal validatorController=validatorController modal=modal challenge=modal.challenge}}
+    {{else}}
+      {{#if modal.isTeam}}
+        {{team-modal modal=modal team=modal.team}}
+      {{else}}
+        {{#if modal.isProfile}}
+          {{profile-modal modal=modal user=user}}
+        {{else}}
+          {{#if modal.isLogout}}
+            {{logout-modal modal=modal logout="logout"}}
+          {{/if}}
+        {{/if}}
+      {{/if}}
+    {{/if}}
+  {{/if}}
+{{/if}}

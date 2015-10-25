@@ -1,0 +1,54 @@
+{{#modal-dialog translucentOverlay=true}}
+  <div class="well login-box login-box-margin">
+    <form class="form-signin">
+      <h2 class="form-signin-heading">Register</h2>
+      {{#if authController.errorMessage}}
+      <label class="control-label"><div class="alert alert-danger" style="padding: 5px; margin-bottom: 0px;" role="alert">{{authController.errorMessage}}</div></label> 
+      {{/if}}  
+
+      {{#if authController.errorFields.teamEmail}} 
+        <div class="form-group has-error"> 
+          Email:{{input type="text" value=teamEmail enter="submitRegister" class="form-control" id="inputEmail" placeholder="Email"}}
+        </div>
+      {{else}}
+        <div class="form-group">      
+          Email:{{input type="text" value=teamEmail enter="submitRegister" class="form-control" id="inputEmail" placeholder="Email"}}
+        </div>
+      {{/if}}
+
+      {{#if authController.errorFields.teamName}} 
+        <div class="form-group has-error">
+          Team Name:{{input type="text" value=teamName enter="submitRegister" class="form-control" id="inputTeamName" placeholder="Team Name"}}
+        </div>
+      {{else}}
+        <div class="form-group">
+          Team Name:{{input type="text" value=teamName enter="submitRegister" class="form-control" id="inputTeamName" placeholder="Team Name"}}
+        </div>
+      {{/if}}
+
+      {{#if authController.errorFields.password}}
+        <div class="form-group has-error">
+          Password:{{input type="password" value=password enter="submitRegister" class="form-control" id="inputPassword" placeholder="Password"}}
+        </div>
+      {{else}}
+        <div class="form-group">
+          Password:{{input type="password" value=password enter="submitRegister" class="form-control" id="inputPassword" placeholder="Password"}}
+        </div>
+      {{/if}}
+
+      {{#if authController.errorFields.confirmPassword}}
+        <div class="form-group has-error">
+          Password Confirmation:{{input type="password" value=confirmPassword enter="submitRegister" class="form-control" id="inputPasswordConfirmation" placeholder="Confirm Password"}}
+        </div>
+      {{else}}
+        <div class="form-group">
+        Password Confirmation:{{input type="password" value=confirmPassword enter="submitRegister" class="form-control" id="inputPasswordConfirmation" placeholder="Confirm Password"}}
+        </div>
+      {{/if}}
+
+      <button type="button" class="btn btn-danger btn-cancel-action" {{action 'closeRegisterModal'}}>Cancel</button>
+      <button type="button" class="btn btn-warning" {{action 'registerToLoginModal'}}>Login</button>
+      <button type="button" class="btn btn-success btn-login-submit" {{action 'submitRegister'}}>Register</button>
+    </form>
+  </div>
+{{/modal-dialog}}
