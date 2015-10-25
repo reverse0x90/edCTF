@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   modal: {},
+  authController: undefined,
   teamEmail: '',
   teamName: '',
   password: '',
@@ -23,10 +24,14 @@ export default Ember.Component.extend({
     },
     closeRegisterModal: function() {
       this.set('modal.isRegister', false);
+      this.get('authController').set('errorMessage', '');
+      this.get('authController').set('errorFields', {});
     },
     registerToLoginModal: function(){
-        this.set('modal.isRegister', false);
-        this.set('modal.isLogin', true);
+      this.set('modal.isRegister', false);
+      this.set('modal.isLogin', true);
+      this.get('authController').set('errorMessage', '');
+      this.get('authController').set('errorFields', {});
     },
   }
 });
