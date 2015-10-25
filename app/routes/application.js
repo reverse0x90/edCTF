@@ -5,6 +5,11 @@ export default Ember.Route.extend({
     this.authCheck(transition);
     //will have other stuff here once its connected to restapi
 
+    // Forward all request for index to home
+    if (transition.targetName === 'index' ){
+      this.transitionTo('home');
+    }
+
   },
   model: function(){
     return this.store.find('ctf', 1);

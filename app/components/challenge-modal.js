@@ -25,7 +25,7 @@ export default Ember.Component.extend({
   }.on('didInsertElement'),
   checkServer: function(flag) {
     // This function will POST the flag to the server and get the response
-    if (flag == 'edCTF') {
+    if (flag === 'edCTF') {
       this.set('correctFlagMsg', 'Congratulations you have the correct flag!');
       this.set('wrongFlagMsg', '');
     }

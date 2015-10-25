@@ -11,6 +11,7 @@ Router.map(function() {
   this.route('challenges');
   this.route('challenges', function() {});
   this.route('modal');
+  this.route('home', {});
 });
 
 export default Router;
