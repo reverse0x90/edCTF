@@ -7,7 +7,7 @@ export default Ember.Controller.extend({
   errorMessage: '',
   errorFields:{},
   validator: Ember.inject.controller('validator'),
-  whiteList: ['index', 'scoreboard', 'about'],
+  whiteList: ['index', 'scoreboard', 'about', 'home'],
   user: {},
   inwhiteList: function(string){
     if ( this.get('whiteList').indexOf(string)>=0 ) {
@@ -18,7 +18,7 @@ export default Ember.Controller.extend({
     }
   },
   isRemembered: function(){
-    if (localStorage.getItem("isAuthenticated") == 'true') {
+    if (localStorage.getItem("isAuthenticated") === 'true') {
       this.set('isAuthenticated', true);
     }
 
@@ -57,7 +57,7 @@ export default Ember.Controller.extend({
       t.set('isAuthenticated', true);
 
       // If the user clicked the remember me check box set is auth in local storage
-      if (credentials.rememberMe == true) {
+      if (credentials.rememberMe === true) {
         localStorage.setItem("isAuthenticated", true); 
       }
         
@@ -71,7 +71,7 @@ export default Ember.Controller.extend({
   register: function(registrationData){
     var t = this;
     var validator = this.get('validator');
-    var authenticationData = {}
+    var authenticationData = {};
 
     // Make sure the form is valid
     if (!validator.isvalidRegister(registrationData)) {
