@@ -22,10 +22,14 @@ export default Ember.Component.extend({
     },
     closeLoginModal: function() {
       this.set('modal.isLogin', false);
+      this.get('authController').set('errorMessage', '');
+      this.get('authController').set('errorFields', {});
     },
     loginToRegisterModal: function(){
-        this.set('modal.isLogin', false);
-        this.set('modal.isRegister', true);
+      this.set('modal.isLogin', false);
+      this.set('modal.isRegister', true);
+      this.get('authController').set('errorMessage', '');
+      this.get('authController').set('errorFields', {});
     },
   }
 });
