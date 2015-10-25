@@ -21,7 +21,7 @@ export default Ember.Route.extend({
     var modal = t.controllerFor('modal');
 
     // Check to see if you user checked the remember me box
-    auth.isRemembered()
+    auth.isRemembered();
 
     if (!auth.inwhiteList(transition.targetName)) {
       if(!auth.isRemembered()) {
