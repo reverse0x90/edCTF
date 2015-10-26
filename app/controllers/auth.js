@@ -49,7 +49,7 @@ export default Ember.Controller.extend({
         points: 975,
         correctFlags: 5,
         wrongFlags: 30,
-        solved: ['Reversing localStorage.setItem("lastname", "Smith");783', 'Reversing 783', 'Reversing 783', 'Reversing 783', 'Reversing 783'],
+        solved: ['Reversing 783', 'Reversing 783', 'Reversing 783', 'Reversing 783', 'Reversing 783'],
       };
       t.set('user', user);
 
