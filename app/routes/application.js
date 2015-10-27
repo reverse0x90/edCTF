@@ -42,5 +42,8 @@ export default Ember.Route.extend({
     willTransition: function(transition){
       this.authCheck(transition);
     }
-  }
+  },
+  afterModel: function(model) {
+    $(document).attr('title', model.get('name'));
+  },
 });
