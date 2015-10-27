@@ -11,7 +11,7 @@ export default Ember.Route.extend({
     }
   },
   model: function(){
-    return this.store.find('ctf', {'live': true});
+    return this.store.query('ctf', {'live': true});
   },
   authCheck: function(transition){
     //Method to check user credentials and redirect if necessary
