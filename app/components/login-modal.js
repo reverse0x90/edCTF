@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   modal: {},
-  authController: undefined,
+  authController: null,
   teamName: '',
   password: '',
   rememberMe: false,

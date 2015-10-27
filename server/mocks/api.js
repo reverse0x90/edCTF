@@ -8,18 +8,64 @@ module.exports = function(app) {
       extended: true
   }));
 
- apiRouter.get('/ctfs/:id', function(req, res) {
-    res.send({
-      'ctfs': [ 
-        {
-          id: 1,
-          name: 'edCTF',
-          challengeboard: [1],
-          scoreboard: [1],
-        },
-      ],
-    });
+  apiRouter.get('/ctfs/:id', function(req, res) {
+        res.send({
+          'ctfs': [ 
+            {
+              id: 1,
+              name: 'edCTF',
+              live: true,
+              challengeboard: [1],
+              scoreboard: [1],
+            },
+          ],
+        });
   });
+
+  apiRouter.get('/ctfs', function(req, res) {
+    var ctfs = [ 
+      {
+        id: 1,
+        name: 'edCTF',
+        live: true,
+        challengeboard: [1],
+        scoreboard: [1],
+      },
+      {
+        id: 2,
+        name: 'edCTF2',
+        live: false,
+        challengeboard: [1],
+        scoreboard: [1],
+      },
+      {
+        id: 3,
+        name: 'edCTF3',
+        live: false,
+        challengeboard: [1],
+        scoreboard: [1],
+      },
+    ];
+    if (req.query.live == 'true'){
+      var liveCTF = {};
+      for (var i=0; i < ctfs.length; i++){
+        if(ctfs[i].live){
+          liveCTF = ctfs[i];
+          break;
+        }
+      }
+      res.send({
+        'ctfs': [ 
+          liveCTF
+        ],
+      });
+    } else {
+      res.send({
+        'ctfs': ctfs,
+      });
+    }
+  });
+
 
   apiRouter.get('/challengeboards/:id', function(req, res) {
     res.send({

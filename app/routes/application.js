@@ -9,10 +9,9 @@ export default Ember.Route.extend({
     if (transition.targetName === 'index' ){
       this.transitionTo('home');
     }
-
   },
   model: function(){
-    return this.store.find('ctf', 1);
+    return this.store.find('ctf', {'live': true});
   },
   authCheck: function(transition){
     //Method to check user credentials and redirect if necessary
@@ -33,17 +32,19 @@ export default Ember.Route.extend({
     }
   },
   setupController: function (controller, model){
-    controller.set('ctf', model);
+    // Get first instance of live ctf
+    controller.set('ctf', model.get('firstObject'));
+
     controller.set('authController', this.controllerFor('auth'));
     controller.set('validatorController', this.controllerFor('validator'));
     controller.set('modal', this.controllerFor('modal').get('modal'));
-  },  
+  },
   actions: {
     willTransition: function(transition){
       this.authCheck(transition);
     }
   },
   afterModel: function(model) {
-    $(document).attr('title', model.get('name'));
+    Ember.$(document).attr('title', model.get('name'));
   },
 });

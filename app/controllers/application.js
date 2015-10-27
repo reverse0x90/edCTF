@@ -2,9 +2,9 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   modal: {},
-  authController: undefined,
-  validatorController: undefined,
-  ctf: undefined,
+  authController: null,
+  validatorController: null,
+  ctf: null,
   user: {},
   init: function(){
     this._super();
