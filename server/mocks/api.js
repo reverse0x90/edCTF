@@ -365,6 +365,7 @@ module.exports = function(app) {
       'teams': [ 
         {
           id: 0,
+          position: 1,
           teamname: 'team0',
           points: 1000,
           correct_flags: 7,
@@ -373,6 +374,7 @@ module.exports = function(app) {
         },
         {
           id: 1,
+          position: 2,
           teamname: 'team1',
           points: 975,
           correct_flags: 5,
@@ -381,6 +383,7 @@ module.exports = function(app) {
         },
         {
           id: 2,
+          position: 3,
           teamname: 'team2',
           points: 953,
           correct_flags: 15,
@@ -389,6 +392,7 @@ module.exports = function(app) {
         },
         {
           id: 3,
+          position: 4,
           teamname: 'team3',
           points: 933,
           correct_flags: 3,
@@ -397,6 +401,7 @@ module.exports = function(app) {
         },
         {
           id: 4,
+          position: 5,
           teamname: 'team4',
           points: 933,
           correct_flags: 15,
@@ -405,6 +410,7 @@ module.exports = function(app) {
         },
         {
           id: 5,
+          position: 6,
           teamname: 'team5',
           points: 918,
           correct_flags: 18,
@@ -413,6 +419,7 @@ module.exports = function(app) {
         },
         {
           id: 6,
+          position: 7,
           teamname: 'team6',
           points: 893,
           correct_flags: 10,
@@ -421,6 +428,7 @@ module.exports = function(app) {
         },
         {
           id: 7,
+          position: 8,
           teamname: 'team7',
           points: 876,
           correct_flags: 8,
@@ -429,6 +437,7 @@ module.exports = function(app) {
         },
         {
           id: 8,
+          position: 9,
           teamname: 'team8',
           points: 875,
           correct_flags: 18,
@@ -437,6 +446,7 @@ module.exports = function(app) {
         },
         {
           id: 9,
+          position: 10,
           teamname: 'team9',
           points: 872,
           correct_flags: 5,
@@ -445,6 +455,7 @@ module.exports = function(app) {
         },
         {
           id: 10,
+          position: 11,
           teamname: 'team10',
           points: 868,
           correct_flags: 2,
@@ -453,6 +464,7 @@ module.exports = function(app) {
         },
         {
           id: 11,
+          position: 12,
           teamname: 'team11',
           points: 868,
           correct_flags: 2,
@@ -461,6 +473,7 @@ module.exports = function(app) {
         },
         {
           id: 12,
+          position: 13,
           teamname: 'team12',
           points: 848,
           correct_flags: 16,
@@ -469,6 +482,7 @@ module.exports = function(app) {
         },
         {
           id: 13,
+          position: 14,
           teamname: 'team13',
           points: 823,
           correct_flags: 15,
@@ -477,6 +491,7 @@ module.exports = function(app) {
         },
         {
           id: 14,
+          position: 15,
           teamname: 'team14',
           points: 809,
           correct_flags: 20,
@@ -485,6 +500,7 @@ module.exports = function(app) {
         },
         {
           id: 15,
+          position: 16,
           teamname: 'team15',
           points: 804,
           correct_flags: 11,
@@ -493,6 +509,7 @@ module.exports = function(app) {
         },
         {
           id: 16,
+          position: 17,
           teamname: 'team16',
           points: 794,
           correct_flags: 10,
@@ -501,6 +518,7 @@ module.exports = function(app) {
         },
         {
           id: 17,
+          position: 18,
           teamname: 'team17',
           points: 771,
           correct_flags: 12,
@@ -509,6 +527,7 @@ module.exports = function(app) {
         },
         {
           id: 18,
+          position: 19,
           teamname: 'team18',
           points: 756,
           correct_flags: 6,
@@ -517,6 +536,7 @@ module.exports = function(app) {
         },
         {
           id: 19,
+          position: 20,
           teamname: 'team19',
           points: 746,
           correct_flags: 5,

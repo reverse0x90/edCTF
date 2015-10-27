@@ -13,6 +13,7 @@
   <table class="table" style="width:100%">
     <thead>
       <tr>
+        <th>Rank</th>
         <th>Team</th>
         <th>Points</th>
         <th>Challenges Solved</th>
@@ -21,6 +22,7 @@
     <tbody>
       {{#each ctf.scoreboard.teams as |team|}}
         <tr>
+          <td>{{team.position}}</td>
           <td><a {{action 'openTeamView' team.id}}>{{team.teamname}}</a></td>
           <td>{{team.points}}</td>
           <td>{{team.solved}}</td>
