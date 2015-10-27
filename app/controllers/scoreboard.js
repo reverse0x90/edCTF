@@ -37,10 +37,8 @@ export default Ember.Controller.extend({
     },
   },
   actions:{
-    openTeamView: function(id){
-      this.store.find('team', id).then((team) => {
-        this.set('modal.team', team);
-      });
+    openTeamView: function(team){
+      this.set('modal.team', team);
       this.set('modal.isTeam', true);
     }
   },

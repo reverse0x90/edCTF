@@ -21,9 +21,9 @@
     </thead>
     <tbody>
       {{#each ctf.scoreboard.teams as |team|}}
-        <tr>
+        <tr {{action 'openTeamView' team}}>
           <td>{{team.position}}</td>
-          <td><a {{action 'openTeamView' team.id}}>{{team.teamname}}</a></td>
+          <td>{{team.teamname}}</td>
           <td>{{team.points}}</td>
           <td>{{team.solved}}</td>
         </tr>
