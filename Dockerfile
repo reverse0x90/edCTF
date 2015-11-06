@@ -1,7 +1,7 @@
 FROM ubuntu:trusty
 
 # Create environment variables
-ENV EDCTF_DIR /opt/edCTF
+ENV EDCTF_DIR /opt/edctf
 ENV EDCTF_STATIC_DIR ${EDCTF_DIR}/edctf/static
 ENV DJANGO_STATIC_DIR /usr/local/lib/python2.7/dist-packages/django/contrib/admin/static
 ENV APACHE_CONFIG /etc/apache2/sites-enabled/000-default.conf
@@ -40,7 +40,7 @@ RUN cd ${EDCTF_DIR}/ember \
   && mv ${EDCTF_STATIC_DIR}/ember/robots.txt ${EDCTF_DIR}/edctf/api/templates/robots.txt \
   && mv ${EDCTF_STATIC_DIR}/ember/crossdomain.xml ${EDCTF_DIR}/edctf/api/templates/crossdomain.xml \
   && cp -R ${DJANGO_STATIC_DIR}/admin/ ${EDCTF_STATIC_DIR}/admin \
-  && cp -R /usr/local/lib/python2.7/dist-packages/rest_framework/static/rest_framework/ ${EDCTF_STATIC_DIR}
+  && cp -R /usr/local/lib/python2.7/dist-packages/rest_framework/static/rest_framework/ ${EDCTF_STATIC_DIR}/rest_framework
 
 
 
