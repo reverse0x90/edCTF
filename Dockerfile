@@ -26,7 +26,7 @@ ADD apache.conf ${APACHE_CONFIG}
 # Switch to EDCTF_USER
 USER ${EDCTF_USER}
 
-# add ember and django files
+# Add Ember and Django files
 ADD ember ${EDCTF_DIR}/ember
 ADD edctf ${EDCTF_DIR}/edctf
 ADD manage.py ${EDCTF_DIR}/manage.py
@@ -37,6 +37,8 @@ RUN cd ${EDCTF_DIR}/ember \
   && bower install \
   && ember build -prod -o ${EDCTF_STATIC_DIR}/ember \
   && mv ${EDCTF_STATIC_DIR}/ember/index.html ${EDCTF_DIR}/edctf/api/templates/index.html \
+  && mv ${EDCTF_STATIC_DIR}/ember/robots.txt ${EDCTF_DIR}/edctf/api/templates/robots.txt \
+  && mv ${EDCTF_STATIC_DIR}/ember/crossdomain.xml ${EDCTF_DIR}/edctf/api/templates/crossdomain.xml \
   && cp -R ${DJANGO_STATIC_DIR}/admin/ ${EDCTF_STATIC_DIR}/admin \
   && cp -R /usr/local/lib/python2.7/dist-packages/rest_framework/static/rest_framework/ ${EDCTF_STATIC_DIR}
 
