@@ -26,7 +26,7 @@ except ImportError:
     secret = get_random_string(50, chars)
     generated_code = 'SECRET_KEY = \'{}\'\n'.format(secret.encode('base64').replace('\n','')) # encode appends newline
 
-    with open(BASE_DIR+'/edctf_secret.py', 'wb') as f:
+    with open(os.path.join(BASE_DIR, 'edctf/edctf_secret.py'), 'wb') as f:
         f.write(generated_code)
 
     import edctf_secret
@@ -118,12 +118,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, '/edctf/static'),
+STATIC_ROOT = os.path.join(BASE_DIR, 'edctf/static/')
 
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ],
+}
+
