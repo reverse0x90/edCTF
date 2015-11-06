@@ -36,7 +36,8 @@ RUN nvm install v4.1.2 \
   && bower install \
   && ember build -prod -o ${EDCTF_STATIC_DIR}/ember \
   && mv ${EDCTF_STATIC_DIR}/ember/index.html ${EDCTF_DIR}/edctf/api/templates/index.html \
-  && cp -R ${DJANGO_STATIC_DIR}/admin/* ${EDCTF_STATIC_DIR}/admin/.
+  && cp -R ${DJANGO_STATIC_DIR}/admin/* ${EDCTF_STATIC_DIR}/admin/. \
+  && cp -R /usr/local/lib/python2.7/dist-packages/rest_framework/static/rest_framework/* ${EDCTF_STATIC_DIR}/.
 
 
 
