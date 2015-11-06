@@ -1,7 +1,7 @@
 FROM ubuntu:trusty
 
 # Create environment variables
-ENV EDCTF_DIR /opt/edctf
+ENV EDCTF_DIR /opt/edCTF
 ENV EDCTF_STATIC_DIR ${EDCTF_DIR}/edctf/static
 ENV DJANGO_STATIC_DIR /usr/local/lib/python2.7/dist-packages/django/contrib/admin/static
 
