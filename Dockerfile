@@ -4,7 +4,6 @@ FROM ubuntu:trusty
 ENV EDCTF_DIR /opt/edctf
 ENV EDCTF_STATIC_DIR ${EDCTF_DIR}/edctf/static
 ENV DJANGO_STATIC_DIR /usr/local/lib/python2.7/dist-packages/django/contrib/admin/static
-${EDCTF_STATIC_DIR}
 
 # Install dependancies and intialize
 RUN apt-get update \
