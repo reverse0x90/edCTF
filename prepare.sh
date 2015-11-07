@@ -14,11 +14,9 @@ if [ -z "$APACHE_CONFIG" ]; then
 fi
 
 
-apt-get update \
-  && apt-get -y upgrade \
-  && apt-get -y install apache2 libapache2-mod-wsgi python-pip git \
+sudo (apt-get -y install apache2 libapache2-mod-wsgi python-pip git \
   && pip install Django djangorestframework markdown django-filter \
   && (wget -qO- https://deb.nodesource.com/setup_4.x | bash) \
-  && sudo apt-get install -y nodejs \
+  && apt-get install -y nodejs \
   && npm install -g ember-cli \
-  && npm install -g bower \
+  && npm install -g bower)
