@@ -1,5 +1,10 @@
 #!/bin/sh
 
+export EDCTF_DIR=/opt/edctf
+export EDCTF_STATIC_DIR=${EDCTF_DIR}/edctf/static
+export DJANGO_STATIC_DIR=/usr/local/lib/python2.7/dist-packages/django/contrib/admin/static
+export APACHE_CONFIG=/etc/apache2/sites-enabled/000-default.conf
+
 sudo cp apache.conf ${APACHE_CONFIG}
 
 cd ${EDCTF_DIR}/ember \
@@ -10,6 +15,6 @@ cd ${EDCTF_DIR}/ember \
   && cp -R ${DJANGO_STATIC_DIR}/admin ${EDCTF_STATIC_DIR}/admin \
   && cp -R /usr/local/lib/python2.7/dist-packages/rest_framework/static/rest_framework ${EDCTF_STATIC_DIR}/rest_framework
 
-python manage.py syncdb
-
-sudo chown $USER:www-data *.sqlite3
+cd ${EDCTF_DIR} \
+  && python manage.py syncdb \
+  && sudo chown $USER:www-data *.sqlite3

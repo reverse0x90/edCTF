@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sudo (apache2 reload && apache2 restart)
+sudo service apache2 reload && sudo service apache2 restart
