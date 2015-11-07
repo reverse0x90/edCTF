@@ -1,5 +1,7 @@
 #!/bin/sh
 
-/bin/sh prepare.sh \
-  && /bin/sh build.sh \
-  && /bin/sh run.sh \
+export EDCTF_DIR=/opt/edctf
+
+/bin/sh ${EDCTF_DIR}/prepare.sh \
+  && /bin/sh ${EDCTF_DIR}/build.sh \
+  && /bin/sh ${EDCTF_DIR}/run.sh \

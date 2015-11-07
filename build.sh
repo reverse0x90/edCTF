@@ -5,7 +5,7 @@ export EDCTF_STATIC_DIR=${EDCTF_DIR}/edctf/static
 export DJANGO_STATIC_DIR=/usr/local/lib/python2.7/dist-packages/django/contrib/admin/static
 export APACHE_CONFIG=/etc/apache2/sites-enabled/000-default.conf
 
-sudo cp apache.conf ${APACHE_CONFIG}
+sudo cp ${EDCTF_DIR}/apache.conf ${APACHE_CONFIG}
 
 cd ${EDCTF_DIR}/ember \
   && npm install \
