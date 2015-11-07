@@ -21,6 +21,6 @@ cd ${EDCTF_DIR} \
   && python manage.py migrate \
   && python manage.py createsuperuser \
   && sudo chown $USER:www-data ${EDCTF_DIR} \
-  && sudo chmod +w ${EDCTF_DIR} \
+  && sudo chmod 775 ${EDCTF_DIR} \
   && sudo chown $USER:www-data ${EDCTF_DIR}/*.sqlite3 \
-  && sudo chmod +w ${EDCTF_DIR}/*.sqlite3
+  && sudo chmod 775 ${EDCTF_DIR}/*.sqlite3
