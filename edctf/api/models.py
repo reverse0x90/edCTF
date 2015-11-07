@@ -33,6 +33,7 @@ class challenge(models.Model):
     #solved = models.ManyToManyField('team', default=None)
     num_solved = models.IntegerField(default=0)
     category = models.ForeignKey('category')
+    flag = models.CharField(max_length=100, blank=False)
     class Meta:
         verbose_name_plural = "challenges"
     def __unicode__(self):
