@@ -25,10 +25,10 @@ except ImportError:
     chars = ''.join(map(chr, range(128))) # maximum characters get_random_string handles
     secret = get_random_string(50, chars)
     generated_code = 'SECRET_KEY = \'{}\'\n'.format(secret.encode('base64').replace('\n','')) # encode appends newline
-
+    
     with open(os.path.join(BASE_DIR, 'edctf/edctf_secret.py'), 'wb') as f:
         f.write(generated_code)
-
+    
     import edctf_secret
 
 

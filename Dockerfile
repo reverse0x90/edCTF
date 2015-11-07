@@ -1,11 +1,15 @@
 FROM ubuntu:trusty
 
-# Create environment variables
+# Set directory paths
 ENV EDCTF_DIR /opt/edctf
-ENV EDCTF_STATIC_DIR ${EDCTF_DIR}/edctf/static
-ENV DJANGO_STATIC_DIR /usr/local/lib/python2.7/dist-packages/django/contrib/admin/static
-ENV APACHE_CONFIG /etc/apache2/sites-enabled/000-default.conf
+ENV EDCTF_STATIC ${EDCTF_DIR}/edctf/static
+ENV EDCTF_DJANGO_STATIC /usr/local/lib/python2.7/dist-packages/django/contrib/admin/static
+ENV EDCTF_REST_STATIC /usr/local/lib/python2.7/dist-packages/rest_framework/static/rest_framework/
+ENV EDCTF_APACHE_CONFIG /etc/apache2/sites-enabled/000-default.conf
+
+# Set users
 ENV EDCTF_USER edctf
+ENV EDCTF_WWW_GROUP www-data
 
 # Install dependancies and intialize
 RUN apt-get update \
@@ -18,10 +22,10 @@ RUN apt-get update \
   && npm install -g bower \
   && mkdir ${EDCTF_DIR} \
   && useradd -m ${EDCTF_USER} \
-  && chown ${EDCTF_USER}:${EDCTF_USER} ${EDCTF_DIR}
+  && chown ${EDCTF_USER}:${EDCTF_WWW_GROUP} ${EDCTF_DIR}
 
 # Add apache config
-ADD apache.conf ${APACHE_CONFIG}
+ADD apache.conf ${EDCTF_APACHE_CONFIG}
 
 # Switch to EDCTF_USER
 USER ${EDCTF_USER}
@@ -35,15 +39,25 @@ ADD manage.py ${EDCTF_DIR}/manage.py
 RUN cd ${EDCTF_DIR}/ember \
   && npm install \
   && bower install \
-  && ember build -prod -o ${EDCTF_STATIC_DIR}/ember \
-  && mv ${EDCTF_STATIC_DIR}/ember/index.html ${EDCTF_DIR}/edctf/api/templates/index.html \
-  && mv ${EDCTF_STATIC_DIR}/ember/robots.txt ${EDCTF_DIR}/edctf/api/templates/robots.txt \
-  && mv ${EDCTF_STATIC_DIR}/ember/crossdomain.xml ${EDCTF_DIR}/edctf/api/templates/crossdomain.xml \
-  && cp -R ${DJANGO_STATIC_DIR}/admin/ ${EDCTF_STATIC_DIR}/admin \
-  && cp -R /usr/local/lib/python2.7/dist-packages/rest_framework/static/rest_framework/ ${EDCTF_STATIC_DIR}/rest_framework
+  && ember build -prod -o ${EDCTF_STATIC}/ember \
+  && mv ${EDCTF_STATIC}/ember/index.html ${EDCTF_DIR}/edctf/api/templates/index.html \
+  && mv ${EDCTF_STATIC}/ember/robots.txt ${EDCTF_DIR}/edctf/api/templates/robots.txt \
+  && mv ${EDCTF_STATIC}/ember/crossdomain.xml ${EDCTF_DIR}/edctf/api/templates/crossdomain.xml \
+  && cp -R ${EDCTF_DJANGO_STATIC}/admin/ ${EDCTF_STATIC}/admin \
+  && cp -R ${EDCTF_REST_STATIC} ${EDCTF_STATIC}/rest_framework
 
+# Initialize Django database
+RUN cd ${EDCTF_DIR} \
+  && python manage.py makemigrations \
+  && python manage.py migrate \
+  && python manage.py createsuperuser
 
-
+# Allow apache access
 USER root
+RUN sudo chown ${EDCTF_USER}:${EDCTF_WWW_GROUP} ${EDCTF_DIR} \
+  && sudo chmod +w ${EDCTF_DIR} \
+  && sudo chown ${EDCTF_USER}:${EDCTF_WWW_GROUP} ${EDCTF_DIR}/*.sqlite3 \
+  && sudo chmod +w ${EDCTF_DIR}/*.sqlite3
+
 EXPOSE 80 443
 CMD /usr/sbin/apache2ctl -D FOREGROUND
