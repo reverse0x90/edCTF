@@ -20,6 +20,6 @@ Or you can install locally, assuming you're using something like Ubuntu or Debia
 ```
 sudo mkdir /opt/edctf \
 && sudo chown $USER:www-data /opt/edctf \
-&& git clone https://github.com/IAryan/edCTF.git /opt/edctf \ls
+&& git clone https://github.com/IAryan/edCTF.git /opt/edctf \
 && sh /opt/edctf/all.sh
 ```
