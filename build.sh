@@ -17,10 +17,9 @@ cd ${EDCTF_DIR}/ember \
   && cp -R /usr/local/lib/python2.7/dist-packages/rest_framework/static/rest_framework ${EDCTF_STATIC_DIR}/rest_framework
 
 cd ${EDCTF_DIR} \
-  && python manage.py syncdb \
+  && python manage.py createsuperuser \
   && python manage.py makemigrations \
   && python manage.py migrate \
-  && python manage.py syncdb \
   && sudo chown $USER:www-data ${EDCTF_DIR} \
   && sudo chmod +w ${EDCTF_DIR} \
   && sudo chown $USER:www-data ${EDCTF_DIR}/*.sqlite3 \

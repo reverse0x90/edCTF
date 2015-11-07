@@ -5,21 +5,26 @@ from django.contrib.auth.models import User
 class ctf(models.Model):
     name = models.CharField(max_length=50, blank=False, unique=True)
     live = models.BooleanField(default=False)
-    #challengeboard
-    #scoreboard
+    challengeboard = models.ForeignKey('challengeboard')
+    scoreboard = models.ForeignKey('scoreboard')
     class Meta:
         verbose_name_plural = "ctfs"
+    def __unicode__(self):
+       return 'ctf {}'.format(self.name)
 
 class challengeboard(models.Model):
-    ctf = models.OneToOneField('ctf')
     class Meta:
         verbose_name_plural = "challengeboard"
+    def __unicode__(self):
+       return 'challengeboard {}'.format(self.id)
 
 class category(models.Model):
     name =  models.CharField(max_length=50, blank=False)
     challengeboard = models.ForeignKey('challengeboard')
     class Meta:
         verbose_name_plural = "category"
+    def __unicode__(self):
+       return 'category {}'.format(self.name)
 
 class challenge(models.Model):
     title = models.CharField(max_length=50, blank=False)
@@ -30,14 +35,16 @@ class challenge(models.Model):
     category = models.ForeignKey('category')
     class Meta:
         verbose_name_plural = "challenges"
-
+    def __unicode__(self):
+       return 'challenge {} {}'.format(self.title, self.points)
 
 class scoreboard(models.Model):
-    ctf = models.OneToOneField('ctf')
     numtopteams = models.IntegerField(default=10)
     #topteamsdata # send on request
     class Meta:
         verbose_name_plural = "scoreboards"
+    def __unicode__(self):
+       return 'scoreboard {}'.format(self.id)
 
 class team(models.Model):
     scoreboard = models.ForeignKey('scoreboard')
@@ -48,6 +55,9 @@ class team(models.Model):
     points = models.IntegerField(default=0)
     correct_flags = models.IntegerField(default=0)
     wrong_flags = models.IntegerField(default=0)
-    #solved = models.ManyToManyField('challenge', default=None)
+    solved = models.ManyToManyField('challenge', default=None)
     class Meta:
         verbose_name_plural = "teams"
+    def __unicode__(self):
+       return 'team {}: {}'.format(self.id, self.teamname)
+
