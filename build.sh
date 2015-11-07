@@ -18,6 +18,9 @@ cd ${EDCTF_DIR}/ember \
 
 cd ${EDCTF_DIR} \
   && python manage.py syncdb \
+  && python manage.py makemigrations \
+  && python manage.py migrate \
+  && python manage.py syncdb \
   && sudo chown $USER:www-data ${EDCTF_DIR} \
   && sudo chmod +w ${EDCTF_DIR} \
   && sudo chown $USER:www-data ${EDCTF_DIR}/*.sqlite3 \
