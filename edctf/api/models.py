@@ -10,13 +10,13 @@ class ctf(models.Model):
     class Meta:
         verbose_name_plural = "ctfs"
     def __unicode__(self):
-       return 'ctf {}'.format(self.name)
+       return '{}'.format(self.name)
 
 class challengeboard(models.Model):
     class Meta:
         verbose_name_plural = "challengeboard"
     def __unicode__(self):
-       return 'challengeboard {}'.format(self.id)
+       return '{}'.format(self.id)
 
 class category(models.Model):
     name =  models.CharField(max_length=50, blank=False)
@@ -24,7 +24,7 @@ class category(models.Model):
     class Meta:
         verbose_name_plural = "category"
     def __unicode__(self):
-       return 'category {}'.format(self.name)
+       return '{}'.format(self.name)
 
 class challenge(models.Model):
     title = models.CharField(max_length=50, blank=False)
@@ -37,7 +37,7 @@ class challenge(models.Model):
     class Meta:
         verbose_name_plural = "challenges"
     def __unicode__(self):
-       return 'challenge {} {}'.format(self.title, self.points)
+       return '{} {}'.format(self.title, self.points)
 
 class scoreboard(models.Model):
     numtopteams = models.IntegerField(default=10)
@@ -45,7 +45,7 @@ class scoreboard(models.Model):
     class Meta:
         verbose_name_plural = "scoreboards"
     def __unicode__(self):
-       return 'scoreboard {}'.format(self.id)
+       return '{}'.format(self.id)
 
 class team(models.Model):
     scoreboard = models.ForeignKey('scoreboard')
@@ -56,9 +56,10 @@ class team(models.Model):
     points = models.IntegerField(default=0)
     correct_flags = models.IntegerField(default=0)
     wrong_flags = models.IntegerField(default=0)
-    solved = models.ManyToManyField('challenge', default=None)
+    solved = models.ManyToManyField('challenge', blank=True)
+    user = models.OneToOneField(User)
     class Meta:
         verbose_name_plural = "teams"
     def __unicode__(self):
-       return 'team {}: {}'.format(self.id, self.teamname)
+       return '{}: {}'.format(self.id, self.teamname)
 

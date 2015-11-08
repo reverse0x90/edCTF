@@ -6,9 +6,9 @@ class ctfAdmin(admin.ModelAdmin):
     list_display = ('name', 'live')
 
 class challengeboardAdmin(admin.ModelAdmin):
-    list_display = ('id', 'ctf_name')
+    list_display = ('id',)
     def ctf_name(self, obj):
-        return obj.ctf.name
+        return obj.ctf
 
 class categoryAdmin(admin.ModelAdmin):
     list_display = ('name',)
@@ -17,9 +17,9 @@ class challengeAdmin(admin.ModelAdmin):
     list_display = ('category', 'points', 'title')
 
 class scoreboardAdmin(admin.ModelAdmin):
-    list_display = ('id', 'ctf_name')
+    list_display = ('id',)
     def ctf_name(self, obj):
-        return obj.ctf.name
+        return obj.ctf
 
 class teamAdmin(admin.ModelAdmin):
     list_display = ('teamname','points')
