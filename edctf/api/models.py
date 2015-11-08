@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 class ctf(models.Model):
     name = models.CharField(max_length=50, blank=False, unique=True)
     live = models.BooleanField(default=False)
-    challengeboard = models.ForeignKey('challengeboard')
-    scoreboard = models.ForeignKey('scoreboard')
+    challengeboard = models.ManyToManyField('challengeboard', related_name="ctfs", related_query_name="ctf")
+    scoreboard = models.ManyToManyField('scoreboard', related_name="ctfs", related_query_name="ctf")
     class Meta:
         verbose_name_plural = "ctfs"
     def __unicode__(self):
@@ -20,19 +20,19 @@ class challengeboard(models.Model):
 
 class category(models.Model):
     name =  models.CharField(max_length=50, blank=False)
-    challengeboard = models.ForeignKey('challengeboard')
+    challengeboard = models.ForeignKey('challengeboard', related_name="categories", related_query_name="category")
     class Meta:
         verbose_name_plural = "category"
     def __unicode__(self):
        return '{}'.format(self.name)
 
 class challenge(models.Model):
+    category = models.ForeignKey('category', related_name="challenges", related_query_name="challenge")
     title = models.CharField(max_length=50, blank=False)
     points = models.IntegerField(default=0)
     description = models.CharField(max_length=500, blank=False)
     #solved = models.ManyToManyField('team', default=None)
     num_solved = models.IntegerField(default=0)
-    category = models.ForeignKey('category')
     flag = models.CharField(max_length=100, blank=False)
     class Meta:
         verbose_name_plural = "challenges"
@@ -48,7 +48,7 @@ class scoreboard(models.Model):
        return '{}'.format(self.id)
 
 class team(models.Model):
-    scoreboard = models.ForeignKey('scoreboard')
+    scoreboard = models.ForeignKey('scoreboard', related_name="teams", related_query_name="team")
     #scoreboard = models.ManyToManyField('scoreboard') # possible change to this later?
 
     teamname = models.CharField(max_length=20, blank=False, unique=True)
@@ -56,10 +56,10 @@ class team(models.Model):
     points = models.IntegerField(default=0)
     correct_flags = models.IntegerField(default=0)
     wrong_flags = models.IntegerField(default=0)
-    solved = models.ManyToManyField('challenge', blank=True)
+    solved = models.ManyToManyField('challenge', blank=True, related_name="solved", related_query_name="solved")
     user = models.OneToOneField(User)
     class Meta:
         verbose_name_plural = "teams"
     def __unicode__(self):
-       return '{}: {}'.format(self.id, self.teamname)
+       return 'team {}: {}'.format(self.id, self.teamname)
 
