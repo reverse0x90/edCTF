@@ -1,5 +1,6 @@
 from django.shortcuts import render_to_response
 from django.shortcuts import RequestContext
+from django.contrib.auth import authenticate, login, logout
 
 # Import models
 from django.db import models
@@ -7,13 +8,12 @@ from django.contrib.auth.models import *
 from edctf.api.models import *
 
 #REST API
-from rest_framework import viewsets
-from edctf.api.serializers import *
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-#from rest_framework import status
-from rest_framework import authentication, permissions, status
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework import status
+from edctf.api.serializers import *
 
 # Static pages
 def home(request):
@@ -35,16 +35,64 @@ def crossdomain(request):
   return render(request, 'crossdomain.xml', {},  content_type="application/xml")
 
 # Create your views here.
+class sessionView(APIView):
+    """
+    Manages sessions
+    """
+    permission_classes = (AllowAny,)
+    error_messages = {
+        'invalid': "Invalid username or password",
+        'disabled': "Sorry, this account is suspended",
+    }
 
-#
+    def send_error_response(self, message_key):
+        data = {
+            'success': False,
+            'message': self.error_messages[message_key],
+            'team': None,
+        }
+        return Response(data)
 
-#more detailed, but more control class based view example
+    #'''
+    def get(self, request, *args, **kwargs):
+        # Get the current user
+        if request.user.is_authenticated():
+            return Response({
+                'team': request.user.teams.id,
+            })
+        return Response({'team': None})
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        # Login
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return Response({
+                    'success': True,
+                    'team': request.user.teams.id,
+                })
+            return self.send_error_response('disabled')
+        return self.send_error_response('invalid')
+
+    def delete(self, request, *args, **kwargs):
+        # Logout
+        if request.user.is_authenticated():
+            logout(request)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
 class ctfView(APIView):
     """
     List all ctfs
     or list by id via ctfs/:id
     or list all live ctfs via GET parameter, i.e. live=true
     """
+    permission_classes = (AllowAny,)
     def get(self, request, id=None, format=None):
         if id:
             ctfs = ctf.objects.all().filter(id=id)
@@ -66,6 +114,8 @@ class challengeboardView(APIView):
     List all challengeboards
     or list by id via challengeboards/:id
     """
+    permission_classes = (AllowAny,)
+    #permission_classes = (IsAuthenticated,)
     def get(self, request, id=None, format=None):
         if id:
             challengeboards = challengeboard.objects.all().filter(id=id)
@@ -96,6 +146,7 @@ class scoreboardView(APIView):
     List all scoreboards
     or list by id via scoreboards/:id
     """
+    permission_classes = (AllowAny,)
     def get(self, request, id=None, format=None):
         if id:
             scoreboards = scoreboard.objects.all().filter(id=id)

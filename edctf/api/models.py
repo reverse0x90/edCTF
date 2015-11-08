@@ -57,7 +57,7 @@ class team(models.Model):
     correct_flags = models.IntegerField(default=0)
     wrong_flags = models.IntegerField(default=0)
     solved = models.ManyToManyField('challenge', blank=True, related_name="solved", related_query_name="solved")
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, related_name="teams", related_query_name="team")
     class Meta:
         verbose_name_plural = "teams"
     def __unicode__(self):
