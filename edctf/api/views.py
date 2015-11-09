@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response
 from django.shortcuts import RequestContext
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import csrf_exempt
 
 # Import models
 from django.db import models
@@ -41,8 +42,9 @@ class sessionView(APIView):
     """
     permission_classes = (AllowAny,)
     error_messages = {
-        'invalid': "Invalid username or password",
-        'disabled': "Sorry, this account is suspended",
+        'invalid': 'Invalid username or password',
+        'disabled': 'This account is suspended',
+        'isloggedin': 'Already logged in',
     }
 
     def send_error_response(self, message_key):
@@ -51,9 +53,8 @@ class sessionView(APIView):
             'message': self.error_messages[message_key],
             'team': None,
         }
-        return Response(data)
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
-    #'''
     def get(self, request, *args, **kwargs):
         # Get the current user
         if request.user.is_authenticated():
@@ -64,18 +65,28 @@ class sessionView(APIView):
 
     def post(self, request, *args, **kwargs):
         if request.user.is_authenticated():
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+            logout(request)
+        #    return self.send_error_response('isloggedin')
+        
         # Login
         username = request.POST.get('username')
         password = request.POST.get('password')
+
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return Response({
-                    'success': True,
-                    'team': request.user.teams.id,
-                })
+                try:
+                    return Response({
+                        'success': True,
+                        'team': user.teams.id,
+                    })
+                # Temporary: Django admin doesnt have a team..
+                except:
+                    return Response({
+                        'success': True,
+                        'team': None,
+                    })
             return self.send_error_response('disabled')
         return self.send_error_response('invalid')
 
@@ -87,13 +98,13 @@ class sessionView(APIView):
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 class ctfView(APIView):
-    """
-    List all ctfs
-    or list by id via ctfs/:id
-    or list all live ctfs via GET parameter, i.e. live=true
-    """
     permission_classes = (AllowAny,)
     def get(self, request, id=None, format=None):
+        """
+        Get all ctfs
+        or get by id via ctfs/:id
+        or get all live ctfs via GET parameter, i.e. live=true
+        """
         if id:
             ctfs = ctf.objects.all().filter(id=id)
         else:
@@ -110,13 +121,13 @@ class ctfView(APIView):
         })
 
 class challengeboardView(APIView):
-    """
-    List all challengeboards
-    or list by id via challengeboards/:id
-    """
     permission_classes = (AllowAny,)
     #permission_classes = (IsAuthenticated,)
     def get(self, request, id=None, format=None):
+        """
+        Get all challengeboards
+        or get by id via challengeboards/:id
+        """
         if id:
             challengeboards = challengeboard.objects.all().filter(id=id)
             challengeboards_serializer = challengeboardSerializer(challengeboards, many=True, context={'request': request})
@@ -142,12 +153,12 @@ class challengeboardView(APIView):
             })
 
 class scoreboardView(APIView):
-    """
-    List all scoreboards
-    or list by id via scoreboards/:id
-    """
     permission_classes = (AllowAny,)
     def get(self, request, id=None, format=None):
+        """
+        Get all scoreboards
+        or get by id via scoreboards/:id
+        """
         if id:
             scoreboards = scoreboard.objects.all().filter(id=id)
             scoreboards_serializer = scoreboardSerializer(scoreboards, many=True, context={'request': request})
@@ -185,3 +196,19 @@ class scoreboardView(APIView):
             return Response({
                 "scoreboards": scoreboards_serializer.data,
             })
+
+class teamView(APIView):
+    permission_classes = (AllowAny,)
+    def get(self, request, id=None, format=None):
+        """
+        Get all teams
+        or get by id via teams/:id
+        """
+        if id:
+            teams = team.objects.all().filter(id=id)
+        else:
+            teams = team.objects.all()
+        teams_serializer = teamSerializer(teams, many=True, context={'request': request})
+        return Response({
+            "teams": teams_serializer.data,
+        })

@@ -37,12 +37,16 @@ export default Ember.Controller.extend({
       var auth = t.get('authController');
 
       // Attempt to login the team
-      auth.login(authenticationData);
-      // If there was no error during authentication close the login modal 
-      if (!auth.get('errorMessage')) {
-        this.set('user', auth.user);
-        this.set('modal.isLogin', false);
-      }
+      auth.login(authenticationData, function(success){
+        // If there was no error during authentication close the login modal 
+        if(success){
+          t.set('modal.isLogin', false);
+          
+          var team = t.store.findRecord('team', auth.user.team_id);
+          t.set('user', auth.user);
+          t.set('user.team', team);
+        }
+      });
     },
     register: function(registrationData) {
       var t = this;

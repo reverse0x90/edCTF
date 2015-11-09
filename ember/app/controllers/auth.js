@@ -24,7 +24,7 @@ export default Ember.Controller.extend({
 
     return this.get('isAuthenticated');
   },
-  login: function(credentials){
+  login: function(credentials, callback){
     var t = this;
     var currentTransition = t.get('currentTransition');
     var validator = this.get('validator');
@@ -33,39 +33,54 @@ export default Ember.Controller.extend({
     if (!validator.isvalidLogin(credentials)) {
       t.set('errorMessage', validator.get('error'));
       t.set('errorFields', validator.get('errorFields'));
+      callback(false);
     }
     // Form is valid clear the error message field and authenticate the team
     else {
-      t.set('errorMessage', '');
-      t.set('errorFields', {});
-
-      // Do server communication stuff..
-
-      // Server will return somthing like this
-      var user = {
-        teamid: 1,
-        teamName: 'team1',
-        email: 'teamEmail@gmail.com',
-        points: 975,
-        correctFlags: 5,
-        wrongFlags: 30,
-        solved: ['Reversing 783', 'Reversing 783', 'Reversing 783', 'Reversing 783', 'Reversing 783'],
+      var data = {
+        'username': credentials.teamName,
+        'password': credentials.password,
       };
-      t.set('user', user);
+      
+      // Server communication
+      var namespace = this.store.adapterFor('application').namespace;
+      Ember.$.post(namespace+'/session', data, function(data){
+        console.log("data: ",data);
+        if(data.success){
+          var user = {
+            'team_id': data.team,
+            'team': null,
+          };
+          t.set('user', user);
+          
+          // Set is authenticated to true
+          t.set('isAuthenticated', true);
 
-      // Set is authenticated to true
-      t.set('isAuthenticated', true);
+          // If the user clicked the remember me check box set is auth in local storage
+          if (credentials.rememberMe === true) {
+            localStorage.setItem("isAuthenticated", true); 
+          }
 
-      // If the user clicked the remember me check box set is auth in local storage
-      if (credentials.rememberMe === true) {
-        localStorage.setItem("isAuthenticated", true); 
-      }
-        
-      // If the the user was redirected to authenticate send them to the page they originally requested
-      if ( currentTransition ) {
-        t.set('currentTransition', null);
-        currentTransition.retry();
-      }
+          // If the the user was redirected to authenticate send them to the page they originally requested
+          if ( currentTransition ) {
+            t.set('currentTransition', null);
+            currentTransition.retry();
+          }
+          t.set('errorMessage', '');
+          t.set('errorFields', {});
+          callback(true);
+        } else {
+          validator.invalidLogin();
+          t.set('errorMessage', validator.get('error'));
+          t.set('errorFields', validator.get('errorFields'));
+          callback(false);
+        }
+      }).error(function() {
+        validator.invalidLogin();
+        t.set('errorMessage', validator.get('error'));
+        t.set('errorFields', validator.get('errorFields'));
+        callback(false);
+      });
     }
   },
   register: function(registrationData){
@@ -92,6 +107,10 @@ export default Ember.Controller.extend({
     this.set('user', {});
     this.set('isAuthenticated', false);
     localStorage.removeItem('isAuthenticated');
+
+    // Send logout request to server
+    var namespace = this.store.adapterFor('application').namespace;
+    Ember.$.ajax({url: namespace+'/session',type: 'DELETE'});
 
     // Redirect to the home page
     this.transitionToRoute('application');

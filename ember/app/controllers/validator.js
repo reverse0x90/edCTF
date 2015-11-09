@@ -20,6 +20,10 @@ export default Ember.Controller.extend({
       return true;
     }
   },
+  invalidLogin: function(){
+    this.set('error', "Team name or password invalid");
+    this.set('errorFields', {'teamName': true, 'password': true});
+  },
   isvalidRegister: function(registrationData){
     var teamEmail = registrationData.teamEmail;
     var teamName = registrationData.teamName;
