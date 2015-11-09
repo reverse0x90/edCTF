@@ -20,7 +20,7 @@ class categorySerializer(serializers.ModelSerializer):
         model = category
         fields = ('id', 'name', 'challenges')
 
-class challengesSerializer(serializers.ModelSerializer):
+class challengeSerializer(serializers.ModelSerializer):
     class Meta:
         model = challenge
         fields = ('id', 'title', 'points', 'description', 'solved', 'num_solved')

@@ -24,15 +24,23 @@ export default Ember.Component.extend({
       Ember.$('#inputFlag').focus();
   }.on('didInsertElement'),
   checkServer: function(flag) {
-    // This function will POST the flag to the server and get the response
-    if (flag === 'edCTF') {
-      this.set('correctFlagMsg', 'Congratulations you have the correct flag!');
-      this.set('wrongFlagMsg', '');
-    }
-    else {
-      this.set('wrongFlagMsg', 'Sorry wrong flag, please try again!');
-      this.set('correctFlagMsg', '');
-    }
+    var t = this;
+    var data = {'flag': flag};
+    var challenge_id = t.get('challenge.id');
+    var namespace = t.get('store').adapterFor('application').namespace;
+    Ember.$.post(namespace+'/challenges/'+challenge_id, data, function(data){
+      console.log('>>>data:',data);
+      if(data.success){
+        t.set('correctFlagMsg', 'Congratulations you have the correct flag!');
+        t.set('wrongFlagMsg', '');
+      } else {
+        t.set('wrongFlagMsg', 'Sorry wrong flag');
+        t.set('correctFlagMsg', '');
+      }
+    }).error(function() {
+      t.set('wrongFlagMsg', 'Something went wrong');
+      t.set('correctFlagMsg', '');
+    });
   },
   actions: {
     closeChallengeModal: function() {

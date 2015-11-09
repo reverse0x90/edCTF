@@ -16,6 +16,8 @@ urlpatterns = [
     url(r'^ctfs/(?P<id>\d+)/?$', views.ctfView.as_view()),
     url(r'^challengeboards/?$', views.challengeboardView.as_view()),
     url(r'^challengeboards/(?P<id>\d+)/?$', views.challengeboardView.as_view()),
+    url(r'^challenges/?$', views.challengeView.as_view()),
+    url(r'^challenges/(?P<id>\d+)/?$', views.challengeView.as_view()),
     url(r'^scoreboards/?$', views.scoreboardView.as_view()),
     url(r'^scoreboards/(?P<id>\d+)/?$', views.scoreboardView.as_view()),
     url(r'^teams/?$', views.teamView.as_view()),

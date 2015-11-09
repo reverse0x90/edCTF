@@ -10,6 +10,7 @@ export default Ember.Controller.extend({
     challenge: {},
     team: {},
   },
+  store: null,
   actions: {
     closeModal: function(){
       this.set('modal.isLogin', false);
@@ -17,6 +18,7 @@ export default Ember.Controller.extend({
       this.set('modal.isChallenge', false);
       this.set('modal.isTeam', false);
       this.set('modal.isProfile', false);
+      this.set('store', this.store);
     },
   },
 });

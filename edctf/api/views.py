@@ -16,6 +16,26 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import status
 from edctf.api.serializers import *
 
+
+def check_flag(challenge, flag):
+    '''
+    Checks a given flag with a challenge.
+    '''
+    # Allow regex in the future
+    return challenge.flag == flag;
+
+def update_solved(user, challenge):
+    '''
+    Gives points to a given user
+    '''
+    points = user.points
+    user.solved.add(challenge)
+    user.points = points + challenge.points
+    user.save()
+    challenge.save()
+
+
+
 # Static pages
 def home(request):
   """
@@ -147,7 +167,7 @@ class challengeboardView(APIView):
             challenges = []
             for cat in categories:
                 challenges += challenge.objects.all().filter(category=cat)
-            challenges_serializer = challengesSerializer(challenges, many=True, context={'request': request})
+            challenges_serializer = challengeSerializer(challenges, many=True, context={'request': request})
 
             return Response({
                 "challengeboards": challengeboards_serializer.data,
@@ -160,6 +180,57 @@ class challengeboardView(APIView):
             return Response({
                 "challengeboards": serializer.data,
             })
+
+class challengeView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def get(self, request, id=None, format=None):
+        """
+        Get all challenge
+        or get by id via challenge/:id
+        """
+        if id:
+            challenges = challenges.objects.all().filter(id=id)
+        else:
+            challenge = challenge.objects.all()
+        challenge_serializer = challengeSerializer(challenges, many=True, context={'request': request})
+        return Response({
+            "challenges": challenge_serializer.data,
+        })
+    def post(self, request, id=None, format=None):
+        '''
+        Submit a flag for a challenge
+        '''
+        if id:
+            try:
+                _challenge = challenge.objects.get(id=id)
+            except:
+                return Response({
+                    "success": False
+                }, status=status.HTTP_404_NOT_FOUND)
+            
+            flag = request.POST.get('flag')
+            if not flag:
+                return Response({
+                    "success": False
+                }, status=status.HTTP_401_UNAUTHORIZED)
+
+            if check_flag(_challenge, flag):
+                try:
+                    _team = team.objects.get(id=request.user.teams.id)
+                except:
+                    return Response({
+                        "success": False
+                    }, status=status.HTTP_401_UNAUTHORIZED)
+                update_solved(_team, _challenge)
+                return Response({
+                    "success": True
+                })
+            else:
+                return Response({
+                    "success": False
+                })
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 class scoreboardView(APIView):
     permission_classes = (AllowAny,)
