@@ -2,6 +2,8 @@ from django.shortcuts import render_to_response
 from django.shortcuts import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ObjectDoesNotExist
+
 
 # Import models
 from django.db import models
@@ -17,24 +19,27 @@ from rest_framework import status
 from edctf.api.serializers import *
 
 
-def check_flag(challenge, flag):
+def check_flag(team, challenge, flag):
     '''
     Checks a given flag with a challenge.
     '''
     # Allow regex in the future
-    return challenge.flag == flag;
+    try:
+        team.solved.get(id=challenge.id)
+        return False
+    except ObjectDoesNotExist:
+        return challenge.flag == flag;
 
-def update_solved(user, challenge):
+def update_solved(team, challenge):
     '''
     Gives points to a given user
     '''
-    points = user.points
-    user.solved.add(challenge)
-    user.points = points + challenge.points
-    user.save()
+    return
+    points = team.points
+    team.solved.add(challenge)
+    team.points = points + challenge.points
+    team.save()
     challenge.save()
-
-
 
 # Static pages
 def home(request):
@@ -189,9 +194,9 @@ class challengeView(APIView):
         or get by id via challenge/:id
         """
         if id:
-            challenges = challenges.objects.all().filter(id=id)
+            challenges = challenge.objects.all().filter(id=id)
         else:
-            challenge = challenge.objects.all()
+            challenges = challenge.objects.all()
         challenge_serializer = challengeSerializer(challenges, many=True, context={'request': request})
         return Response({
             "challenges": challenge_serializer.data,
@@ -214,13 +219,8 @@ class challengeView(APIView):
                     "success": False
                 }, status=status.HTTP_401_UNAUTHORIZED)
 
-            if check_flag(_challenge, flag):
-                try:
-                    _team = team.objects.get(id=request.user.teams.id)
-                except:
-                    return Response({
-                        "success": False
-                    }, status=status.HTTP_401_UNAUTHORIZED)
+            _team = request.user.teams
+            if check_flag(_team,_challenge, flag):
                 update_solved(_team, _challenge)
                 return Response({
                     "success": True
@@ -260,7 +260,7 @@ class scoreboardView(APIView):
                 ],
             }
 
-            teams = team.objects.order_by('points').filter(scoreboard=scoreboards[0])
+            teams = team.objects.all().filter(scoreboard=scoreboards[0]).order_by('-points','id')
             teams_serializer = teamSerializer(teams, many=True, context={'request': request})
             for pos,t in enumerate(teams_serializer.data):
                 t['position'] = pos+1
