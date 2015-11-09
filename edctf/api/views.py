@@ -34,7 +34,6 @@ def update_solved(team, challenge):
     '''
     Gives points to a given user
     '''
-    return
     points = team.points
     team.solved.add(challenge)
     team.points = points + challenge.points
