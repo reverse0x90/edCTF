@@ -18,23 +18,29 @@ export default Ember.Route.extend({
     var t = this;
     var auth = t.controllerFor('auth');
     var modal = t.controllerFor('modal');
+    var application = t.controllerFor('application');
 
-    // Check to see if you user checked the remember me box
-    auth.isRemembered();
-
-    if (!auth.inwhiteList(transition.targetName)) {
-      if(!auth.isRemembered()) {
-          auth.set('currentTransition', transition);
-          transition.abort();
-          modal.set('modal.isLogin', true);  
-          t.transitionTo('index');
+    auth.checkLoggedIn(function(success){
+      if(success){
+        application.set('user', auth.user);
       }
-    }
+      if (!auth.inwhiteList(transition.targetName)) {
+        if(!auth.isRemembered()) {
+            auth.set('currentTransition', transition);
+            transition.abort();
+            modal.set('modal.isLogin', true);  
+            t.transitionTo('index');
+        }
+      }
+    });
+    // Check to see if you user checked the remember me box
+    //auth.isRemembered();
+
+    
   },
   setupController: function (controller, model){
     // Get first instance of live ctf
     controller.set('ctf', model.get('firstObject'));
-
     controller.set('authController', this.controllerFor('auth'));
     controller.set('validatorController', this.controllerFor('validator'));
     controller.set('modal', this.controllerFor('modal').get('modal'));

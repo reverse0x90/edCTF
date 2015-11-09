@@ -17,11 +17,33 @@ export default Ember.Controller.extend({
       return false;
     }
   },
-  isRemembered: function(){
-    if (localStorage.getItem("isAuthenticated") === 'true') {
-      this.set('isAuthenticated', true);
+  checkLoggedIn: function(callback){
+    if(this.get('isAuthenticated')){
+      callback(true)
+    } else {
+      var t = this;
+      var namespace = t.store.adapterFor('application').namespace;
+      Ember.$.get(namespace+'/session', function(data){
+        if(data.success){
+          if(data.team){
+            var user = {
+              'team_id': data.team,
+              'team': t.store.findRecord('team', data.team),
+            };
+            t.set('user', user);
+          }
+          t.set('isAuthenticated', true);
+          callback(true);
+        } else {
+          callback(false);
+        }
+      });
     }
-
+  },
+  isRemembered: function(){
+    //if (localStorage.getItem('isAuthenticated') === 'true') {
+    //  this.set('isAuthenticated', true);
+    //}
     return this.get('isAuthenticated');
   },
   login: function(credentials, callback){
@@ -45,7 +67,6 @@ export default Ember.Controller.extend({
       // Server communication
       var namespace = this.store.adapterFor('application').namespace;
       Ember.$.post(namespace+'/session', data, function(data){
-        console.log("data: ",data);
         if(data.success){
           var user = {
             'team_id': data.team,

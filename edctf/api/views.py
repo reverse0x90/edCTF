@@ -56,12 +56,22 @@ class sessionView(APIView):
         return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     def get(self, request, *args, **kwargs):
-        # Get the current user
         if request.user.is_authenticated():
-            return Response({
-                'team': request.user.teams.id,
-            })
-        return Response({'team': None})
+            try:
+                return Response({
+                    'success': True,
+                    'team': request.user.teams.id,
+                })
+            # Temporary: Django admin doesnt have a team..
+            except:
+                return Response({
+                    'success': True,
+                    'team': None,
+                })
+        return Response({
+            'success': False,
+            'team': None,
+        })
 
     def post(self, request, *args, **kwargs):
         if request.user.is_authenticated():
@@ -121,8 +131,7 @@ class ctfView(APIView):
         })
 
 class challengeboardView(APIView):
-    permission_classes = (AllowAny,)
-    #permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     def get(self, request, id=None, format=None):
         """
         Get all challengeboards
