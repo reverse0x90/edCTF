@@ -23,20 +23,26 @@ def check_flag(team, challenge, flag):
     '''
     Checks a given flag with a challenge.
     '''
-    # Allow regex in the future
-    try:
-        team.solved.get(id=challenge.id)
-        return False
-    except ObjectDoesNotExist:
+    
+    res = team.solved.all().filter(id=challenge.id)
+
+    # if not solved, do flag check
+    if not res:
+        # Allow regex in the future
         return challenge.flag == flag;
+    # already solved
+    else:
+        return False
 
 def update_solved(team, challenge):
     '''
     Gives points to a given user
     '''
-    points = team.points
-    team.solved.add(challenge)
-    team.points = points + challenge.points
+    #team.solved.add(challenge)
+    timestamp = challengeTimestamp.objects.create(team=team, challenge=challenge)
+    timestamp.save
+
+    team.points = team.points + challenge.points
     team.save()
     challenge.save()
 
