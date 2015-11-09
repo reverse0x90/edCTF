@@ -31,7 +31,6 @@ class challenge(models.Model):
     title = models.CharField(max_length=50, blank=False)
     points = models.IntegerField(default=0)
     description = models.CharField(max_length=500, blank=False)
-    #solved = models.ManyToManyField('team', default=None)
     num_solved = models.IntegerField(default=0)
     flag = models.CharField(max_length=100, blank=False)
     class Meta:
@@ -49,17 +48,24 @@ class scoreboard(models.Model):
 
 class team(models.Model):
     scoreboard = models.ForeignKey('scoreboard', related_name="teams", related_query_name="team")
-    #scoreboard = models.ManyToManyField('scoreboard') # possible change to this later?
+    #scoreboard = models.ManyToManyField('scoreboard') # possible change to this later
 
     teamname = models.CharField(max_length=20, blank=False, unique=True)
-    #position send on request
     points = models.IntegerField(default=0)
     correct_flags = models.IntegerField(default=0)
     wrong_flags = models.IntegerField(default=0)
-    solved = models.ManyToManyField('challenge', blank=True, related_name="solved", related_query_name="solved")
     user = models.OneToOneField(User, related_name="teams", related_query_name="team")
+    solved = models.ManyToManyField('challenge', blank=True, related_name="solved", through='challengeTimestamp')
     class Meta:
         verbose_name_plural = "teams"
     def __unicode__(self):
        return 'team {}: {}'.format(self.id, self.teamname)
 
+class challengeTimestamp(models.Model):
+    team = models.ForeignKey('team')
+    challenge = models.ForeignKey('challenge')
+    created = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name_plural = "challengeTimestamps"
+    def __unicode__(self):
+       return 'timestamp {}: {}'.format(self.id, self.created)
