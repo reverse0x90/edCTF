@@ -3,6 +3,8 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   modal: {},
   ctf: null,
+  sortTeams: ['position'],
+  sortedTeams: Ember.computed.sort('ctf.scoreboard.teams', 'sortTeams'),
   c3Options: {
     axis: {
       x: {

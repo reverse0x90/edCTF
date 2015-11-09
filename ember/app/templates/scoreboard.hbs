@@ -20,7 +20,7 @@
       </tr>
     </thead>
     <tbody>
-      {{#each ctf.scoreboard.teams as |team|}}
+      {{#each sortedTeams as |team|}}
         <tr {{action 'openTeamView' team}}>
           <td>{{team.position}}</td>
           <td>{{team.teamname}}</td>
