@@ -9,7 +9,7 @@ export APACHE_CONFIG=/etc/apache2/sites-enabled/000-default.conf
 sudo cp ${EDCTF_DIR}/apache.conf ${APACHE_CONFIG}
 
 cd ${EDCTF_DIR}/ember \
-  && npm install \
+  && sudo npm install \
   && bower install \
   && ember build -prod -o ${EDCTF_STATIC_DIR}/ember \
   && mv ${EDCTF_STATIC_DIR}/ember/index.html ${EDCTF_DIR}/edctf/api/templates/index.html \
