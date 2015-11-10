@@ -40,7 +40,7 @@ def update_solved(team, challenge):
     '''
     #team.solved.add(challenge)
     timestamp = challengeTimestamp.objects.create(team=team, challenge=challenge)
-    timestamp.save
+    timestamp.save()
 
     team.points = team.points + challenge.points
     team.save()
