@@ -24,7 +24,9 @@
         <li><a {{action "openProfileModal"}}>Profile</a></li>
         <li><a {{action "sendLogout"}}>Logout</a></li>
       {{else}}
-        <li><a {{action "openRegisterModal"}}>Register</a></li>
+        {{!--
+          <li><a {{action "openRegisterModal"}}>Register</a></li>
+        --}}
         <li><a {{action "openLoginModal"}}>Login</a></li>
       {{/if}}
       </ul>
