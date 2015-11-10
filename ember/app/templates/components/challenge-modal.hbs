@@ -11,10 +11,13 @@
             {{else if wrongFlagMsg}}
                  <label class="control-label"><div class="text-danger" style="margin-bottom: .4em;">{{wrongFlagMsg}}</div></label>
             {{/if}}
-            <span class="form-group">
-                {{input type="text" value=flag class="form-control" id="inputFlag" placeholder="Flag"}}
-            </span>
-            <button class="btn btn-success btn-login-submit challenge-submit" type="submit" {{action 'submitFlag'}}>Submit</button>
+
+            {{#unless challenge.isSolved}}
+                <span class="form-group">
+                    {{input type="text" value=flag class="form-control" id="inputFlag" placeholder="Flag"}}
+                </span>
+                <button class="btn btn-success btn-login-submit challenge-submit" type="submit" {{action 'submitFlag'}}>Submit</button>
+            {{/unless}}
             <button class="btn btn-danger btn-cancel-action challenge-cancel" {{action 'closeChallengeModal'}}>Cancel</button> 
         </form>
 {{/modal-dialog}}
