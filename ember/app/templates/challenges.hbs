@@ -8,7 +8,7 @@
           <tr class="challenge-tr">
             <td><h2>{{category.name}}</h2></td>
             {{#each category.challenges as |challenge|}}
-              {{#if challenge.solved}}
+              {{#if (is-solved challenge.id user.team.solved) }}
                  <button class="challengeButton challengeButton-solved challengeButton-xlarge sharp" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
               {{else}}
                 <button class="challengeButton challengeButton-unsolved challengeButton-xlarge sharp" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>

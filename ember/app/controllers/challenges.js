@@ -4,12 +4,6 @@ export default Ember.Controller.extend({
   modal: {},
   ctf: null,
   user: {},
-  isSolved: function (challengeID) {
-    var solved = this.get('user');
-
-    console.log("solved: ", solved);
-    
-  },
   actions: {
     openLoginModal: function() {
       this.set('modal.isLogin', true);
