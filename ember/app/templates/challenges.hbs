@@ -4,7 +4,7 @@
   <div>
     <table class="table table-striped">
       <tbody>
-          {{#each ctf.challengeboard.categories as |category|}}
+          {{#each ctf.challengeboard.sortedCategories as |category|}}
           <tr class="challenge-tr">
             <td><h2>{{category.name}}</h2></td>
             {{#each category.sortedChallenges as |challenge|}}
