@@ -19,7 +19,7 @@ export default Ember.Controller.extend({
   },
   checkLoggedIn: function(callback){
     if(this.get('isAuthenticated')){
-      callback(true)
+      callback(true);
     } else {
       var t = this;
       var namespace = t.store.adapterFor('application').namespace;
@@ -124,14 +124,15 @@ export default Ember.Controller.extend({
     }
   },
   logout: function(){
+    // Send logout request to server
+    var namespace = this.store.adapterFor('application').namespace;
+    Ember.$.ajax({url: namespace+'/session',type: 'DELETE'});
+
     // Do the deauthentication stuff here
     this.set('user', {});
     this.set('isAuthenticated', false);
     localStorage.removeItem('isAuthenticated');
-
-    // Send logout request to server
-    var namespace = this.store.adapterFor('application').namespace;
-    Ember.$.ajax({url: namespace+'/session',type: 'DELETE'});
+    
 
     // Redirect to the home page
     this.transitionToRoute('application');
