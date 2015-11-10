@@ -17,5 +17,8 @@ export default Ember.Component.extend({
     openProfileModal: function(){
       this.set('modal.isProfile', true);
     },
+    sendLogout: function(){
+      this.sendAction('logout');
+    },
   }
 });
