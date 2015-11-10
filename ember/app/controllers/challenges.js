@@ -4,14 +4,32 @@ export default Ember.Controller.extend({
   modal: {},
   ctf: null,
   user: {},
-  checkIfSolved: function(){
-    var challenge_id = this.get('modal.solvedChallenge');
-    if (challenge_id !== false){
-      this.get('user.team.solved').addObject(challenge_id);
+  sortCategory: ['name:asc'],
+  sortChallenges: ['points:asc', 'id'],
+  sortedChallengeboard: {},
+  categories: {},
+  setSolvedChallenges: function(){
+    // Add new challenge to solved if it exists
+    var chall_id = this.get('modal.solvedChallenge');
+    if (chall_id || chall_id === 0){
+      this.get('user.team.solved').addObject(chall_id);
       this.set('modal.solvedChallenge', false);
-      // figure out how to refresh the route here
     }
-  }.observes('modal.solvedChallenge'),
+
+    // Updated isSolved flag for challenges that are solved
+    var solved = this.get('user.team.solved');
+    var t = this;
+    if(solved){
+      solved.forEach(function(challenge_id){
+        var challenge = t.store.find('challenge', challenge_id);
+        challenge.then(function(){
+          if(!challenge.get('isSolved')){
+            challenge.set('isSolved', true);
+          }
+        });
+      });
+    } // TODO: set challenges isSolved back to false on logout
+  }.observes('ctf.challengeboard.categories', 'user', 'modal.solvedChallenge'),
   actions: {
     openLoginModal: function() {
       this.set('modal.isLogin', true);

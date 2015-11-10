@@ -7,4 +7,5 @@ export default DS.Model.extend({
   solved: DS.attr('boolean'),
   num_solved: DS.attr('boolean'),
   category: DS.belongsTo('category'),
+  isSolved: false,
 });
