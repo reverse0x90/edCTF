@@ -4,6 +4,14 @@ export default Ember.Controller.extend({
   modal: {},
   ctf: null,
   user: {},
+  checkIfSolved: function(){
+    var challenge_id = this.get('modal.solvedChallenge');
+    if (challenge_id !== false){
+      this.get('user.team.solved').addObject(challenge_id);
+      this.set('modal.solvedChallenge', false);
+      // figure out how to refresh the route here
+    }
+  }.observes('modal.solvedChallenge'),
   actions: {
     openLoginModal: function() {
       this.set('modal.isLogin', true);

@@ -1,15 +1,9 @@
 import Ember from 'ember';
 
-export function isSolved(params/*, hash*/) {
-  var challengeId = parseInt(params[0]);
-  var solvedChallengeList = params[1];
-
-  if ( solvedChallengeList.contains(challengeId)) {
-    return true;
-  }
-  else {
-    return false;
-  }
+export function isSolved(params, hash) {
+  var challengeId = parseInt(hash.id);
+  var solvedChallengeList = hash.solved;
+  return solvedChallengeList && (solvedChallengeList.indexOf(challengeId) >= 0);
 }
 
 export default Ember.Helper.helper(isSolved);
