@@ -11,6 +11,7 @@ export default Ember.Controller.extend({
     team: {},
   },
   store: null,
+  user: {},
   actions: {
     closeModal: function(){
       this.set('modal.isLogin', false);
