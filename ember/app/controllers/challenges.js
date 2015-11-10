@@ -9,7 +9,7 @@ export default Ember.Controller.extend({
 
     console.log("solved: ", solved);
     
-  }
+  },
   actions: {
     openLoginModal: function() {
       this.set('modal.isLogin', true);

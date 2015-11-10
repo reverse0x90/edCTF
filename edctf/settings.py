@@ -75,7 +75,7 @@ ROOT_URLCONF = 'edctf.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR + '/edctf/static/ember/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
