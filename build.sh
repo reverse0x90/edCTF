@@ -12,9 +12,6 @@ cd ${EDCTF_DIR}/ember \
   && sudo npm install \
   && bower install \
   && ember build -prod -o ${EDCTF_STATIC_DIR}/ember \
-  && mv ${EDCTF_STATIC_DIR}/ember/index.html ${EDCTF_DIR}/edctf/api/templates/index.html \
-  && mv ${EDCTF_STATIC_DIR}/ember/robots.txt ${EDCTF_DIR}/edctf/api/templates/robots.txt \
-  && mv ${EDCTF_STATIC_DIR}/ember/crossdomain.xml ${EDCTF_DIR}/edctf/api/templates/crossdomain.xml \
   && cp -R ${DJANGO_STATIC_DIR}/admin ${EDCTF_STATIC_DIR}/admin \
   && cp -R /usr/local/lib/python2.7/dist-packages/rest_framework/static/rest_framework ${EDCTF_STATIC_DIR}/rest_framework
 
