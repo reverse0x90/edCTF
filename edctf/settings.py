@@ -22,10 +22,11 @@ except ImportError:
     from django.utils.crypto import get_random_string
     import string
     
+    # generate new secret
     chars = ''.join(map(chr, range(128))) # maximum characters get_random_string handles
     secret = get_random_string(50, chars)
+
     generated_code = 'SECRET_KEY = \'{}\'\n'.format(secret.encode('base64').replace('\n','')) # encode appends newline
-    
     with open(os.path.join(BASE_DIR, 'edctf/edctf_secret.py'), 'wb') as f:
         f.write(generated_code)
     
@@ -75,7 +76,7 @@ ROOT_URLCONF = 'edctf.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR + '/edctf/static/ember/'],
+        'DIRS': [os.path.join(BASE_DIR, 'edctf/static/ember/')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,11 +123,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'edctf/static/')
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    #'DEFAULT_PERMISSION_CLASSES': [
-    #    'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-    #],
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     )
