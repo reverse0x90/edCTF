@@ -43,6 +43,7 @@ def update_solved(team, challenge):
     timestamp.save()
 
     team.points = team.points + challenge.points
+    team.last_timestamp = timestamp.created
     team.save()
     challenge.save()
 
@@ -265,7 +266,7 @@ class scoreboardView(APIView):
                 ],
             }
 
-            teams = team.objects.all().filter(scoreboard=scoreboards[0]).order_by('-points','id')
+            teams = team.objects.all().filter(scoreboard=scoreboards[0]).order_by('-points','last_timestamp')
             teams_serializer = teamSerializer(teams, many=True, context={'request': request})
             for pos,t in enumerate(teams_serializer.data):
                 t['position'] = pos+1
