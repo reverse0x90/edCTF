@@ -10,13 +10,15 @@ export default Ember.Controller.extend({
       x: {
         tick: {
           fit: true,
-          format: '%Y-%m-%d',
           outer: false,
+          count: 10,
+          format: function (x) { 
+              return moment(x*1000).local().format('LLL');
+          }
         },
         type: 'timeseries',
       },
       y: {
-        //show: false,
         min: 0,
         color: 'white',
         padding: {
@@ -36,6 +38,9 @@ export default Ember.Controller.extend({
       y: {
         show: true
       },
+    },
+    zoom: {
+      enabled: true
     },
   },
   actions:{

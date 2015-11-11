@@ -69,8 +69,8 @@ class team(models.Model):
        return 'team {}: {}'.format(self.id, self.teamname)
 
 class challengeTimestamp(models.Model):
-    team = models.ForeignKey('team')
-    challenge = models.ForeignKey('challenge')
+    team = models.ForeignKey('team', related_name="challengeTimestamps", related_query_name="challengeTimestamp")
+    challenge = models.ForeignKey('challenge', related_name="challengeTimestamps", related_query_name="challengeTimestamp")
     created = models.DateTimeField(auto_now_add=True)
     class Meta:
         verbose_name_plural = "challengeTimestamps"

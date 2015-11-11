@@ -3,7 +3,7 @@ from django.shortcuts import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
-
+import time
 
 # Import models
 from django.db import models
@@ -46,6 +46,42 @@ def update_solved(team, challenge):
     team.last_timestamp = timestamp.created
     team.save()
     challenge.save()
+
+def get_topteamsdata(teams):
+    data = {}
+    data['xs'] = {}
+    data['type'] = 'step'
+    data['columns'] = []
+
+    current_time = int(time.time())
+    #start = current_time - (60*60*12) # only show past 12 hours
+    delta_initial_point_timestamp = 60*5
+
+    points = initial_points = 0
+    for position,team in enumerate(teams):
+        time_data = [str(position)]
+        point_data = [team.teamname]
+        
+        challengeTimestamps = team.challengeTimestamps.order_by('created')
+        for i,challengeTimestamp in enumerate(challengeTimestamps):
+            timestamp = int(time.mktime(challengeTimestamp.created.timetuple()))
+            if i == 0:
+                time_data.append(timestamp-delta_initial_point_timestamp)
+                point_data.append(points)
+            points = points + challengeTimestamp.challenge.points
+            #if timestamp < start:
+            #    continue
+            
+
+            time_data.append(timestamp)
+            point_data.append(points)
+        time_data.append(current_time)
+        point_data.append(points)
+        data['xs'][team.teamname] = str(position)
+        data['columns'].append(time_data)
+        data['columns'].append(point_data)
+        points = initial_points
+    return data
 
 # Static pages
 def home(request):
@@ -246,30 +282,18 @@ class scoreboardView(APIView):
         or get by id via scoreboards/:id
         """
         if id:
+            # Set scoreboard object
             scoreboards = scoreboard.objects.all().filter(id=id)
             scoreboards_serializer = scoreboardSerializer(scoreboards, many=True, context={'request': request})
             
-            scoreboards_serializer.data[0]['topteamsdata'] = {
-                "x": 'x',
-                "columns": [
-                    ['x', '2013-01-01', '2013-01-02', '2013-01-03',],
-                    ["team0", 0, 299, 1000],
-                    ["team1", 0, 732, 975],
-                    ["team2", 0, 929, 953],
-                    ["team3", 0, 670, 933],
-                    ["team4", 0, 362, 933],
-                    ["team5", 0, 490, 918],
-                    ["team6", 0, 722, 893],
-                    ["team7", 0, 632, 876],
-                    ["team8", 0, 274, 875],
-                    ["team9", 0, 768, 872],
-                ],
-            }
-
+            # Set teams from scoreboard
             teams = team.objects.all().filter(scoreboard=scoreboards[0]).order_by('-points','last_timestamp')
             teams_serializer = teamSerializer(teams, many=True, context={'request': request})
             for pos,t in enumerate(teams_serializer.data):
                 t['position'] = pos+1
+
+            # Create top teams c3 data
+            scoreboards_serializer.data[0]['topteamsdata'] = get_topteamsdata(teams[:scoreboards[0].numtopteams])
 
             return Response({
                 "scoreboards": scoreboards_serializer.data,
