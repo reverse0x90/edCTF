@@ -22,11 +22,11 @@ export default Ember.Controller.extend({
     if(solved){
       solved.forEach(function(challenge_id){
         var challenge = t.store.peekRecord('challenge', challenge_id);
-        //challenge.then(function(){
+        if (challenge){
           if(!challenge.get('isSolved')){
             challenge.set('isSolved', true);
           }
-        //});
+        }
       });
     } // TODO: set challenges isSolved back to false on logout
   }.observes('ctf.challengeboard.categories', 'user', 'modal.solvedChallenge'),
