@@ -84,7 +84,7 @@ def get_topteamsdata(teams):
             
 
             time_data.append(timestamp)
-            point_data.append(points)
+            point_data.append(team.points)
         time_data.append(current_time)
         point_data.append(points)
         data['xs'][team.teamname] = str(position)
