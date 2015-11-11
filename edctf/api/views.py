@@ -25,13 +25,23 @@ def check_flag(team, challenge, flag):
     '''
     
     res = team.solved.all().filter(id=challenge.id)
-
+    
     # if not solved, do flag check
     if not res:
         # Allow regex in the future
-        return challenge.flag == flag;
+        correct = challenge.flag == flag
+        if correct:
+            team.correct_flags = team.correct_flags + 1
+            team.save()
+            return True
+        else:
+            team.wrong_flags = team.wrong_flags + 1
+            team.save()
+            return False
     # already solved
     else:
+        team.wrong_flags = team.wrong_flags + 1
+        team.save()
         return False
 
 def update_solved(team, challenge):
