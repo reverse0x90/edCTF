@@ -6,11 +6,28 @@
     </div>
 
     <div class="modal-body">
-      Points: {{team.points}}<br/>
-      Correct Flags: {{team.correct_flags}}<br/>
-      Wrong Flags: {{team.wrong_flags}}<br/>
-      Challenges solved: {{team.numSolved}}<br/>
+      <table class="table table-hover table-condensed" style="width:100%">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Points</th>
+            <th>Correct Flags</th>
+            <th>Incorrect Flags</th>
+            <th>Challenges Solved</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{team.position}}</td>
+            <td>{{team.points}}</td>
+            <td>{{team.correct_flags}}</td>
+            <td>{{team.wrong_flags}}</td>
+            <td>{{team.numSolved}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+
     <div class="modal-footer">
       <button type="button" class="btn btn-default" {{action 'closeTeamModal'}}>Close</button>
     </div>

@@ -8,10 +8,26 @@
     </div>
 
     <div class="modal-body">
-      Points: {{user.team.points}}<br/>
-      Correct Flags: {{user.team.correct_flags}}<br/>
-      Wrong Flags: {{user.team.wrong_flags}}<br/>
-      Challenges solved: {{user.team.numSolved}}<br/>
+      <table class="table table-hover table-condensed" style="width:100%">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Points</th>
+            <th>Correct Flags</th>
+            <th>Incorrect Flags</th>
+            <th>Challenges Solved</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{user.team.position}}</td>
+            <td>{{user.team.points}}</td>
+            <td>{{user.team.correct_flags}}</td>
+            <td>{{user.team.wrong_flags}}</td>
+            <td>{{user.team.numSolved}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     {{!--
