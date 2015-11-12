@@ -135,6 +135,6 @@ export default Ember.Controller.extend({
     
 
     // Redirect to the home page
-    this.transitionToRoute('application');
+    this.transitionToRoute('home');
   },
 });
