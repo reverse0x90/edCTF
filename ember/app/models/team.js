@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
@@ -8,4 +9,7 @@ export default DS.Model.extend({
   correct_flags: DS.attr('number'),
   wrong_flags: DS.attr('number'),
   solved: DS.attr('array'),
+  numSolved: Ember.computed('solved', function() {
+    return this.get('solved').length;
+  }),
 });

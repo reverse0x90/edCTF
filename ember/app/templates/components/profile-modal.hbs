@@ -4,14 +4,14 @@
   <div class="modal-dialog">
     <div class="modal-header">
       <button type="button" class="close" {{action 'closeProfileModal'}} aria-hidden="true">&times;</button>
-      <h2 class="modal-title">Team: {{user.team.teamname}}</h2>
+      <h1 class="modal-title">{{user.team.teamname}}</h1>
     </div>
 
     <div class="modal-body">
       Points: {{user.team.points}}<br/>
       Correct Flags: {{user.team.correct_flags}}<br/>
       Wrong Flags: {{user.team.wrong_flags}}<br/>
-      Solved: {{user.team.solved}}<br/>
+      Challenges solved: {{user.team.numSolved}}<br/>
     </div>
 
     {{!--

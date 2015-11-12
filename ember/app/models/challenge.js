@@ -5,7 +5,7 @@ export default DS.Model.extend({
   points: DS.attr('number'),
   description: DS.attr('string'),
   solved: DS.hasMany('team', {async: true}),
-  num_solved: DS.attr('boolean'),
+  numSolved: DS.attr('number'),
   category: DS.belongsTo('category'),
   isSolved: false,
 });
