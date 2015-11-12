@@ -4,26 +4,30 @@
   <div class="modal-dialog">
     <div class="modal-header">
       <button type="button" class="close" {{action 'closeProfileModal'}} aria-hidden="true">&times;</button>
-      <h1 class="modal-title">{{user.team.teamname}}</h1>
+      <h1 class="modal-title team-name">{{user.team.teamname}}</h1>
     </div>
 
     <div class="modal-body">
       <table class="table table-hover table-condensed" style="width:100%">
         <thead>
           <tr>
-            <th>Rank</th>
-            <th>Points</th>
-            <th>Correct Flags</th>
-            <th>Incorrect Flags</th>
-            <th>Challenges Solved</th>
+            {{#if user.team.position}}
+              <th class="team-keys">Rank</th>
+            {{/if}}
+            <th class="team-keys">Points</th>
+            <th class="team-keys">Correct Flags</th>
+            <th class="team-keys">Incorrect Flags</th>
+            <th class="team-keys">Challenges Solved</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>{{user.team.position}}</td>
+          <tr class="team-values">
+            {{#if user.team.position}}
+              <td>{{user.team.position}}</td>
+            {{/if}}
             <td>{{user.team.points}}</td>
-            <td>{{user.team.correct_flags}}</td>
-            <td>{{user.team.wrong_flags}}</td>
+            <td class="team-correct-flags">{{user.team.correct_flags}}</td>
+            <td class="team-wrong-flags">{{user.team.wrong_flags}}</td>
             <td>{{user.team.numSolved}}</td>
           </tr>
         </tbody>

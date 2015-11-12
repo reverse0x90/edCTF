@@ -2,26 +2,26 @@
   <div class="modal-dialog">
     <div class="modal-header">
       <button type="button" class="close" {{action 'closeTeamModal'}} aria-hidden="true">&times;</button>
-      <h2 class="modal-title">{{team.teamname}}</h2>
+      <h2 class="modal-title team-name">{{team.teamname}}</h2>
     </div>
 
     <div class="modal-body">
       <table class="table table-hover table-condensed" style="width:100%">
         <thead>
           <tr>
-            <th>Rank</th>
-            <th>Points</th>
-            <th>Correct Flags</th>
-            <th>Incorrect Flags</th>
-            <th>Challenges Solved</th>
+            <th class="team-keys">Rank</th>
+            <th class="team-keys">Points</th>
+            <th class="team-keys">Correct Flags</th>
+            <th class="team-keys">Incorrect Flags</th>
+            <th class="team-keys">Challenges Solved</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr class="team-values">
             <td>{{team.position}}</td>
             <td>{{team.points}}</td>
-            <td>{{team.correct_flags}}</td>
-            <td>{{team.wrong_flags}}</td>
+            <td class="team-correct-flags">{{team.correct_flags}}</td>
+            <td class="team-wrong-flags">{{team.wrong_flags}}</td>
             <td>{{team.numSolved}}</td>
           </tr>
         </tbody>

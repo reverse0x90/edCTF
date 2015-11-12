@@ -6,6 +6,6 @@ export default DS.Model.extend({
   description: DS.attr('string'),
   solved: DS.hasMany('team', {async: true}),
   numSolved: DS.attr('number'),
-  category: DS.belongsTo('category'),
+  category: DS.belongsTo('category', {async: false}),
   isSolved: false,
 });

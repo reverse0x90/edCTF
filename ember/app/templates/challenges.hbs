@@ -1,12 +1,12 @@
 {{#if authController.isAuthenticated}}
 <div class="container">
-  <h1 class="text-center">Challenges</h1>
+  <div class="challenges-title">Challenges</div>
   <div>
     <table class="table table-striped">
       <tbody>
           {{#each ctf.challengeboard.sortedCategories as |category|}}
           <tr class="challenge-tr">
-            <td><h2>{{category.name}}</h2></td>
+            <td class="challenge-category-name">{{category.name}}</td>
             {{#each category.sortedChallenges as |challenge|}}
                 {{#if challenge.isSolved}}
                  <button class="challengeButton challengeButton-solved challengeButton-xlarge sharp" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>

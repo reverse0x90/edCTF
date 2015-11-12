@@ -12,7 +12,18 @@ export default Ember.Controller.extend({
     // Add new challenge to solved if it exists
     var chall_id = this.get('modal.solvedChallenge');
     if (chall_id || chall_id === 0){
-      this.get('user.team.solved').addObject(chall_id);
+      var challenge = this.store.peekRecord('challenge', chall_id);
+      if (challenge){
+        var points = this.get('user.team.points');
+        if (points) {
+          this.set('user.team.points', points+challenge.get('points'));
+        }
+      }
+      
+      var usersolved = this.get('user.team.solved');
+      if (usersolved){
+        usersolved.addObject(chall_id);
+      }
       this.set('modal.solvedChallenge', false);
     }
 

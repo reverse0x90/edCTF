@@ -5,6 +5,14 @@
   cursor: pointer;
 }
 
+/* style for nav-bar modal */
+.ctf-title {
+  letter-spacing: .05em;
+}
+.ctf-route {
+  letter-spacing: .05em;
+}
+
 /* style for login modal */
 .login-box-margin {
   margin:0px;
@@ -14,19 +22,29 @@
 .challenge-style-modal-container {
   width: 50%;
 }
-
 .challenge-submit {
   margin-top:2%;
   margin-left:.5%;
   float:right;
 }
-
 .challenge-cancel {
   margin-top:2%;
   float:right;
 }
 
 /* style for challenges page */
+.challenges-title {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: .05em;
+}
+.challenge-category-name {
+  text-align: left;
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: .05em;
+}
 .challengeButton {
     padding: 14px 24px;
     margin: .2em;
@@ -35,45 +53,36 @@
     letter-spacing: 1px;
     text-transform: uppercase;
 }
- 
 .challengeButton:focus, .challengeButton:active:focus, .challengeButton.active:focus {
     outline: 0 none;
 }
- 
 .challengeButton-unsolved {
     background: #0D4F8B;
     color: #ffffff;
 }
-
 .challengeButton-unsolved:hover, .challengeButton-unsolved:focus, .challengeButton-unsolved:active, .challengeButton-unsolved.active, .open > .dropdown-toggle.btn-primary {
     background: #33a6cc;
 }
-
 .challengeButton-solved {
     background: #009900;
     color: #ffffff;
 }
-
 .challengeButton-solved:hover, .challengeButton-solved:focus, .challengeButton-solved:active, .challengeButton-solved.active, .open > .dropdown-toggle.btn-primary {
     background: #32CD32;
 }
- 
 .challengeButton-primary:active, .challengeButton-primary.active {
     background: #007299;
     box-shadow: none;
 }
-
 .challengeButton.sharp {
   border-radius:0;
 }
-
 .challengeButton-xlarge {
   padding:23px 67px;
   font-size: 24px;
   line-height: 1.33;
   border-radius: 6px
 }
-
 .challenge-tr {
     border-collapse: collapse;
 }
@@ -97,4 +106,52 @@ table{
 #chart .c3-line {
     stroke-width: 2px;
 }
+.c3-line {
+    stroke-width: 2px;
+}
 
+/* style for scoreboard */
+.scoreboard-topx {
+  text-align: center;
+  font-size: 25px;
+  font-weight: 400;
+  letter-spacing: .05em;
+}
+.scoreboard-keys {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: .05em;
+}
+.scoreboard-values {
+  text-align: center;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+/* style for team and profile modals */
+.team-name {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: .05em;
+}
+.team-keys {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: .05em;
+}
+.team-values {
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+.team-correct-flags{
+  color: green;
+}
+.team-wrong-flags{
+  color: red;
+}

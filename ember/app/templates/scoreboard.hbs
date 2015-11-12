@@ -1,5 +1,5 @@
 {{#if ctf.scoreboard.topteamsdata}}
-  <h3>Top {{ctf.scoreboard.numtopteams}} Teams</h3>
+  <div class="scoreboard-topx">Top {{ctf.scoreboard.numtopteams}} Teams</div>
   {{c3-chart
     data=ctf.scoreboard.topteamsdata
     axis=c3Options.axis
@@ -13,16 +13,16 @@
 <div class="container">
   <table class="table table-hover table-condensed" style="width:100%">
     <thead>
-      <tr>
-        <th>Rank</th>
-        <th>Team</th>
-        <th>Points</th>
-        <th>Challenges Solved</th>
+      <tr >
+        <th class="scoreboard-keys">Rank</th>
+        <th class="scoreboard-keys">Team</th>
+        <th class="scoreboard-keys">Points</th>
+        <th class="scoreboard-keys">Challenges Solved</th>
       </tr>
     </thead>
     <tbody>
       {{#each sortedTeams as |team|}}
-        <tr {{action 'openTeamView' team}} class="cursor-pointer">
+        <tr {{action 'openTeamView' team}} class="cursor-pointer scoreboard-values">
           <td>{{team.position}}</td>
           <td>{{team.teamname}}</td>
           <td>{{team.points}}</td>
