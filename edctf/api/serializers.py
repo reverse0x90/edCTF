@@ -23,7 +23,7 @@ class categorySerializer(serializers.ModelSerializer):
 class challengeSerializer(serializers.ModelSerializer):
     class Meta:
         model = challenge
-        fields = ('id', 'title', 'points', 'description', 'solved', 'num_solved')
+        fields = ('id', 'title', 'points', 'description', 'solved', 'numSolved')
 
 class scoreboardSerializer(serializers.ModelSerializer):
     class Meta:

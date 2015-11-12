@@ -34,9 +34,16 @@ class challenge(models.Model):
     title = models.CharField(max_length=50, blank=False)
     points = models.IntegerField(default=0)
     description = models.CharField(max_length=500, blank=False)
-    num_solved = models.IntegerField(default=0)
     flag = models.CharField(max_length=100, blank=False)
     created = models.DateTimeField(auto_now_add=True)
+
+    def _get_number_solved(self):
+        '''
+        Returns number of solved challenges
+        '''
+        return self.challengeTimestamps.filter(challenge=self).count()
+    numSolved = property(_get_number_solved)
+
     class Meta:
         verbose_name_plural = "challenges"
     def __unicode__(self):
