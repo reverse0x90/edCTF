@@ -8,19 +8,24 @@
 
         <form class="simple_form form-horizontal">
             {{#if errorMessage}}
-                <label class="control-label"><div class="alert alert-danger" style="padding: 5px; margin-bottom: .4em;" role="alert">{{errorMessage}}</div></label>
+                <label class="control-label"><div class="alert alert-danger edctf-text" style="padding: 5px; margin-bottom: .4em;" role="alert">{{errorMessage}}</div></label>
             {{else if correctFlagMsg}}
-                <label class="control-label"><div class="text-success" style="margin-bottom: .4em;">{{correctFlagMsg}}</div></label>
+                <label class="control-label"><div class="text-success edctf-text" style="margin-bottom: .4em;">{{correctFlagMsg}}</div></label>
             {{else if wrongFlagMsg}}
-                 <label class="control-label"><div class="text-danger" style="margin-bottom: .4em;">{{wrongFlagMsg}}</div></label>
+                 <label class="control-label"><div class="text-danger edctf-text" style="margin-bottom: .4em;">{{wrongFlagMsg}}</div></label>
             {{/if}}
 
             {{#unless challenge.isSolved}}
-                <span class="form-group">
-                    {{input type="text" value=flag class="form-control" id="inputFlag" placeholder="Flag"}}
+                <span class="form-group edctf-text">
+                    {{input type="text" value=flag class="form-control edctf-text" id="inputFlag" placeholder="Flag"}}
                 </span>
-                <button class="btn btn-success btn-login-submit challenge-submit" type="submit" {{action 'submitFlag'}}>Submit</button>
             {{/unless}}
-            <button class="btn btn-danger btn-cancel-action challenge-cancel" {{action 'closeChallengeModal'}}>Cancel</button> 
+
+            <div class="edctf-button">
+                {{#unless challenge.isSolved}}
+                    <button class="btn btn-success btn-login-submit challenge-submit edctf-submit-button" type="submit" {{action 'submitFlag'}}>Submit</button>
+                {{/unless}}
+                <button class="btn btn-danger btn-cancel-action challenge-cancel edctf-cancel-button" {{action 'closeChallengeModal'}}>Cancel</button> 
+            </div>
         </form>
 {{/modal-dialog}}

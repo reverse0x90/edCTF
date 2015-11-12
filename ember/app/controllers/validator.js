@@ -7,12 +7,12 @@ export default Ember.Controller.extend({
     var teamName = credentials.teamName;
     var password = credentials.password;
     if ( teamName.length === 0 ) {
-      this.set('error', "Team name field can not be blank");
+      this.set('error', "Team name field cannot be blank");
       this.set('errorFields', {'teamName': true});
       return false;
     }
     else if (password.length === 0) {
-      this.set('error', "Password field can not be blank");
+      this.set('error', "Password field cannot be blank");
       this.set('errorFields', {'password': true});
       return false;
     }
@@ -30,22 +30,22 @@ export default Ember.Controller.extend({
     var password = registrationData.password;
     var confirmPassword = registrationData.confirmPassword;
     if (teamEmail.length === 0 ) {
-      this.set('error', "Email field can not be blank");
+      this.set('error', "Email field cannot be blank");
       this.set('errorFields', {'teamEmail': true});
       return false;
     }
     else if (teamName.length === 0) {
-      this.set('error', "Team name field can not be blank");
+      this.set('error', "Team name field cannot be blank");
       this.set('errorFields', {'teamName': true});
       return false;
     }
     else if (password.length === 0) {
-      this.set('error', "Password field can not be blank");
+      this.set('error', "Password field cannot be blank");
       this.set('errorFields', {'password': true});
       return false;
     }
     else if (confirmPassword.length === 0) {
-      this.set('error', "Password confirmation field can not be blank");
+      this.set('error', "Password confirmation field cannot be blank");
       this.set('errorFields', {'confirmPassword': true});
       return false;
     }
@@ -60,7 +60,7 @@ export default Ember.Controller.extend({
   },
   isvalidFlag: function(flag){
     if ( flag.length === 0 ) {
-      this.set('error', "Flag can not be blank");
+      this.set('error', "Flag cannot be blank");
       return false;
     }
     else {

@@ -5,6 +5,26 @@
   cursor: pointer;
 }
 
+.edctf-text {
+  letter-spacing: .05em;
+}
+.edctf-button {
+  text-align: center;
+  letter-spacing: .05em;
+}
+.edctf-submit-button {
+  text-align: center;
+  letter-spacing: .05em;
+}
+.edctf-cancel-button {
+  text-align: center;
+  letter-spacing: .05em;
+}
+.edctf-warning-button {
+  text-align: center;
+  letter-spacing: .05em;
+}
+
 /* style for nav-bar modal */
 .ctf-title {
   letter-spacing: .05em;
@@ -16,6 +36,12 @@
 /* style for login modal */
 .login-box-margin {
   margin:0px;
+}
+.login-title {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: .05em;
 }
 
 /* style for challenges modal */

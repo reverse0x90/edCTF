@@ -46,9 +46,11 @@
         </div>
       {{/if}}
 
-      <button type="button" class="btn btn-danger btn-cancel-action" {{action 'closeRegisterModal'}}>Cancel</button>
-      <button type="button" class="btn btn-warning" {{action 'registerToLoginModal'}}>Login</button>
-      <button type="button" class="btn btn-success btn-login-submit" {{action 'submitRegister'}}>Register</button>
+      <div class="edctf-button">
+        <button type="button" class="btn btn-danger btn-cancel-action edctf-cancel-button" {{action 'closeRegisterModal'}}>Cancel</button>
+        <button type="button" class="btn btn-warning edctf-warning-button" {{action 'registerToLoginModal'}}>Login</button>
+        <button type="button" class="btn btn-success btn-login-submit edctf-submit-button" {{action 'submitRegister'}}>Register</button>
+      </div>
     </form>
   </div>
 {{/modal-dialog}}
