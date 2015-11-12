@@ -2,7 +2,7 @@
         <button type="button" class="close" {{action "closeChallengeModal"}} aria-hidden="true">&times;</button>
         <h2 class="modal-title">{{challenge.category.name}} - {{challenge.points}}</h2>
         <h4>{{challenge.title}}</h4>
-        <p>{{challenge.description}}</p>
+        <p>{{{challenge.description}}}</p>
         <form class="simple_form form-horizontal">
             {{#if errorMessage}}
                 <label class="control-label"><div class="alert alert-danger" style="padding: 5px; margin-bottom: .4em;" role="alert">{{errorMessage}}</div></label>
