@@ -1,6 +1,10 @@
 @import "ember-modal-dialog/ember-modal-structure";
 @import "ember-modal-dialog/ember-modal-appearance";
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 /* style for login modal */
 .login-box-margin {
   margin:0px;
@@ -93,3 +97,4 @@ table{
 #chart .c3-line {
     stroke-width: 2px;
 }
+

@@ -22,7 +22,7 @@
     </thead>
     <tbody>
       {{#each sortedTeams as |team|}}
-        <tr {{action 'openTeamView' team}}>
+        <tr {{action 'openTeamView' team}} class="cursor-pointer">
           <td>{{team.position}}</td>
           <td>{{team.teamname}}</td>
           <td>{{team.points}}</td>
