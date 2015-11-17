@@ -29,7 +29,9 @@ def check_flag(team, challenge, flag):
     # if not solved, do flag check
     if not res:
         # Allow regex in the future
-        correct = challenge.flag == flag
+        correct1 = challenge.flag == flag
+        correct2 = challenge.flag == str('null{'+flag+'}')
+        correct = correct1 or correct2
         if correct:
             team.correct_flags = team.correct_flags + 1
             team.save()
@@ -42,6 +44,20 @@ def check_flag(team, challenge, flag):
     else:
         team.wrong_flags = team.wrong_flags + 1
         team.save()
+        return False
+
+def check_flag2(challenge, flag):
+    '''
+    Checks a given flag with a challenge, doesnt update db, doesnt need team
+    '''
+
+    # Allow regex in the future
+    correct1 = challenge.flag == flag
+    correct2 = challenge.flag == str('null{'+flag+'}')
+    correct = correct1 or correct2
+    if correct:
+        return True
+    else:
         return False
 
 def update_solved(team, challenge):
@@ -84,9 +100,9 @@ def get_topteamsdata(teams):
             
 
             time_data.append(timestamp)
-            point_data.append(team.points)
+            point_data.append(points)
         time_data.append(current_time)
-        point_data.append(points)
+        point_data.append(team.points)
         data['xs'][team.teamname] = str(position)
         data['columns'].append(time_data)
         data['columns'].append(point_data)
@@ -272,8 +288,9 @@ class challengeView(APIView):
                 }, status=status.HTTP_401_UNAUTHORIZED)
 
             _team = request.user.teams
-            if check_flag(_team,_challenge, flag):
-                update_solved(_team, _challenge)
+            #if check_flag(_team,_challenge, flag):
+            if check_flag2(_challenge, flag):
+                #update_solved(_team, _challenge)
                 return Response({
                     "success": True
                 })
@@ -297,7 +314,7 @@ class scoreboardView(APIView):
             scoreboards_serializer = scoreboardSerializer(scoreboards, many=True, context={'request': request})
             
             # Set teams from scoreboard
-            teams = team.objects.all().filter(scoreboard=scoreboards[0]).order_by('-points','last_timestamp')
+            teams = team.objects.all().filter(scoreboard=scoreboards[0]).order_by('-points','-last_timestamp')
             teams_serializer = teamSerializer(teams, many=True, context={'request': request})
             for pos,t in enumerate(teams_serializer.data):
                 t['position'] = pos+1

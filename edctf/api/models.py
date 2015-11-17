@@ -31,9 +31,9 @@ class category(models.Model):
 
 class challenge(models.Model):
     category = models.ForeignKey('category', related_name="challenges", related_query_name="challenge")
-    title = models.CharField(max_length=50, blank=False)
+    title = models.CharField(max_length=200, blank=False)
     points = models.IntegerField(default=0)
-    description = models.CharField(max_length=500, blank=False)
+    description = models.CharField(max_length=10000, blank=False)
     flag = models.CharField(max_length=100, blank=False)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -62,7 +62,7 @@ class team(models.Model):
     scoreboard = models.ForeignKey('scoreboard', related_name="teams", related_query_name="team")
     #scoreboard = models.ManyToManyField('scoreboard') # possible change to this later
 
-    teamname = models.CharField(max_length=20, blank=False, unique=True)
+    teamname = models.CharField(max_length=60, blank=False, unique=True)
     points = models.IntegerField(default=0)
     correct_flags = models.IntegerField(default=0)
     wrong_flags = models.IntegerField(default=0)
@@ -83,3 +83,4 @@ class challengeTimestamp(models.Model):
         verbose_name_plural = "challengeTimestamps"
     def __unicode__(self):
        return 'timestamp {}: {}'.format(self.id, self.created)
+

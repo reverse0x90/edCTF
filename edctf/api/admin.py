@@ -24,6 +24,9 @@ class scoreboardAdmin(admin.ModelAdmin):
 class teamAdmin(admin.ModelAdmin):
     list_display = ('teamname','points')
 
+class challengeTimestampAdmin(admin.ModelAdmin):
+    list_display = ('team','challenge','created')
+
 
 admin.site.register(ctf, ctfAdmin)
 admin.site.register(challengeboard, challengeboardAdmin)
@@ -31,3 +34,5 @@ admin.site.register(category, categoryAdmin)
 admin.site.register(challenge, challengeAdmin)
 admin.site.register(scoreboard, scoreboardAdmin)
 admin.site.register(team, teamAdmin)
+admin.site.register(challengeTimestamp, challengeTimestampAdmin)
+
