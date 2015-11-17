@@ -2,18 +2,20 @@
 <div class="container">
   <div class="challenges-title">Challenges</div>
   <div>
-    <table class="table table-striped">
+    <table class="table table-hover">
       <tbody>
           {{#each ctf.challengeboard.sortedCategories as |category|}}
           <tr class="challenge-tr">
-            <td class="challenge-category-name">{{category.name}}</td>
-            {{#each category.sortedChallenges as |challenge|}}
-                {{#if challenge.isSolved}}
-                 <button class="challengeButton challengeButton-solved challengeButton-xlarge sharp" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
-              {{else}}
-                <button class="challengeButton challengeButton-unsolved challengeButton-xlarge sharp" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
-              {{/if}}
-            {{/each}}
+            {{#if category.sortedChallenges}}
+              <td class="challenge-category-name">{{category.name}}</td>
+              {{#each category.sortedChallenges as |challenge|}}
+                  {{#if challenge.isSolved}}
+                   <button class="challengeButton challengeButton-solved challengeButton-xlarge sharp" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
+                {{else}}
+                  <button class="challengeButton challengeButton-unsolved challengeButton-xlarge sharp" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
+                {{/if}}
+              {{/each}}
+            {{/if}}
           </tr>
           {{/each}}
       </tbody>

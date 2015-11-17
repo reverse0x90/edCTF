@@ -1,6 +1,36 @@
 @import "ember-modal-dialog/ember-modal-structure";
 @import "ember-modal-dialog/ember-modal-appearance";
 
+span.flagFormat {
+  text-transform: lowercase;
+  letter-spacing: 0.05em;
+  font-weight: 300;
+  color: forestgreen;
+}
+
+th.userHead {
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-weight: 600;
+}
+table#nullifyHSCTF,table#cyberScientists {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 400;
+  font-size: smaller;
+  border: 1px solid #eee;
+  margin-bottom: 25px;
+}
+
+.welcome-message {
+  text-transform: uppercase; 
+  letter-spacing: 0.45em; 
+  font-weight: 100; 
+  color: rgb(255, 92, 51); 
+  text-shadow: 2px 3px 4px rgb(230, 46, 0);
+}
+  
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -23,6 +53,10 @@
 .edctf-warning-button {
   text-align: center;
   letter-spacing: .05em;
+}
+
+.ember-modal-dialog {
+  padding: 15px !important;
 }
 
 /* style for nav-bar modal */
@@ -70,14 +104,14 @@
   font-size: 28px;
   font-weight: 400;
   letter-spacing: .05em;
+  vertical-align: middle !important;
 }
 .challengeButton {
     padding: 14px 24px;
-    margin: .2em;
+    margin: .15em .2em;
     border: 0 none;
     font-weight: 700;
     letter-spacing: 1px;
-    text-transform: uppercase;
 }
 .challengeButton:focus, .challengeButton:active:focus, .challengeButton.active:focus {
     outline: 0 none;
@@ -104,7 +138,7 @@
   border-radius:0;
 }
 .challengeButton-xlarge {
-  padding:23px 67px;
+  padding:23px 72px;
   font-size: 24px;
   line-height: 1.33;
   border-radius: 6px

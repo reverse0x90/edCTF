@@ -3,7 +3,6 @@
 
   <div class="modal-dialog">
     <div class="modal-header">
-      <button type="button" class="close" {{action 'closeProfileModal'}} aria-hidden="true">&times;</button>
       <h1 class="modal-title team-name">{{user.team.teamname}}</h1>
     </div>
 
@@ -45,7 +44,7 @@
     --}}
     
     <div class="modal-footer">
-      <button type="button" class="btn btn-default" {{action 'closeTeamModal'}}>Close</button>
+      <button type="button" class="btn btn-default" {{action 'closeProfileModal'}}>Close</button>
     </div>
   </div>
 {{/modal-dialog}}
