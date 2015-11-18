@@ -9,7 +9,7 @@
             {{#if category.sortedChallenges}}
               <td class="challenge-category-name">{{category.name}}</td>
               {{#each category.sortedChallenges as |challenge|}}
-                  {{#if challenge.isSolved}}
+                {{#if challenge.isSolved}}
                    <button class="challengeButton challengeButton-solved challengeButton-xlarge sharp" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
                 {{else}}
                   <button class="challengeButton challengeButton-unsolved challengeButton-xlarge sharp" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
