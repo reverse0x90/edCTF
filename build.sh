@@ -16,10 +16,7 @@ cd ${EDCTF_DIR}/ember \
   && cp -R /usr/local/lib/python2.7/dist-packages/rest_framework/static/rest_framework ${EDCTF_STATIC_DIR}/rest_framework
 
 cd ${EDCTF_DIR} \
+  && sudo python generate_secrets.py \
   && python manage.py makemigrations \
   && python manage.py migrate \
-  && python manage.py createsuperuser \
-  && sudo chown $USER:www-data ${EDCTF_DIR} \
-  && sudo chmod 775 ${EDCTF_DIR} \
-  && sudo chown $USER:www-data ${EDCTF_DIR}/*.sqlite3 \
-  && sudo chmod 775 ${EDCTF_DIR}/*.sqlite3
+  && python manage.py createsuperuser

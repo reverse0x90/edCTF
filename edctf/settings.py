@@ -15,24 +15,12 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# import secrets, generate if fail
+# import local secrets
 try:
     import edctf_secret
-except ImportError:
-    from django.utils.crypto import get_random_string
-    import string
-    
-    # generate new secret
-    chars = ''.join(map(chr, range(128))) # maximum characters get_random_string handles
-    secret = get_random_string(50, chars)
-
-    generated_code = 'SECRET_KEY = \'{}\'\n'.format(secret.encode('base64').replace('\n','')) # encode appends newline
-    with open(os.path.join(BASE_DIR, 'edctf/edctf_secret.py'), 'wb') as f:
-        f.write(generated_code)
-    
-    import edctf_secret
-
-
+except ImportError as err:
+    err.extra_info = "edctf_secret.py was not created!"
+    raise 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -43,7 +31,11 @@ SECRET_KEY = edctf_secret.SECRET_KEY.decode('base64')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    ALLOWED_HOSTS = []
+else:
+    # TODO: change this
+    ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -97,8 +89,12 @@ WSGI_APPLICATION = 'edctf.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': edctf_secret.DB_NAME,
+        'USER': edctf_secret.DB_USER,
+        'PASSWORD': edctf_secret.DB_PASSWORD,
+        'HOST': edctf_secret.DB_HOST,
+        'PORT': edctf_secret.DB_PORT,
     }
 }
 
@@ -122,9 +118,20 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = ('/opt/edctf/edctf/static/',)
 
+if DEBUG:
+    REST_FRAMEWORK = {
+        'DEFAULT_PERMISSION_CLASSES': (
+            'rest_framework.permissions.IsAuthenticated',
+        )
+    }
+else:
+    REST_FRAMEWORK = {
+        'DEFAULT_PERMISSION_CLASSES': (
+            'rest_framework.permissions.IsAuthenticated',
+        ),
+        'DEFAULT_RENDERER_CLASSES': (
+            'rest_framework.renderers.JSONRenderer',
+        )
+    }
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    )
-}
+
