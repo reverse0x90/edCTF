@@ -1,36 +1,6 @@
 @import "ember-modal-dialog/ember-modal-structure";
 @import "ember-modal-dialog/ember-modal-appearance";
 
-span.flagFormat {
-  text-transform: lowercase;
-  letter-spacing: 0.05em;
-  font-weight: 300;
-  color: forestgreen;
-}
-
-th.userHead {
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
-  font-weight: 600;
-}
-table#nullifyHSCTF,table#cyberScientists {
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 400;
-  font-size: smaller;
-  border: 1px solid #eee;
-  margin-bottom: 25px;
-}
-
-.welcome-message {
-  text-transform: uppercase; 
-  letter-spacing: 0.45em; 
-  font-weight: 100; 
-  color: rgb(255, 92, 51); 
-  text-shadow: 2px 3px 4px rgb(230, 46, 0);
-}
-  
-
 .cursor-pointer {
   cursor: pointer;
 }

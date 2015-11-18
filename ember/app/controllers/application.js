@@ -6,6 +6,9 @@ export default Ember.Controller.extend({
   validatorController: null,
   ctf: null,
   user: {},
+  updateTitle: function() {
+    Ember.$(document).attr('title', this.get('ctf.name'));
+  }.observes('ctf.name'),
   init: function(){
     this._super();
 
