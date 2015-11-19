@@ -24,7 +24,7 @@ def check_flag(team, challenge, flag):
     Checks a given flag with a challenge.
     '''
     
-    res = team.solved.all().filter(id=challenge.id)
+    res = team.solved.filter(id=challenge.id)
     
     # if not solved, do flag check
     if not res:
@@ -209,13 +209,13 @@ class ctfView(APIView):
         or get all live ctfs via GET parameter, i.e. live=true
         """
         if id:
-            ctfs = ctf.objects.all().filter(id=id)
+            ctfs = ctf.objects.filter(id=id)
         else:
             if 'live' in request.query_params:
                 if request.query_params['live'] == 'true':
-                    ctfs = ctf.objects.all().filter(live=True)
+                    ctfs = ctf.objects.filter(live=True)
                 else:
-                    ctfs = ctf.objects.all().filter(live=False)
+                    ctfs = ctf.objects.filter(live=False)
             else:
                 ctfs = ctf.objects.all()
         serializer = ctfSerializer(ctfs, many=True, context={'request': request})
@@ -231,15 +231,15 @@ class challengeboardView(APIView):
         or get by id via challengeboards/:id
         """
         if id:
-            challengeboards = challengeboard.objects.all().filter(id=id)
+            challengeboards = challengeboard.objects.filter(id=id)
             challengeboards_serializer = challengeboardSerializer(challengeboards, many=True, context={'request': request})
 
-            categories = category.objects.all().filter(challengeboard=challengeboards[0])
+            categories = category.objects.filter(challengeboard=challengeboards[0])
             categories_serializer = categorySerializer(categories, many=True, context={'request': request})
 
             challenges = []
             for cat in categories:
-                challenges += challenge.objects.all().filter(category=cat)
+                challenges += challenge.objects.filter(category=cat)
             challenges_serializer = challengeSerializer(challenges, many=True, context={'request': request})
 
             return Response({
@@ -262,7 +262,7 @@ class challengeView(APIView):
         or get by id via challenge/:id
         """
         if id:
-            challenges = challenge.objects.all().filter(id=id)
+            challenges = challenge.objects.filter(id=id)
         else:
             challenges = challenge.objects.all()
         challenge_serializer = challengeSerializer(challenges, many=True, context={'request': request})
@@ -289,7 +289,7 @@ class challengeView(APIView):
 
             _team = request.user.teams
             #if check_flag(_team,_challenge, flag):
-            if check_flag2(_challenge, flag):
+            if check_flag(_challenge, flag):
                 #update_solved(_team, _challenge)
                 return Response({
                     "success": True
@@ -310,11 +310,11 @@ class scoreboardView(APIView):
         """
         if id:
             # Set scoreboard object
-            scoreboards = scoreboard.objects.all().filter(id=id)
+            scoreboards = scoreboard.objects.filter(id=id)
             scoreboards_serializer = scoreboardSerializer(scoreboards, many=True, context={'request': request})
             
             # Set teams from scoreboard
-            teams = team.objects.all().filter(scoreboard=scoreboards[0]).order_by('-points','-last_timestamp')
+            teams = team.objects.filter(scoreboard=scoreboards[0]).order_by('-points','-last_timestamp')
             teams_serializer = teamSerializer(teams, many=True, context={'request': request})
             for pos,t in enumerate(teams_serializer.data):
                 t['position'] = pos+1
@@ -342,7 +342,7 @@ class teamView(APIView):
         or get by id via teams/:id
         """
         if id:
-            teams = team.objects.all().filter(id=id)
+            teams = team.objects.filter(id=id)
         else:
             teams = team.objects.all()
         teams_serializer = teamSerializer(teams, many=True, context={'request': request})
