@@ -161,6 +161,10 @@ table{
 }
 
 /* style for team and profile modals */
+.team-table {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
 .team-name {
   text-align: center;
   font-size: 36px;
@@ -184,4 +188,11 @@ table{
 }
 .team-wrong-flags{
   color: red;
+}
+.team-challenges {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: .05em;
 }

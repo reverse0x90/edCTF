@@ -9,10 +9,10 @@
       {{challenge-modal validatorController=validatorController modal=modal challenge=modal.challenge store=store user=user}}
     {{else}}
       {{#if modal.isTeam}}
-        {{team-modal modal=modal team=modal.team}}
+        {{team-modal modal=modal team=modal.team store=store ctf=ctf}}
       {{else}}
         {{#if modal.isProfile}}
-          {{profile-modal modal=modal user=user}}
+          {{profile-modal modal=modal user=user team=user.team store=store ctf=ctf}}
         {{else}}
           {{#if modal.isLogout}}
             {{logout-modal modal=modal logout="logout"}}

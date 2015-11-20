@@ -1,12 +1,11 @@
 {{#modal-dialog close='closeTeamModal' translucentOverlay=true}}
   <div class="modal-dialog">
     <div class="modal-header">
-      <button type="button" class="close" {{action 'closeTeamModal'}} aria-hidden="true">&times;</button>
       <h2 class="modal-title team-name">{{team.teamname}}</h2>
     </div>
 
     <div class="modal-body">
-      <table class="table table-hover table-condensed" style="width:100%">
+      <table class="table table-hover table-condensed team-table" style="width:100%">
         <thead>
           <tr>
             <th class="team-keys">Rank</th>
@@ -26,6 +25,29 @@
           </tr>
         </tbody>
       </table>
+
+      {{#if sortedChallenges}}
+        <table class="table table-hover table-condensed team-table" style="width:100%">
+          <thead>
+            <tr>
+              <th class="team-keys">Category</th>
+              <th class="team-keys">Title</th>
+              <th class="team-keys">Points</th>
+              <th class="team-keys">Timestamp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each sortedChallenges as |challenge|}}
+              <tr class="team-values">
+                <td>{{challenge.title}}</td>
+                <td>{{challenge.title}}</td>
+                <td>{{challenge.points}}</td>
+                <td>00:00:00</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      {{/if}}
     </div>
     
     <div class="modal-footer">

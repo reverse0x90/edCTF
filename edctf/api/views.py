@@ -288,9 +288,8 @@ class challengeView(APIView):
                 }, status=status.HTTP_401_UNAUTHORIZED)
 
             _team = request.user.teams
-            #if check_flag(_team,_challenge, flag):
-            if check_flag(_challenge, flag):
-                #update_solved(_team, _challenge)
+            if check_flag(_team,_challenge, flag):
+                update_solved(_team, _challenge)
                 return Response({
                     "success": True
                 })

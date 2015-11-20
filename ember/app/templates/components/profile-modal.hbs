@@ -3,14 +3,24 @@
 
   <div class="modal-dialog">
     <div class="modal-header">
-      <h1 class="modal-title team-name">{{user.team.teamname}}</h1>
+      <h1 class="modal-title team-name">{{team.teamname}}</h1>
     </div>
 
     <div class="modal-body">
+      {{!--
+      <form class="form">
+        Email:{{input type="text" value=teamEmail enter="submitRegister" class="form-control" id="inputEmail" placeholder=user.email}}
+        <br/>
+        Password:{{input type="password" value=password enter="submitRegister" class="form-control" id="inputPassword" placeholder="Password"}}
+        <br/>
+        Password Confirmation:{{input type="password" value=confirmPassword enter="submitProfile" class="form-control" id="inputPasswordConfirmation" placeholder="Confirm Password"}}
+      </form>
+      --}}
+
       <table class="table table-hover table-condensed" style="width:100%">
         <thead>
           <tr>
-            {{#if user.team.position}}
+            {{#if team.position}}
               <th class="team-keys">Rank</th>
             {{/if}}
             <th class="team-keys">Points</th>
@@ -21,27 +31,40 @@
         </thead>
         <tbody>
           <tr class="team-values">
-            {{#if user.team.position}}
-              <td>{{user.team.position}}</td>
+            {{#if team.position}}
+              <td>{{team.position}}</td>
             {{/if}}
-            <td>{{user.team.points}}</td>
-            <td class="team-correct-flags">{{user.team.correct_flags}}</td>
-            <td class="team-wrong-flags">{{user.team.wrong_flags}}</td>
-            <td>{{user.team.numSolved}}</td>
+            <td>{{team.points}}</td>
+            <td class="team-correct-flags">{{team.correct_flags}}</td>
+            <td class="team-wrong-flags">{{team.wrong_flags}}</td>
+            <td>{{team.numSolved}}</td>
           </tr>
         </tbody>
       </table>
-    </div>
 
-    {{!--
-    <form class="form">
-      Email:{{input type="text" value=teamEmail enter="submitRegister" class="form-control" id="inputEmail" placeholder=user.email}}
-      <br/>
-      Password:{{input type="password" value=password enter="submitRegister" class="form-control" id="inputPassword" placeholder="Password"}}
-      <br/>
-      Password Confirmation:{{input type="password" value=confirmPassword enter="submitProfile" class="form-control" id="inputPasswordConfirmation" placeholder="Confirm Password"}}
-    </form>
-    --}}
+      {{#if sortedChallenges}}
+        <table class="table table-hover table-condensed team-table" style="width:100%">
+          <thead>
+            <tr>
+              <th class="team-keys">Category</th>
+              <th class="team-keys">Title</th>
+              <th class="team-keys">Points</th>
+              <th class="team-keys">Timestamp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each sortedChallenges as |challenge|}}
+              <tr class="team-values">
+                <td>{{challenge.title}}</td>
+                <td>{{challenge.title}}</td>
+                <td>{{challenge.points}}</td>
+                <td>00:00:00</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      {{/if}}
+    </div>
     
     <div class="modal-footer">
       <button type="button" class="btn btn-default" {{action 'closeProfileModal'}}>Close</button>
