@@ -2,4 +2,5 @@
 *.db
 *.pyc
 *.sqlite3
-edctf_secret.py
+edctf/edctf_secret.py
+

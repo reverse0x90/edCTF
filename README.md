@@ -11,9 +11,10 @@ You will need the following things properly installed on your computer.
 
 ## Installation
 
-You can install it with Docker by using startdocker.sh:
+You can run it within a container using Docker via the following commands:
 ```
-sh startdocker.sh
+docker build -t edctf .
+docker run --restart=always -p 80:80 --name edctf_server -d edctf
 ```
 
 Or you can install locally, assuming you're using something like Ubuntu or Debian.  Run this command in your shell:

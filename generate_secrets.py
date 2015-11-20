@@ -2,7 +2,7 @@
 This file should be ran as a user with root priveleges
 '''
 from django.utils.crypto import get_random_string
-import os,string
+import os,sys,string
 
 _generated_code_template = '''
 # Django secret key
@@ -16,19 +16,19 @@ DB_HOST = '{dbhost}'
 DB_PORT = '{dbport}'
 '''
 
-_postgres_setup_template = '''su - postgres -c "psql -c \\"CREATE USER {dbuser} WITH PASSWORD '{dbpassword}';\\"" \\
- || su - postgres -c "psql -c \\"ALTER USER {dbuser} WITH PASSWORD '{dbpassword}';\\""; \\
-su - postgres -c "psql -c \\"CREATE DATABASE {dbname};\\""; \\
-su - postgres -c "psql -c \\"GRANT ALL PRIVILEGES ON DATABASE {dbname} to {dbuser};\\"";
+_postgres_setup_template = '''(sudo -u postgres psql -c "CREATE USER {dbuser} WITH PASSWORD '{dbpassword}';") \\
+  || (sudo -u postgres psql -c "ALTER USER {dbuser} WITH PASSWORD '{dbpassword}';"); \\
+sudo -u postgres psql -c "CREATE DATABASE {dbname};"; \\
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE {dbname} to {dbuser};";
 '''
 
 def main():
     secret_chars = ''.join(map(chr, range(128)))
     password_chars = string.ascii_letters + string.digits
-
+    
     # generate new django secret
     secret = get_random_string(50, secret_chars)
-
+    
     # set database information
     dbname = 'edctf'
     dbuser = 'edctf'
@@ -59,9 +59,6 @@ def main():
 
     # modify access, since running as escalated user
     os.system('chmod 755 edctf/edctf_secret.py')
-
-
-
 
 if __name__ == '__main__':
     main()
