@@ -20,18 +20,20 @@ export default Ember.Controller.extend({
         }
       }
       
-      var usersolved = this.get('user.team.solved');
+      var usersolved = this.get('user.team.solves');
       if (usersolved){
-        usersolved.addObject(chall_id);
+        var timestamp = [chall_id, Date.now() / 1000 | 0];
+        usersolved.addObject(timestamp);
       }
       this.set('modal.solvedChallenge', false);
     }
 
     // Updated isSolved flag for challenges that are solved
-    var solved = this.get('user.team.solved');
+    var solves = this.get('user.team.solves');
     var t = this;
-    if(solved){
-      solved.forEach(function(challenge_id){
+    if(solves){
+      solves.forEach(function(timestamp){
+        var challenge_id = timestamp[0];
         var challenge = t.store.peekRecord('challenge', challenge_id);
         if (challenge){
           if(!challenge.get('isSolved')){

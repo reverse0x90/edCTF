@@ -39,10 +39,10 @@
           <tbody>
             {{#each sortedChallenges as |challenge|}}
               <tr class="team-values">
-                <td>{{challenge.title}}</td>
+                <td>{{challenge.category}}</td>
                 <td>{{challenge.title}}</td>
                 <td>{{challenge.points}}</td>
-                <td>00:00:00</td>
+                <td>{{challenge.timestamp}}</td>
               </tr>
             {{/each}}
           </tbody>

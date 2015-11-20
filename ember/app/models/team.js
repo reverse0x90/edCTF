@@ -8,8 +8,8 @@ export default DS.Model.extend({
   points: DS.attr('number'),
   correct_flags: DS.attr('number'),
   wrong_flags: DS.attr('number'),
-  solved: DS.attr('array'),
-  numSolved: Ember.computed('solved', function() {
-    return this.get('solved').length;
+  solves: DS.attr('array'),
+  numSolved: Ember.computed('solves', function() {
+    return this.get('solves').length;
   }),
 });

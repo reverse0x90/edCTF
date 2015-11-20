@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from edctf.api.validators import *
+import time
 
 # Create your models here.
 class ctf(models.Model):
@@ -71,10 +72,22 @@ class team(models.Model):
     solved = models.ManyToManyField('challenge', blank=True, related_name="solved", through='challengeTimestamp')
     last_timestamp = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+    
     class Meta:
         verbose_name_plural = "teams"
+    
     def __unicode__(self):
        return 'team {}: {}'.format(self.id, self.teamname)
+    
+    def solves(self):
+        challengeTimestamps = []
+        team_challengeTimestamps = self.challengeTimestamps.all()
+        for timestamp in team_challengeTimestamps:
+            _time = int(time.mktime(timestamp.created.timetuple()))
+            _id = timestamp.challenge.id
+            challengeTimestamps.append((_id, _time))
+        return challengeTimestamps
+
 
 class challengeTimestamp(models.Model):
     team = models.ForeignKey('team', related_name="challengeTimestamps", related_query_name="challengeTimestamp")

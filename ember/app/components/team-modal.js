@@ -5,25 +5,35 @@ export default Ember.Component.extend({
   team: {},
   challenges: [],
   store: undefined,
-  challengeSorting: ['points'],
+  challengeSorting: ['timestamp:desc'],
   sortedChallenges: Ember.computed.sort('challenges', 'challengeSorting'),
   setChallenges: function(){
-    var chall_ids = this.get('team.solved');
+    var challengeTimestamps = this.get('team.solves');
     var store = this.get('store');
 
-    if(chall_ids){
+    if(challengeTimestamps){
       var t = this;
       this.get('ctf.challengeboard').then(function(){
         var challenges = [];
 
-        for (var i = 0; i < chall_ids.length; i++) {
-          var id = chall_ids[i];
-          var challenge = store.peekRecord('challenge', id);
-          console.log('here!!!',challenge);
-          if(challenge){
+        for (var i = 0; i < challengeTimestamps.length; i++) {
+          var id = challengeTimestamps[i][0];
+          var time = challengeTimestamps[i][1];
+          var foundChallenge = store.peekRecord('challenge', id);
+
+          if(foundChallenge){
+            var foundCategory = store.peekRecord('category', foundChallenge.get('category').id);
+            var challenge = {
+              title: foundChallenge.get('title'),
+              points: foundChallenge.get('points'),
+              category: foundCategory.get('name'),
+              timestamp: time
+            };
+            console.log('HERE',foundCategory);
             challenges.push(challenge);
           }
         }
+        challenges = Ember.A(challenges);
         t.set('challenges', challenges);
       });
     }
