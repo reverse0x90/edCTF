@@ -19,7 +19,7 @@ export default Ember.Component.extend({
 
         for (var i = 0; i < challengeTimestamps.length; i++) {
           var id = challengeTimestamps[i][0];
-          var time = challengeTimestamps[i][1];
+          var time = new Date(challengeTimestamps[i][1] * 1000);
           var foundChallenge = store.peekRecord('challenge', id);
 
           if(foundChallenge){
@@ -29,7 +29,7 @@ export default Ember.Component.extend({
                 title: foundChallenge.get('title'),
                 points: foundChallenge.get('points'),
                 category: foundCategory.get('name'),
-                timestamp: time
+                timestamp: time.toUTCString()
               };
               challenges.push(challenge);
             }
