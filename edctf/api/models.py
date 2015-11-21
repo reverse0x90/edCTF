@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from edctf.api.validators import *
+from datetime import datetime
 import time
 
 # Create your models here.
@@ -70,7 +71,8 @@ class team(models.Model):
     wrong_flags = models.IntegerField(default=0)
     user = models.OneToOneField(User, related_name="teams", related_query_name="team")
     solved = models.ManyToManyField('challenge', blank=True, related_name="solved", through='challengeTimestamp')
-    last_timestamp = models.DateTimeField(auto_now=True)
+    #last_timestamp = models.DateTimeField(auto_now=True)
+    last_timestamp = models.DateTimeField(default=datetime.fromtimestamp(0))
     created = models.DateTimeField(auto_now_add=True)
     
     class Meta:

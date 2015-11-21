@@ -24,14 +24,15 @@ export default Ember.Component.extend({
 
           if(foundChallenge){
             var foundCategory = store.peekRecord('category', foundChallenge.get('category').id);
-            var challenge = {
-              title: foundChallenge.get('title'),
-              points: foundChallenge.get('points'),
-              category: foundCategory.get('name'),
-              timestamp: time
-            };
-            console.log('HERE',foundCategory);
-            challenges.push(challenge);
+            if(foundCategory){
+              var challenge = {
+                title: foundChallenge.get('title'),
+                points: foundChallenge.get('points'),
+                category: foundCategory.get('name'),
+                timestamp: time
+              };
+              challenges.push(challenge);
+            }
           }
         }
         challenges = Ember.A(challenges);

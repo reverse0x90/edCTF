@@ -1,14 +1,13 @@
-{{#if ctf.scoreboard.topteamsdata}}
+{{#if topTeamsData.data}}
   <div class="scoreboard-topx">Top {{ctf.scoreboard.numtopteams}} Teams</div>
   {{c3-chart
-    data=ctf.scoreboard.topteamsdata
-    axis=c3Options.axis
-    point=c3Options.point
-    grid=c3Options.grid
-    zoom=c3Options.zoom
+    data=topTeamsData.data
+    axis=topTeamsData.axis
+    point=topTeamsData.point
+    grid=topTeamsData.grid
+    zoom=topTeamsData.zoom
   }}
 {{/if}}
-
 <br/>
 <div class="container">
   <table class="table table-hover table-condensed" style="width:100%">
