@@ -47,6 +47,24 @@ def validate_tags(value):
   if not valid:
     raise ValidationError('Field may only contain valid html tags: %s' %(", ".join(VALID_TAGS)))
 
+def validate_no_html(value):
+  """
+  Validates only white listed attributes are allowed in the string.
+  """
+  valid = True
+
+  soup = BeautifulSoup(value, 'html.parser')
+
+  # Parse all the tags in the soup
+  for tag in soup.findAll(True):
+    if tag.name:
+        valid = False
+        break
+
+  if not valid:
+    raise ValidationError('Field may only contain html')
+
+
 def validate_positive(value):
   """
   Validates challenge points are positive.

@@ -6,7 +6,7 @@ import time
 
 # Create your models here.
 class ctf(models.Model):
-    name = models.CharField(max_length=250, unique=True, validators=[validate_xss])
+    name = models.CharField(max_length=250, unique=True, validators=[validate_xss, validate_no_html])
     live = models.BooleanField(default=False)
     challengeboard = models.ManyToManyField('challengeboard', related_name="ctfs", related_query_name="ctf")
     scoreboard = models.ManyToManyField('scoreboard', related_name="ctfs", related_query_name="ctf")
@@ -24,7 +24,7 @@ class challengeboard(models.Model):
        return '{}'.format(self.id)
 
 class category(models.Model):
-    name =  models.CharField(max_length=50, validators=[validate_xss])
+    name =  models.CharField(max_length=50, validators=[validate_xss, validate_no_html])
     challengeboard = models.ForeignKey('challengeboard', related_name="categories", related_query_name="category")
     created = models.DateTimeField(auto_now_add=True)
     class Meta:
@@ -34,7 +34,7 @@ class category(models.Model):
 
 class challenge(models.Model):
     category = models.ForeignKey('category', related_name="challenges", related_query_name="challenge")
-    title = models.CharField(max_length=200, validators=[validate_xss])
+    title = models.CharField(max_length=200, validators=[validate_xss, validate_no_html])
     points = models.IntegerField(default=0, validators=[validate_positive])
     description = models.CharField(max_length=10000, validators=[validate_xss, validate_tags, validate_attributes])
     flag = models.CharField(max_length=100)
@@ -63,7 +63,7 @@ class scoreboard(models.Model):
 
 class team(models.Model):
     scoreboard = models.ForeignKey('scoreboard', related_name="teams", related_query_name="team")
-    teamname = models.CharField(max_length=60, unique=True, validators=[validate_xss])
+    teamname = models.CharField(max_length=60, unique=True, validators=[validate_xss, validate_no_html])
     points = models.IntegerField(default=0, validators=[validate_positive])
     correct_flags = models.IntegerField(default=0, validators=[validate_positive])
     wrong_flags = models.IntegerField(default=0, validators=[validate_positive])
