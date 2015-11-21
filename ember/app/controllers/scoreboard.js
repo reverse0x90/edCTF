@@ -26,7 +26,7 @@ export default Ember.Controller.extend({
             outer: false,
             count: 10,
             format: function (x) { 
-                return moment(x*1000).local().format('LLL');
+                return moment(x*1000).utc().format('LLL');
             }
           },
           type: 'timeseries',
