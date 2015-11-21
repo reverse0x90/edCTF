@@ -36,7 +36,7 @@ class challenge(models.Model):
     category = models.ForeignKey('category', related_name="challenges", related_query_name="challenge")
     title = models.CharField(max_length=200, validators=[validate_xss])
     points = models.IntegerField(default=0, validators=[validate_positive])
-    description = models.CharField(max_length=10000, validators=[validate_xss, validate_whitelist_tags])
+    description = models.CharField(max_length=10000, validators=[validate_xss, validate_tags, validate_attributes])
     flag = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
 
