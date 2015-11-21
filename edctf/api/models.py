@@ -6,7 +6,7 @@ import time
 
 # Create your models here.
 class ctf(models.Model):
-    name = models.CharField(max_length=50, blank=False, unique=True)
+    name = models.CharField(max_length=250, unique=True, validators=[validate_xss])
     live = models.BooleanField(default=False)
     challengeboard = models.ManyToManyField('challengeboard', related_name="ctfs", related_query_name="ctf")
     scoreboard = models.ManyToManyField('scoreboard', related_name="ctfs", related_query_name="ctf")
@@ -24,20 +24,20 @@ class challengeboard(models.Model):
        return '{}'.format(self.id)
 
 class category(models.Model):
-    name =  models.CharField(max_length=50, blank=False)
+    name =  models.CharField(max_length=50, validators=[validate_xss])
     challengeboard = models.ForeignKey('challengeboard', related_name="categories", related_query_name="category")
     created = models.DateTimeField(auto_now_add=True)
     class Meta:
-        verbose_name_plural = "category"
+        verbose_name_plural = "categories"
     def __unicode__(self):
        return '{}'.format(self.name)
 
 class challenge(models.Model):
     category = models.ForeignKey('category', related_name="challenges", related_query_name="challenge")
-    title = models.CharField(max_length=200, blank=False)
-    points = models.IntegerField(default=0)
-    description = models.CharField(max_length=10000, blank=False)
-    flag = models.CharField(max_length=100, blank=False)
+    title = models.CharField(max_length=200, validators=[validate_xss])
+    points = models.IntegerField(default=0, validators=[validate_positive])
+    description = models.CharField(max_length=10000, validators=[validate_xss, validate_whitelist_tags])
+    flag = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
 
     def _get_number_solved(self):
@@ -63,15 +63,12 @@ class scoreboard(models.Model):
 
 class team(models.Model):
     scoreboard = models.ForeignKey('scoreboard', related_name="teams", related_query_name="team")
-    #scoreboard = models.ManyToManyField('scoreboard') # possible change to this later
-
-    teamname = models.CharField(max_length=60, blank=False, unique=True)
-    points = models.IntegerField(default=0)
-    correct_flags = models.IntegerField(default=0)
-    wrong_flags = models.IntegerField(default=0)
+    teamname = models.CharField(max_length=60, unique=True, validators=[validate_xss])
+    points = models.IntegerField(default=0, validators=[validate_positive])
+    correct_flags = models.IntegerField(default=0, validators=[validate_positive])
+    wrong_flags = models.IntegerField(default=0, validators=[validate_positive])
     user = models.OneToOneField(User, related_name="teams", related_query_name="team")
     solved = models.ManyToManyField('challenge', blank=True, related_name="solved", through='challengeTimestamp')
-    #last_timestamp = models.DateTimeField(auto_now=True)
     last_timestamp = models.DateTimeField(default=datetime.fromtimestamp(0))
     created = models.DateTimeField(auto_now_add=True)
     
