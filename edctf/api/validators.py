@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from bs4 import BeautifulSoup
 
-def validate_xss(value):
+def validate_no_xss(value):
   """
   Validates there is no unintended javascript in the value.
   """
@@ -62,7 +62,7 @@ def validate_no_html(value):
         break
 
   if not valid:
-    raise ValidationError('Field may only contain html')
+    raise ValidationError('Field may not contain html')
 
 
 def validate_positive(value):
