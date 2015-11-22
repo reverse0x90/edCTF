@@ -4,10 +4,15 @@ export default Ember.Component.extend({
   modal: {},
   team: {},
   challenges: [],
+  isAuthenticated: false,
   store: undefined,
   challengeSorting: ['timestamp:desc'],
   sortedChallenges: Ember.computed.sort('challenges', 'challengeSorting'),
   setChallenges: function(){
+    if(!this.get('isAuthenticated')){
+      return;
+    }
+
     var challengeTimestamps = this.get('team.solves');
     var store = this.get('store');
 

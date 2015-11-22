@@ -1,16 +1,18 @@
-{{#if topTeamsData.data}}
-  <div class="scoreboard-topx">Top {{ctf.scoreboard.numtopteams}} Teams</div>
-  {{c3-chart
-    data=topTeamsData.data
-    axis=topTeamsData.axis
-    point=topTeamsData.point
-    grid=topTeamsData.grid
-    zoom=topTeamsData.zoom
-  }}
+{{#if authController.isAuthenticated}}
+  {{#if topTeamsData.data}}
+    <div class="scoreboard-topx">Top {{ctf.scoreboard.numtopteams}} Teams</div>
+    {{c3-chart
+      data=topTeamsData.data
+      axis=topTeamsData.axis
+      point=topTeamsData.point
+      grid=topTeamsData.grid
+      zoom=topTeamsData.zoom
+    }}
+  {{/if}}
 {{/if}}
-<br/>
+
 <div class="container">
-  <table class="table table-hover table-condensed" style="width:100%">
+  <table class="table table-hover table-condensed scoreboard-table" style="width:100%">
     <thead>
       <tr>
         <th class="scoreboard-keys">Rank</th>

@@ -26,27 +26,29 @@
         </tbody>
       </table>
 
-      {{#if sortedChallenges}}
-        <table class="table table-hover table-condensed team-table" style="width:100%">
-          <thead>
-            <tr>
-              <th class="team-keys">Category</th>
-              <th class="team-keys">Title</th>
-              <th class="team-keys">Points</th>
-              <th class="team-keys">Timestamp</th>
-            </tr>
-          </thead>
-          <tbody>
-            {{#each sortedChallenges as |challenge|}}
-              <tr class="team-values">
-                <td>{{challenge.category}}</td>
-                <td>{{challenge.title}}</td>
-                <td>{{challenge.points}}</td>
-                <td>{{challenge.timestamp}}</td>
+      {{#if isAuthenticated}}
+        {{#if sortedChallenges}}
+          <table class="table table-hover table-condensed team-table" style="width:100%">
+            <thead>
+              <tr>
+                <th class="team-keys">Category</th>
+                <th class="team-keys">Title</th>
+                <th class="team-keys">Points</th>
+                <th class="team-keys">Timestamp</th>
               </tr>
-            {{/each}}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {{#each sortedChallenges as |challenge|}}
+                <tr class="team-values">
+                  <td>{{challenge.category}}</td>
+                  <td>{{challenge.title}}</td>
+                  <td>{{challenge.points}}</td>
+                  <td>{{challenge.timestamp}}</td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        {{/if}}
       {{/if}}
     </div>
     

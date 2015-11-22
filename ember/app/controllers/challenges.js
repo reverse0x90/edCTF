@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   modal: {},
   ctf: null,
+  authController: null,
   user: {},
   sortCategory: ['name:asc'],
   sortChallenges: ['points:asc', 'id'],

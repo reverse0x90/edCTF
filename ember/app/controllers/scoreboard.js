@@ -4,10 +4,15 @@ import moment from 'moment';
 export default Ember.Controller.extend({
   modal: {},
   ctf: null,
+  authController: null,
   sortTeams: ['position'],
   sortedTeams: Ember.computed.sort('ctf.scoreboard.teams', 'sortTeams'),
   topTeamsData: {},
   setTopTeamsData: function(){
+    if(!this.get('authController.isAuthenticated')){
+      return;
+    }
+
     var t = this;
     var currentTime = Date.now() / 1000 | 0;
     var tMinus = 60*5;
