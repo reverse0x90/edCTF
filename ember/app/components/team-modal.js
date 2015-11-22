@@ -11,6 +11,10 @@ export default Ember.Component.extend({
   setChallenges: function(){
     if(!this.get('isAuthenticated')){
       return;
+    } else {
+      if(!this.get('ctf')){
+        return;
+      }
     }
 
     var challengeTimestamps = this.get('team.solves');

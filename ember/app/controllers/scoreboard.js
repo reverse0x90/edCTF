@@ -11,6 +11,10 @@ export default Ember.Controller.extend({
   setTopTeamsData: function(){
     if(!this.get('authController.isAuthenticated')){
       return;
+    } else {
+      if(!this.get('ctf')){
+        return;
+      }
     }
 
     var t = this;
@@ -107,7 +111,7 @@ export default Ember.Controller.extend({
       }
       t.set('topTeamsData', topTeamsData);
     });
-  }.observes('sortedTeams'),
+  }.observes('sortedTeams', 'authController.isAuthenticated'),
   actions:{
     openTeamView: function(team){
       this.set('modal.team', team);
