@@ -19,10 +19,11 @@ docker run --restart=always -p 80:80 --name edctf_server -d edctf
 The default Django admin credentials are admin/admin.  Also, it is not recommended to run docker commands as a root user.
 
 
-You can also install locally, assuming you're using something like Ubuntu or Debian.  Run this command in your shell:
+You can also install locally, assuming you're using something like Ubuntu or Debian.  Run these commands in your shell:
 ```
 sudo mkdir /opt/edctf \
-&& sudo chown $USER:www-data /opt/edctf \
+&& sudo chown $USER:$USER /opt/edctf \
 && git clone https://github.com/IAryan/edCTF.git /opt/edctf \
-&& sh /opt/edctf/all.sh
+&& cd /opt/edctf \
+&& ./all.sh
 ```
