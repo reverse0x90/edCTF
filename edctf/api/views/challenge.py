@@ -75,9 +75,9 @@ class challengeView(APIView):
             "challenges": challenge_serializer.data,
         })
     def post(self, request, id=None, format=None):
-        '''
+        """
         Submit a flag for a challenge
-        '''
+        """
         if id:
             try:
                 _challenge = challenge.objects.get(id=id)
