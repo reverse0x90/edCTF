@@ -59,17 +59,17 @@ export default Ember.Controller.extend({
     }
     // Form is valid clear the error message field and authenticate the team
     else {
-      var data = {
+      var loginData = {
         'username': credentials.teamName,
         'password': credentials.password,
       };
       
       // Server communication
       var namespace = this.store.adapterFor('application').namespace;
-      Ember.$.post(namespace+'/session', data, function(data){
-        if(data.success){
+      Ember.$.post(namespace+'/session', loginData, function(response){
+        if(response.success){
           var user = {
-            'team_id': data.team,
+            'team_id': response.team,
             'team': null,
           };
           t.set('user', user);

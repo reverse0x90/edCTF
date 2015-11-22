@@ -11,13 +11,13 @@ class sessionView(APIView):
     Manages sessions
     """
     permission_classes = (AllowAny,)
-    error_messages = {
-        'invalid': 'Invalid username or password',
-        'disabled': 'This account is suspended',
-        'isloggedin': 'Already logged in',
-    }
-
+    
     def send_error_response(self, message_key):
+        error_messages = {
+            'invalid': 'Invalid username or password',
+            'disabled': 'This account is suspended',
+            'isloggedin': 'Already logged in',
+        }
         data = {
             'success': False,
             'message': self.error_messages[message_key],
