@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sudo service apache2 reload && sudo service apache2 restart
+/usr/sbin/apache2ctl restart && /usr/sbin/apachectl -k graceful
