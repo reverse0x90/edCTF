@@ -1,8 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+from rest_framework import status
 from edctf.api.models import team
 from edctf.api.serializers import teamSerializer
+import json
 
 
 class teamView(APIView):
@@ -25,11 +27,11 @@ class teamView(APIView):
         """
         Registers a new team
         """
-        teamname = request.POST.get('teamname')
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        email = request.POST.get('email')
-        return Response(status=status.HTTP_403_FORBIDDEN)
+        test = {
+            'test': json.loads(request.body)
+        }
+        
+        return Response(test,status=status.HTTP_403_FORBIDDEN)
 
     def put(self, request, *args, **kwargs):
         """

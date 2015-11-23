@@ -53,17 +53,16 @@ export default Ember.Controller.extend({
     },
     register: function(registrationData) {
       var t = this;
-      var auth = t.get('authController');
+      var auth = this.get('authController');
       
       // Attempt to register the team
-      auth.register(registrationData);
-
-      // If there was no error during registration close the register modal 
-      if (!auth.get('errorMessage')) {
-        this.set('user', auth.user);
-        this.set('modal.isRegister', false);
-      }
-      
+      auth.register(registrationData, function(){
+        // If there was no error during registration close the register modal 
+        if (!auth.get('errorMessage')) {
+          t.set('user', auth.user);
+          t.set('modal.isRegister', false);
+        }
+      });
     },
     logout: function() {
       this.set('user', {});

@@ -12,12 +12,13 @@ export default Ember.Component.extend({
     Ember.$('#inputEmail').focus();
   }.on('didInsertElement'),
   actions: {
-  submitRegister: function() {
-      var teamEmail = this.get('teamEmail');
-      var teamName = this.get('teamName');
+    submitRegister: function() {
+      var email = this.get('teamEmail');
+      var username = this.get('teamName');
+      var teamname = this.get('teamName');
       var password = this.get('password');
-      var confirmPassword = this.get('confirmPassword');
-      this.sendAction('sendRegister', {'teamEmail': teamEmail, 'teamName': teamName, 'password': password, 'confirmPassword': confirmPassword });
+      var confirmpassword = this.get('confirmPassword');
+      this.sendAction('sendRegister', {'email': email, 'username': username, 'teamName': teamname, 'password': password, 'confirmPassword': confirmpassword });
     },
     openRegisterModal: function() {
       this.set('modal.isRegister', true);

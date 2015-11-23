@@ -25,11 +25,11 @@ export default Ember.Controller.extend({
     this.set('errorFields', {'teamName': true, 'password': true});
   },
   isvalidRegister: function(registrationData){
-    var teamEmail = registrationData.teamEmail;
+    var email = registrationData.email;
     var teamName = registrationData.teamName;
     var password = registrationData.password;
     var confirmPassword = registrationData.confirmPassword;
-    if (teamEmail.length === 0 ) {
+    if (email.length === 0 ) {
       this.set('error', "Email field cannot be blank");
       this.set('errorFields', {'teamEmail': true});
       return false;

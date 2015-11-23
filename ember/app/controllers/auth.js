@@ -104,23 +104,50 @@ export default Ember.Controller.extend({
       });
     }
   },
-  register: function(registrationData){
+  register: function(registrationData, callback){
     var t = this;
     var validator = this.get('validator');
-    var authenticationData = {};
 
     // Make sure the form is valid
     if (!validator.isvalidRegister(registrationData)) {
-      t.set('errorMessage', validator.get('error'));
-      t.set('errorFields', validator.get('errorFields'));
+      this.set('errorMessage', validator.get('error'));
+      this.set('errorFields', validator.get('errorFields'));
+      callback();
     }
     // Form is valid clear the error message field and register and login the team 
     else {
-      t.set('errorMessage', '');
-      t.set('errorFields', {});
-      authenticationData = {'teamName': registrationData.teamName, 'password': registrationData.password };
-      registrationData = null;
-      this.login(authenticationData);
+      var team = {
+        email: registrationData.email,
+        username: registrationData.username,
+        teamname: registrationData.teamname,
+        password: registrationData.password
+      };
+      var namespace = this.store.adapterFor('application').namespace;
+
+      Ember.$.ajax({
+        url: namespace+'/teams',
+        type: 'POST',
+        data: JSON.stringify(team),
+        dataType: 'json',
+        ontentType: 'application/json; charset=UTF-8',
+        success: function (result) {
+          console.log('SUCCESS: ',result);
+          t.set('errorMessage', '');
+          t.set('errorFields', {});
+
+          // call login here
+          //t.login(authenticationData);
+          registrationData = null;
+
+          callback();
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+          console.log('ERROR: ', xhr, ajaxOptions, thrownError);
+          t.set('errorMessage', 'Server Error');
+          t.set('errorFields', {});
+          callback();
+        }
+      });
     }
   },
   logout: function(){
