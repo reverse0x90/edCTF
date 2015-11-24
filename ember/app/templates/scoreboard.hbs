@@ -1,4 +1,4 @@
-{{#if authController.isAuthenticated}}
+{{#if session.isAuthenticated}}
   {{#if topTeamsData.data}}
     <div class="scoreboard-topx">Top {{ctf.scoreboard.numtopteams}} Teams</div>
     {{c3-chart

@@ -8,12 +8,11 @@ export default Ember.Controller.extend({
   errorFields:{},
   validator: Ember.inject.controller('validator'),
   whiteList: ['index', 'scoreboard', 'about', 'home'],
-  user: {},
   session: {
-    isAuthenticated: false,
-    username: null,
-    email: null,
-    team: null,
+    'isAuthenticated': false,
+    'username': null,
+    'email': null,
+    'team': null,
   },
   inwhiteList: function(string){
     if ( this.get('whiteList').indexOf(string)>=0 ) {
@@ -24,33 +23,31 @@ export default Ember.Controller.extend({
     }
   },
   checkLoggedIn: function(callback){
-    if(this.get('isAuthenticated')){
-      callback(true);
+    if(this.get('session.isAuthenticated')){
+      callback();
     } else {
       var t = this;
       var namespace = t.store.adapterFor('application').namespace;
-      Ember.$.get(namespace+'/session', function(data){
-        if(data.success){
-          if(data.team){
-            var user = {
-              'team_id': data.team,
-              'team': t.store.findRecord('team', data.team),
-            };
-            t.set('user', user);
+      Ember.$.ajax({
+        url: namespace+'/session',
+        type: 'GET',
+        success: function (result){
+          var session = {};
+          if(result.isauthenticated){
+            session.isAuthenticated = true;
+            session.username = result.username;
+            session.email = result.email;
+            session.team = t.store.findRecord('team', result.team);
+          } else {
+            session.isAuthenticated = false;
           }
-          t.set('isAuthenticated', true);
-          callback(true);
-        } else {
-          callback(false);
-        }
+          t.set('session', session);
+          callback();
+        }, error: function () {
+          callback();
+        },
       });
     }
-  },
-  isRemembered: function(){
-    //if (localStorage.getItem('isAuthenticated') === 'true') {
-    //  this.set('isAuthenticated', true);
-    //}
-    return this.get('isAuthenticated');
   },
   login: function(credentials, callback){
     var t = this;
@@ -72,48 +69,51 @@ export default Ember.Controller.extend({
       
       // Server communication
       var namespace = this.store.adapterFor('application').namespace;
-      Ember.$.post(namespace+'/session', loginData, function(response){
-        if(response.success){
-          var user = {
-            'team_id': response.team,
-            'team': null,
-          };
-          t.set('user', user);
-          
-          // Set is authenticated to true
-          t.set('isAuthenticated', true);
+      Ember.$.ajax({
+        url: namespace+'/session',
+        type: 'POST',
+        data: JSON.stringify(loginData),
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function (result){
+          var session = {};
+          if(result.error){
+            session.isAuthenticated = result.isauthenticated || false;
+            t.set('errorMessage', result.error);
+            t.set('errorFields', {'teamName': true, 'password': true});
+          } else {
+            t.set('errorMessage', '');
+            t.set('errorFields', {});
+            if(result.isauthenticated){
+              session.isAuthenticated = true;
+              session.username = result.username;
+              session.email = result.email;
+              session.team = t.store.findRecord('team', result.team);
+            } else {
+              session.isAuthenticated = false;
+            }
 
-          // If the user clicked the remember me check box set is auth in local storage
-          if (credentials.rememberMe === true) {
-            localStorage.setItem("isAuthenticated", true); 
+            // If the the user was redirected to authenticate send them to the page they originally requested
+            if(currentTransition){
+              t.set('currentTransition', null);
+              currentTransition.retry();
+            }
           }
-
-          // If the the user was redirected to authenticate send them to the page they originally requested
-          if ( currentTransition ) {
-            t.set('currentTransition', null);
-            currentTransition.retry();
-          }
-          t.set('errorMessage', '');
-          t.set('errorFields', {});
-          callback(true);
-        } else {
+          t.set('session', session);
+          callback();
+        }, error: function () {
           validator.invalidLogin();
           t.set('errorMessage', validator.get('error'));
           t.set('errorFields', validator.get('errorFields'));
           callback(false);
-        }
-      }).error(function() {
-        validator.invalidLogin();
-        t.set('errorMessage', validator.get('error'));
-        t.set('errorFields', validator.get('errorFields'));
-        callback(false);
+        },
       });
     }
   },
   register: function(registrationData, callback){
     var t = this;
     var validator = this.get('validator');
-
+    
     // Make sure the form is valid
     if (!validator.isvalidRegister(registrationData)) {
       this.set('errorMessage', validator.get('error'));
@@ -135,23 +135,22 @@ export default Ember.Controller.extend({
         type: 'POST',
         data: JSON.stringify(team),
         dataType: 'json',
-        ontentType: 'application/json; charset=UTF-8',
+        contentType: 'application/json',
         success: function (result) {
-          var session = t.get('session');
-
+          var session = {};
           if(result.error){
-            session.isAuthenticated = result.isauthenticated || false;
             t.set('errorMessage', result.error);
+            session.isAuthenticated = result.isauthenticated || false;
             if(result.errorfields){
-              if(result.errorfields.username){
-                t.set('errorFields', {'teamName': true});
-              }
-              if(result.errorfields.email){
-                t.set('errorFields', {'teamEmail': true});
-              }
-              if(result.errorfields.teamname){
-                t.set('errorFields', {'teamName': true});
-              }
+              t.set('errorFields', {
+                //'username': result.errorfields.username || false,
+                'teamEmail': result.errorfields.email || false,
+                'teamName': result.errorfields.username || result.errorfields.teamname || false,
+                //'teamName': result.errorfields.teamname || false,
+                'password': result.errorfields.password || false,
+              });
+            } else {
+              t.set('errorFields', {});
             }
           } else {
             t.set('errorMessage', '');
@@ -166,10 +165,9 @@ export default Ember.Controller.extend({
             }
           }
           registrationData = null;
+          t.set('session', session);
           callback();
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-          console.log('ERROR: ', xhr, ajaxOptions, thrownError);
+        }, error: function () {
           t.set('errorMessage', 'Server error');
           t.set('errorFields', {});
           callback();
@@ -180,13 +178,13 @@ export default Ember.Controller.extend({
   logout: function(){
     // Send logout request to server
     var namespace = this.store.adapterFor('application').namespace;
-    Ember.$.ajax({url: namespace+'/session',type: 'DELETE'});
+    Ember.$.ajax({
+      url: namespace+'/session',
+      type: 'DELETE',
+    });
 
-    // Do the deauthentication stuff here
-    this.set('user', {});
-    this.set('isAuthenticated', false);
-    localStorage.removeItem('isAuthenticated');
-    
+    // Do the deauthentication
+    this.set('session', {'isAuthenticated': false});
 
     // Redirect to the home page
     this.transitionToRoute('home');

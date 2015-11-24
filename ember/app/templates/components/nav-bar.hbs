@@ -20,7 +20,7 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-      {{#if authController.isAuthenticated}}
+      {{#if session.isAuthenticated}}
         <li class="ctf-route cursor-pointer"><a {{action "openProfileModal"}}>Profile</a></li>
         <li class="ctf-route cursor-pointer"><a {{action "sendLogout"}}>Logout</a></li>
       {{else}}

@@ -21,6 +21,7 @@ def main():
     os.system(dropdb)
     os.system(createdb)
     os.system(run_migrations)
+    print
 
 if __name__ == '__main__':
     main()

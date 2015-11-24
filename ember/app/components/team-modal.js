@@ -4,12 +4,11 @@ export default Ember.Component.extend({
   modal: {},
   team: {},
   challenges: [],
-  isAuthenticated: false,
   store: undefined,
   challengeSorting: ['timestamp:desc'],
   sortedChallenges: Ember.computed.sort('challenges', 'challengeSorting'),
   setChallenges: function(){
-    if(!this.get('isAuthenticated')){
+    if(!this.get('session.isAuthenticated')){
       return;
     } else {
       if(!this.get('ctf')){
@@ -37,7 +36,7 @@ export default Ember.Component.extend({
                 title: foundChallenge.get('title'),
                 points: foundChallenge.get('points'),
                 category: foundCategory.get('name'),
-                timestamp: time.toUTCString()
+                timestamp: time.toUTCString().replace(' GMT','')
               };
               challenges.push(challenge);
             }

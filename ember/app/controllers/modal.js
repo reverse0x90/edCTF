@@ -12,7 +12,6 @@ export default Ember.Controller.extend({
     solvedChallenge: false,
   },
   store: null,
-  user: {},
   actions: {
     closeModal: function(){
       this.set('modal.isLogin', false);

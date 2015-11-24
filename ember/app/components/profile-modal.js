@@ -2,8 +2,14 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   modal: {},
-  user: {},
+  session: {},
   team: {},
+  setTeam: function(){
+    var t = this;
+    this.get('session').team.then(function(team){
+      t.set('team', team);
+    });
+  }.observes('session').on('init'),
   challenges: [],
   store: undefined,
   challengeSorting: ['timestamp:desc'],
@@ -29,7 +35,7 @@ export default Ember.Component.extend({
                 title: foundChallenge.get('title'),
                 points: foundChallenge.get('points'),
                 category: foundCategory.get('name'),
-                timestamp: time.toUTCString()
+                timestamp: time.toUTCString().replace(' GMT','')
               };
               challenges.push(challenge);
             }

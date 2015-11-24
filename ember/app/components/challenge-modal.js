@@ -10,7 +10,7 @@ export default Ember.Component.extend({
   errorFields:{},
   classNames: ['challenge-submit', 'challenge-cancel'],
   validatorController: undefined,
-  user: {},
+  session: {},
   setupKeys: function() {
     Ember.$('body').on('keyup.modal-dialog', (e) => {
       if (e.keyCode === 27) {

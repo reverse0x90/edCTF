@@ -20,23 +20,15 @@ export default Ember.Route.extend({
     var modal = t.controllerFor('modal');
     var application = t.controllerFor('application');
 
-    auth.checkLoggedIn(function(success){
-      if(success){
-        application.set('user', auth.user);
-      }
-      if (!auth.inwhiteList(transition.targetName)) {
-        if(!auth.isRemembered()) {
-            auth.set('currentTransition', transition);
-            transition.abort();
-            modal.set('modal.isLogin', true);  
-            t.transitionTo('index');
-        }
+    auth.checkLoggedIn(function(){
+      application.set('session', auth.session);
+      if(!auth.session.isAuthenticated && !auth.inwhiteList(transition.targetName)){
+        auth.set('currentTransition', transition);
+        transition.abort();
+        modal.set('modal.isLogin', true);  
+        t.transitionTo('index');
       }
     });
-    // Check to see if you user checked the remember me box
-    //auth.isRemembered();
-
-    
   },
   setupController: function (controller, model){
     // Get first instance of live ctf

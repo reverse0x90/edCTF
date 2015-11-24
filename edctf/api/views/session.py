@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework import status
+import json
 
 
 # Create your views here.
@@ -12,63 +13,50 @@ class sessionView(APIView):
     """
     permission_classes = (AllowAny,)
     
-    def send_error_response(self, message_key):
-        error_messages = {
-            'invalid': 'Invalid username or password',
-            'disabled': 'This account is suspended',
-            'isloggedin': 'Already logged in',
-        }
+
+    def form_response(self, isauthenticated, username='', email='', teamid='', error=''):
         data = {
-            'success': False,
-            'message': self.error_messages[message_key],
-            'team': None,
+            'isauthenticated': isauthenticated,
         }
-        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+        if error:
+            data['error'] = error
+        else:
+            data['username'] = username
+            data['email'] = email
+            data['team'] = teamid
+        return Response(data)
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated():
             try:
-                return Response({
-                    'success': True,
-                    'team': request.user.teams.id,
-                })
+                return self.form_response(True, username=request.user.username, email=request.user.email, teamid=request.user.teams.id)
             # Temporary: Django admin doesnt have a team..
             except:
-                return Response({
-                    'success': True,
-                    'team': None,
-                })
-        return Response({
-            'success': False,
-            'team': None,
-        })
+                return self.form_response(True, username=request.user.username, email=request.user.email, teamid=None)
+        return self.form_response(False, error='Not authenticated')
 
     def post(self, request, *args, **kwargs):
         if request.user.is_authenticated():
             logout(request)
-        #    return self.send_error_response('isloggedin')
+            #return Response(status=status.HTTP_401_UNAUTHORIZED)
         
-        # Login
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
+        login_data = json.loads(request.body)
+        if not ('username' in login_data  and 'password' in login_data):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+        username = login_data['username']
+        password = login_data['password']
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
                 login(request, user)
                 try:
-                    return Response({
-                        'success': True,
-                        'team': user.teams.id,
-                    })
+                    return self.form_response(True, username=request.user.username, email=request.user.email, teamid=request.user.teams.id)
                 # Temporary: Django admin doesnt have a team..
                 except:
-                    return Response({
-                        'success': True,
-                        'team': None,
-                    })
-            return self.send_error_response('disabled')
-        return self.send_error_response('invalid')
+                    return self.form_response(True, username=request.user.username, email=request.user.email, teamid=None)
+            return self.form_response(False, error='Acount disabled')
+        return self.form_response(False, error='Invalid username or password')
 
     def delete(self, request, *args, **kwargs):
         # Logout

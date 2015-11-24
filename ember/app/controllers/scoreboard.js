@@ -4,12 +4,12 @@ import moment from 'moment';
 export default Ember.Controller.extend({
   modal: {},
   ctf: null,
-  authController: null,
+  session: null,
   sortTeams: ['position'],
   sortedTeams: Ember.computed.sort('ctf.scoreboard.teams', 'sortTeams'),
   topTeamsData: {},
   setTopTeamsData: function(){
-    if(!this.get('authController.isAuthenticated')){
+    if(!this.get('session.isAuthenticated')){
       return;
     } else {
       if(!this.get('ctf')){
@@ -111,7 +111,7 @@ export default Ember.Controller.extend({
       }
       t.set('topTeamsData', topTeamsData);
     });
-  }.observes('sortedTeams', 'authController.isAuthenticated'),
+  }.observes('sortedTeams', 'session.isAuthenticated'),
   actions:{
     openTeamView: function(team){
       this.set('modal.team', team);

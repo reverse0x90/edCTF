@@ -4,7 +4,7 @@ export default Ember.Controller.extend({
   modal: {},
   ctf: null,
   authController: null,
-  user: {},
+  session: {},
   sortCategory: ['name:asc'],
   sortChallenges: ['points:asc', 'id'],
   sortedChallengeboard: {},
@@ -15,13 +15,13 @@ export default Ember.Controller.extend({
     if (chall_id || chall_id === 0){
       var challenge = this.store.peekRecord('challenge', chall_id);
       if (challenge){
-        var points = this.get('user.team.points');
+        var points = this.get('session.team.points');
         if (points) {
-          this.set('user.team.points', points+challenge.get('points'));
+          this.set('session.team.points', points+challenge.get('points'));
         }
       }
       
-      var usersolved = this.get('user.team.solves');
+      var usersolved = this.get('session.team.solves');
       if (usersolved){
         var timestamp = [chall_id, Date.now() / 1000 | 0];
         usersolved.addObject(timestamp);
@@ -30,7 +30,7 @@ export default Ember.Controller.extend({
     }
 
     // Updated isSolved flag for challenges that are solved
-    var solves = this.get('user.team.solves');
+    var solves = this.get('session.team.solves');
     var t = this;
     if(solves){
       solves.forEach(function(timestamp){
@@ -43,7 +43,7 @@ export default Ember.Controller.extend({
         }
       });
     } // TODO: set challenges isSolved back to false on logout
-  }.observes('ctf.challengeboard.categories', 'user', 'modal.solvedChallenge'),
+  }.observes('ctf.challengeboard.categories', 'session', 'modal.solvedChallenge'),
   actions: {
     openLoginModal: function() {
       this.set('modal.isLogin', true);

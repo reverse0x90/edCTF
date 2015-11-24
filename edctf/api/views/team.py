@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -12,7 +12,7 @@ import json
 class teamView(APIView):
     permission_classes = (AllowAny,)
     
-    def form_response(self, isauthenticated, username='', email='', teamid='', error='', errorfields=[]):
+    def form_response(self, isauthenticated, username='', email='', teamid='', error='', errorfields={}):
         data = {
             'isauthenticated': isauthenticated,
         }
@@ -42,6 +42,10 @@ class teamView(APIView):
         """
         Registers a new team
         """
+        if request.user.is_authenticated():
+            logout(request)
+            #return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
         live_ctf = ctf.objects.filter(live=True)
         if len(live_ctf) < 1:
             return Response(status=status.HTTP_403_FORBIDDEN)
@@ -58,13 +62,13 @@ class teamView(APIView):
 
         check = User.objects.filter(username=username)
         if len(check):
-            return self.form_response(False, error='Username is taken', errorfields=['username'])
+            return self.form_response(False, error='Username is taken', errorfields={'username':True})
         check = User.objects.filter(email=email)
         if len(check):
-            return self.form_response(False, error='Email is taken', errorfields=['email'])
+            return self.form_response(False, error='Email is taken', errorfields={'email': True})
         check = team.objects.filter(teamname=teamname)
         if len(check):
-            return self.form_response(False, error='Team name is taken', errorfields=['teamname'])
+            return self.form_response(False, error='Team name is taken', errorfields={'teamname': True})
         
         new_user = User.objects.create_user(username, email, password)
         new_team = team.objects.create(scoreboard=scoreboard, teamname=teamname,user=new_user)
@@ -76,9 +80,8 @@ class teamView(APIView):
             if user.is_active:
                 login(request, user)
                 return self.form_response(True, username=username, email=email, teamid=new_team.id)
-            return self.send_error_response('disabled')
-            return self.form_response(False, error='User account is disabled', errorfields=[])
-        return self.form_response(False, error='Server error', errorfields=[])
+            return self.form_response(False, error='User account is disabled')
+        return self.form_response(False, error='Server error')
 
     def put(self, request, *args, **kwargs):
         """

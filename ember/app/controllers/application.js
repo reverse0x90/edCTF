@@ -5,11 +5,9 @@ export default Ember.Controller.extend({
   authController: null,
   validatorController: null,
   ctf: null,
-  session: {},
-  setSession: function() {
-    return this.store.peakRecord('session');
-  }.property('session'),
-  user: {},
+  session: {
+    'isAuthenticated': false,
+  },
   updateTitle: function() {
     Ember.$(document).attr('title', this.get('ctf.name'));
   }.observes('ctf.name'),
@@ -44,14 +42,10 @@ export default Ember.Controller.extend({
       var auth = t.get('authController');
 
       // Attempt to login the team
-      auth.login(authenticationData, function(success){
+      auth.login(authenticationData, function(){
         // If there was no error during authentication close the login modal 
-        if(success){
+        if(!auth.get('errorMessage')){
           t.set('modal.isLogin', false);
-          
-          var team = t.store.findRecord('team', auth.user.team_id);
-          t.set('user', auth.user);
-          t.set('user.team', team);
         }
       });
     },
@@ -63,14 +57,13 @@ export default Ember.Controller.extend({
       auth.register(registrationData, function(){
         // If there was no error during registration close the register modal 
         if (!auth.get('errorMessage')) {
-          //t.set('user', auth.user);
-          t.set('user', auth.session);
+          t.set('session', auth.session);
           t.set('modal.isRegister', false);
         }
       });
     },
     logout: function() {
-      this.set('user', {});
+      this.set('session', {'isAuthenticated': false});
       this.get('authController').logout();
     },
     openLoginModal: function() {
