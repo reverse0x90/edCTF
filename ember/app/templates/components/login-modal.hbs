@@ -7,13 +7,13 @@
          <label class="control-label"><div class="alert alert-danger edctf-text" style="padding: 5px; margin-bottom: 0px;" role="alert">{{authController.errorMessage}}</div></label>
          {{/if}}
 
-        {{#if authController.errorFields.teamName}} 
+        {{#if authController.errorFields.teamname}} 
           <div class="form-group has-error">  
-            {{input type="text" value=teamName enter="submitLogin" class="form-control edctf-text" id="inputTeamName" placeholder="Team Name"}}
+            {{input type="text" value=teamname enter="submitLogin" class="form-control edctf-text" id="inputteamname" placeholder="Team Name"}}
           </div>
         {{else}}
           <div class="form-group">
-            {{input type="text" value=teamName enter="submitLogin" class="form-control edctf-text" id="inputTeamName" placeholder="Team Name"}}
+            {{input type="text" value=teamname enter="submitLogin" class="form-control edctf-text" id="inputteamname" placeholder="Team Name"}}
           </div>
         {{/if}}
 

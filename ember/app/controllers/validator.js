@@ -4,11 +4,11 @@ export default Ember.Controller.extend({
   error: '',
   errorFields: {},
   isvalidLogin: function(credentials){
-    var teamName = credentials.teamName;
+    var teamname = credentials.teamname;
     var password = credentials.password;
-    if ( teamName.length === 0 ) {
+    if ( teamname.length === 0 ) {
       this.set('error', "Team name field cannot be blank");
-      this.set('errorFields', {'teamName': true});
+      this.set('errorFields', {'teamname': true});
       return false;
     }
     else if (password.length === 0) {
@@ -22,21 +22,21 @@ export default Ember.Controller.extend({
   },
   invalidLogin: function(){
     this.set('error', "Team name or password invalid");
-    this.set('errorFields', {'teamName': true, 'password': true});
+    this.set('errorFields', {'teamname': true, 'password': true});
   },
   isvalidRegister: function(registrationData){
     var email = registrationData.email;
-    var teamName = registrationData.teamName;
+    var teamname = registrationData.teamname;
     var password = registrationData.password;
     var confirmPassword = registrationData.confirmPassword;
     if (email.length === 0 ) {
       this.set('error', "Email field cannot be blank");
-      this.set('errorFields', {'teamEmail': true});
+      this.set('errorFields', {'email': true});
       return false;
     }
-    else if (teamName.length === 0) {
+    else if (teamname.length === 0) {
       this.set('error', "Team name field cannot be blank");
-      this.set('errorFields', {'teamName': true});
+      this.set('errorFields', {'teamname': true});
       return false;
     }
     else if (password.length === 0) {

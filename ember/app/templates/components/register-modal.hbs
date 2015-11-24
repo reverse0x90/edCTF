@@ -6,23 +6,23 @@
         <label class="control-label"><div class="alert alert-danger" style="padding: 5px; margin-bottom: 0px;" role="alert">{{authController.errorMessage}}</div></label> 
       {{/if}}  
 
-      {{#if authController.errorFields.teamEmail}} 
+      {{#if authController.errorFields.email}} 
         <div class="form-group has-error"> 
-          Email:{{input type="text" value=teamEmail enter="submitRegister" class="form-control" id="inputEmail" placeholder="Email"}}
+          Email:{{input type="text" value=email enter="submitRegister" class="form-control" id="inputEmail" placeholder="Email"}}
         </div>
       {{else}}
         <div class="form-group">      
-          Email:{{input type="text" value=teamEmail enter="submitRegister" class="form-control" id="inputEmail" placeholder="Email"}}
+          Email:{{input type="text" value=email enter="submitRegister" class="form-control" id="inputEmail" placeholder="Email"}}
         </div>
       {{/if}}
 
-      {{#if authController.errorFields.teamName}} 
+      {{#if authController.errorFields.teamname}} 
         <div class="form-group has-error">
-          Team Name:{{input type="text" value=teamName enter="submitRegister" class="form-control" id="inputTeamName" placeholder="Team Name"}}
+          Team Name:{{input type="text" value=teamname enter="submitRegister" class="form-control" id="inputteamname" placeholder="Team Name"}}
         </div>
       {{else}}
         <div class="form-group">
-          Team Name:{{input type="text" value=teamName enter="submitRegister" class="form-control" id="inputTeamName" placeholder="Team Name"}}
+          Team Name:{{input type="text" value=teamname enter="submitRegister" class="form-control" id="inputteamname" placeholder="Team Name"}}
         </div>
       {{/if}}
 

@@ -63,7 +63,7 @@ export default Ember.Controller.extend({
     // Form is valid clear the error message field and authenticate the team
     else {
       var loginData = {
-        'username': credentials.teamName,
+        'username': credentials.teamname,
         'password': credentials.password,
       };
       
@@ -80,7 +80,7 @@ export default Ember.Controller.extend({
           if(result.error){
             session.isAuthenticated = result.isauthenticated || false;
             t.set('errorMessage', result.error);
-            t.set('errorFields', {'teamName': true, 'password': true});
+            t.set('errorFields', {'teamname': true, 'password': true});
           } else {
             t.set('errorMessage', '');
             t.set('errorFields', {});
@@ -144,9 +144,9 @@ export default Ember.Controller.extend({
             if(result.errorfields){
               t.set('errorFields', {
                 //'username': result.errorfields.username || false,
-                'teamEmail': result.errorfields.email || false,
-                'teamName': result.errorfields.username || result.errorfields.teamname || false,
-                //'teamName': result.errorfields.teamname || false,
+                'email': result.errorfields.email || false,
+                'teamname': result.errorfields.username || result.errorfields.teamname || false,
+                //'teamname': result.errorfields.teamname || false,
                 'password': result.errorfields.password || false,
               });
             } else {
