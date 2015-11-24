@@ -17,9 +17,7 @@ def check_flag(team, challenge, flag):
     # if not solved, do flag check
     if not res:
         # Allow regex in the future
-        correct1 = challenge.flag == flag
-        correct2 = challenge.flag == str('null{'+flag+'}')
-        correct = correct1 or correct2
+        correct = challenge.flag == flag
         if correct:
             team.correct_flags = team.correct_flags + 1
             team.save()
