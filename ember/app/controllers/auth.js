@@ -9,6 +9,12 @@ export default Ember.Controller.extend({
   validator: Ember.inject.controller('validator'),
   whiteList: ['index', 'scoreboard', 'about', 'home'],
   user: {},
+  session: {
+    isAuthenticated: false,
+    username: null,
+    email: null,
+    team: null,
+  },
   inwhiteList: function(string){
     if ( this.get('whiteList').indexOf(string)>=0 ) {
       return true;
@@ -122,9 +128,8 @@ export default Ember.Controller.extend({
         teamname: registrationData.username,
         password: registrationData.password
       };
-      console.log(team);
-      var namespace = this.store.adapterFor('application').namespace;
 
+      var namespace = this.store.adapterFor('application').namespace;
       Ember.$.ajax({
         url: namespace+'/teams',
         type: 'POST',
@@ -132,19 +137,40 @@ export default Ember.Controller.extend({
         dataType: 'json',
         ontentType: 'application/json; charset=UTF-8',
         success: function (result) {
-          console.log('SUCCESS: ',result);
-          t.set('errorMessage', '');
-          t.set('errorFields', {});
+          var session = t.get('session');
 
-          // call login here
-          //t.login(authenticationData);
+          if(result.error){
+            session.isAuthenticated = result.isauthenticated || false;
+            t.set('errorMessage', result.error);
+            if(result.errorfields){
+              if(result.errorfields.username){
+                t.set('errorFields', {'teamName': true});
+              }
+              if(result.errorfields.email){
+                t.set('errorFields', {'teamEmail': true});
+              }
+              if(result.errorfields.teamname){
+                t.set('errorFields', {'teamName': true});
+              }
+            }
+          } else {
+            t.set('errorMessage', '');
+            t.set('errorFields', {});
+            if(result.isauthenticated){
+              session.isAuthenticated = true;
+              session.username = result.username;
+              session.email = result.email;
+              session.team = t.store.findRecord('team', result.team);
+            } else {
+              session.isAuthenticated = false;
+            }
+          }
           registrationData = null;
-
           callback();
         },
         error: function (xhr, ajaxOptions, thrownError) {
           console.log('ERROR: ', xhr, ajaxOptions, thrownError);
-          t.set('errorMessage', 'Server Error');
+          t.set('errorMessage', 'Server error');
           t.set('errorFields', {});
           callback();
         }

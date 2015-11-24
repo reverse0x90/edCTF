@@ -63,7 +63,8 @@ export default Ember.Controller.extend({
       auth.register(registrationData, function(){
         // If there was no error during registration close the register modal 
         if (!auth.get('errorMessage')) {
-          t.set('user', auth.user);
+          //t.set('user', auth.user);
+          t.set('user', auth.session);
           t.set('modal.isRegister', false);
         }
       });
