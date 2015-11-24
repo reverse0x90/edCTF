@@ -62,6 +62,22 @@ export default Ember.Controller.extend({
         }
       });
     },
+    submitFlag: function(challengeid, flag, callback) {
+      var flagData = {'flag': flag};
+      var namespace = this.get('store').adapterFor('application').namespace;
+      Ember.$.ajax({
+        url: namespace+'/challenges/'+challengeid,
+        type: 'POST',
+        data: JSON.stringify(flagData),
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function (result){
+          callback(result.success, result.error);
+        }, error: function () {
+          callback(false, 'Something went wrong');
+        },
+      });
+    },
     logout: function() {
       this.set('session', {'isAuthenticated': false});
       this.get('authController').logout();

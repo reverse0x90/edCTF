@@ -24,26 +24,6 @@ export default Ember.Component.extend({
   setupFocus: function() {
       Ember.$('#inputFlag').focus();
   }.on('didInsertElement'),
-  checkServer: function(flag) {
-    var t = this;
-    var data = {'flag': flag};
-    var challenge_id = t.get('challenge.id');
-    var namespace = t.get('store').adapterFor('application').namespace;
-
-    Ember.$.post(namespace+'/challenges/'+challenge_id, data, function(data){
-      if(data.success){
-        t.set('correctFlagMsg', 'Congratulations you have the correct flag!');
-        t.set('wrongFlagMsg', '');
-        t.set('modal.solvedChallenge', challenge_id);
-      } else {
-        t.set('wrongFlagMsg', 'Sorry wrong flag');
-        t.set('correctFlagMsg', '');
-      }
-    }).error(function() {
-      t.set('wrongFlagMsg', 'Something went wrong');
-      t.set('correctFlagMsg', '');
-    });
-  },
   actions: {
     closeChallengeModal: function() {
       this.set('modal.isChallenge', false);
@@ -51,18 +31,34 @@ export default Ember.Component.extend({
     submitFlag: function() {
       var t = this;
       var validator = this.get('validatorController');
-      var flag = t.get('flag');
+      var flag = this.get('flag');
 
       // If flag is not valid show error message on form
       if ( !validator.isvalidFlag(flag) ) {
-        t.set('errorMessage', validator.get('error'));
-        t.set('errorFields', validator.get('errorFields'));
+        this.set('errorMessage', validator.get('error'));
+        this.set('errorFields', validator.get('errorFields'));
       }
       // Else flag is valid send the flag to the server to check if it is correct
       else{
-        t.set('errorMessage', '');
-        t.set('errorFields', {});
-        t.checkServer(flag);
+        var challengeid = this.get('challenge.id');
+        this.set('errorMessage', '');
+        this.set('errorFields', {});
+        //this.submitFlag(flag);
+        this.sendAction('submitFlag', challengeid, flag, function(success, error){
+          if(success){
+            t.set('correctFlagMsg', 'Congratulations you have the correct flag!');
+            t.set('wrongFlagMsg', '');
+            t.set('modal.solvedChallenge', challengeid);
+          } else {
+            if (error){
+              t.set('wrongFlagMsg', error);
+              t.set('correctFlagMsg', '');
+            } else {
+              t.set('wrongFlagMsg', 'Sorry wrong flag');
+              t.set('correctFlagMsg', '');
+            }
+          }
+        });
         // Blank out flag value
         t.set('flag', '');
       }
