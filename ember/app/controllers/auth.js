@@ -125,7 +125,7 @@ export default Ember.Controller.extend({
       var team = {
         email: registrationData.email,
         username: registrationData.username,
-        teamname: registrationData.username,
+        teamname: registrationData.teamname,
         password: registrationData.password
       };
 
@@ -143,11 +143,11 @@ export default Ember.Controller.extend({
             session.isAuthenticated = result.isauthenticated || false;
             if(result.errorfields){
               t.set('errorFields', {
-                //'username': result.errorfields.username || false,
+                'username': result.errorfields.username || false,
                 'email': result.errorfields.email || false,
-                'teamname': result.errorfields.username || result.errorfields.teamname || false,
-                //'teamname': result.errorfields.teamname || false,
+                'teamname': result.errorfields.teamname || false,
                 'password': result.errorfields.password || false,
+                'confirmPassword': result.errorfields.password || false,
               });
             } else {
               t.set('errorFields', {});

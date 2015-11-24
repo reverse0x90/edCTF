@@ -14,7 +14,7 @@ export default Ember.Component.extend({
   actions: {
     submitRegister: function() {
       var email = this.get('email');
-      var username = this.get('teamname');
+      var username = this.get('username');
       var teamname = this.get('teamname');
       var password = this.get('password');
       var confirmpassword = this.get('confirmPassword');
