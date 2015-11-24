@@ -7,7 +7,7 @@ def main():
     createdb = 'sudo python generate_secrets.py'
     run_migrations = '''python manage.py makemigrations \\
     && python manage.py migrate \\
-    && python manage.py createsuperuser
+    && cat createsuperuser.py | python manage.py shell
     '''
 
 
