@@ -2,8 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework import status
-from edctf.api.models import team
+from edctf.api.models import team, ctf
 from edctf.api.serializers import teamSerializer
+from django.contrib.auth.models import User
 import json
 
 
@@ -27,11 +28,21 @@ class teamView(APIView):
         """
         Registers a new team
         """
-        test = {
-            'test': json.loads(request.body)
-        }
+        team_data = json.loads(request.body)
+
+        u = User.objects.create_user(team_data['username'], team_data['email'], team_data['password'])
+
+        u.save()
+
+        live_ctf = ctf.objects.filter(live=True)[0]
+
         
-        return Response(test,status=status.HTTP_403_FORBIDDEN)
+
+        t = team.objects.create(scoreboard=live_ctf.scoreboard, teamname=team_data['teamname'],user=u)
+
+
+
+        return Response({'success': True, 'team': None,})
 
     def put(self, request, *args, **kwargs):
         """

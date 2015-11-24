@@ -119,9 +119,10 @@ export default Ember.Controller.extend({
       var team = {
         email: registrationData.email,
         username: registrationData.username,
-        teamname: registrationData.teamname,
+        teamname: registrationData.username,
         password: registrationData.password
       };
+      console.log(team);
       var namespace = this.store.adapterFor('application').namespace;
 
       Ember.$.ajax({

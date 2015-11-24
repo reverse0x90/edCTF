@@ -9,7 +9,7 @@ class ctf(models.Model):
     name = models.CharField(max_length=250, unique=True, validators=[validate_no_xss, validate_no_html])
     live = models.BooleanField(default=False)
     challengeboard = models.ManyToManyField('challengeboard', related_name="ctfs", related_query_name="ctf")
-    scoreboard = models.ManyToManyField('scoreboard', related_name="ctfs", related_query_name="ctf")
+    scoreboard = models.OneToOneField('scoreboard', related_name="ctfs", related_query_name="ctf")
     created = models.DateTimeField(auto_now_add=True)
     class Meta:
         verbose_name_plural = "ctfs"

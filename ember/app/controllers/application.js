@@ -5,6 +5,10 @@ export default Ember.Controller.extend({
   authController: null,
   validatorController: null,
   ctf: null,
+  session: {},
+  setSession: function() {
+    return this.store.peakRecord('session');
+  }.property('session'),
   user: {},
   updateTitle: function() {
     Ember.$(document).attr('title', this.get('ctf.name'));
