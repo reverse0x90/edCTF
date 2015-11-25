@@ -51,9 +51,9 @@ class challengeView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def form_response(self, success, error=''):
-    """
-    Returns the form response
-    """
+        """
+        Returns the form response
+        """
         data = {
             'success': success,
         }
