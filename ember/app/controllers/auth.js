@@ -177,16 +177,18 @@ export default Ember.Controller.extend({
   },
   logout: function(){
     // Send logout request to server
+    var t = this;
     var namespace = this.store.adapterFor('application').namespace;
     Ember.$.ajax({
       url: namespace+'/session',
       type: 'DELETE',
+      success: function(){
+        // Do the deauthentication
+        t.set('session', {'isAuthenticated': false});
+
+        // Redirect to the home page
+        t.transitionToRoute('home');
+      }
     });
-
-    // Do the deauthentication
-    this.set('session', {'isAuthenticated': false});
-
-    // Redirect to the home page
-    this.transitionToRoute('home');
   },
 });
