@@ -3,12 +3,8 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   modal: {},
   ctf: null,
-  authController: null,
   session: {},
-  sortCategory: ['name:asc'],
-  sortChallenges: ['points:asc', 'id'],
   sortedChallengeboard: {},
-  categories: {},
   setSolvedChallenges: function(){
     // Add new challenge to solved if it exists
     var chall_id = this.get('modal.solvedChallenge');
@@ -29,20 +25,26 @@ export default Ember.Controller.extend({
       this.set('modal.solvedChallenge', false);
     }
 
-    // Updated isSolved flag for challenges that are solved
+    // Updated isSolved for all challenges
     var solves = this.get('session.team.solves');
-    var t = this;
     if(solves){
-      solves.forEach(function(timestamp){
-        var challenge_id = timestamp[0];
-        var challenge = t.store.peekRecord('challenge', challenge_id);
-        if (challenge){
-          if(!challenge.get('isSolved')){
-            challenge.set('isSolved', true);
-          }
+      var challenges = this.store.peekAll('challenge');
+      if(challenges){
+        var teamSolves = [];
+        var teamSolvesTuples = solves.toArray();
+        for(var i = 0;i < teamSolvesTuples.length; i++){
+          teamSolves.push(teamSolvesTuples[i][0]);
         }
-      });
-    } // TODO: set challenges isSolved back to false on logout
+        challenges.forEach(function(challenge){
+          var challenge_id = Number(challenge.get('id'));
+          if(teamSolves.indexOf(challenge_id) > -1){
+            challenge.set('isSolved', true);
+          } else {
+            challenge.set('isSolved', false);
+          }
+        });
+      }
+    }
   }.observes('ctf.challengeboard.categories', 'session', 'modal.solvedChallenge'),
   actions: {
     openLoginModal: function() {
