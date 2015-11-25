@@ -5,9 +5,35 @@ export default Ember.Controller.extend({
   ctf: null,
   session: {},
   sortedChallengeboard: {},
+  resetSolvedToggle: false,
   setSolvedChallenges: function(){
+    var solves = this.get('session.team.solves');
+
+    // Updated isSolved for all challenges
+    if(solves){
+      var challenges = this.store.peekAll('challenge');
+      if(challenges){
+        challenges.forEach(function(challenge){
+          var challenge_id = challenge.get('id');
+          var found = solves.find(function(item){
+            // '1' == 1 ==> true
+            if(Number(challenge_id) === Number(item[0])){
+              return true;
+            }
+            return false;
+          });
+          if(found || found === 0){
+            challenge.set('isSolved', true);
+          } else {
+            challenge.set('isSolved', false);
+          }
+        });
+      }
+    }
+  }.observes('ctf.challengeboard.categories', 'session', 'resetSolvedToggle'),
+  setSolvedChallenge: function(){
     // Add new challenge to solved if it exists
-    var chall_id = this.get('modal.solvedChallenge');
+    var chall_id = Number(this.get('modal.solvedChallenge'));
     if (chall_id || chall_id === 0){
       var challenge = this.store.peekRecord('challenge', chall_id);
       if (challenge){
@@ -17,35 +43,15 @@ export default Ember.Controller.extend({
         }
       }
       
-      var usersolved = this.get('session.team.solves');
-      if (usersolved){
+      var solves = this.get('session.team.solves');
+      if (solves){
         var timestamp = [chall_id, Date.now() / 1000 | 0];
-        usersolved.addObject(timestamp);
+        solves.addObject(timestamp);
       }
-      this.set('modal.solvedChallenge', false);
+      this.set('modal.solvedChallenge', -1);
+      this.toggleProperty('resetSolvedToggle');
     }
-
-    // Updated isSolved for all challenges
-    var solves = this.get('session.team.solves');
-    if(solves){
-      var challenges = this.store.peekAll('challenge');
-      if(challenges){
-        var teamSolves = [];
-        var teamSolvesTuples = solves.toArray();
-        for(var i = 0;i < teamSolvesTuples.length; i++){
-          teamSolves.push(teamSolvesTuples[i][0]);
-        }
-        challenges.forEach(function(challenge){
-          var challenge_id = Number(challenge.get('id'));
-          if(teamSolves.indexOf(challenge_id) > -1){
-            challenge.set('isSolved', true);
-          } else {
-            challenge.set('isSolved', false);
-          }
-        });
-      }
-    }
-  }.observes('ctf.challengeboard.categories', 'session', 'modal.solvedChallenge'),
+  }.observes('modal.solvedChallenge'),
   actions: {
     openLoginModal: function() {
       this.set('modal.isLogin', true);

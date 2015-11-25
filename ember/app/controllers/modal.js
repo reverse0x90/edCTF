@@ -9,7 +9,7 @@ export default Ember.Controller.extend({
     isProfile: false,
     challenge: {},
     team: {},
-    solvedChallenge: false,
+    solvedChallenge: -1,
   },
   store: null,
   actions: {
