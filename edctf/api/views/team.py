@@ -10,12 +10,22 @@ import json
 
 
 class teamView(APIView):
+    """
+    Manages team requests.
+    """
     permission_classes = (AllowAny,)
     
+
     def form_response(self, isauthenticated, username='', email='', teamid='', error='', errorfields={}):
+        """
+        Returns the registration form response.
+        """
+        # Create return data dictionary.
         data = {
             'isauthenticated': isauthenticated,
         }
+        # If error during registration, return the error else return 
+        # the registration data.
         if error:
             data['error'] = error
             data['errorfields'] = errorfields
@@ -25,41 +35,58 @@ class teamView(APIView):
             data['team'] = teamid
         return Response(data)
 
+
     def get(self, request, id=None, format=None):
         """
-        Gets all teams or gets by id via /teams/:id
+        Gets all teams or gets an individual team via /teams/:id.
         """
+        # If a specific team is requested, return that team 
+        # else return all the teams.
         if id:
             teams = team.objects.filter(id=id)
         else:
             teams = team.objects.all()
+
+        # Serialize team object and return the serialized data.
         teams_serializer = teamSerializer(teams, many=True, context={'request': request})
         return Response({
             "teams": teams_serializer.data,
         })
 
+
     def post(self, request, *args, **kwargs):
         """
         Registers a new team
         """
+        # If user is already authenticated, logout the user.
         if request.user.is_authenticated():
             logout(request)
-            #return Response(status=status.HTTP_401_UNAUTHORIZED)
-        
+
+        # Get the current live ctf (aka the active ctf).
         live_ctf = ctf.objects.filter(live=True)
+
+        # Sanity check currently there can only be one live ctf at a time.
         if len(live_ctf) < 1:
             return Response(status=status.HTTP_403_FORBIDDEN)
+
+        # Get the scoreboard object associated with the live ctf.
         scoreboard = live_ctf[0].scoreboard.all()[0]
 
+        # Serialize the provided registration json data to a python object.
         team_data = json.loads(request.body)
+
+        # Sanity check the json data to make sure all required parameters 
+        # are included.
         if not ('username' in team_data and 'teamname' in team_data and 'email' in team_data and 'password' in team_data):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+        # Assign registration data to local variables.
         teamname = team_data['teamname']
         email = team_data['email']
         username = team_data['username']
         password = team_data['password']
 
+        # Verify username,email, and team are unique.
         check = User.objects.filter(username=username)
         if len(check):
             return self.form_response(False, error='Username is taken', errorfields={'username':True})
@@ -70,11 +97,13 @@ class teamView(APIView):
         if len(check):
             return self.form_response(False, error='Team name is taken', errorfields={'teamname': True})
         
+        # Create new user and team in database.
         new_user = User.objects.create_user(username, email, password)
         new_team = team.objects.create(scoreboard=scoreboard, teamname=teamname,user=new_user)
         new_user.save()
         new_team.save()
 
+        # Registration was successful! Now login the new user.
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
@@ -83,8 +112,11 @@ class teamView(APIView):
             return self.form_response(False, error='User account is disabled')
         return self.form_response(False, error='Server error')
 
+
     def put(self, request, *args, **kwargs):
         """
         Edit team profile
         """
+        # Return error message for now this feature will be supported 
+        # in a future release.
         return Response(status=status.HTTP_403_FORBIDDEN)
