@@ -9,7 +9,7 @@ import json
 
 def check_flag(team, challenge, flag):
     """
-    Checks a given flag with a challenge.
+    Checks a given flag against the challenge flag.
     """
     # Check if team has solved the challenge
     res = team.solved.filter(id=challenge.id)
@@ -52,7 +52,7 @@ class challengeView(APIView):
 
     def form_response(self, success, error=''):
         """
-        Returns the form response
+        Returns the challenge form response
         """
         data = {
             'success': success,

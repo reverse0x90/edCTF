@@ -9,10 +9,9 @@ class ctfView(APIView):
     permission_classes = (AllowAny,)
     def get(self, request, id=None, format=None):
         """
-        Get all ctfs
-        or get by id via ctfs/:id
-        or get all live ctfs via GET parameter, i.e. live=true
+        Gets all ctfs or gets one ctf via ctfs/:id or gets all live ctfs via GET parameter, i.e. live=true.
         """
+        # If ctf id was requested return that ctf else return list of all/live ctfs
         if id:
             ctfs = ctf.objects.filter(id=id)
         else:

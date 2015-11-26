@@ -6,18 +6,22 @@ from rest_framework import status
 import json
 
 
-# Create your views here.
 class sessionView(APIView):
     """
-    Manages sessions
+    Manages server side user sessions
     """
     permission_classes = (AllowAny,)
     
 
     def form_response(self, isauthenticated, username='', email='', teamid='', error=''):
+    """
+    Returns the registration form response
+    """
+        # Create return data dictionary
         data = {
             'isauthenticated': isauthenticated,
         }
+        # If error during registration return the error, else return registration data
         if error:
             data['error'] = error
         else:
