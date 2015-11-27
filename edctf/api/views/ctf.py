@@ -6,6 +6,9 @@ from edctf.api.serializers import ctfSerializer
 
 
 class ctfView(APIView):
+    """
+    Manages ctf requests.
+    """
     permission_classes = (AllowAny,)
     def get(self, request, id=None, format=None):
         """
