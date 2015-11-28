@@ -1,6 +1,4 @@
 from rest_framework import serializers
-
-#load django and webapp models
 from django.contrib.auth.models import *
 from edctf.api.models import *
 

@@ -22,9 +22,6 @@ except ImportError as err:
     err.extra_info = "edctf_secret.py was not created!"
     raise 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = edctf_secret.SECRET_KEY.decode('base64')
 
@@ -39,7 +36,6 @@ else:
 
 
 # Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',

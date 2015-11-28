@@ -10,7 +10,6 @@ def main():
     && cat createsuperuser.py | python manage.py shell
     '''
 
-
     choice = raw_input('This program will destroy the edctf database and delete migrations, then attempts to recreate the database\n\nARE YOU SURE? (Y/n) >')
     print
 
