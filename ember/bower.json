@@ -16,7 +16,8 @@
     "d3": "~3.5.9",
     "c3": "~0.4.11-rc4",
     "moment": ">= 2.8.0",
-    "moment-timezone": ">= 0.1.0"
+    "moment-timezone": ">= 0.1.0",
+    "jquery-cookie": "~1.4.1"
   },
   "resolutions": {
     "ember-data": "1.13.9"

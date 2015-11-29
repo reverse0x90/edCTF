@@ -74,7 +74,12 @@ export default Ember.Controller.extend({
         type: 'POST',
         data: JSON.stringify(loginData),
         dataType: 'json',
-        contentType: 'application/json',
+        contentType: 'application/json; charset=utf-8',
+        crossDomain:false,
+        processData: false,
+        beforeSend: function(xhr, settings) {
+          xhr.setRequestHeader("X-CSRFToken", Ember.$.cookie('csrftoken'));
+        },
         success: function (result){
           var session = {};
           if(result.error){
@@ -135,7 +140,12 @@ export default Ember.Controller.extend({
         type: 'POST',
         data: JSON.stringify(team),
         dataType: 'json',
-        contentType: 'application/json',
+        contentType: 'application/json; charset=utf-8',
+        crossDomain:false,
+        processData: false,
+        beforeSend: function(xhr, settings) {
+          xhr.setRequestHeader("X-CSRFToken", Ember.$.cookie('csrftoken'));
+        },
         success: function (result) {
           var session = {};
           if(result.error){
@@ -179,9 +189,14 @@ export default Ember.Controller.extend({
     // Send logout request to server
     var t = this;
     var namespace = this.store.adapterFor('application').namespace;
+
     Ember.$.ajax({
       url: namespace+'/session',
       type: 'DELETE',
+      crossDomain:false,
+      beforeSend: function(xhr, settings) {
+          xhr.setRequestHeader("X-CSRFToken", Ember.$.cookie('csrftoken'));
+        },
       success: function(){
         // Do the deauthentication
         t.set('session', {'isAuthenticated': false});

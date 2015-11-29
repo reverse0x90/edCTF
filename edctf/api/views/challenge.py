@@ -103,7 +103,7 @@ class challengeView(APIView):
                 return Response(status=status.HTTP_404_NOT_FOUND)
             
             # Get the flag data from the request json object.
-            flag_data = json.loads(request.body)
+            flag_data = request.data
 
             # Verify flag is not blank and was set in the request.
             if 'flag' not in flag_data:

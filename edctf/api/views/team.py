@@ -6,7 +6,6 @@ from rest_framework.permissions import AllowAny
 from rest_framework import status
 from edctf.api.models import team, ctf
 from edctf.api.serializers import teamSerializer
-import json
 
 
 class teamView(APIView):
@@ -73,7 +72,7 @@ class teamView(APIView):
         scoreboard = live_ctf[0].scoreboard.all()[0]
 
         # Serialize the provided registration json data to a python object.
-        team_data = json.loads(request.body)
+        team_data = request.data
 
         # Sanity check the json data to make sure all required parameters 
         # are included.

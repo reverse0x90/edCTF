@@ -54,7 +54,7 @@ class sessionView(APIView):
             logout(request)
 
         # Serialize the provided login json data to a python object. 
-        login_data = json.loads(request.body)
+        login_data = request.data
 
         # Sanity check the json data to make sure all required parameters 
         # are included.
