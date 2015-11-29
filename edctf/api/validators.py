@@ -7,7 +7,7 @@ def validate_no_xss(value):
   Validates there is no unintended javascript in the value.
   """
   if "javascript:" in value:
-    raise ValidationError('string contains javascript')
+    raise ValidationError('Field may not contain javascript')
 
 
 def validate_attributes(value):
