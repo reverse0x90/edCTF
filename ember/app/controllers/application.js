@@ -28,8 +28,8 @@ export default Ember.Controller.extend({
       });
     };
 
-    // Update ctf model data every 5 minutes
-    var interval = 1000 * 60 * 5;
+    // Update ctf model data every 30 seconds
+    var interval = 1000 * 30 * 1;
     var modelReload = function() {
       reloadModels(this.get('ctf'));
       Ember.run.later(this, modelReload, interval);

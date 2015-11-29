@@ -4,7 +4,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from edctf.api.models import challenge, challengeTimestamp
 from edctf.api.serializers import challengeSerializer
-import json
 
 
 def check_flag(team, challenge, flag):
