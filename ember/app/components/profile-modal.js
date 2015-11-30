@@ -4,6 +4,16 @@ export default Ember.Component.extend({
   modal: {},
   session: {},
   team: {},
+  setupKeys: function() {
+    Ember.$('body').on('keyup.modal-dialog', (e) => {
+      if (e.keyCode === 27) {
+        this.set('modal.isProfile', false);
+      }
+    });
+  }.on('didInsertElement'),
+  teardownKeys: function() {
+    Ember.$('body').off('keyup.modal-dialog');
+  }.on('willDestroyElement'),
   setTeam: function(){
     var t = this;
     this.get('session').team.then(function(team){

@@ -7,6 +7,16 @@ export default Ember.Component.extend({
   store: undefined,
   challengeSorting: ['timestamp:desc'],
   sortedChallenges: Ember.computed.sort('challenges', 'challengeSorting'),
+  setupKeys: function() {
+    Ember.$('body').on('keyup.modal-dialog', (e) => {
+      if (e.keyCode === 27) {
+        this.set('modal.isTeam', false);
+      }
+    });
+  }.on('didInsertElement'),
+  teardownKeys: function() {
+    Ember.$('body').off('keyup.modal-dialog');
+  }.on('willDestroyElement'),
   setChallenges: function(){
     if(!this.get('session.isAuthenticated')){
       return;

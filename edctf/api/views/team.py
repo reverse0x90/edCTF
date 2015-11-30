@@ -72,7 +72,7 @@ class teamView(APIView):
     # Get the scoreboard object associated with the live ctf.
     scoreboard = live_ctf[0].scoreboard.all()[0]
 
-    # Serialize the provided registration json data to a python object.
+    # Save provided registration json data.
     team_data = request.data
 
     # Sanity check the json data to make sure all required parameters 
@@ -86,6 +86,7 @@ class teamView(APIView):
     username = team_data['username']
     password = team_data['password']
 
+    # Make validation checks on user input.
     # This is a hacky way to make these validation checks, but it should work for now.
     # Check email field
     check = User.objects.filter(email=email)
@@ -124,8 +125,8 @@ class teamView(APIView):
     # Create temp user to validate input.
     temp_user = User(username=username, email=email, password=password)
 
-    # Verify models are valid, if they are add the user and team to the database else
-    # return the error message.
+    # Verify user model is valid, if it is add the user and team to the 
+    # database else return an error message.
     try:
       temp_user.full_clean()
     except ValidationError as e:
@@ -142,7 +143,6 @@ class teamView(APIView):
     new_user = User.objects.create_user(username, email, password)
     new_team = team.objects.create(scoreboard=scoreboard, teamname=teamname,user=new_user)  
       
-
     # Registration was successful! Now login the new user.
     user = authenticate(username=username, password=password)
     if user is not None:
@@ -150,7 +150,7 @@ class teamView(APIView):
         login(request, user)
         return self.form_response(True, username=username, email=email, teamid=new_team.id)
       return self.form_response(False, error='User account is disabled')
-    #return self.form_response(False, error='Server error')
+    return self.form_response(False, error='Server error')
 
 
   def put(self, request, *args, **kwargs):

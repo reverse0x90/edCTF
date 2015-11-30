@@ -8,6 +8,16 @@ export default Ember.Component.extend({
   password: '',
   confirmPassword: '',
   classNames: ['login-box-margin'],
+  setupKeys: function() {
+    Ember.$('body').on('keyup.modal-dialog', (e) => {
+      if (e.keyCode === 27) {
+        this.set('modal.isRegister', false);
+      }
+    });
+  }.on('didInsertElement'),
+  teardownKeys: function() {
+    Ember.$('body').off('keyup.modal-dialog');
+  }.on('willDestroyElement'),
   setupFocus: function() {
     Ember.$('#inputEmail').focus();
   }.on('didInsertElement'),
