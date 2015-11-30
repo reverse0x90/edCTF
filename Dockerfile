@@ -51,17 +51,21 @@ RUN useradd -m ${EDCTF_USER} \
 # Switch to EDCTF_USER
 USER ${EDCTF_USER}
 
+# Set work directory
+WORKDIR ${EDCTF_DIR}/ember
+
 # Install Ember dependancies and build
-RUN cd ember \
-  && git config --global url."https://".insteadOf git://
+RUN git config --global url."https://".insteadOf git://
 RUN npm install
 RUN bower install -q
 
 # Create static files
-RUN cd ember \
-  && ember build -prod -o ${EDCTF_STATIC}/ember \
+RUN ember build -prod -o ${EDCTF_STATIC}/ember \
   && cp -R ${EDCTF_DJANGO_STATIC}/admin/ ${EDCTF_STATIC}/admin \
   && cp -R ${EDCTF_REST_STATIC} ${EDCTF_STATIC}/rest_framework
+
+# Set work directory
+WORKDIR ${EDCTF_DIR}
 
 # Change back to root
 USER root
