@@ -20,6 +20,7 @@
     "jquery-cookie": "~1.4.1"
   },
   "resolutions": {
-    "ember-data": "1.13.9"
+    "ember-data": "1.13.9",
+    "d3": "~3.5.9"
   }
 }

@@ -53,9 +53,9 @@ USER ${EDCTF_USER}
 
 # Install Ember dependancies and build
 RUN cd ember \
-  && git config --global url."https://".insteadOf git:// \
-  && npm install \
-  && bower install -q
+  && git config --global url."https://".insteadOf git://
+RUN npm install
+RUN bower install -q
 
 # Create static files
 RUN cd ember \
