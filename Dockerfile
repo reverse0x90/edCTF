@@ -34,14 +34,14 @@ RUN apt-get clean \
   && npm install -g bower
 
 # Add apache config
-ADD apache.conf ${EDCTF_APACHE_CONFIG}
+ADD config/apache.conf ${EDCTF_APACHE_CONFIG}
 
 # Add Ember and Django files
 ADD ember ember
 ADD edctf edctf
 ADD manage.py manage.py
-ADD generate_secrets.py generate_secrets.py
-ADD createsuperuser.py createsuperuser.py
+ADD scripts/generate_secrets.py generate_secrets.py
+ADD scripts/createsuperuser.py createsuperuser.py
 
 # Set ownership
 RUN useradd -m ${EDCTF_USER} \
@@ -75,7 +75,7 @@ RUN /etc/init.d/postgresql start \
   && python generate_secrets.py \
   && python manage.py makemigrations \
   && python manage.py migrate \
-  && cat createsuperuser.py | python manage.py shell
+  && python createsuperuser.py
 
 EXPOSE 80
 

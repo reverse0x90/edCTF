@@ -7,5 +7,5 @@ ember/node_modules/
 ember/tmp/*
 edctf/edctf_secret.py
 edctf/static/*
-edctf/api/migrations/000*
+edctf/api/migrations/*initial*
 
