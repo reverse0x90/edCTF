@@ -20,7 +20,7 @@ RUN mkdir ${EDCTF_DIR}
 WORKDIR ${EDCTF_DIR}
 
 # Add requirements.txt
-ADD requirements.txt requirements.txt
+ADD scripts/requirements.txt requirements.txt
 
 # Install dependancies
 RUN apt-get clean \
@@ -75,7 +75,8 @@ RUN /etc/init.d/postgresql start \
   && python generate_secrets.py \
   && python manage.py makemigrations \
   && python manage.py migrate \
-  && python createsuperuser.py
+  && echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', '', 'admin')" \
+  | python manage.py shell
 
 EXPOSE 80
 
