@@ -13,14 +13,11 @@
     "loader.js": "ember-cli/loader.js#3.2.1",
     "qunit": "~1.18.0",
     "bootstrap": "~3.3.5",
-    "d3": "~3.5.9",
+    "d3": "<=3.5.0",
     "c3": "~0.4.11-rc4",
     "moment": ">= 2.8.0",
     "moment-timezone": ">= 0.1.0",
     "jquery-cookie": "~1.4.1"
   },
-  "resolutions": {
-    "ember-data": "1.13.9",
-    "d3": "~3.5.9"
-  }
+  "ignore": {}
 }

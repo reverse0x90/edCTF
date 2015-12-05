@@ -37,7 +37,11 @@ export default Ember.Controller.extend({
             session.isAuthenticated = true;
             session.username = result.username;
             session.email = result.email;
-            session.team = t.store.findRecord('team', result.team);
+            if(result.team === null){
+              session.team = null;
+            } else {
+              session.team = t.store.findRecord('team', result.team);
+            }
           } else {
             session.isAuthenticated = false;
           }
@@ -77,7 +81,7 @@ export default Ember.Controller.extend({
         contentType: 'application/json; charset=utf-8',
         crossDomain:false,
         processData: false,
-        beforeSend: function(xhr, settings) {
+        beforeSend: function(xhr) {
           xhr.setRequestHeader("X-CSRFToken", Ember.$.cookie('csrftoken'));
         },
         success: function (result){
@@ -93,7 +97,11 @@ export default Ember.Controller.extend({
               session.isAuthenticated = true;
               session.username = result.username;
               session.email = result.email;
-              session.team = t.store.findRecord('team', result.team);
+              if(result.team === null){
+                session.team = null;
+              } else {
+                session.team = t.store.findRecord('team', result.team);
+              }
             } else {
               session.isAuthenticated = false;
             }
@@ -143,7 +151,7 @@ export default Ember.Controller.extend({
         contentType: 'application/json; charset=utf-8',
         crossDomain:false,
         processData: false,
-        beforeSend: function(xhr, settings) {
+        beforeSend: function(xhr) {
           xhr.setRequestHeader("X-CSRFToken", Ember.$.cookie('csrftoken'));
         },
         success: function (result) {
@@ -169,7 +177,11 @@ export default Ember.Controller.extend({
               session.isAuthenticated = true;
               session.username = result.username;
               session.email = result.email;
-              session.team = t.store.findRecord('team', result.team);
+              if(result.team === null){
+                session.team = null;
+              } else {
+                session.team = t.store.findRecord('team', result.team);
+              }
             } else {
               session.isAuthenticated = false;
             }
@@ -194,7 +206,7 @@ export default Ember.Controller.extend({
       url: namespace+'/session',
       type: 'DELETE',
       crossDomain:false,
-      beforeSend: function(xhr, settings) {
+      beforeSend: function(xhr) {
           xhr.setRequestHeader("X-CSRFToken", Ember.$.cookie('csrftoken'));
         },
       success: function(){

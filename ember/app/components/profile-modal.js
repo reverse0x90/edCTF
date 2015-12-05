@@ -15,10 +15,13 @@ export default Ember.Component.extend({
     Ember.$('body').off('keyup.modal-dialog');
   }.on('willDestroyElement'),
   setTeam: function(){
-    var t = this;
-    this.get('session').team.then(function(team){
-      t.set('team', team);
-    });
+    var team = this.get('session').team;
+    if(team){
+      var t = this;
+      team.then(function(team){
+        t.set('team', team);
+      });
+    }
   }.observes('session').on('init'),
   challenges: [],
   store: undefined,

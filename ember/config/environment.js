@@ -18,13 +18,13 @@ module.exports = function(environment) {
       // when it is created
     },
     contentSecurityPolicy: {
-      'default-src': "'self' 'unsafe-eval' https://www.google.com/ http://*.googleapis.com/ https://*.googleapis.com/",
-      'script-src': "'self' 'unsafe-eval' https://www.google.com/ http://*.googleapis.com/ https://*.googleapis.com/",
-      'font-src': "'self' 'unsafe-eval' https://www.google.com/ http://*.gstatic.com/ http://*.googleapis.com/ https://*.googleapis.com/",
-      'connect-src': "'self' 'unsafe-eval' https://www.google.com/ http://*.googleapis.com/ https://*.googleapis.com/",
-      'img-src': "'self' 'unsafe-eval' http: https:",
-      'style-src': "'self' 'unsafe-eval' 'unsafe-inline' https://www.google.com/ http://*.googleapis.com/ https://*.googleapis.com/", 
-      'media-src': "'self' 'unsafe-eval' https://www.google.com/ http://*.googleapis.com/ https://*.googleapis.com/",
+      'default-src': "'self'",
+      'script-src': "'self'",
+      'font-src': "'self'",
+      'connect-src': "'self'",
+      'img-src': "'self'",
+      'style-src': "'self'", 
+      'media-src': "'self'",
     },
   };
 

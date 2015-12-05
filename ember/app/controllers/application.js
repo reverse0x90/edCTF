@@ -73,7 +73,7 @@ export default Ember.Controller.extend({
         contentType: 'application/json; charset=utf-8',
         crossDomain:false,
         processData: false,
-        beforeSend: function(xhr, settings) {
+        beforeSend: function(xhr) {
           xhr.setRequestHeader("X-CSRFToken", Ember.$.cookie('csrftoken'));
         },
         success: function (result){
