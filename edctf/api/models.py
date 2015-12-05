@@ -118,6 +118,20 @@ class team(models.Model):
       challengeTimestamps.append((_id, _time))
     return challengeTimestamps
 
+  def team(self):
+    """
+    Alias for teamname.
+    Created for ctftime api.
+    """
+    return self.teamname
+
+  def score(self):
+    """
+    Alias for points.
+    Created for ctftime api.
+    """
+    return self.points
+
 
 class challengeTimestamp(models.Model):
   """

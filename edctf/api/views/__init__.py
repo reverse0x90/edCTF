@@ -5,3 +5,4 @@ from challenge import *
 from scoreboard import *
 from team import *
 from static import *
+from ctftime import *

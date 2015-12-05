@@ -65,3 +65,12 @@ class challengeTimestampSerializer(serializers.ModelSerializer):
   class Meta:
     model = team
     fields = ('id', 'created')
+
+
+class ctftime_team_serializer(serializers.ModelSerializer):
+  """
+  Sets fields for the rest api to serialize in the team model.
+  """
+  class Meta:
+    model = team
+    fields = ('team', 'score')

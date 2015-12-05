@@ -19,4 +19,5 @@ urlpatterns = [
   url(r'^scoreboards/(?P<id>\d+)/?$', views.scoreboardView.as_view()),
   url(r'^teams/?$', views.teamView.as_view()),
   url(r'^teams/(?P<id>\d+)/?$', views.teamView.as_view()),
+  url(r'^ctftime/(?P<id>\d+)/?$', views.ctftime_view.as_view()),
 ]
