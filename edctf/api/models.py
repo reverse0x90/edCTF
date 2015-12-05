@@ -65,7 +65,7 @@ class challenge(models.Model):
     """
     Returns number of solved challenges.
     """
-    return self.challengeTimestamps.filter(challenge=self).count()
+    return self.challenge_timestamps.filter(challenge=self).count()
   numsolved = property(_get_number_solved)
 
   class Meta:
@@ -99,7 +99,7 @@ class team(models.Model):
   correctflags = models.IntegerField(default=0, validators=[validate_positive])
   wrongflags = models.IntegerField(default=0, validators=[validate_positive])
   user = models.OneToOneField(User, related_name="teams", related_query_name="team")
-  solved = models.ManyToManyField('challenge', blank=True, related_name="solved", through='challengeTimestamp')
+  solved = models.ManyToManyField('challenge', blank=True, related_name="solved", through='challenge_timestamp')
   last_timestamp = models.DateTimeField(default=datetime.fromtimestamp(0))
   created = models.DateTimeField(auto_now_add=True)
     
@@ -110,13 +110,13 @@ class team(models.Model):
     return 'team {}: {}'.format(self.id, self.teamname)
 
   def solves(self):
-    challengeTimestamps = []
-    team_challengeTimestamps = self.challengeTimestamps.all()
-    for timestamp in team_challengeTimestamps:
+    challenge_timestamps = []
+    team_challenge_timestamps = self.challenge_timestamps.all()
+    for timestamp in team_challenge_timestamps:
       _time = int(time.mktime(timestamp.created.timetuple()))
       _id = timestamp.challenge.id
-      challengeTimestamps.append((_id, _time))
-    return challengeTimestamps
+      challenge_timestamps.append((_id, _time))
+    return challenge_timestamps
 
   def team(self):
     """
@@ -133,16 +133,16 @@ class team(models.Model):
     return self.points
 
 
-class challengeTimestamp(models.Model):
+class challenge_timestamp(models.Model):
   """
-  ChallengeTimestamp model class.
+  Challenge timestamp model class.
   """
-  team = models.ForeignKey('team', related_name="challengeTimestamps", related_query_name="challengeTimestamp")
-  challenge = models.ForeignKey('challenge', related_name="challengeTimestamps", related_query_name="challengeTimestamp")
+  team = models.ForeignKey('team', related_name="challenge_timestamps", related_query_name="challenge_timestamp")
+  challenge = models.ForeignKey('challenge', related_name="challenge_timestamps", related_query_name="challenge_timestamp")
   created = models.DateTimeField(auto_now_add=True)
 
   class Meta:
-    verbose_name_plural = "challengeTimestamps"
+    verbose_name_plural = "challenge_timestamps"
 
   def __unicode__(self):
     return 'timestamp {}: {}'.format(self.id, self.created)

@@ -2,8 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from edctf.api.models import challenge, challengeTimestamp
-from edctf.api.serializers import challengeSerializer
+from edctf.api.models import challenge, challenge_timestamp
+from edctf.api.serializers import challenge_serializer
 
 
 def check_flag(team, challenge, flag):
@@ -40,7 +40,7 @@ def update_solved(team, challenge):
   Updates the database points for a given team.
   """
   # Save the time that the challenge was solved.
-  timestamp = challengeTimestamp.objects.create(team=team, challenge=challenge)
+  timestamp = challenge_timestamp.objects.create(team=team, challenge=challenge)
   timestamp.save()
 
   # Update the team points and last timestamp in the database.
@@ -50,7 +50,7 @@ def update_solved(team, challenge):
   challenge.save()
 
 
-class challengeView(APIView):
+class challenge_view(APIView):
   """
   Manages challenge requests.
   """
@@ -83,7 +83,7 @@ class challengeView(APIView):
       challenges = challenge.objects.all()
 
     # Serialize challenge object and return the serialized data.
-    challenge_serializer = challengeSerializer(challenges, many=True, context={'request': request})
+    challenge_serializer = challenge_serializer(challenges, many=True, context={'request': request})
     return Response({
       "challenges": challenge_serializer.data,
     })

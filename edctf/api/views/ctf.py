@@ -2,10 +2,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from edctf.api.models import ctf
-from edctf.api.serializers import ctfSerializer
+from edctf.api.serializers import ctf_serializer
 
 
-class ctfView(APIView):
+class ctf_view(APIView):
   """
   Manages ctf requests.
   """
@@ -28,7 +28,7 @@ class ctfView(APIView):
           ctfs = ctf.objects.filter(live=False)
       else:
         ctfs = ctf.objects.all()
-    serializer = ctfSerializer(ctfs, many=True, context={'request': request})
+    serializer = ctf_serializer(ctfs, many=True, context={'request': request})
     return Response({
       "ctfs": serializer.data,
     })

@@ -3,14 +3,14 @@ from edctf.api.models import *
 
 
 # Register your models here.
-class ctfAdmin(admin.ModelAdmin):
+class ctf_admin(admin.ModelAdmin):
   """
   Sets the display for the ctf model in the django admin interface.
   """
   list_display = ('name', 'live')
 
 
-class challengeboardAdmin(admin.ModelAdmin):
+class challengeboard_admin(admin.ModelAdmin):
   """
   Sets the display for the challengeboard model in the django admin
   interface.
@@ -21,7 +21,7 @@ class challengeboardAdmin(admin.ModelAdmin):
     return obj.ctf
 
 
-class categoryAdmin(admin.ModelAdmin):
+class category_admin(admin.ModelAdmin):
   """
   Sets the display settings for the category model in the django admin
   interface.
@@ -29,7 +29,7 @@ class categoryAdmin(admin.ModelAdmin):
   list_display = ('name',)
 
 
-class challengeAdmin(admin.ModelAdmin):
+class challenge_admin(admin.ModelAdmin):
   """
   Sets the display settings for the challenge model in the django admin
   interface.
@@ -37,7 +37,7 @@ class challengeAdmin(admin.ModelAdmin):
   list_display = ('category', 'points', 'title')
 
 
-class scoreboardAdmin(admin.ModelAdmin):
+class scoreboard_admin(admin.ModelAdmin):
   """
   Sets the display settings for the scoreboard model in the django admin
   interface.
@@ -48,7 +48,7 @@ class scoreboardAdmin(admin.ModelAdmin):
     return obj.ctf
 
 
-class teamAdmin(admin.ModelAdmin):
+class team_admin(admin.ModelAdmin):
   """
   Sets the display settings for the team model in the django admin
   interface.
@@ -56,18 +56,18 @@ class teamAdmin(admin.ModelAdmin):
   list_display = ('teamname', 'points')
 
 
-class challengeTimestampAdmin(admin.ModelAdmin):
+class challenge_timestamp_admin(admin.ModelAdmin):
   """
-  Sets the display settings for the challengeTimestamp model in the django
+  Sets the display settings for the challenge_timestamp model in the django
   admin interface.
   """
   list_display = ('team', 'challenge', 'created')
 
 # Register the models to the django admin interface.
-admin.site.register(ctf, ctfAdmin)
-admin.site.register(challengeboard, challengeboardAdmin)
-admin.site.register(category, categoryAdmin)
-admin.site.register(challenge, challengeAdmin)
-admin.site.register(scoreboard, scoreboardAdmin)
-admin.site.register(team, teamAdmin)
-admin.site.register(challengeTimestamp, challengeTimestampAdmin)
+admin.site.register(ctf, ctf_admin)
+admin.site.register(challengeboard, challengeboard_admin)
+admin.site.register(category, category_admin)
+admin.site.register(challenge, challenge_admin)
+admin.site.register(scoreboard, scoreboard_admin)
+admin.site.register(team, team_admin)
+admin.site.register(challenge_timestamp, challenge_timestamp_admin)

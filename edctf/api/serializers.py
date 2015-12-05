@@ -3,7 +3,7 @@ from django.contrib.auth.models import *
 from edctf.api.models import *
 
 
-class ctfSerializer(serializers.ModelSerializer):
+class ctf_serializer(serializers.ModelSerializer):
   """
   Sets fields for the rest api to serialize in the ctf model.
   """
@@ -12,7 +12,7 @@ class ctfSerializer(serializers.ModelSerializer):
     fields = ('id', 'name', 'live', 'challengeboard', 'scoreboard')
 
 
-class challengeboardSerializer(serializers.ModelSerializer):
+class challengeboard_serializer(serializers.ModelSerializer):
   """
   Sets fields for the rest api to serialize in the challengeboard model.
   """
@@ -21,7 +21,7 @@ class challengeboardSerializer(serializers.ModelSerializer):
     fields = ('id', 'categories')
 
 
-class categorySerializer(serializers.ModelSerializer):
+class category_serializer(serializers.ModelSerializer):
   """
   Sets fields for the rest api to serialize in the category model.
   """
@@ -30,7 +30,7 @@ class categorySerializer(serializers.ModelSerializer):
     fields = ('id', 'name', 'challenges')
 
 
-class challengeSerializer(serializers.ModelSerializer):
+class challenge_serializer(serializers.ModelSerializer):
   """
   Sets fields for the rest api to serialize in the challenge model.
   """
@@ -39,7 +39,7 @@ class challengeSerializer(serializers.ModelSerializer):
     fields = ('id', 'title', 'points', 'description', 'solved', 'numsolved', 'category')
 
 
-class scoreboardSerializer(serializers.ModelSerializer):
+class scoreboard_serializer(serializers.ModelSerializer):
   """
   Sets fields for the rest api to serialize in the scoreboard model.
   """
@@ -48,7 +48,7 @@ class scoreboardSerializer(serializers.ModelSerializer):
     fields = ('id', 'numtopteams', 'teams')
 
 
-class teamSerializer(serializers.ModelSerializer):
+class team_serializer(serializers.ModelSerializer):
   """
   Sets fields for the rest api to serialize in the team model.
   """
@@ -57,10 +57,10 @@ class teamSerializer(serializers.ModelSerializer):
     fields = ('id', 'teamname', 'points', 'correctflags', 'wrongflags', 'solves')
 
 
-class challengeTimestampSerializer(serializers.ModelSerializer):
+class challenge_timestamp_serializer(serializers.ModelSerializer):
   """
   Sets fields for the rest api to serialize in the
-  challengeTimestamp model.
+  challenge_timestamp model.
   """
   class Meta:
     model = team

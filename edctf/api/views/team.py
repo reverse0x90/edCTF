@@ -5,11 +5,11 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 from edctf.api.models import team, ctf
-from edctf.api.serializers import teamSerializer
+from edctf.api.serializers import team_serializer
 from edctf.api.validators import *
 
 
-class teamView(APIView):
+class team_view(APIView):
   """
   Manages team requests.
   """
@@ -46,14 +46,14 @@ class teamView(APIView):
       teams = team.objects.all()
 
     # Serialize team object and return the serialized data.
-    teams_serializer = teamSerializer(teams, many=True, context={'request': request})
+    teams_serializer = team_serializer(teams, many=True, context={'request': request})
     return Response({
       "teams": teams_serializer.data,
     })
 
   def post(self, request, *args, **kwargs):
     """
-    Registers a new team
+    Registers a new team to live ctf
     """
     # If user is already authenticated, logout the user.
     if request.user.is_authenticated():
@@ -64,7 +64,7 @@ class teamView(APIView):
 
     # Sanity check currently there can only be one live ctf at a time.
     if len(live_ctf) < 1:
-      return Response(status=status.HTTP_403_FORBIDDEN)
+      return Response(status=status.HTTP_404_NOT_FOUND)
 
     # Get the scoreboard object associated with the live ctf.
     scoreboard = live_ctf[0].scoreboard.all()[0]
@@ -154,4 +154,4 @@ class teamView(APIView):
     """
     # Return error message for now this feature will be supported
     # in a future release.
-    return Response(status=status.HTTP_403_FORBIDDEN)
+    return Response(status=status.HTTP_404_NOT_FOUND)
