@@ -36,7 +36,7 @@ class challengeSerializer(serializers.ModelSerializer):
   """
   class Meta:
     model = challenge
-    fields = ('id', 'title', 'points', 'description', 'solved', 'numSolved', 'category')
+    fields = ('id', 'title', 'points', 'description', 'solved', 'numsolved', 'category')
 
 
 class scoreboardSerializer(serializers.ModelSerializer):
@@ -54,7 +54,7 @@ class teamSerializer(serializers.ModelSerializer):
   """
   class Meta:
     model = team
-    fields = ('id', 'teamname', 'points', 'correct_flags', 'wrong_flags', 'solves')
+    fields = ('id', 'teamname', 'points', 'correctflags', 'wrongflags', 'solves')
 
 
 class challengeTimestampSerializer(serializers.ModelSerializer):

@@ -4,12 +4,12 @@
     <div>
       <table class="table table-hover">
         <tbody>
-            {{#each ctf.challengeboard.sortedCategories as |category|}}
+            {{#each ctf.challengeboard.sortedcategories as |category|}}
             <tr class="challenge-tr">
-              {{#if category.sortedChallenges}}
+              {{#if category.sortedchallenges}}
                 <td class="challenge-category-name">{{category.name}}</td>
-                {{#each category.sortedChallenges as |challenge|}}
-                  {{#if challenge.isSolved}}
+                {{#each category.sortedchallenges as |challenge|}}
+                  {{#if challenge.issolved}}
                      <button class="challengeButton challengeButton-solved challengeButton-xlarge sharp" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
                   {{else}}
                     <button class="challengeButton challengeButton-unsolved challengeButton-xlarge sharp" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>

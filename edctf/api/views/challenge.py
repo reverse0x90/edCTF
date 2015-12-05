@@ -22,12 +22,12 @@ def check_flag(team, challenge, flag):
     # If the user input the correct flag, update the team's correct flag
     # count else update the wrong flags count and return an error.
     if correct:
-      team.correct_flags = team.correct_flags + 1
+      team.correctflags = team.correctflags + 1
       team.save()
       return True, error
     else:
       error = 'Invalid flag'
-      team.wrong_flags = team.wrong_flags + 1
+      team.wrongflags = team.wrongflags + 1
       team.save()
       return False, error
   else:

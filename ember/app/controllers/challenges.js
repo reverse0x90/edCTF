@@ -9,7 +9,7 @@ export default Ember.Controller.extend({
   setSolvedChallenges: function(){
     var solves = this.get('session.team.solves');
 
-    // Updated isSolved for all challenges
+    // Updated issolved for all challenges
     if(solves){
       var challenges = this.store.peekAll('challenge');
       if(challenges){
@@ -23,9 +23,9 @@ export default Ember.Controller.extend({
             return false;
           });
           if(found || found === 0){
-            challenge.set('isSolved', true);
+            challenge.set('issolved', true);
           } else {
-            challenge.set('isSolved', false);
+            challenge.set('issolved', false);
           }
         });
       }
@@ -41,6 +41,7 @@ export default Ember.Controller.extend({
         if (points) {
           this.set('session.team.points', points+challenge.get('points'));
         }
+        challenge.set('numsolved', challenge.get('numsolved') + 1);
       }
       
       var solves = this.get('session.team.solves');

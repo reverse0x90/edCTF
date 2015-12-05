@@ -3,7 +3,7 @@
         <h2 align="center" class="modal-title">{{challenge.category.name}} - {{challenge.points}}</h2>
         <h3 align="left">{{challenge.title}}</h3>
         <p align="left">{{{challenge.description}}}</p>
-        <p align="center">{{challenge.numSolved}} solves</p>
+        <p align="center">{{challenge.numsolved}} solves</p>
 
         <form class="simple_form form-horizontal">
             {{#if errorMessage}}
@@ -14,14 +14,14 @@
                  <label class="control-label"><div class="text-danger edctf-text" style="margin-bottom: .4em;">{{wrongFlagMsg}}</div></label>
             {{/if}}
 
-            {{#unless challenge.isSolved}}
+            {{#unless challenge.issolved}}
                 <span class="form-group edctf-text">
                     {{input type="text" value=flag class="form-control edctf-text" id="inputFlag" placeholder="Flag"}}
                 </span>
             {{/unless}}
 
             <div class="edctf-button">
-                {{#unless challenge.isSolved}}
+                {{#unless challenge.issolved}}
                     <button class="btn btn-success btn-login-submit challenge-submit edctf-submit-button" type="submit" {{action 'submitFlag'}}>Submit</button>
                 {{/unless}}
                 <button class="btn btn-danger btn-cancel-action challenge-cancel edctf-cancel-button" {{action 'closeChallengeModal'}}>Cancel</button> 

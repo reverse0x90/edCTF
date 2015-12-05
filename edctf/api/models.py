@@ -66,7 +66,7 @@ class challenge(models.Model):
     Returns number of solved challenges.
     """
     return self.challengeTimestamps.filter(challenge=self).count()
-  numSolved = property(_get_number_solved)
+  numsolved = property(_get_number_solved)
 
   class Meta:
     verbose_name_plural = "challenges"
@@ -96,8 +96,8 @@ class team(models.Model):
   scoreboard = models.ForeignKey('scoreboard', related_name="teams", related_query_name="team")
   teamname = models.CharField(max_length=60, unique=True, validators=[validate_no_xss, validate_no_html])
   points = models.IntegerField(default=0, validators=[validate_positive])
-  correct_flags = models.IntegerField(default=0, validators=[validate_positive])
-  wrong_flags = models.IntegerField(default=0, validators=[validate_positive])
+  correctflags = models.IntegerField(default=0, validators=[validate_positive])
+  wrongflags = models.IntegerField(default=0, validators=[validate_positive])
   user = models.OneToOneField(User, related_name="teams", related_query_name="team")
   solved = models.ManyToManyField('challenge', blank=True, related_name="solved", through='challengeTimestamp')
   last_timestamp = models.DateTimeField(default=datetime.fromtimestamp(0))

@@ -4,8 +4,8 @@ import DS from 'ember-data';
 export default DS.Model.extend({
   name: DS.attr('string'),
   challenges: DS.hasMany('challenge', {async: false}),
-  challengeSorting: ['points', 'id'],
-  sortedChallenges: Ember.computed.sort('challenges', 'challengeSorting'),
+  challengesorting: ['points', 'id'],
+  sortedchallenges: Ember.computed.sort('challenges', 'challengesorting'),
   challengeboard: DS.belongsTo('challengeboard'),
 });
 

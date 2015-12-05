@@ -16,3 +16,6 @@ rm ${EDCTF_DJANGO}/api/migrations/*initial*
 
 # regenerate database
 ${EDCTF_SCRIPTS}/build_backend.bash
+
+# restart service
+${EDCTF_SCRIPTS}/start.bash
