@@ -1,4 +1,5 @@
 #!/bin/bash
+# Builds server-side items, including apache config, secrets, and database
 
 sudo cp ${EDCTF_CONFIG}/apache.conf ${APACHE_CONFIG}/000-default.conf \
   && python ${EDCTF_SCRIPTS}/generate_secrets.py --output ${EDCTF_DJANGO}/edctf_secret.py \

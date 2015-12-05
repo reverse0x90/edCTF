@@ -10,12 +10,13 @@ class challengeboardView(APIView):
   Manages challengeboard requests
   """
   permission_classes = (IsAuthenticated,)
+
   def get(self, request, id=None, format=None):
     """
-    Gets all challengeboards or gets one challengeboard via 
+    Gets all challengeboards or gets one challengeboard via
     challengeboards/:id.
     """
-    # If challengeboard id was requested, return that challengeboard 
+    # If challengeboard id was requested, return that challengeboard
     # else return list of all challengeboards in the database.
     if id:
       # Retrieve and serialize the requested challengeboard data.

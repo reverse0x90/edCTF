@@ -59,9 +59,9 @@ class teamSerializer(serializers.ModelSerializer):
 
 class challengeTimestampSerializer(serializers.ModelSerializer):
   """
-  Sets fields for the rest api to serialize in the 
+  Sets fields for the rest api to serialize in the
   challengeTimestamp model.
   """
   class Meta:
     model = team
-    fields = ('id','created')
+    fields = ('id', 'created')

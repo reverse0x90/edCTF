@@ -1,4 +1,5 @@
 #!/bin/bash
+# Generates client-side items, including building ember and copying CSS
 
 cd ${EDCTF_EMBER} \
   && npm install \

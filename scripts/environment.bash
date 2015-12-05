@@ -1,4 +1,5 @@
 #!/bin/bash
+# Sets environment variables relating to edCTF
 
 # set edCTF root
 export EDCTF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"

@@ -17,6 +17,7 @@ class ctf(models.Model):
 
   class Meta:
     verbose_name_plural = "ctfs"
+
   def __unicode__(self):
     return '{}'.format(self.name)
 
@@ -29,6 +30,7 @@ class challengeboard(models.Model):
 
   class Meta:
     verbose_name_plural = "challengeboard"
+
   def __unicode__(self):
     return '{}'.format(self.id)
 
@@ -37,12 +39,13 @@ class category(models.Model):
   """
   Category model class.
   """
-  name =  models.CharField(max_length=50, validators=[validate_no_xss, validate_no_html])
+  name = models.CharField(max_length=50, validators=[validate_no_xss, validate_no_html])
   challengeboard = models.ForeignKey('challengeboard', related_name="categories", related_query_name="category")
   created = models.DateTimeField(auto_now_add=True)
 
   class Meta:
     verbose_name_plural = "categories"
+
   def __unicode__(self):
     return '{}'.format(self.name)
 
@@ -67,6 +70,7 @@ class challenge(models.Model):
 
   class Meta:
     verbose_name_plural = "challenges"
+
   def __unicode__(self):
     return '{} {}'.format(self.title, self.points)
 
@@ -80,6 +84,7 @@ class scoreboard(models.Model):
 
   class Meta:
     verbose_name_plural = "scoreboards"
+
   def __unicode__(self):
     return '{}'.format(self.id)
 
@@ -103,7 +108,7 @@ class team(models.Model):
     
   def __unicode__(self):
     return 'team {}: {}'.format(self.id, self.teamname)
-    
+
   def solves(self):
     challengeTimestamps = []
     team_challengeTimestamps = self.challengeTimestamps.all()
@@ -124,5 +129,6 @@ class challengeTimestamp(models.Model):
 
   class Meta:
     verbose_name_plural = "challengeTimestamps"
+
   def __unicode__(self):
     return 'timestamp {}: {}'.format(self.id, self.created)

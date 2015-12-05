@@ -19,7 +19,7 @@ def check_flag(team, challenge, flag):
   if not res:
     # TODO: Allow for regex flag checking in the future
     correct = challenge.flag == flag
-    # If the user input the correct flag, update the team's correct flag 
+    # If the user input the correct flag, update the team's correct flag
     # count else update the wrong flags count and return an error.
     if correct:
       team.correct_flags = team.correct_flags + 1
@@ -64,19 +64,18 @@ class challengeView(APIView):
     data = {
       'success': success,
     }
-    # If error during flag check, return the error else return 
+    # If error during flag check, return the error else return
     # the flag response data.
     if error:
       data['error'] = error
     return Response(data)
 
-
   def get(self, request, id=None, format=None):
     """
-    Gets all challenges or gets an individual challenge via 
+    Gets all challenges or gets an individual challenge via
     challenge/:id.
     """
-    # If a specific challenge is requested, return that challege 
+    # If a specific challenge is requested, return that challege
     # else return all the challenges in the database.
     if id:
       challenges = challenge.objects.filter(id=id)
@@ -89,7 +88,6 @@ class challengeView(APIView):
       "challenges": challenge_serializer.data,
     })
 
-
   def post(self, request, id=None, format=None):
     """
     Checks a submitted flag for a challenge.
@@ -100,21 +98,21 @@ class challengeView(APIView):
         _challenge = challenge.objects.get(id=id)
       except:
         return Response(status=status.HTTP_404_NOT_FOUND)
-        
+
       # Get the flag data from the request json object.
       flag_data = request.data
 
       # Verify flag is not blank and was set in the request.
       if 'flag' not in flag_data:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-      
+
       flag = flag_data['flag']
 
       # Get the team object associated with the user's session.
       _team = request.user.teams
 
       # Check if the flag is correct and return the result.
-      success, error = check_flag(_team,_challenge, flag)
+      success, error = check_flag(_team, _challenge, flag)
       if success:
         update_solved(_team, _challenge)
         return self.form_response(True)

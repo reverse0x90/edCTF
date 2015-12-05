@@ -15,7 +15,7 @@ def validate_attributes(value):
   Validates only white listed html tag attributes are allowed in the string.
   """
   # List of valid html tag attributes
-  VALID_ATTRS = ['href','title']
+  VALID_ATTRS = ['href', 'title']
   valid = True
 
   # Parse the input string
@@ -32,7 +32,7 @@ def validate_attributes(value):
 
   # Raise an error if invalid tag attributes were found
   if not valid:
-    raise ValidationError('Field may only contain valid html attributes: %s' %(", ".join(VALID_ATTRS)))
+    raise ValidationError('Field may only contain valid html attributes: %s' % (", ".join(VALID_ATTRS)))
 
 
 def validate_tags(value):
@@ -54,7 +54,8 @@ def validate_tags(value):
 
   # Raise an error if invalid tags were found
   if not valid:
-    raise ValidationError('Field may only contain valid html tags: %s' %(", ".join(VALID_TAGS)))
+    raise ValidationError('Field may only contain valid html tags: %s' % (", ".join(VALID_TAGS)))
+
 
 def validate_no_html(value):
   """

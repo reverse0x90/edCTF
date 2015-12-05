@@ -52,10 +52,10 @@ if __name__ == '__main__':
   # set secret and password character sets
   secret_chars = ''.join(map(chr, range(128)))
   password_chars = string.ascii_letters + string.digits
-  
+
   # generate new django secret
   secret = get_random_string(50, secret_chars)
-  
+
   # set database information
   dbname = args.dbname
   dbuser = args.dbuser
@@ -76,7 +76,7 @@ if __name__ == '__main__':
 
   # generate secret file
   generated_code = _CODE_TEMPLATE.format(
-    secret = secret.encode('base64').replace('\n',''),
+    secret = secret.encode('base64').replace('\n', ''),
     dbname = dbname,
     dbuser = dbuser,
     dbpassword = dbpassword,
