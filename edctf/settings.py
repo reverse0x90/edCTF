@@ -26,7 +26,7 @@ except ImportError as err:
 SECRET_KEY = edctf_secret.SECRET_KEY.decode('base64')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 if DEBUG:
     ALLOWED_HOSTS = []
@@ -118,7 +118,7 @@ if DEBUG:
         'DEFAULT_PERMISSION_CLASSES': (
             'rest_framework.permissions.IsAuthenticated',
         ),
-    'DEFAULT_PARSER_CLASSES': (
+        'DEFAULT_PARSER_CLASSES': (
             'rest_framework.parsers.JSONParser',
         ),
     }
