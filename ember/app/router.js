@@ -6,12 +6,12 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+  this.route('home');
+  this.route('challenges');
   this.route('scoreboard');
   this.route('about');
-  this.route('challenges');
-  this.route('challenges', function() {});
   this.route('modal');
-  this.route('home', {});
+  this.route('404', {path: "*path"});
 });
 
 export default Router;
