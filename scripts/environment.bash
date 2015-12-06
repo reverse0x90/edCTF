@@ -16,6 +16,9 @@ export EDCTF_EMBER_STATIC="${EDCTF_STATIC}/ember"
 export EDCTF_ADMIN_STATIC="${EDCTF_STATIC}/admin"
 export EDCTF_REST_STATIC="${EDCTF_STATIC}/rest_framework"
 
+# set favicon path
+export EDCTF_FAVICON="${EDCTF_STATIC}/icons/favicon.ico"
+
 # set dependancy paths
 export APACHE_CONFIG="/etc/apache2/sites-enabled"
 export DJANGO_ADMIN_STATIC="/usr/local/lib/python2.7/dist-packages/django/contrib/admin/static/admin"
@@ -23,3 +26,7 @@ export REST_FRAMEWORK_CSS_DIR="/usr/local/lib/python2.7/dist-packages/rest_frame
 
 # set database information
 export EDCTF_DATABASE="edctf"
+
+# set apache log paths
+export EDCTF_ERROR_LOG="/var/log/edctf-error.log"
+export EDCTF_ACCESS_LOG="/var/log/edctf-access.log"
