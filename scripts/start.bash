@@ -2,5 +2,5 @@
 # Starts edCTF via apache
 
 # restart/start apache and reload config
-sudo apache2ctl graceful-stop 2&>/dev/null
-sudo apache2ctl start
+sudo service apache2 reload
+sudo service apache2 restart
