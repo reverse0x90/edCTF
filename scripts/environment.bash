@@ -21,8 +21,10 @@ export EDCTF_FAVICON="${EDCTF_STATIC}/icons/favicon.ico"
 
 # set dependancy paths
 export APACHE_CONFIG="/etc/apache2/sites-enabled"
+export APACHE_ENVVARS="/etc/apache2/envvars"
 export DJANGO_ADMIN_STATIC="/usr/local/lib/python2.7/dist-packages/django/contrib/admin/static/admin"
 export REST_FRAMEWORK_CSS_DIR="/usr/local/lib/python2.7/dist-packages/rest_framework/static/rest_framework"
+
 
 # set database information
 export EDCTF_DATABASE="edctf"

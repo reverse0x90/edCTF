@@ -6,6 +6,8 @@ ENV DEBIAN_FRONTEND noninteractive
 # Set directory paths
 ENV EDCTF_DIR /opt/edctf
 ENV EDCTF_STATIC ${EDCTF_DIR}/edctf/static
+ENV EDCTF_CONFIG ${EDCTF_DIR}/config
+ENV EDCTF_SCRIPTS ${EDCTF_DIR}/scripts
 ENV EDCTF_DJANGO_STATIC /usr/local/lib/python2.7/dist-packages/django/contrib/admin/static
 ENV EDCTF_REST_STATIC /usr/local/lib/python2.7/dist-packages/rest_framework/static/rest_framework/
 ENV EDCTF_APACHE_CONFIG /etc/apache2/sites-enabled/000-default.conf
@@ -22,6 +24,9 @@ WORKDIR ${EDCTF_DIR}
 # Add requirements.txt
 ADD scripts/requirements.txt requirements.txt
 
+# Add scripts dir
+ADD scripts ${EDCTF_SCRIPTS}
+
 # Install dependancies
 RUN apt-get clean \
   && apt-get update \
@@ -35,6 +40,10 @@ RUN apt-get clean \
 
 # Add apache config
 ADD config/apache.conf ${EDCTF_APACHE_CONFIG}
+ADD config ${EDCTF_CONFIG}
+
+# Add envvars
+RUN scripts/generate_envvars.bash
 
 # Add Ember and Django files
 ADD ember ember
