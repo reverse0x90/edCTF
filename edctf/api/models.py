@@ -39,7 +39,7 @@ class category(models.Model):
   """
   Category model class.
   """
-  name = models.CharField(max_length=50, validators=[validate_no_xss, validate_no_html])
+  name = models.CharField(max_length=50, unique=True, validators=[validate_no_xss, validate_no_html])
   challengeboard = models.ForeignKey('challengeboard', related_name="categories", related_query_name="category")
   created = models.DateTimeField(auto_now_add=True)
 
