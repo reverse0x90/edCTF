@@ -9,7 +9,7 @@ class ctf(models.Model):
   """
   Ctf model class.
   """
-  name = models.CharField(max_length=250, unique=True, validators=[validate_no_xss, validate_no_html])
+  name = models.CharField(max_length=250, unique=True, validators=[validate_no_xss, validate_no_html, validate_ctf_iexact])
   live = models.BooleanField(default=False)
   challengeboard = models.ManyToManyField('challengeboard', related_name="ctfs", related_query_name="ctf")
   scoreboard = models.ManyToManyField('scoreboard', related_name="ctfs", related_query_name="ctf")
@@ -39,7 +39,7 @@ class category(models.Model):
   """
   Category model class.
   """
-  name = models.CharField(max_length=50, unique=True, validators=[validate_no_xss, validate_no_html])
+  name = models.CharField(max_length=50, unique=True, validators=[validate_no_xss, validate_no_html, validate_category_iexact])
   challengeboard = models.ForeignKey('challengeboard', related_name="categories", related_query_name="category")
   created = models.DateTimeField(auto_now_add=True)
 
@@ -94,7 +94,7 @@ class team(models.Model):
   Team model class.
   """
   scoreboard = models.ForeignKey('scoreboard', related_name="teams", related_query_name="team")
-  teamname = models.CharField(max_length=60, unique=True, validators=[validate_no_xss, validate_no_html])
+  teamname = models.CharField(max_length=60, unique=True, validators=[validate_no_xss, validate_no_html, validate_team_iexact])
   points = models.IntegerField(default=0, validators=[validate_positive])
   correctflags = models.IntegerField(default=0, validators=[validate_positive])
   wrongflags = models.IntegerField(default=0, validators=[validate_positive])

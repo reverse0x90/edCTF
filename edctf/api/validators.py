@@ -2,6 +2,39 @@ from django.core.exceptions import ValidationError
 from bs4 import BeautifulSoup
 
 
+def validate_ctf_iexact(value):
+  """
+  Validates a ctf with the same name does not exist (case insensitive).
+  Django does not support unique case insensitive validation by default
+  so this is a workaround for now. 
+  """
+  # Import all current ctf models
+  from edctf.api.models import ctf
+  if ctf.objects.filter(name__iexact=value).exists():
+    raise ValidationError('CTF already exists')
+
+def validate_category_iexact(value):
+  """
+  Validates a category with the same name does not exist (case insensitive).
+  Django does not support unique case insensitive validation by default
+  so this is a workaround for now. 
+  """
+  # Import all current ctf models
+  from edctf.api.models import category
+  if category.objects.filter(name__iexact=value).exists():
+    raise ValidationError('Category already exists')
+
+def validate_team_iexact(value):
+  """
+  Validates a team with the same teamname does not exist (case insensitive).
+  Django does not support unique case insensitive validation by default
+  so this is a workaround for now. 
+  """
+  # Import all current ctf models
+  from edctf.api.models import team
+  if team.objects.filter(teamname__iexact=value).exists():
+    raise ValidationError('Team already exists')
+
 def validate_no_xss(value):
   """
   Validates there is no unintended javascript in the value.
