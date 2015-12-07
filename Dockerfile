@@ -50,6 +50,7 @@ COPY edctf ${EDCTF_DJANGO}
 
 # Add non-root user
 RUN useradd -m ${EDCTF_USER} \
+  && echo "${EDCTF_USER} ALL = (ALL) NOPASSWD: ALL" > /etc/sudoers.d/${EDCTF_USER} \
   && chown -R ${EDCTF_USER}:${EDCTF_USER} ${EDCTF_DIR}
 
 # Switch to non-root for ember
