@@ -1,29 +1,29 @@
 # edCTF
 
-edCTF is a generic web application to host jeopardy-style CTF competitions.  It uses both the EmberJS and Django frameworks.
+edCTF is a generic web application to quickly host jeopardy-style CTF competitions.  edCTF uses EmberJS for the client side of the application, while the backend utilizes the Django framework.
 
 ## Prerequisites
 
 You will need the following things properly installed on your computer.
 
-* [Git](http://git-scm.com/)
 * [Docker](http://docs.docker.com/engine/installation/)
 
 ## Installation
 Default installations set the Django superuser to username 'admin' with password 'admin'.  It is strongly recommended to change this password.
 
 ### Docker
-You can run it within a container using Docker via the following commands:
+You can run edCTF within a container with Docker via the following commands:
 ```
-docker build -t edctf .
-docker run --restart=always -p 80:80 --name edctf_server -d edctf
+docker build -t edctf . \
+  && docker run --restart=always -p 80:80 --name edctf_server -d edctf
 ```
-It is not recommended to run docker commands as a root or sudo priveleged user.
+edCTF can then be accessed on port 80 of your host machine.
 
 ### Local
-You can also install locally, assuming you're using something like Ubuntu.
+You can also install edCTF locally, assuming you're using something similar to Ubuntu or Debian.
 
-Run the production setup script:
+Simply run the production setup script:
 ```
 ./scripts/production.bash
 ```
+edCTF will then be running on port 80 on your host machine.
