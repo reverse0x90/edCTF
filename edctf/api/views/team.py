@@ -47,6 +47,7 @@ class team_view(APIView):
 
     # Serialize team object and return the serialized data.
     teams_serializer = team_serializer(teams, many=True, context={'request': request})
+
     return Response({
       "teams": teams_serializer.data,
     })

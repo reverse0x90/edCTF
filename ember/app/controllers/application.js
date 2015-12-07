@@ -45,6 +45,7 @@ export default Ember.Controller.extend({
       auth.login(authenticationData, function(){
         // If there was no error during authentication close the login modal 
         if(!auth.get('errorMessage')){
+          t.set('session', auth.session);
           t.set('modal.isLogin', false);
         }
       });
@@ -84,8 +85,16 @@ export default Ember.Controller.extend({
       });
     },
     logout: function() {
-      this.set('session', {'isAuthenticated': false});
-      this.get('authController').logout();
+      var t = this;
+      var auth = this.get('authController');
+
+      // Attempt to logout
+      auth.logout(function(){
+        t.set('session', auth.session);
+
+        // Redirect to the home page
+        t.transitionToRoute('home');
+      });
     },
     openLoginModal: function() {
       this.set('modal.isLogin', true);

@@ -84,7 +84,7 @@ export default Ember.Controller.extend({
         beforeSend: function(xhr) {
           xhr.setRequestHeader("X-CSRFToken", Ember.$.cookie('csrftoken'));
         },
-        success: function (result){
+       success: function (result){
           var session = {};
           if(result.error){
             session.isAuthenticated = result.isauthenticated || false;
@@ -114,7 +114,8 @@ export default Ember.Controller.extend({
           }
           t.set('session', session);
           callback();
-        }, error: function () {
+        },
+        error: function () {
           validator.invalidLogin();
           t.set('errorMessage', validator.get('error'));
           t.set('errorFields', validator.get('errorFields'));
@@ -189,7 +190,8 @@ export default Ember.Controller.extend({
           registrationData = null;
           t.set('session', session);
           callback();
-        }, error: function () {
+        },
+        error: function () {
           t.set('errorMessage', 'Server error');
           t.set('errorFields', {});
           callback();
@@ -197,7 +199,7 @@ export default Ember.Controller.extend({
       });
     }
   },
-  logout: function(){
+  logout: function(callback){
     // Send logout request to server
     var t = this;
     var namespace = this.store.adapterFor('application').namespace;
@@ -212,9 +214,12 @@ export default Ember.Controller.extend({
       success: function(){
         // Do the deauthentication
         t.set('session', {'isAuthenticated': false});
-
-        // Redirect to the home page
-        t.transitionToRoute('home');
+        callback();
+      },
+      error: function () {
+        // Set isAuthenticated to false regardless
+        t.set('session', {'isAuthenticated': false});
+        callback();
       }
     });
   },
