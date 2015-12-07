@@ -57,7 +57,7 @@ USER ${EDCTF_USER}
 
 # Build frontend
 RUN /bin/bash -c "source ${EDCTF_SCRIPTS}/environment.bash \
-  && git config --global url."https://".insteadOf git:// \
+  && git config --global url.'https://'.insteadOf git:// \
   && ${EDCTF_SCRIPTS}/build_frontend.bash"
 
 # Switch back to root
