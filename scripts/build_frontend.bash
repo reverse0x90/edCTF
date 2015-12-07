@@ -2,7 +2,7 @@
 # Generates client-side items, including building ember and copying CSS
 
 cd ${EDCTF_EMBER} \
-  && npm install \
+  && sudo npm install \
   && bower install -q \
   && ember build -prod -o ${EDCTF_EMBER_STATIC} \
   && cp -R ${DJANGO_ADMIN_STATIC} ${EDCTF_ADMIN_STATIC} \

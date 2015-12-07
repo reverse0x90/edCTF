@@ -1,5 +1,5 @@
 # This is currently a temporary solution
-FROM ubuntu:trusty
+FROM debian:jessie
 
 ENV EDCTF_USER edctf
 ENV EDCTF_DIR /opt/edctf
@@ -17,9 +17,10 @@ RUN apt-get update \
     git \
     libapache2-mod-wsgi \
     libpq-dev \
-    postgresql=9.3* \
+    postgresql=9.4* \
     python-pip \
     python-dev \
+    sudo \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
