@@ -86,7 +86,7 @@ class team_view(APIView):
     # Make validation checks on user input.
     # This is a hacky way to make these validation checks, but it should work for now.
     # Check email field
-    check = User.objects.filter(email=email)
+    check = User.objects.filter(email__iexact=email)
     if len(check):
       return self.form_response(False, error='Email is taken', errorfields={'email': True})
     else:
@@ -97,7 +97,7 @@ class team_view(APIView):
         return self.form_response(False, error=e.message, errorfields={'email': True})
 
     # Check teamname field
-    check = team.objects.filter(teamname=teamname)
+    check = team.objects.filter(teamname__iexact=teamname)
     if len(check):
       return self.form_response(False, error='Team name is taken', errorfields={'teamname': True})
     else:
@@ -108,7 +108,7 @@ class team_view(APIView):
         return self.form_response(False, error=e.message, errorfields={'teamname': True})
 
     # Check teamname field
-    check = User.objects.filter(username=username)
+    check = User.objects.filter(username__iexact=username)
     if len(check):
       return self.form_response(False, error='Username is taken', errorfields={'username': True})
     else:
