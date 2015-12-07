@@ -66,8 +66,8 @@ USER root
 # Build backend
 RUN /bin/bash -c "source ${EDCTF_SCRIPTS}/environment.bash \
   && /etc/init.d/postgresql start \
-  && ${EDCTF_SCRIPTS}/build_backend.bash" \
-  && /etc/init.d/postgresql stop
+  && ${EDCTF_SCRIPTS}/build_backend.bash \
+  && /etc/init.d/postgresql stop"
 
 WORKDIR ${EDCTF_DIR}
 EXPOSE 80
