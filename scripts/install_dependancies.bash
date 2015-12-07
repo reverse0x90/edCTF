@@ -4,7 +4,7 @@
 
 sudo apt-get -y install apache2 libapache2-mod-wsgi python-pip python-dev git postgresql libpq-dev \
   && sudo pip install -r ${EDCTF_SCRIPTS}/requirements.txt \
-  && (wget -qO- https://deb.nodesource.com/setup_4.x | sudo bash) \
+  && (wget -qO- https://deb.nodesource.com/setup | sudo bash -) \
   && sudo apt-get install -y nodejs \
   && sudo npm install -g ember-cli \
   && sudo npm install -g bower

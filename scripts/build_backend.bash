@@ -12,7 +12,7 @@ sed "s@\${EDCTF_DIR}@${EDCTF_DIR}@g" ${EDCTF_CONFIG}/apache.conf \
 
 # generate secrets and populate database
 python ${EDCTF_SCRIPTS}/generate_secrets.py --output ${EDCTF_DJANGO}/edctf_secret.py \
-  && cd ${EDCTF_DIR} \
-  && python manage.py makemigrations \
-  && python manage.py migrate \
-  && python manage.py createsuperuser
+  && python ${EDCTF_DIR}/manage.py makemigrations \
+  && python ${EDCTF_DIR}/manage.py migrate \
+  && echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', '', 'admin')" \
+  | python ${EDCTF_DIR}/manage.py shell

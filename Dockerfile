@@ -1,94 +1,74 @@
 # This is currently a temporary solution
 FROM ubuntu:trusty
 
-ENV DEBIAN_FRONTEND noninteractive
-
-# Set directory paths
-ENV EDCTF_DIR /opt/edctf
-ENV EDCTF_STATIC ${EDCTF_DIR}/edctf/static
-ENV EDCTF_CONFIG ${EDCTF_DIR}/config
-ENV EDCTF_SCRIPTS ${EDCTF_DIR}/scripts
-ENV EDCTF_DJANGO_STATIC /usr/local/lib/python2.7/dist-packages/django/contrib/admin/static
-ENV EDCTF_REST_STATIC /usr/local/lib/python2.7/dist-packages/rest_framework/static/rest_framework/
-ENV EDCTF_APACHE_CONFIG /etc/apache2/sites-enabled/000-default.conf
-
-# Set user
 ENV EDCTF_USER edctf
+ENV EDCTF_DIR /opt/edctf
 
-# Create project directory
+ENV EDCTF_CONFIG  ${EDCTF_DIR}/config
+ENV EDCTF_DJANGO  ${EDCTF_DIR}/edctf
+ENV EDCTF_EMBER   ${EDCTF_DIR}/ember
+ENV EDCTF_SCRIPTS ${EDCTF_DIR}/scripts
+
+# Install packages
+RUN apt-get update \
+  && apt-get -y install \
+    apache2 \
+    curl \
+    git \
+    libapache2-mod-wsgi \
+    libpq-dev \
+    postgresql=9.3* \
+    python-pip \
+    python-dev \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install Python and Javascript dependencies
+COPY scripts/requirements.txt requirements.txt
+RUN pip install -r requirements.txt \
+  && (curl -sL https://deb.nodesource.com/setup | bash -) \
+  && DEBIAN_FRONTEND=noninteractive \
+    apt-get install -y nodejs \
+  && npm install -g ember-cli \
+  && npm install -g bower \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+# Create directory structure
 RUN mkdir ${EDCTF_DIR}
 
-# Set work directory
-WORKDIR ${EDCTF_DIR}
+# Add build scripts and config
+COPY config ${EDCTF_CONFIG}
+COPY scripts ${EDCTF_SCRIPTS}
 
-# Add requirements.txt
-ADD scripts/requirements.txt requirements.txt
+# Copy frontend
+COPY ember ${EDCTF_EMBER}
 
-# Add scripts dir
-ADD scripts ${EDCTF_SCRIPTS}
+# Copy backend
+COPY manage.py ${EDCTF_DIR}/manage.py
+COPY edctf ${EDCTF_DJANGO}
 
-# Install dependancies
-RUN apt-get clean \
-  && apt-get update \
-  && apt-get -y upgrade \
-  && apt-get -y install wget apache2 libapache2-mod-wsgi python-pip python-dev git postgresql-9.3 libpq-dev \
-  && pip install -r requirements.txt \
-  && (wget -qO- https://deb.nodesource.com/setup_4.x | bash) \
-  && apt-get install -y nodejs \
-  && npm install -g ember-cli \
-  && npm install -g bower
-
-# Add apache config
-ADD config/apache.conf ${EDCTF_APACHE_CONFIG}
-ADD config ${EDCTF_CONFIG}
-
-# Add envvars
-RUN scripts/generate_envvars.bash
-
-# Add Ember and Django files
-ADD ember ember
-ADD edctf edctf
-ADD manage.py manage.py
-ADD scripts/generate_secrets.py generate_secrets.py
-ADD scripts/createsuperuser.py createsuperuser.py
-
-# Set ownership
+# Add non-root user
 RUN useradd -m ${EDCTF_USER} \
-  && chown ${EDCTF_USER}:${EDCTF_USER} -R ${EDCTF_DIR} \
-  && chmod 775 -R ${EDCTF_DIR}
+  && chown -R ${EDCTF_USER}:${EDCTF_USER} ${EDCTF_DIR}
 
-# Switch to EDCTF_USER
+# Switch to non-root for ember
 USER ${EDCTF_USER}
 
-# Set work directory
-WORKDIR ${EDCTF_DIR}/ember
+# Build frontend
+RUN /bin/bash -c "source ${EDCTF_SCRIPTS}/environment.bash \
+  && git config --global url."https://".insteadOf git:// \
+  && ${EDCTF_SCRIPTS}/build_frontend.bash"
 
-# Install Ember dependancies and build
-RUN git config --global url."https://".insteadOf git://
-RUN npm install
-RUN bower install -q
-
-# Create static files
-RUN ember build -prod -o ${EDCTF_STATIC}/ember \
-  && cp -R ${EDCTF_DJANGO_STATIC}/admin/ ${EDCTF_STATIC}/admin \
-  && cp -R ${EDCTF_REST_STATIC} ${EDCTF_STATIC}/rest_framework
-
-# Set work directory
-WORKDIR ${EDCTF_DIR}
-
-# Change back to root
+# Switch back to root
 USER root
 
-# Initialize edctf database
-RUN /etc/init.d/postgresql start \
-  && python generate_secrets.py \
-  && python manage.py makemigrations \
-  && python manage.py migrate \
-  && echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', '', 'admin')" \
-  | python manage.py shell
+# Build backend
+RUN /bin/bash -c "source ${EDCTF_SCRIPTS}/environment.bash \
+  && /etc/init.d/postgresql start \
+  && ${EDCTF_SCRIPTS}/build_backend.bash" \
+  && /etc/init.d/postgresql stop
 
+WORKDIR ${EDCTF_DIR}
 EXPOSE 80
-
-CMD (sudo -u postgres /usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf &) \
-  && /usr/sbin/apache2ctl restart \
-  && tail -f /dev/null
+ENTRYPOINT ["scripts/start-docker.bash"]
