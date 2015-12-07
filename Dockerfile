@@ -1,4 +1,3 @@
-# This is currently a temporary solution
 FROM debian:jessie
 
 ENV EDCTF_USER edctf
