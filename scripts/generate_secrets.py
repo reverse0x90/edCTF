@@ -88,5 +88,5 @@ if __name__ == '__main__':
   with open(edctf_secret, 'wb') as f:
     f.write(generated_code)
 
-  # modify access, since running as escalated user
-  os.system('chmod 755 {edctf_secret}'.format(edctf_secret=edctf_secret))
+  # modify access
+  os.system('chown $USER:www-data {edctf_secret} && chmod 750 {edctf_secret}'.format(edctf_secret=edctf_secret))

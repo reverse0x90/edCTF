@@ -35,23 +35,22 @@ RUN pip install -r requirements.txt \
   && rm -rf /var/lib/apt/lists/*
 
 # Create directory structure
-RUN mkdir ${EDCTF_DIR}
+RUN mkdir ${EDCTF_DIR} \
+  && mkdir ${EDCTF_SCRIPTS}
 
-# Add build scripts and config
-COPY config ${EDCTF_CONFIG}
-COPY scripts ${EDCTF_SCRIPTS}
+# Add non-root user for ember dependencies
+RUN useradd -m ${EDCTF_USER} \
+  && echo "${EDCTF_USER} ALL = (ALL) NOPASSWD: ALL" > /etc/sudoers.d/${EDCTF_USER}
+
+# Add environment variables script
+COPY scripts/environment.bash ${EDCTF_SCRIPTS}/environment.bash
 
 # Copy frontend
 COPY ember ${EDCTF_EMBER}
+COPY scripts/build_frontend.bash ${EDCTF_SCRIPTS}/build_frontend.bash
 
-# Copy backend
-COPY manage.py ${EDCTF_DIR}/manage.py
-COPY edctf ${EDCTF_DJANGO}
-
-# Add non-root user
-RUN useradd -m ${EDCTF_USER} \
-  && echo "${EDCTF_USER} ALL = (ALL) NOPASSWD: ALL" > /etc/sudoers.d/${EDCTF_USER} \
-  && chown -R ${EDCTF_USER}:${EDCTF_USER} ${EDCTF_DIR}
+# Change permissions
+RUN chown -R ${EDCTF_USER}:${EDCTF_USER} ${EDCTF_DIR}
 
 # Switch to non-root for ember
 USER ${EDCTF_USER}
@@ -61,8 +60,25 @@ RUN /bin/bash -c "source ${EDCTF_SCRIPTS}/environment.bash \
   && git config --global url.'https://'.insteadOf git:// \
   && ${EDCTF_SCRIPTS}/build_frontend.bash"
 
-# Switch back to root
+# Copy backend
+COPY manage.py ${EDCTF_DIR}/manage.py
+COPY edctf ${EDCTF_DJANGO}
+COPY config ${EDCTF_CONFIG}
+COPY scripts/generate_secrets.py ${EDCTF_SCRIPTS}/generate_secrets.py
+COPY scripts/build_backend.bash ${EDCTF_SCRIPTS}/build_backend.bash
+
+# Add container start script
+COPY scripts/start-docker.bash ${EDCTF_SCRIPTS}/start-docker.bash
+
 USER root
+
+# Change permissions
+RUN chown -R ${EDCTF_USER}:${EDCTF_USER} \
+  ${EDCTF_DIR}/manage.py \
+  ${EDCTF_DJANGO} \
+  ${EDCTF_CONFIG} \
+  ${EDCTF_SCRIPTS}/generate_secrets.py \
+  ${EDCTF_SCRIPTS}/build_backend.bash
 
 # Build backend
 RUN /bin/bash -c "source ${EDCTF_SCRIPTS}/environment.bash \
