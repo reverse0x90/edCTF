@@ -22,7 +22,7 @@ export default Ember.Route.extend({
 
     auth.checkLoggedIn(function(){
       application.set('session', auth.session);
-      if(!auth.session.isAuthenticated && !auth.inwhiteList(transition.targetName)){
+      if(!auth.session.isAuthenticated && auth.inblackList(transition.targetName)){
         auth.set('currentTransition', transition);
         transition.abort();
         modal.set('modal.isLogin', true);  

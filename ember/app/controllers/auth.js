@@ -7,7 +7,8 @@ export default Ember.Controller.extend({
   errorMessage: '',
   errorFields:{},
   validator: Ember.inject.controller('validator'),
-  whiteList: ['index', 'scoreboard', 'about', 'home'],
+  whiteList: ['index', 'scoreboard', 'about', 'home', '404'],
+  blackList: ['challenges'],
   session: {
     'isAuthenticated': false,
     'username': null,
@@ -16,6 +17,14 @@ export default Ember.Controller.extend({
   },
   inwhiteList: function(string){
     if ( this.get('whiteList').indexOf(string)>=0 ) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  },
+  inblackList: function(string){
+    if ( this.get('blackList').indexOf(string)>=0 ) {
       return true;
     }
     else {
