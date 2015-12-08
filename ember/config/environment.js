@@ -2,7 +2,7 @@
 
 module.exports = function(environment) {
   var ENV = {
-    modulePrefix: 'ed-ctf',
+    modulePrefix: 'edctf',
     environment: environment,
     baseURL: '/',
     locationType: 'auto',

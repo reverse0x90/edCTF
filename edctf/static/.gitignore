@@ -1,4 +1,2 @@
-*
-!.dockerignore
-!.gitignore
-
+admin/*
+rest_framework/*
