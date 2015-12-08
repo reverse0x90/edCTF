@@ -1,0 +1,35 @@
+{{#if session.isAuthenticated}}
+  {{#if topTeamsData.data}}
+    <div class="scoreboard-topx">Top {{ctf.scoreboard.numtopteams}} Teams</div>
+    {{c3-chart
+      data=topTeamsData.data
+      axis=topTeamsData.axis
+      point=topTeamsData.point
+      grid=topTeamsData.grid
+      zoom=topTeamsData.zoom
+    }}
+  {{/if}}
+{{/if}}
+
+<div class="container">
+  <table class="table table-hover table-condensed scoreboard-table" style="width:100%">
+    <thead>
+      <tr>
+        <th class="scoreboard-keys">Rank</th>
+        <th class="scoreboard-keys">Team</th>
+        <th class="scoreboard-keys">Points</th>
+        <th class="scoreboard-keys">Challenges Solved</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each sortedTeams as |team|}}
+        <tr {{action 'openTeamView' team}} class="cursor-pointer scoreboard-values">
+          <td>{{team.position}}</td>
+          <td>{{team.teamname}}</td>
+          <td>{{team.points}}</td>
+          <td>{{team.numsolved}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

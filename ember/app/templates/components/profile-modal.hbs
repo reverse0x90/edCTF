@@ -1,0 +1,86 @@
+{{#modal-dialog close='closeProfileModal' translucentOverlay=true}}
+  {{yield}}
+
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h1 class="modal-title team-name">{{team.teamname}}</h1>
+    </div>
+
+    <div class="modal-body">
+      {{!--
+      <form class="form">
+        Email:{{input type="text" value=email enter="submitRegister" class="form-control" id="inputEmail" placeholder=session.email}}
+        <br/>
+        Password:{{input type="password" value=password enter="submitRegister" class="form-control" id="inputPassword" placeholder="Password"}}
+        <br/>
+        Password Confirmation:{{input type="password" value=confirmPassword enter="submitProfile" class="form-control" id="inputPasswordConfirmation" placeholder="Confirm Password"}}
+      </form>
+      --}}
+
+      <table class="table team-info-table" style="width:100%">
+        <tbody>
+          <tr class="team-info">
+            <td>Username:</td>
+            <td>{{session.username}}</td>
+          </tr>
+          <tr class="team-info">
+            <td>Email:</td>
+            <td>{{session.email}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-condensed" style="width:100%">
+        <thead>
+          <tr>
+            {{#if team.position}}
+              <th class="team-keys">Rank</th>
+            {{/if}}
+            <th class="team-keys">Points</th>
+            <th class="team-keys">Correct Flags</th>
+            <th class="team-keys">Incorrect Flags</th>
+            <th class="team-keys">Challenges Solved</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="team-values">
+            {{#if team.position}}
+              <td>{{team.position}}</td>
+            {{/if}}
+            <td>{{team.points}}</td>
+            <td class="team-correct-flags">{{team.correctflags}}</td>
+            <td class="team-wrong-flags">{{team.wrongflags}}</td>
+            <td>{{team.numsolved}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      {{#if sortedChallenges}}
+        <table class="table table-hover table-condensed team-table" style="width:100%">
+          <thead>
+            <tr>
+              <th class="team-keys">Category</th>
+              <th class="team-keys">Title</th>
+              <th class="team-keys">Points</th>
+              <th class="team-keys">Timestamp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each sortedChallenges as |challenge|}}
+              <tr class="team-values">
+                <td>{{challenge.title}}</td>
+                <td>{{challenge.title}}</td>
+                <td>{{challenge.points}}</td>
+                <td>{{challenge.timestamp}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      {{/if}}
+    </div>
+    
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" {{action 'closeProfileModal'}}>Close</button>
+    </div>
+  </div>
+{{/modal-dialog}}

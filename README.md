@@ -1,52 +1,32 @@
 # edCTF
 
-edCTF is a generic web application to host jeopardy-style CTF competitions.  It uses both the EmberJS and Django frameworks.
+edCTF is a generic web application to quickly host jeopardy-style CTF competitions.  edCTF uses EmberJS for the client half of the application, while the backend utilizes the Django framework.
+
+
+Current version: 1.0-beta1
 
 ## Prerequisites
 
 You will need the following things properly installed on your computer.
 
-* [Git](http://git-scm.com/)
-* [Node.js](http://nodejs.org/) (with NPM)
-* [Bower](http://bower.io/)
-* [Ember CLI](http://www.ember-cli.com/)
-* [PhantomJS](http://phantomjs.org/)
+* [Docker](http://docs.docker.com/engine/installation/)
 
 ## Installation
+The following installation methods will set the Django superuser username to 'admin' with 'admin' as the password.  It is *strongly* recommended to change this password.
 
-* `git clone <repository-url>` this repository
-* change into the new directory
-* `npm install`
-* `bower install`
+### Docker
+You can run edCTF within a Docker container with the following commands:
+```
+docker build -t edctf . \
+  && docker run --restart=always -p 80:80 --name edctf_server -d edctf
+```
+edCTF can then be accessed on port 80 of your host machine.
 
-## Running / Development
+### Local
+You can also install edCTF locally, assuming you're using something similar to Ubuntu or Debian.
 
-* `ember server`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
-
-### Code Generators
-
-Make use of the many generators for code, try `ember help generate` for more details
-
-### Running Tests
-
-* `ember test`
-* `ember test --server`
-
-### Building
-
-* `ember build` (development)
-* `ember build --environment production` (production)
-
-### Deploying
-
-Specify what it takes to deploy your app.
-
-## Further Reading / Useful Links
-
-* [ember.js](http://emberjs.com/)
-* [ember-cli](http://www.ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
-
+Simply run the production setup script:
+```
+./scripts/production.bash
+```
+edCTF will then be running on port 80 on your host machine.

@@ -1,0 +1,13 @@
+*~
+*.db
+*.pyc
+*.sqlite3
+ember/bower_components/
+ember/node_modules/
+ember/tmp/*
+edctf/edctf_secret.py
+edctf/static/admin/
+edctf/static/rest_framework/
+edctf/api/migrations/*
+!edctf/api/migrations/__init__.py
+!edctf/api/migrations/.gitignore

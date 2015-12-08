@@ -1,0 +1,5 @@
+edctf:
+  build: .
+  ports:
+   - "80:80"
+  container_name: edctf_server
