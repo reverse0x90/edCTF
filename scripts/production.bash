@@ -8,7 +8,7 @@ export WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source ${WORKDIR}/environment.bash
 
 # run scripts
-${WORKDIR}/install_dependancies.bash \
-  && ${WORKDIR}/build_frontend.bash \
+${WORKDIR}/install_dependancies-prod.bash \
+  && ${WORKDIR}/build_frontend-prod.bash \
   && ${WORKDIR}/build_backend.bash \
   && ${WORKDIR}/start.bash

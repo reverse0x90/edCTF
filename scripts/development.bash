@@ -14,7 +14,7 @@ sudo -u postgres psql -c "DROP DATABASE ${EDCTF_DATABASE};"
 rm ${EDCTF_DJANGO}/api/migrations/*initial*
 
 # run scripts
-${WORKDIR}/install_dependancies.bash \
-  && ${WORKDIR}/build_frontend.bash \
+${WORKDIR}/install_dependancies-dev.bash \
+  && ${WORKDIR}/build_frontend-dev.bash \
   && ${WORKDIR}/build_backend.bash \
   && ${WORKDIR}/start.bash
