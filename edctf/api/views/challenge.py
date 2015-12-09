@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from edctf.api.models import challenge, challenge_timestamp
 from edctf.api.serializers import challenge_serializer
+from ratelimit.decorators import ratelimit
 
 
 def check_flag(team, challenge, flag):
@@ -88,12 +89,18 @@ class challenge_view(APIView):
       "challenges": challenge_serializer.data,
     })
 
+  @ratelimit(key='ip', rate='10/m')
+  @ratelimit(key='user', rate='30/m')
   def post(self, request, id=None, format=None):
     """
     Checks a submitted flag for a challenge.
     """
     # Verify the challege exists
     if id:
+      was_limited = getattr(request, 'limited', False)
+      if was_limited:
+        return self.form_response(False, 'Too many flags submitted')
+      
       try:
         _challenge = challenge.objects.get(id=id)
       except:
