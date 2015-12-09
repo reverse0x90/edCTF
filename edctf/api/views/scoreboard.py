@@ -32,8 +32,8 @@ class scoreboard_view(APIView):
 
       # Return the serialized data.
       return Response({
-        "scoreboards": scoreboards_serializer.data,
-        "teams": teams_serializer.data,
+        'scoreboards': scoreboards_serializer.data,
+        'teams': teams_serializer.data,
       })
     else:
       # Retrieve and serialize the requested scoreboard data.
@@ -42,5 +42,5 @@ class scoreboard_view(APIView):
 
       # Return the serialized data.
       return Response({
-        "scoreboards": scoreboards_serializer.data,
+        'scoreboards': scoreboards_serializer.data,
       })

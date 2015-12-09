@@ -86,7 +86,7 @@ class challenge_view(APIView):
     # Serialize challenge object and return the serialized data.
     challenge_serializer = challenge_serializer(challenges, many=True, context={'request': request})
     return Response({
-      "challenges": challenge_serializer.data,
+      'challenges': challenge_serializer.data,
     })
 
   @ratelimit(key='ip', rate='10/m')
