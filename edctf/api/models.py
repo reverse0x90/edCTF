@@ -118,6 +118,9 @@ class team(models.Model):
       challenge_timestamps.append((_id, _time))
     return challenge_timestamps
 
+  def lasttimestamp(self):
+    return int(self.last_timestamp.strftime('%s'))
+
   def team(self):
     """
     Alias for teamname.

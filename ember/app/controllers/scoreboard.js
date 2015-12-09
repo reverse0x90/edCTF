@@ -6,8 +6,15 @@ export default Ember.Controller.extend({
   ctf: null,
   session: null,
   numTopTeams: 0,
-  sortTeams: ['position'],
+  //sortTeams: ['position'],
+  sortTeams: ['points:desc', 'lasttimestamp:asc', 'id:asc'],
   sortedTeams: Ember.computed.sort('ctf.scoreboard.teams', 'sortTeams'),
+  setTeamRanks: function(){
+    var teams = this.get('sortedTeams');
+    for (var i=0; i < teams.length; i++){
+      teams[i].set('position', i+1);
+    }
+  }.observes('sortedTeams'),
   topTeamsData: {},
   setTopTeamsData: function(){
     if(!this.get('session.isAuthenticated')){
