@@ -1,4 +1,5 @@
-Django
+beautifulsoup4
+django
+django-ratelimit
 djangorestframework
 psycopg2
-beautifulsoup4

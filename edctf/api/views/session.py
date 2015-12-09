@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework import status
+from ratelimit.decorators import ratelimit
 
 
 class session_view(APIView):
@@ -42,10 +43,15 @@ class session_view(APIView):
         return self.form_response(True, username=request.user.username, email=request.user.email, teamid=None)
     return self.form_response(False, error='Not authenticated')
 
+  @ratelimit(key='ip', rate='15/m')
   def post(self, request, *args, **kwargs):
     """
     Uses provided json data to authenticate and login a user.
     """
+    was_limited = getattr(request, 'limited', False)
+    if was_limited:
+      return self.form_response(False, error='Too many login attempts')
+    
     # If user is already authenticated, logout the user.
     if request.user.is_authenticated():
       logout(request)
