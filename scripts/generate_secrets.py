@@ -89,4 +89,4 @@ if __name__ == '__main__':
     f.write(generated_code)
 
   # modify access
-  os.system('chown $USER:www-data {edctf_secret} && chmod 750 {edctf_secret}'.format(edctf_secret=edctf_secret))
+  os.system('sudo chown $USER:www-data {edctf_secret} && chmod 750 {edctf_secret}'.format(edctf_secret=edctf_secret))
