@@ -9,4 +9,5 @@ sudo apt-get update \
     postgresql \
     python-pip \
     python-dev \
+    openssl \
   && sudo pip install -r ${EDCTF_SCRIPTS}/requirements.txt

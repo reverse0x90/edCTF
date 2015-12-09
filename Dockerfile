@@ -19,6 +19,7 @@ RUN apt-get update \
         python-pip \
         python-dev \
         sudo \
+        openssl \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
@@ -61,4 +62,5 @@ COPY scripts/start-docker.bash ${EDCTF_SCRIPTS}/start-docker.bash
 
 WORKDIR ${EDCTF_DIR}
 EXPOSE 80
+EXPOSE 443
 ENTRYPOINT ["scripts/start-docker.bash"]
