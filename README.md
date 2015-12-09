@@ -22,7 +22,7 @@ You can run edCTF within a Docker container with the following commands:
 docker build -t edctf . \
   && docker run --restart=always -p 80:80 -p 443:443 --name edctf_server -d edctf
 ```
-edCTF can then be accessed via http ot https your host machine.
+edCTF can then be accessed via http or https your host machine.
 
 ### Local
 You can also install edCTF locally, assuming you're using something similar to Ubuntu or Debian.
@@ -31,4 +31,4 @@ Simply run the production setup script:
 ```
 ./scripts/production.bash
 ```
-edCTF can then be accessed via http ot https your host machine.
+edCTF can then be accessed via http or https your host machine.
