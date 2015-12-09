@@ -35,9 +35,9 @@ class challengeboard_view(APIView):
 
       # Return the serialized data.
       return Response({
-          "challengeboards": challengeboards_serializer.data,
-          "categories": categories_serializer.data,
-          "challenges": challenges_serializer.data,
+          'challengeboards': challengeboards_serializer.data,
+          'categories': categories_serializer.data,
+          'challenges': challenges_serializer.data,
       })
     else:
       # Retrieve and serialize the requested challengeboard data.
@@ -46,5 +46,5 @@ class challengeboard_view(APIView):
 
       # Return the serialized data.
       return Response({
-          "challengeboards": serializer.data,
+          'challengeboards': serializer.data,
       })

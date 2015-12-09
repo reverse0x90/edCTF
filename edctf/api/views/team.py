@@ -7,6 +7,7 @@ from rest_framework import status
 from edctf.api.models import team, ctf
 from edctf.api.serializers import team_serializer
 from edctf.api.validators import *
+from ratelimit.decorators import ratelimit
 
 
 class team_view(APIView):
@@ -49,14 +50,19 @@ class team_view(APIView):
     teams_serializer = team_serializer(teams, many=True, context={'request': request})
 
     return Response({
-      "teams": teams_serializer.data,
+      'teams': teams_serializer.data,
     })
 
+  @ratelimit(key='ip', rate='1/m')
   def post(self, request, *args, **kwargs):
     """
     Registers a new team to live ctf
     """
     # If user is already authenticated, logout the user.
+    was_limited = getattr(request, 'limited', False)
+    if was_limited:
+      return self.form_response(False, error='Too many recent registrations')
+    
     if request.user.is_authenticated():
       logout(request)
 
@@ -128,7 +134,7 @@ class team_view(APIView):
       temp_user.full_clean()
     except ValidationError as e:
       errordict = {}
-      errorstr = ""
+      errorstr = ''
       # Get error keys
       for key in e.message_dict.keys():
         errordict[key] = True

@@ -30,5 +30,5 @@ class ctf_view(APIView):
         ctfs = ctf.objects.all()
     serializer = ctf_serializer(ctfs, many=True, context={'request': request})
     return Response({
-      "ctfs": serializer.data,
+      'ctfs': serializer.data,
     })
