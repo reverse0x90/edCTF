@@ -65,7 +65,7 @@ class challenge(models.Model):
     """
     Returns number of solved challenges.
     """
-    return self.challenge_timestamps.filter(challenge=self).count()
+    return self.challenge_timestamps.count()
   numsolved = property(_get_number_solved)
 
   class Meta:
