@@ -3,7 +3,7 @@
 edCTF is a generic web application to quickly host jeopardy-style CTF competitions.  edCTF uses EmberJS for the client half of the application, while the backend utilizes the Django framework.
 
 
-Current version: 1.1-beta1
+Current version: 1.1r1-beta1
 
 ## Prerequisites
 
