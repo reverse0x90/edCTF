@@ -12,7 +12,7 @@ source ${WORKDIR}/environment.bash
 sudo -u postgres psql -c "DROP DATABASE ${EDCTF_DATABASE};"
 
 # remove migration files
-rm ${EDCTF_DJANGO}/api/migrations/*initial*
+find ${EDCTF_DJANGO}/api/migrations/ -type f -not -name '__init__.py' -and -not -name '.gitignore' -exec rm {} +
 
 # regenerate database
 ${EDCTF_SCRIPTS}/build_backend.bash
