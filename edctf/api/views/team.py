@@ -53,7 +53,7 @@ class team_view(APIView):
       'teams': teams_serializer.data,
     })
 
-  @ratelimit(key='ip', rate='1/m')
+  @ratelimit(key='ip', rate='5/m')
   def post(self, request, *args, **kwargs):
     """
     Registers a new team to live ctf
