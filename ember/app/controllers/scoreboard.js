@@ -5,6 +5,7 @@ export default Ember.Controller.extend({
   modal: {},
   ctf: null,
   session: null,
+  numTopTeams: 0,
   sortTeams: ['position'],
   sortedTeams: Ember.computed.sort('ctf.scoreboard.teams', 'sortTeams'),
   topTeamsData: {},
@@ -21,7 +22,6 @@ export default Ember.Controller.extend({
     var currentTime = Date.now() / 1000 | 0;
     var tMinus = 60*5;
 
-    var numTopTeams = this.get('ctf.scoreboard.numtopteams');
     var topTeamsData = {
       data: {
         xs: {},
@@ -77,8 +77,13 @@ export default Ember.Controller.extend({
     };
 
     var teams = this.get('sortedTeams');
+    var numTopTeams = this.get('ctf.scoreboard.numtopteams');
+    if(teams.length < numTopTeams ){
+      numTopTeams = teams.length;
+    }
+
     this.get('ctf.challengeboard').then(function(){
-      for(var i=0; i < numTopTeams && i < teams.length; i++){
+      for(var i=0; i < numTopTeams; i++){
         var points = 0;
         var timeData = [String(i)];
         var pointData = [teams[i].get('teamname')];
@@ -110,6 +115,7 @@ export default Ember.Controller.extend({
         }
       }
       t.set('topTeamsData', topTeamsData);
+      t.set('numTopTeams', numTopTeams);
     });
   }.observes('sortedTeams', 'session.isAuthenticated'),
   actions:{
