@@ -14,8 +14,9 @@ Router.map(function() {
   this.route('404', {path: "*path"});
   this.route('admin', function() {
     this.route('scoreboard');
-    this.route('challenges');
     this.route('ctf');
+    this.route('challengeboard');
+    this.route('teams');
   });
 });
 

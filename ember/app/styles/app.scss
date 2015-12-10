@@ -36,6 +36,9 @@
 .ctf-route {
   letter-spacing: .05em;
 }
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
 
 /* style for login modal */
 .login-box-margin {

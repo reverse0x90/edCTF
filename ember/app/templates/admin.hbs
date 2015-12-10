@@ -1,5 +1,8 @@
-
-<p align="right">
-  View as team: {{input type="checkbox" checked=settings.viewAsTeam}}
-</p>
-{{outlet}}
+{{#if session.isAdmin}}
+  Welcome to the admin page!
+  <br/>
+  <br/>
+  {{outlet}}
+{{else}}
+  You are not authorized for access.
+{{/if}}

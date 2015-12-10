@@ -8,7 +8,7 @@ export default Ember.Controller.extend({
   errorFields:{},
   validator: Ember.inject.controller('validator'),
   whiteList: ['index', 'scoreboard', 'about', 'home', '404'],
-  blackList: ['challenges'],
+  blackList: [/challenges/, /admin/, /admin(\/.*)/],
   session: {
     'isAuthenticated': false,
     'username': null,
@@ -25,12 +25,14 @@ export default Ember.Controller.extend({
     }
   },
   inblackList: function(string){
-    if ( this.get('blackList').indexOf(string)>=0 ) {
-      return true;
+    var blackList = this.get('blackList');
+    for (var i=0; i < blackList.length; i++) {
+      var res = blackList[i].exec(string);
+      if(res){
+        return true;
+      }
     }
-    else {
-      return false;
-    }
+    return false;
   },
   checkLoggedIn: function(callback){
     if(this.get('session.isAuthenticated')){
@@ -131,7 +133,7 @@ export default Ember.Controller.extend({
           validator.invalidLogin();
           t.set('errorMessage', validator.get('error'));
           t.set('errorFields', validator.get('errorFields'));
-          callback(false);
+          callback();
         },
       });
     }
