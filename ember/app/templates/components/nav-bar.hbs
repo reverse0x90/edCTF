@@ -8,15 +8,19 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
-      {{#link-to "home" class="ctf-title cursor-pointer"}}<a class="navbar-brand" href="/home">{{ctf.name}}</a>{{/link-to}}
+      {{#link-to "home" class="ctf-title cursor-pointer"}}<a class="navbar-brand">{{ctf.name}}</a>{{/link-to}}
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-navbar-collapse">
       <ul class="nav navbar-nav navbar-left">
-        {{#link-to "challenges" tagName="li" class="ctf-route cursor-pointer"}}<a href="/challenges">Challenges</a>{{/link-to}}
-        {{#link-to "scoreboard" tagName="li" class="ctf-route cursor-pointer"}}<a href="/scoreboard">Scoreboard</a>{{/link-to}}
-        {{#link-to "about" tagName="li" class="ctf-route cursor-pointer"}}<a href="/about">About</a>{{/link-to}}
+        {{#link-to "challenges" tagName="li" class="ctf-route cursor-pointer"}}<a>Challenges</a>{{/link-to}}
+        {{#if session.isAdmin}}
+          {{#link-to "admin.scoreboard" tagName="li" class="ctf-route cursor-pointer"}}<a>Scoreboard</a>{{/link-to}}
+        {{else}}
+          {{#link-to "scoreboard" tagName="li" class="ctf-route cursor-pointer"}}<a>Scoreboard</a>{{/link-to}}
+        {{/if}}
+        {{#link-to "about" tagName="li" class="ctf-route cursor-pointer"}}<a>About</a>{{/link-to}}
       </ul>
 
       <ul class="nav navbar-nav navbar-right">

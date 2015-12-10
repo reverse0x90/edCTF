@@ -36,6 +36,7 @@ export default Ember.Route.extend({
     controller.set('authController', this.controllerFor('auth'));
     controller.set('validatorController', this.controllerFor('validator'));
     controller.set('modal', this.controllerFor('modal').get('modal'));
+    controller.set('adminSettings', this.controllerFor('admin').get('settings'));
   },
   actions: {
     willTransition: function(transition){

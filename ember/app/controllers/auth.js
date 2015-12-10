@@ -14,6 +14,7 @@ export default Ember.Controller.extend({
     'username': null,
     'email': null,
     'team': null,
+    'isAdmin': false,
   },
   inwhiteList: function(string){
     if ( this.get('whiteList').indexOf(string)>=0 ) {
@@ -46,6 +47,7 @@ export default Ember.Controller.extend({
             session.isAuthenticated = true;
             session.username = result.username;
             session.email = result.email;
+            session.isAdmin = result.isadmin;
             if(result.team === null){
               session.team = null;
             } else {
@@ -106,6 +108,7 @@ export default Ember.Controller.extend({
               session.isAuthenticated = true;
               session.username = result.username;
               session.email = result.email;
+              session.isAdmin = result.isadmin;
               if(result.team === null){
                 session.team = null;
               } else {
@@ -187,6 +190,7 @@ export default Ember.Controller.extend({
               session.isAuthenticated = true;
               session.username = result.username;
               session.email = result.email;
+              session.isAdmin = result.isadmin;
               if(result.team === null){
                 session.team = null;
               } else {

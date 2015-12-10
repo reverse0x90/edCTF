@@ -4,6 +4,7 @@ export default Ember.Controller.extend({
   modal: {},
   authController: null,
   validatorController: null,
+  adminSettings: {},
   ctf: null,
   session: {
     'isAuthenticated': false,

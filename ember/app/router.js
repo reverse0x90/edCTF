@@ -12,6 +12,11 @@ Router.map(function() {
   this.route('about');
   this.route('modal');
   this.route('404', {path: "*path"});
+  this.route('admin', function() {
+    this.route('scoreboard');
+    this.route('challenges');
+    this.route('ctf');
+  });
 });
 
 export default Router;
