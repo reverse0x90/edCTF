@@ -49,6 +49,7 @@ fi
 # generate secrets and populate database
 python ${EDCTF_SCRIPTS}/generate_secrets.py --output ${EDCTF_DJANGO}/edctf_secret.py \
   && python ${EDCTF_DIR}/manage.py makemigrations \
+  && python ${EDCTF_DIR}/manage.py migrate auth \
   && python ${EDCTF_DIR}/manage.py migrate \
   && echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', '', 'admin')" \
   | python ${EDCTF_DIR}/manage.py shell
