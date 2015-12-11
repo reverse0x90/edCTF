@@ -22,7 +22,7 @@ except ImportError as err:
   raise
 
 SECRET_KEY = edctf_secret.SECRET_KEY.decode('base64')
-DEBUG = True
+DEBUG = False
 
 if DEBUG:
   ALLOWED_HOSTS = []
