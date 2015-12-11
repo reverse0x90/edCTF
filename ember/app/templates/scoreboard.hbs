@@ -1,6 +1,6 @@
 {{#if session.isAuthenticated}}
   {{#if topTeamsData.data}}
-    <div class="scoreboard-topx">Top {{ctf.scoreboard.numtopteams}} Teams</div>
+    <div class="scoreboard-topx">Top {{numTopTeams}} Teams</div>
     {{c3-chart
       data=topTeamsData.data
       axis=topTeamsData.axis

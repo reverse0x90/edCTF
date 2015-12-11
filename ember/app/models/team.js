@@ -8,6 +8,7 @@ export default DS.Model.extend({
   points: DS.attr('number'),
   correctflags: DS.attr('number'),
   wrongflags: DS.attr('number'),
+  lasttimestamp: DS.attr('number'),
   solves: DS.attr('array'),
   numsolved: Ember.computed('solves', function() {
     return this.get('solves').length;

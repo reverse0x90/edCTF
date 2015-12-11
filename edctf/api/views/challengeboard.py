@@ -24,7 +24,7 @@ class challengeboard_view(APIView):
       challengeboards_serializer = challengeboard_serializer(challengeboards, many=True, context={'request': request})
 
       # Retrieve and serialize the categories in the challengeboard.
-      categories = category.objects.filter(challengeboard=challengeboards[0])
+      categories = category.objects.filter(challengeboard=challengeboards.first())
       categories_serializer = category_serializer(categories, many=True, context={'request': request})
 
       # Retrieve and serialize the challenges in each category.
