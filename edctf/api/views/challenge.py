@@ -2,8 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from edctf.api.models import challenge, challenge_timestamp
-from edctf.api.serializers import challenge_serializer
+from edctf.api.models import Challenge, ChallengeTimestamp
+from edctf.api.serializers import ChallengeSerializer
 from ratelimit.decorators import ratelimit
 
 
@@ -41,7 +41,7 @@ def update_solved(team, challenge):
   Updates the database points for a given team.
   """
   # Save the time that the challenge was solved.
-  timestamp = challenge_timestamp.objects.create(team=team, challenge=challenge)
+  timestamp = ChallengeTimestamp.objects.create(team=team, challenge=challenge)
   timestamp.save()
 
   # Update the team points and last timestamp in the database.
@@ -51,7 +51,7 @@ def update_solved(team, challenge):
   challenge.save()
 
 
-class challenge_view(APIView):
+class ChallengeView(APIView):
   """
   Manages challenge requests.
   """
@@ -79,14 +79,14 @@ class challenge_view(APIView):
     # If a specific challenge is requested, return that challege
     # else return all the challenges in the database.
     if id:
-      challenges = challenge.objects.filter(id=id)
+      challenges = Challenge.objects.filter(id=id)
     else:
-      challenges = challenge.objects.all()
+      challenges = Challenge.objects.all()
 
     # Serialize challenge object and return the serialized data.
-    challenge_serializer = challenge_serializer(challenges, many=True, context={'request': request})
+    ChallengeSerializer = ChallengeSerializer(challenges, many=True, context={'request': request})
     return Response({
-      'challenges': challenge_serializer.data,
+      'challenges': ChallengeSerializer.data,
     })
 
   @ratelimit(key='ip', rate='10/m')
@@ -102,7 +102,7 @@ class challenge_view(APIView):
         return self.form_response(False, 'Too many flags submitted')
       
       try:
-        _challenge = challenge.objects.get(id=id)
+        _challenge = Challenge.objects.get(id=id)
       except:
         return Response(status=status.HTTP_404_NOT_FOUND)
 

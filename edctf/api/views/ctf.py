@@ -1,11 +1,11 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from edctf.api.models import ctf
-from edctf.api.serializers import ctf_serializer
+from edctf.api.models import Ctf
+from edctf.api.serializers import CtfSerializer
 
 
-class ctf_view(APIView):
+class CtfView(APIView):
   """
   Manages ctf requests.
   """
@@ -19,16 +19,16 @@ class ctf_view(APIView):
     # If ctf id was requested, return that ctf else return list of
     # all/live ctfs.
     if id:
-      ctfs = ctf.objects.filter(id=id)
+      ctfs = Ctf.objects.filter(id=id)
     else:
       if 'live' in request.query_params:
         if request.query_params['live'] == 'true':
-          ctfs = ctf.objects.filter(live=True)
+          ctfs = Ctf.objects.filter(live=True)
         else:
-          ctfs = ctf.objects.filter(live=False)
+          ctfs = Ctf.objects.filter(live=False)
       else:
-        ctfs = ctf.objects.all()
-    serializer = ctf_serializer(ctfs, many=True, context={'request': request})
+        ctfs = Ctf.objects.all()
+    serializer = CtfSerializer(ctfs, many=True, context={'request': request})
     return Response({
       'ctfs': serializer.data,
     })

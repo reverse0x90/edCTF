@@ -1,33 +1,38 @@
 from rest_framework.serializers import ModelSerializer
-from edctf.api.models import ctf, challengeboard, category, challenge, scoreboard, team
+from edctf.api.models import Ctf, Challengeboard, Category, Challenge, Scoreboard, Team
 
 
 class CtfSerializer(ModelSerializer):
   class Meta:
-    model = ctf
+    model = Ctf
     fields = ('id', 'name', 'live', 'challengeboard', 'scoreboard')
+
 
 class ChallengeboardSerializer(ModelSerializer):
   class Meta:
-    model = challengeboard
+    model = Challengeboard
     fields = ('id', 'categories')
+
 
 class CategorySerializer(ModelSerializer):
   class Meta:
-    model = category
+    model = Category
     fields = ('id', 'name', 'challenges')
+
 
 class ChallengeSerializer(ModelSerializer):
   class Meta:
-    model = challenge
+    model = Challenge
     fields = ('id', 'title', 'points', 'description', 'solved', 'numsolved', 'category')
+
 
 class ScoreboardSerializer(ModelSerializer):
   class Meta:
-    model = scoreboard
+    model = Scoreboard
     fields = ('id', 'numtopteams', 'teams')
+
 
 class TeamSerializer(ModelSerializer):
   class Meta:
-    model = team
+    model = Team
     fields = ('id', 'teamname', 'points', 'correctflags', 'wrongflags', 'solves', 'lasttimestamp')

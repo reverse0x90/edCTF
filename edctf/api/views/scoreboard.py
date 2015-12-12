@@ -1,12 +1,12 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from edctf.api.models import scoreboard, team
-from edctf.api.serializers import scoreboard_serializer, team_serializer
+from edctf.api.models import Scoreboard, Team
+from edctf.api.serializers import ScoreboardSerializer, TeamSerializer
 import time
 
 
-class scoreboard_view(APIView):
+class ScoreboardView(APIView):
   """
   Manages scoreboard requests.
   """
@@ -21,12 +21,12 @@ class scoreboard_view(APIView):
     # return list of scoreboards.
     if id:
       # Retrieve and serialize the requested scoreboard data.
-      scoreboards = scoreboard.objects.filter(id=id)
-      scoreboards_serializer = scoreboard_serializer(scoreboards, many=True, context={'request': request})
+      scoreboards = Scoreboard.objects.filter(id=id)
+      scoreboards_serializer = ScoreboardSerializer(scoreboards, many=True, context={'request': request})
 
       # Retrieve and serialize the teams on the scoreboard.
-      teams = team.objects.filter(scoreboard=scoreboards.first())
-      teams_serializer = team_serializer(teams, many=True, context={'request': request})
+      teams = Team.objects.filter(scoreboard=scoreboards.first())
+      teams_serializer = TeamSerializer(teams, many=True, context={'request': request})
 
       # Return the serialized data.
       return Response({
@@ -35,8 +35,8 @@ class scoreboard_view(APIView):
       })
     else:
       # Retrieve and serialize the requested scoreboard data.
-      scoreboards = scoreboard.objects.all()
-      scoreboards_serializer = scoreboard_serializer(scoreboards, many=True, context={'request': request})
+      scoreboards = Scoreboard.objects.all()
+      scoreboards_serializer = ScoreboardSerializer(scoreboards, many=True, context={'request': request})
 
       # Return the serialized data.
       return Response({

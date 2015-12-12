@@ -3,11 +3,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework import status
-from edctf.api.models import ctf
-from edctf.api.serializers import ctftime_team_serializer
+from edctf.api.models import Ctf
+from edctf.api.serializers import CtftimeSerializer
 
 
-class ctftime_view(APIView):
+class CtftimeView(APIView):
   """
   Returns with ctftime scoreboard.
     https://ctftime.org/json-scoreboard-feed
@@ -22,13 +22,13 @@ class ctftime_view(APIView):
     """
     if id:
       try:
-        _ctf = ctf.objects.get(id=id)
+        _ctf = Ctf.objects.get(id=id)
       except ObjectDoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
       scoreboard = _ctf.scoreboard.first()
       teams = scoreboard.teams.order_by('-points','last_timestamp', 'id')
-      teams_serialized = ctftime_team_serializer(teams, many=True, context={'request': request})
+      teams_serialized = CtftimeSerializer(teams, many=True, context={'request': request})
 
       for pos, _team in enumerate(teams_serialized.data):
         _team['pos'] = pos+1

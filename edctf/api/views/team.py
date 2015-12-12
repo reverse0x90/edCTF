@@ -4,13 +4,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework import status
-from edctf.api.models import team, ctf
-from edctf.api.serializers import team_serializer
+from edctf.api.models import Team, Ctf
+from edctf.api.serializers import TeamSerializer
 from edctf.api.validators import *
 from ratelimit.decorators import ratelimit
 
 
-class team_view(APIView):
+class TeamView(APIView):
   """
   Manages team requests.
   """
@@ -42,12 +42,12 @@ class team_view(APIView):
     # If a specific team is requested, return that team
     # else return all the teams.
     if id:
-      teams = team.objects.filter(id=id)
+      teams = Team.objects.filter(id=id)
     else:
-      teams = team.objects.all()
+      teams = Team.objects.all()
 
     # Serialize team object and return the serialized data.
-    teams_serializer = team_serializer(teams, many=True, context={'request': request})
+    teams_serializer = TeamSerializer(teams, many=True, context={'request': request})
 
     return Response({
       'teams': teams_serializer.data,
@@ -67,14 +67,14 @@ class team_view(APIView):
       logout(request)
 
     # Get the current live ctf (aka the active ctf).
-    live_ctf = ctf.objects.filter(live=True)
+    live_ctf = Ctf.objects.filter(live=True).first()
 
     # Sanity check currently there can only be one live ctf at a time.
-    if len(live_ctf) < 1:
-      return Response(status=status.HTTP_404_NOT_FOUND)
+    if not live_ctf:
+      return Response({'error': 'no live ctf available'},status=status.HTTP_404_NOT_FOUND)
 
     # Get the scoreboard object associated with the live ctf.
-    scoreboard = live_ctf[0].scoreboard.all()[0]
+    scoreboard = live_ctf.scoreboard.all().first()
 
     # Save provided registration json data.
     team_data = request.data
@@ -104,7 +104,7 @@ class team_view(APIView):
         return self.form_response(False, error=e.message, errorfields={'email': True})
 
     # Check teamname field
-    check = team.objects.filter(teamname__iexact=teamname)
+    check = Team.objects.filter(teamname__iexact=teamname)
     if len(check):
       return self.form_response(False, error='Team name is taken', errorfields={'teamname': True})
     else:
@@ -144,7 +144,7 @@ class team_view(APIView):
 
     # Everything was good! Create the new user
     new_user = User.objects.create_user(username, email, password)
-    new_team = team.objects.create(scoreboard=scoreboard, teamname=teamname, user=new_user)
+    new_team = Team.objects.create(scoreboard=scoreboard, teamname=teamname, user=new_user)
 
     # Registration was successful! Now login the new user.
     user = authenticate(username=username, password=password)

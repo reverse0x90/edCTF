@@ -6,7 +6,7 @@ from rest_framework import status
 from ratelimit.decorators import ratelimit
 
 
-class session_view(APIView):
+class SessionView(APIView):
   """
   Manages server side user sessions
   """

@@ -1,11 +1,11 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from edctf.api.models import challengeboard, category, challenge
-from edctf.api.serializers import challengeboard_serializer, category_serializer, challenge_serializer
+from edctf.api.models import Challengeboard, Category, Challenge
+from edctf.api.serializers import ChallengeboardSerializer, CategorySerializer, ChallengeSerializer
 
 
-class challengeboard_view(APIView):
+class ChallengeboardView(APIView):
   """
   Manages challengeboard requests
   """
@@ -20,18 +20,18 @@ class challengeboard_view(APIView):
     # else return list of all challengeboards in the database.
     if id:
       # Retrieve and serialize the requested challengeboard data.
-      challengeboards = challengeboard.objects.filter(id=id)
-      challengeboards_serializer = challengeboard_serializer(challengeboards, many=True, context={'request': request})
+      challengeboards = Challengeboard.objects.filter(id=id)
+      challengeboards_serializer = ChallengeboardSerializer(challengeboards, many=True, context={'request': request})
 
       # Retrieve and serialize the categories in the challengeboard.
-      categories = category.objects.filter(challengeboard=challengeboards.first())
-      categories_serializer = category_serializer(categories, many=True, context={'request': request})
+      categories = Category.objects.filter(challengeboard=challengeboards.first())
+      categories_serializer = CategorySerializer(categories, many=True, context={'request': request})
 
       # Retrieve and serialize the challenges in each category.
       challenges = []
       for cat in categories:
-        challenges += challenge.objects.filter(category=cat)
-      challenges_serializer = challenge_serializer(challenges, many=True, context={'request': request})
+        challenges += Challenge.objects.filter(category=cat)
+      challenges_serializer = ChallengeSerializer(challenges, many=True, context={'request': request})
 
       # Return the serialized data.
       return Response({
@@ -41,8 +41,8 @@ class challengeboard_view(APIView):
       })
     else:
       # Retrieve and serialize the requested challengeboard data.
-      challengeboards = challengeboard.objects.all()
-      serializer = challengeboard_serializer(challengeboards, many=True, context={'request': request})
+      challengeboards = Challengeboard.objects.all()
+      serializer = ChallengeboardSerializer(challengeboards, many=True, context={'request': request})
 
       # Return the serialized data.
       return Response({
