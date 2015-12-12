@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from django.contrib.auth.models import *
 from edctf.api.models import *
-
+import admin
 
 class ctf_serializer(serializers.ModelSerializer):
   """
