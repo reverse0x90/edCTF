@@ -16,6 +16,20 @@
         {{else}}
           {{#if modal.isLogout}}
             {{logout-modal modal=modal logout="logout"}}
+          {{else}}
+            {{#if authController.session.isAdmin}}
+              {{#if modal.isAdminCtf}}
+                {{admin-ctf-modal modal=modal}}
+              {{else}}
+                {{#if modal.isAdminChallenge}}
+                  {{admin-challenge-modal modal=modal}}
+                {{else}}
+                  {{#if modal.isAdminTeam}}
+                    {{admin-team-modal modal=modal}}
+                  {{/if}}
+                {{/if}}
+              {{/if}}
+            {{/if}}
           {{/if}}
         {{/if}}
       {{/if}}

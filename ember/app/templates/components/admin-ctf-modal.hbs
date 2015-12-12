@@ -1,0 +1,53 @@
+{{#modal-dialog close="closeAdminCtfModal" translucentOverlay=true container-class="admin-ctf-modal"}}
+  <form class="simple_form form-horizontal">
+      <h2 class="form-signin-heading" style="allign: center;">Create CTF</h2>
+
+
+      <table class="table" style="width:100%">
+        {{#if errorMessage}}
+          <label class="control-label"><div class="alert alert-danger" style="padding: 5px; margin-bottom: 0px;" role="alert">{{errorMessage}}</div></label> 
+        {{/if}}
+        <tbody>
+          <tr>
+            {{#if errorFields.name}} 
+              <div class="form-group has-error">
+                <td>CTF Name:</td>
+                <td>
+                  {{input id="ctfName" type="text" value=name enter="createCtf" class="form-control" placeholder="edCTF"}}
+                </td>
+              </div>
+            {{else}}
+              <div class="form-group">
+                <td>CTF Name:</td>
+                <td>
+                  {{input id="ctfName" type="text" value=name enter="createCtf" class="form-control" placeholder="edCTF"}}
+                </td>
+              </div>
+            {{/if}}
+          </tr>
+          <tr>
+            {{#if errorFields.live}} 
+              <div class="form-group has-error">
+                <td>Live:</td>
+                <td>
+                  {{input type="checkbox" enter="createCtf" class="form-control" checked=live}}
+                </td>
+              </div>
+            {{else}}
+              <div class="form-group">
+                <td>Live:</td>
+                <td>
+                  {{input type="checkbox" enter="createCtf" class="form-control" checked=live}}
+                </td>
+              </div>
+            {{/if}}
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="edctf-button">
+        <button type="button" class="btn btn-success btn-login-submit edctf-submit-button" {{action "createCtf"}}>Create</button>
+        <button type="button" class="btn btn-danger btn-cancel-action edctf-cancel-button" {{action "closeAdminCtfModal"}}>Cancel</button>
+      </div>
+  </form>
+{{/modal-dialog}}

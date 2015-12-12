@@ -7,8 +7,14 @@ export default Ember.Controller.extend({
     isChallenge: false,
     isTeam: false,
     isProfile: false,
+    isAdminCtf: false,
+    isAdminTeam: false,
+    isAdminChallenge: false,
     challenge: {},
     team: {},
+    adminCtf: {},
+    adminChallenge: {},
+    adminTeam: {},
     solvedChallenge: -1,
   },
   store: null,
@@ -19,6 +25,9 @@ export default Ember.Controller.extend({
       this.set('modal.isChallenge', false);
       this.set('modal.isTeam', false);
       this.set('modal.isProfile', false);
+      this.set('modal.isAdminCtf', false);
+      this.set('modal.isAdminTeam', false);
+      this.set('modal.isAdminChallenge', false);
       this.set('store', this.store);
     },
   },

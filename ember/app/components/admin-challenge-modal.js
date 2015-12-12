@@ -2,11 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   modal: {},
-  authController: null,
-  email: '',
-  teamname: '',
-  password: '',
-  confirmPassword: '',
   setupKeys: function() {
     Ember.$('body').on('keyup.modal-dialog', (e) => {
       if (e.keyCode === 27) {
@@ -20,7 +15,7 @@ export default Ember.Component.extend({
   setupFocus: function() {
     Ember.$('#inputEmail').focus();
   }.on('didInsertElement'),
-  actions: {
+   actions: {
     submitRegister: function() {
       var email = this.get('email');
       var username = this.get('username');
@@ -34,14 +29,6 @@ export default Ember.Component.extend({
     },
     closeRegisterModal: function() {
       this.set('modal.isRegister', false);
-      this.get('authController').set('errorMessage', '');
-      this.get('authController').set('errorFields', {});
-    },
-    registerToLoginModal: function(){
-      this.set('modal.isRegister', false);
-      this.set('modal.isLogin', true);
-      this.get('authController').set('errorMessage', '');
-      this.get('authController').set('errorFields', {});
     },
   },
 });
