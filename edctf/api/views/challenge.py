@@ -45,7 +45,7 @@ def update_solved(team, challenge):
   timestamp.save()
 
   # Update the team points and last timestamp in the database.
-  team.points = team.points + challenge.points
+  #team.points = team.points + challenge.points
   team.last_timestamp = timestamp.created
   team.save()
   challenge.save()

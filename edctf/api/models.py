@@ -61,6 +61,27 @@ class challenge(models.Model):
   flag = models.CharField(max_length=100)
   created = models.DateTimeField(auto_now_add=True)
 
+  def delete(self, *args, **kwargs):
+    solved = self.solved.all()
+    for team in solved:
+      team.points -= self.points
+
+    super(challenge, self).delete(*args, **kwargs)
+
+    for team in solved:
+      team.save()
+
+  def save(self, *args, **kwargs):
+    self.update_solved_teams()
+    super(challenge, self).save(*args, **kwargs)
+
+  def update_solved_teams(self, solved=None):
+    if self.id:
+      if not solved:
+        solved = self.solved.all()
+      for team in solved:
+        team.save()
+
   def _get_number_solved(self):
     """
     Returns number of solved challenges.
@@ -105,9 +126,24 @@ class team(models.Model):
     
   class Meta:
     verbose_name_plural = 'teams'
-    
+
   def __unicode__(self):
     return 'team {}: {}'.format(self.id, self.teamname)
+
+  def save(self, *args, **kwargs):
+    self.update_points()
+    super(team, self).save(*args, **kwargs)
+
+  def update_points(self):
+    """
+    Updates the team's points.  Is not saved.
+    """
+    if self.id:
+      points = 0
+      solved = self.solved.all()
+      for challenge in solved:
+        points += challenge.points
+      self.points = points
 
   def solves(self):
     challenge_timestamps = []
