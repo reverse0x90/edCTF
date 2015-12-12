@@ -27,7 +27,7 @@ class ctftime_view(APIView):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
       scoreboard = _ctf.scoreboard.first()
-      teams = scoreboard.teams.order_by('-points','last_timestamp', 'id')
+      teams = scoreboard.teams.order_by('-points','-last_timestamp', 'created')
       teams_serialized = ctftime_team_serializer(teams, many=True, context={'request': request})
 
       for pos, _team in enumerate(teams_serialized.data):

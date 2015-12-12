@@ -62,23 +62,27 @@ class challenge(models.Model):
   created = models.DateTimeField(auto_now_add=True)
 
   def delete(self, *args, **kwargs):
+    # get teams before deletion
     solved = self.solved.all()
     for team in solved:
       team.points -= self.points
 
     super(challenge, self).delete(*args, **kwargs)
 
+    # update teams after deletion
     for team in solved:
       team.save()
 
   def save(self, *args, **kwargs):
-    self.update_solved_teams()
+    # get solved teams
+    solved = None
+    if self.id:
+      solved = self.solved.all()
+
     super(challenge, self).save(*args, **kwargs)
 
-  def update_solved_teams(self, solved=None):
-    if self.id:
-      if not solved:
-        solved = self.solved.all()
+    # update solved teams after changes
+    if solved:
       for team in solved:
         team.save()
 
@@ -123,7 +127,7 @@ class team(models.Model):
   solved = models.ManyToManyField('challenge', blank=True, related_name='solved', through='challenge_timestamp')
   last_timestamp = models.DateTimeField(default=datetime.fromtimestamp(0))
   created = models.DateTimeField(auto_now_add=True)
-    
+
   class Meta:
     verbose_name_plural = 'teams'
 
@@ -132,6 +136,7 @@ class team(models.Model):
 
   def save(self, *args, **kwargs):
     self.update_points()
+    self.update_last_timestamp()
     super(team, self).save(*args, **kwargs)
 
   def update_points(self):
@@ -145,6 +150,12 @@ class team(models.Model):
         points += challenge.points
       self.points = points
 
+  def update_last_timestamp(self):
+    if self.id:
+      timestamp = self.challenge_timestamps.order_by('-created').first()
+      if timestamp:
+        self.last_timestamp = timestamp.created
+
   def solves(self):
     challenge_timestamps = []
     team_challenge_timestamps = self.challenge_timestamps.all()
@@ -155,7 +166,10 @@ class team(models.Model):
     return challenge_timestamps
 
   def lasttimestamp(self):
-    return int(self.last_timestamp.strftime('%s'))
+    timestamp = self.challenge_timestamps.order_by('-created').first()
+    if not timestamp:
+      return 0
+    return int(timestamp.created.strftime('%s'))
 
   def team(self):
     """

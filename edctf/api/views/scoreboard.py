@@ -25,7 +25,7 @@ class scoreboard_view(APIView):
       scoreboards_serializer = scoreboard_serializer(scoreboards, many=True, context={'request': request})
 
       # Retrieve and serialize the teams on the scoreboard.
-      teams = team.objects.filter(scoreboard=scoreboards.first())
+      teams = team.objects.filter(scoreboard=scoreboards.first()).order_by('-points', '-last_timestamp', 'created')
       teams_serializer = team_serializer(teams, many=True, context={'request': request})
 
       # Return the serialized data.
