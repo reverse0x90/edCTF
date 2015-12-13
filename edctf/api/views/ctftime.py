@@ -26,7 +26,7 @@ class CtftimeView(APIView):
       except ObjectDoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-      scoreboard = _ctf.scoreboard.first()
+      scoreboard = _ctf.scoreboard
       teams = scoreboard.teams.order_by('-points','last_timestamp', 'id')
       teams_serialized = CtftimeSerializer(teams, many=True, context={'request': request})
 

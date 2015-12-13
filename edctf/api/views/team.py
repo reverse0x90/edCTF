@@ -74,7 +74,7 @@ class TeamView(APIView):
       return Response({'error': 'no live ctf available'},status=status.HTTP_404_NOT_FOUND)
 
     # Get the scoreboard object associated with the live ctf.
-    scoreboard = live_ctf.scoreboard.all().first()
+    scoreboard = live_ctf.scoreboard
 
     # Save provided registration json data.
     team_data = request.data
