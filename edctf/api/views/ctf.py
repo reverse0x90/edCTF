@@ -50,9 +50,9 @@ class CtfView(APIView):
     ctf_data = request.data['ctf']
 
     if 'name' not in ctf_data or not ctf_data['name']:
-      return error_response(self, 'CTF name not given', errorfields={'name': True})
-    if 'live' not in ctf_data or not ctf_data['live']:
-      return error_response(self, 'CTF live status not given', errorfields={'live': True})
+      return self.error_response('CTF name not given', errorfields={'name': True})
+    if 'live' not in ctf_data:
+      return self.error_response('CTF live status not given', errorfields={'live': True})
 
     name = ctf_data['name']
     if ctf_data['live']:
