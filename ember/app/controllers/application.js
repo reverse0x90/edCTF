@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   modal: {},
   authController: null,
+  adminController: null,
   validatorController: null,
   adminSettings: {},
   ctf: null,
@@ -76,7 +77,7 @@ export default Ember.Controller.extend({
         crossDomain:false,
         processData: false,
         beforeSend: function(xhr) {
-          xhr.setRequestHeader("X-CSRFToken", Ember.$.cookie('csrftoken'));
+          xhr.setRequestHeader('X-CSRFToken', Ember.$.cookie('csrftoken'));
         },
         success: function (result){
           callback(result.success, result.error);

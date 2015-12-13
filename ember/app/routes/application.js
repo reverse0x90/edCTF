@@ -34,6 +34,7 @@ export default Ember.Route.extend({
     // Get first instance of live ctf
     controller.set('ctf', model.get('firstObject'));
     controller.set('authController', this.controllerFor('auth'));
+    controller.set('adminController', this.controllerFor('admin'));
     controller.set('validatorController', this.controllerFor('validator'));
     controller.set('modal', this.controllerFor('modal').get('modal'));
   },

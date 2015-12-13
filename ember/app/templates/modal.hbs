@@ -19,13 +19,13 @@
           {{else}}
             {{#if authController.session.isAdmin}}
               {{#if modal.isAdminCtf}}
-                {{admin-ctf-modal modal=modal}}
+                {{admin-ctf-modal modal=modal ctfController=adminController.ctfController}}
               {{else}}
                 {{#if modal.isAdminChallenge}}
-                  {{admin-challenge-modal modal=modal}}
+                  {{admin-challenge-modal modal=modal admin=adminController}}
                 {{else}}
                   {{#if modal.isAdminTeam}}
-                    {{admin-team-modal modal=modal}}
+                    {{admin-team-modal modal=modal admin=adminController}}
                   {{/if}}
                 {{/if}}
               {{/if}}

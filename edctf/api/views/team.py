@@ -16,7 +16,7 @@ class TeamView(APIView):
   """
   permission_classes = (TeamPermission,)
 
-  def form_response(self, isauthenticated, username='', email='', teamid='', error='', errorfields={}):
+  def form_response(self, isauthenticated, user=None, error='', errorfields={}):
     """
     Returns the registration form response.
     """
@@ -27,12 +27,16 @@ class TeamView(APIView):
     # If error during registration, return the error else return
     # the registration data.
     if error:
-        data['error'] = error
-        data['errorfields'] = errorfields
-    else:
-        data['username'] = username
-        data['email'] = email
-        data['team'] = teamid
+      data['error'] = error
+      data['errorfields'] = errorfields
+    if user:
+      data['username'] = user.username
+      data['email'] = user.email
+      data['isadmin'] = user.is_superuser
+      try:
+        data['team'] = user.teams.id
+      except:
+        data['team'] = None
     return Response(data)
 
   def get(self, request, id=None, format=None):
@@ -151,7 +155,7 @@ class TeamView(APIView):
     if user is not None:
       if user.is_active:
         login(request, user)
-        return self.form_response(True, username=username, email=email, teamid=new_team.id)
+        return self.form_response(True, user)
       return self.form_response(False, error='User account is disabled')
     return self.form_response(False, error='Server error')
 

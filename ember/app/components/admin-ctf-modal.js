@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   modal: {},
+  ctfController: null,
   live: true,
   name: '',
   setupKeys: function() {
@@ -19,21 +20,17 @@ export default Ember.Component.extend({
   }.on('didInsertElement'),
    actions: {
     createCtf: function(){
-
-    },
-    submitRegister: function() {
-      var email = this.get('email');
-      var username = this.get('username');
-      var teamname = this.get('teamname');
-      var password = this.get('password');
-      var confirmpassword = this.get('confirmPassword');
-      this.sendAction('sendRegister', {'email': email, 'username': username, 'teamname': teamname, 'password': password, 'confirmPassword': confirmpassword });
-    },
-    openAdminCtfModal: function() {
-      this.set('modal.isAdminCtf', true);
+      var name = this.get('name');
+      var live = this.get('live');
+      var createCtf = this.get('ctfController.create');
+      createCtf(name, live);
     },
     closeAdminCtfModal: function() {
       this.set('modal.isAdminCtf', false);
+      this.set('name', '');
+      this.set('live', true);
+      this.set('ctfController.errorMessage', '');
+      this.set('ctfController.errorFields', {});
     },
   },
 });

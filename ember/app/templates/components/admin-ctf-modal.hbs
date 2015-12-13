@@ -1,15 +1,15 @@
 {{#modal-dialog close="closeAdminCtfModal" translucentOverlay=true container-class="admin-ctf-modal"}}
-  <form class="simple_form form-horizontal">
+  <form class="simple_form form-horizontal" onsubmit="return false">
       <h2 class="form-signin-heading" style="allign: center;">Create CTF</h2>
 
 
       <table class="table" style="width:100%">
-        {{#if errorMessage}}
-          <label class="control-label"><div class="alert alert-danger" style="padding: 5px; margin-bottom: 0px;" role="alert">{{errorMessage}}</div></label> 
+        {{#if ctfController.errorMessage}}
+          <label class="control-label"><div class="alert alert-danger" style="padding: 5px; margin-bottom: 0px;" role="alert">{{ctfController.errorMessage}}</div></label> 
         {{/if}}
         <tbody>
           <tr>
-            {{#if errorFields.name}} 
+            {{#if ctfController.errorFields.name}} 
               <div class="form-group has-error">
                 <td>CTF Name:</td>
                 <td>
@@ -26,18 +26,18 @@
             {{/if}}
           </tr>
           <tr>
-            {{#if errorFields.live}} 
+            {{#if ctfController.errorFields.live}} 
               <div class="form-group has-error">
                 <td>Live:</td>
                 <td>
-                  {{input type="checkbox" enter="createCtf" class="form-control" checked=live}}
+                  {{input type="checkbox" checked=live}}
                 </td>
               </div>
             {{else}}
               <div class="form-group">
                 <td>Live:</td>
                 <td>
-                  {{input type="checkbox" enter="createCtf" class="form-control" checked=live}}
+                  {{input type="checkbox" checked=live}}
                 </td>
               </div>
             {{/if}}

@@ -97,7 +97,6 @@ STATICFILES_DIRS = ('/opt/edctf/edctf/static/',)
 if DEBUG:
   REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-      #'rest_framework.permissions.IsAuthenticated',
       'edctf.api.permissions.EdctfPermission',
     ),
     'DEFAULT_PARSER_CLASSES': (
@@ -107,7 +106,6 @@ if DEBUG:
 else:
   REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-      #'rest_framework.permissions.IsAuthenticated',
       'edctf.api.permissions.EdctfPermission',
     ),
     'DEFAULT_RENDERER_CLASSES': (

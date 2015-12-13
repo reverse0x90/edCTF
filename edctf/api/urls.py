@@ -8,7 +8,7 @@ from edctf.api import views
 urlpatterns = [
   url(r'^session/?$', views.SessionView.as_view()),
   url(r'^ctfs/?$', views.CtfView.as_view()),
-  url(r'^ctfs/(?P<id>\d+)/?$', views.CtfView.as_view()),
+  url(r'^ctfs/(?P<id>\d+)/?$', views.CtfViewDetail.as_view()),
   url(r'^challengeboards/?$', views.ChallengeboardView.as_view()),
   url(r'^challengeboards/(?P<id>\d+)/?$', views.ChallengeboardView.as_view()),
   url(r'^challenges/?$', views.ChallengeView.as_view()),

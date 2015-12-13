@@ -26,7 +26,16 @@ class CtfPermission(EdctfPermission):
   """
   PUBLIC_METHODS = ['GET']
   AUTHENTICATED_METHODS = []
-  ADMIN_METHODS = ['POST', 'PUT', 'DELETE']
+  ADMIN_METHODS = ['POST']
+
+
+class CtfPermissionDetail(EdctfPermission):
+  """
+  Permissions for the ctf route
+  """
+  PUBLIC_METHODS = ['GET']
+  AUTHENTICATED_METHODS = []
+  ADMIN_METHODS = ['PUT', 'DELETE']
 
 
 class ChallengeboardPermission(EdctfPermission):
