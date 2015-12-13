@@ -65,18 +65,18 @@ class CtfView(APIView):
     else:
       live = False
 
+    try:
+      ctf = Ctf.objects.create(name=name, live=live)#, challengeboard=challengeboard, scoreboard=scoreboard)
+    except IntegrityError as e:
+      return self.error_response('CTF name already taken', errorfields={'name': True})
+
     challengeboard = Challengeboard.objects.create()
     scoreboard = Scoreboard.objects.create()
 
-    try:
-      ctf = Ctf.objects.create(name=name, live=live, challengeboard=challengeboard, scoreboard=scoreboard)
-    except IntegrityError as e:
-      challengeboard.delete()
-      scoreboard.delete()
-      challengeboard.save()
-      scoreboard.save()
-      return self.error_response('CTF name already taken', errorfields={'name': True})
-      raise
+    ctf.challengeboard = challengeboard
+    ctf.scoreboard = scoreboard
+    ctf.save()
+
     serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
     return Response({
       'ctf': serialized_ctf.data,

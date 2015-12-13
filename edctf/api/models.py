@@ -11,8 +11,8 @@ class Ctf(models.Model):
   """
   name = models.CharField(max_length=250, unique=True, validators=[validate_no_xss, validate_no_html, validate_ctf_iexact])
   live = models.BooleanField(default=False)
-  challengeboard = models.OneToOneField('Challengeboard', related_name='ctfs', related_query_name='ctf')
-  scoreboard = models.OneToOneField('Scoreboard', related_name='ctfs', related_query_name='ctf')
+  challengeboard = models.OneToOneField('Challengeboard', null=True, related_name='ctfs', related_query_name='ctf')
+  scoreboard = models.OneToOneField('Scoreboard', null=True, related_name='ctfs', related_query_name='ctf')
   created = models.DateTimeField(auto_now_add=True)
 
   class Meta:
