@@ -7,7 +7,7 @@ from rest_framework import status
 from edctf.api.models import Team, Ctf
 from edctf.api.permissions import TeamPermission
 from edctf.api.serializers import TeamSerializer
-from edctf.api.validators import *
+from edctf.api.validators import validate_no_html, validate_no_xss
 
 
 class TeamView(APIView):
