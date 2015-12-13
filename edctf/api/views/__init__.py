@@ -1,8 +1,8 @@
-from session import *
-from ctf import *
-from challengeboard import *
-from challenge import *
-from scoreboard import *
-from team import *
-from static import *
-from ctftime import *
+from challenge import ChallengeView
+from challengeboard import ChallengeboardView
+from ctf import CtfView
+from ctftime import CtftimeView
+from scoreboard import ScoreboardView
+from session import SessionView
+from static import home, robots, crossdomain
+from team import TeamView

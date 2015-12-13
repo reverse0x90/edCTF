@@ -1,10 +1,11 @@
+from ratelimit.decorators import ratelimit
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from edctf.api.models import Challenge, ChallengeTimestamp
+from edctf.api.permissions import ChallengePermission
 from edctf.api.serializers import ChallengeSerializer
-from ratelimit.decorators import ratelimit
 
 
 def check_flag(team, challenge, flag):
@@ -54,7 +55,7 @@ class ChallengeView(APIView):
   """
   Manages challenge requests.
   """
-  permission_classes = (IsAuthenticated,)
+  permission_classes = (ChallengePermission,)
 
   def form_response(self, success, error=''):
     """

@@ -1,9 +1,9 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
 from rest_framework import status
 from edctf.api.models import Ctf
+from edctf.api.permissions import CtftimePermission
 from edctf.api.serializers import CtftimeSerializer
 
 
@@ -12,7 +12,7 @@ class CtftimeView(APIView):
   Returns with ctftime scoreboard.
     https://ctftime.org/json-scoreboard-feed
   """
-  permission_classes = (AllowAny,)
+  permission_classes = (CtftimePermission,)
   
   def get(self, request, id=None, format=None):
     """

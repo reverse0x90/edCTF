@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
 from edctf.api.models import Scoreboard, Team
+from edctf.api.permissions import ScoreboardPermission
 from edctf.api.serializers import ScoreboardSerializer, TeamSerializer
 import time
 
@@ -10,7 +10,7 @@ class ScoreboardView(APIView):
   """
   Manages scoreboard requests.
   """
-  permission_classes = (AllowAny,)
+  permission_classes = (ScoreboardPermission,)
 
   def get(self, request, id=None, format=None):
     """

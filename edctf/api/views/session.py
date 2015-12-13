@@ -1,16 +1,16 @@
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
 from rest_framework import status
 from ratelimit.decorators import ratelimit
+from edctf.api.permissions import SessionPermission
 
 
 class SessionView(APIView):
   """
   Manages server side user sessions
   """
-  permission_classes = (AllowAny,)
+  permission_classes = (SessionPermission,)
 
   def form_response(self, isauthenticated, user=None, error=''):
     """

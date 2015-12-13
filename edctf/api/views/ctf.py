@@ -1,15 +1,15 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
 from edctf.api.models import Ctf
 from edctf.api.serializers import CtfSerializer
+from edctf.api.permissions import CtfPermission
 
 
 class CtfView(APIView):
   """
   Manages ctf requests.
   """
-  permission_classes = (AllowAny,)
+  permission_classes = (CtfPermission,)
   
   def get(self, request, id=None, format=None):
     """
@@ -31,4 +31,17 @@ class CtfView(APIView):
     serializer = CtfSerializer(ctfs, many=True, context={'request': request})
     return Response({
       'ctfs': serializer.data,
+    })
+
+  def post(self, request, id=None, format=None):
+    return Response({
+      'hello': 1,
+    })
+  def put(self, request, id=None, format=None):
+    return Response({
+      'hello': 2,
+    })
+  def delete(self, request, id=None, format=None):
+    return Response({
+      'hello': 3,
     })

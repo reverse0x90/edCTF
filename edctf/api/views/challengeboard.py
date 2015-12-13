@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from edctf.api.models import Challengeboard, Category, Challenge
+from edctf.api.permissions import ChallengeboardPermission
 from edctf.api.serializers import ChallengeboardSerializer, CategorySerializer, ChallengeSerializer
 
 
@@ -9,7 +9,7 @@ class ChallengeboardView(APIView):
   """
   Manages challengeboard requests
   """
-  permission_classes = (IsAuthenticated,)
+  permission_classes = (ChallengeboardPermission,)
 
   def get(self, request, id=None, format=None):
     """

@@ -1,20 +1,20 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from ratelimit.decorators import ratelimit
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
 from rest_framework import status
 from edctf.api.models import Team, Ctf
+from edctf.api.permissions import TeamPermission
 from edctf.api.serializers import TeamSerializer
 from edctf.api.validators import *
-from ratelimit.decorators import ratelimit
 
 
 class TeamView(APIView):
   """
   Manages team requests.
   """
-  permission_classes = (AllowAny,)
+  permission_classes = (TeamPermission,)
 
   def form_response(self, isauthenticated, username='', email='', teamid='', error='', errorfields={}):
     """
