@@ -67,7 +67,7 @@ class Challenge(models.Model):
     for team in solved:
       team.points -= self.points
 
-    super(challenge, self).delete(*args, **kwargs)
+    super(Challenge, self).delete(*args, **kwargs)
 
     # update teams after deletion
     for team in solved:
@@ -79,7 +79,7 @@ class Challenge(models.Model):
     if self.id:
       solved = self.solved.all()
 
-    super(challenge, self).save(*args, **kwargs)
+    super(Challenge, self).save(*args, **kwargs)
 
     # update solved teams after changes
     if solved:
@@ -137,7 +137,7 @@ class Team(models.Model):
   def save(self, *args, **kwargs):
     self.update_points()
     self.update_last_timestamp()
-    super(team, self).save(*args, **kwargs)
+    super(Team, self).save(*args, **kwargs)
 
   def update_points(self):
     """
