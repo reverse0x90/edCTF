@@ -61,6 +61,31 @@ class Challenge(models.Model):
   flag = models.CharField(max_length=100)
   created = models.DateTimeField(auto_now_add=True)
 
+  def delete(self, *args, **kwargs):
+    # get teams before deletion
+    solved = self.solved.all()
+    for team in solved:
+      team.points -= self.points
+
+    super(challenge, self).delete(*args, **kwargs)
+
+    # update teams after deletion
+    for team in solved:
+      team.save()
+
+  def save(self, *args, **kwargs):
+    # get solved teams
+    solved = None
+    if self.id:
+      solved = self.solved.all()
+
+    super(challenge, self).save(*args, **kwargs)
+
+    # update solved teams after changes
+    if solved:
+      for team in solved:
+        team.save()
+
   def _get_number_solved(self):
     """
     Returns number of solved challenges.
@@ -102,12 +127,34 @@ class Team(models.Model):
   solved = models.ManyToManyField('Challenge', blank=True, related_name='solved', through='ChallengeTimestamp')
   last_timestamp = models.DateTimeField(default=datetime.fromtimestamp(0))
   created = models.DateTimeField(auto_now_add=True)
-    
+
   class Meta:
     verbose_name_plural = 'Teams'
-    
+
   def __unicode__(self):
     return 'team {}: {}'.format(self.id, self.teamname)
+
+  def save(self, *args, **kwargs):
+    self.update_points()
+    self.update_last_timestamp()
+    super(team, self).save(*args, **kwargs)
+
+  def update_points(self):
+    """
+    Updates the team's points.  Is not saved.
+    """
+    if self.id:
+      points = 0
+      solved = self.solved.all()
+      for challenge in solved:
+        points += challenge.points
+      self.points = points
+
+  def update_last_timestamp(self):
+    if self.id:
+      timestamp = self.challenge_timestamps.order_by('-created').first()
+      if timestamp:
+        self.last_timestamp = timestamp.created
 
   def solves(self):
     challenge_timestamps = []
@@ -119,7 +166,10 @@ class Team(models.Model):
     return challenge_timestamps
 
   def lasttimestamp(self):
-    return int(self.last_timestamp.strftime('%s'))
+    timestamp = self.challenge_timestamps.order_by('-created').first()
+    if not timestamp:
+      return 0
+    return int(timestamp.created.strftime('%s'))
 
   def team(self):
     """
