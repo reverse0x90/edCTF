@@ -2,4 +2,37 @@ Manage your ctf settings here.
 <br/>
 <br/>
 
-<button type="button" class="btn btn-success btn-login-submit edctf-submit-button" {{action "openAdminCtfModal"}}>Create CTF</button>
+<button type="button" class="btn btn-success btn-login-submit edctf-submit-button pull-right" {{action "openAdminCtfModal"}}>Create CTF</button>
+<br/>
+<br/>
+<br/>
+
+<div class="container">
+  {{#if sortedCtfs}}
+    <table class="table table-hover table-condensed" style="width: 50%; float: right;">
+      <thead>
+        <tr>
+          <th class="scoreboard-keys">Name</th>
+          <th class="scoreboard-keys">Live</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each sortedCtfs as |ctf|}}
+          {{#if ctf.live}}
+            <tr class="cursor-pointer scoreboard-values" style="background-color: #f9f9f9;">
+              <td>{{ctf.name}}</td>
+              <td>{{ctf.live}}</td>
+            </tr>
+          {{else}}
+            <tr class="cursor-pointer scoreboard-values">
+              <td>{{ctf.name}}</td>
+              <td>{{ctf.live}}</td>
+            </tr>
+          {{/if}}
+        {{/each}}
+      </tbody>
+    </table>
+  {{else}}
+    No CTFs available
+  {{/if}}
+</div>

@@ -1,10 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  model: null,
   modal: {},
   appController: null,
   errorMessage: '',
   errorFields: {},
+  ctfSorting: ['live:desc', 'id'],
+  sortedCtfs: Ember.computed.sort('model', 'ctfSorting'),
   create: null,
   setFunctions: function(){
     var t = this;
@@ -31,6 +34,7 @@ export default Ember.Controller.extend({
         t.set('errorMessage', '');
         t.set('errorFields', {});
         if(ctf.get('live')){
+          t.get('appController.ctf').set('live', false);
           t.set('appController.ctf', ctf);
         }
       }, function(err){
