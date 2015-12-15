@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from ratelimit.decorators import ratelimit
 from rest_framework.views import APIView
 from rest_framework.response import Response

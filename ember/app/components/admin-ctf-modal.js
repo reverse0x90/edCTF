@@ -5,10 +5,23 @@ export default Ember.Component.extend({
   ctfController: null,
   live: true,
   name: '',
+  closeModal: function(){
+    var t = this;
+    return function(callback){
+      t.set('modal.isAdminCtf', false);
+      t.set('name', '');
+      t.set('live', true);
+      t.set('ctfController.errorMessage', '');
+      t.set('ctfController.errorFields', {});
+      if(callback){
+        callback();
+      }
+    };
+  }.property('closeModal'),
   setupKeys: function() {
     Ember.$('body').on('keyup.modal-dialog', (e) => {
       if (e.keyCode === 27) {
-        this.set('modal.isAdminCtf', false);
+        this.get('closeModal')();
       }
     });
   }.on('didInsertElement'),
@@ -26,11 +39,7 @@ export default Ember.Component.extend({
       createCtf(name, live);
     },
     closeAdminCtfModal: function() {
-      this.set('modal.isAdminCtf', false);
-      this.set('name', '');
-      this.set('live', true);
-      this.set('ctfController.errorMessage', '');
-      this.set('ctfController.errorFields', {});
+      this.get('closeModal')();
     },
   },
 });

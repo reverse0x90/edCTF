@@ -8,8 +8,7 @@ export default Ember.Controller.extend({
   errorFields: {},
   ctfSorting: ['live:desc', 'id'],
   sortedCtfs: Ember.computed.sort('model', 'ctfSorting'),
-  create: null,
-  setFunctions: function(){
+  create: function(){
     var t = this;
 
     var createCtf = function(name, live){
@@ -40,7 +39,7 @@ export default Ember.Controller.extend({
       });
     };
 
-    var create = function(name, live){
+    return function(name, live){
       // check if name is set
       if(!name){
         t.set('errorMessage', 'Invalid CTF name');
@@ -82,8 +81,7 @@ export default Ember.Controller.extend({
         }
       });
     };
-    this.set('create', create);
-  }.observes('modal').on('init'),
+  }.property('create'),
   actions: {
     openAdminCtfModal: function() {
       this.set('modal.isAdminCtf', true);

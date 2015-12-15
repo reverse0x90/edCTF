@@ -11,10 +11,22 @@ export default Ember.Component.extend({
   classNames: ['challenge-submit', 'challenge-cancel'],
   validatorController: undefined,
   session: {},
+  closeModal: function(){
+    var t = this;
+    return function(callback){
+      t.set('flag', '');
+      t.set('errorMessage', '');
+      t.set('errorFields', {});
+      t.set('modal.isChallenge', false);
+      if(callback){
+        callback();
+      }
+    };
+  }.property('closeModal'),
   setupKeys: function() {
     Ember.$('body').on('keyup.modal-dialog', (e) => {
       if (e.keyCode === 27) {
-        this.set('modal.isChallenge', false);
+        this.get('closeModal')();
       }
     });
   }.on('didInsertElement'),
@@ -26,7 +38,7 @@ export default Ember.Component.extend({
   }.on('didInsertElement'),
   actions: {
     closeChallengeModal: function() {
-      this.set('modal.isChallenge', false);
+      this.get('closeModal')();
     },
     submitFlag: function() {
       var t = this;
