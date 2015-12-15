@@ -38,7 +38,6 @@ COPY scripts/environment.bash ${EDCTF_SCRIPTS}/environment.bash
 COPY edctf ${EDCTF_DJANGO}
 
 # Copy frontend
-COPY ember ${EDCTF_EMBER}
 COPY scripts/build_frontend-prod.bash ${EDCTF_SCRIPTS}/build_frontend-prod.bash
 
 # Build frontend css
