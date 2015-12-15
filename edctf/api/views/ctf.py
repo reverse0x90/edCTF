@@ -56,11 +56,6 @@ class CtfView(APIView):
 
     name = ctf_data['name']
     if ctf_data['live']:
-      # disable live CTF
-      live_ctfs = Ctf.objects.filter(live=True)
-      for ctf in live_ctfs:
-        ctf.live = False
-        ctf.save()
       live = True
     else:
       live = False
@@ -69,7 +64,6 @@ class CtfView(APIView):
       ctf = Ctf.objects.create(name=name, live=live)#, challengeboard=challengeboard, scoreboard=scoreboard)
     except IntegrityError as e:
       return self.error_response('CTF name already taken', errorfields={'name': True})
-
     challengeboard = Challengeboard.objects.create()
     scoreboard = Scoreboard.objects.create()
 
@@ -78,6 +72,14 @@ class CtfView(APIView):
     ctf.save()
 
     serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
+
+    # disable all other live ctfs
+    if live:
+      live_ctfs = Ctf.objects.exclude(id=ctf.id).filter(live=True)
+      for ctf in live_ctfs:
+        ctf.live = False
+        ctf.save()
+
     return Response({
       'ctf': serialized_ctf.data,
     })
