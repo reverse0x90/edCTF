@@ -41,33 +41,46 @@ export default Ember.Controller.extend({
     };
 
     var create = function(name, live){
+      // check if name is set
       if(!name){
         t.set('errorMessage', 'Invalid CTF name');
         t.set('errorFields', {'name': true});
         return;
       }
-      if(live){
-        var live_ctf = t.get('appController.ctf');
-        if(live_ctf){
-          t.set('modal.confirmMesg', [
-            'This will replace ' + live_ctf.get('name') + ' as the current online ctf.',
-            'Are you sure?',
-          ]);
-          t.set('modal.confirmCallback', function(confirmed){
-            if(confirmed){
-              createCtf(name, true);
-            } else {
-              t.set('errorMessage', '');
-              t.set('errorFields', {});
-            }
-          });
-          t.set('modal.isConfirm', true);
+
+      // check if name already taken
+      t.store.filter('ctf', function(ctf) {
+        return ctf.get('name') === name;
+      }).then(function(foundCtf) {
+        var found = foundCtf.get('length');
+        if(found){
+          t.set('errorMessage', 'CTF name already taken');
+          t.set('errorFields', {'name': true});
         } else {
-          createCtf(name, true);
+          if(live){
+            var live_ctf = t.get('appController.ctf');
+            if(live_ctf){
+              t.set('modal.confirmMesg', [
+                'This will replace "' + live_ctf.get('name') + '" as the current online ctf.',
+                'Are you sure?',
+              ]);
+              t.set('modal.confirmCallback', function(confirmed){
+                if(confirmed){
+                  createCtf(name, true);
+                } else {
+                  t.set('errorMessage', '');
+                  t.set('errorFields', {});
+                }
+              });
+              t.set('modal.isConfirm', true);
+            } else {
+              createCtf(name, true);
+            }
+          } else {
+            createCtf(name, false);
+          }
         }
-      } else {
-        createCtf(name, false);
-      }
+      });
     };
     this.set('create', create);
   }.observes('modal').on('init'),

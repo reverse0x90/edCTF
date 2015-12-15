@@ -61,7 +61,7 @@ class CtfView(APIView):
       live = False
 
     try:
-      ctf = Ctf.objects.create(name=name, live=live)#, challengeboard=challengeboard, scoreboard=scoreboard)
+      ctf = Ctf.objects.create(name=name, live=live)
     except IntegrityError as e:
       return self.error_response('CTF name already taken', errorfields={'name': True})
     challengeboard = Challengeboard.objects.create()

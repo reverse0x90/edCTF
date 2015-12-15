@@ -2,6 +2,7 @@
   <div class="modal-dialog" style="text-align: center;">
     {{#each message as |line|}}
       {{line}}
+      <br/>
     {{/each}}
     <div class="modal-footer" style="text-align: center;">
       <button type="button" class="btn btn-success btn-login-submit edctf-submit-button" {{action "confirmationAllow"}}>Allow</button>
