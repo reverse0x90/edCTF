@@ -34,7 +34,10 @@ export default Ember.Controller.extend({
         t.set('errorMessage', '');
         t.set('errorFields', {});
         if(ctf.get('live')){
-          t.get('appController.ctf').set('live', false);
+          var live_ctf = t.get('appController.ctf');
+          if(live_ctf){
+            live_ctf.set('live', false);
+          }
           t.set('appController.ctf', ctf);
         }
       }, function(err){

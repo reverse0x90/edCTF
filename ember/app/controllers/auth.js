@@ -97,7 +97,7 @@ export default Ember.Controller.extend({
         beforeSend: function(xhr) {
           xhr.setRequestHeader("X-CSRFToken", Ember.$.cookie('csrftoken'));
         },
-       success: function (result){
+        success: function (result){
           var session = {};
           if(result.error){
             session.isAuthenticated = result.isauthenticated || false;
