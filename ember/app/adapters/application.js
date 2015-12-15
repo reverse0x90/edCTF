@@ -6,5 +6,5 @@ export default DS.RESTAdapter.extend({
   headers: Ember.computed(function(){
     var token = Ember.$.cookie('csrftoken');
     return {'X-CSRFToken': token};
-  }),
+  }).volatile(),
 });
