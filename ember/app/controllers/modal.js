@@ -10,6 +10,9 @@ export default Ember.Controller.extend({
     isAdminCtf: false,
     isAdminTeam: false,
     isAdminChallenge: false,
+    isConfirm: false,
+    confirmMesg: [''],
+    confirmCallback: null,
     challenge: {},
     team: {},
     adminCtf: {},
@@ -18,17 +21,4 @@ export default Ember.Controller.extend({
     solvedChallenge: -1,
   },
   store: null,
-  actions: {
-    closeModal: function(){
-      this.set('modal.isLogin', false);
-      this.set('modal.isRegister', false);
-      this.set('modal.isChallenge', false);
-      this.set('modal.isTeam', false);
-      this.set('modal.isProfile', false);
-      this.set('modal.isAdminCtf', false);
-      this.set('modal.isAdminTeam', false);
-      this.set('modal.isAdminChallenge', false);
-      this.set('store', this.store);
-    },
-  },
 });

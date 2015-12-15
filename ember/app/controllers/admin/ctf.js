@@ -12,23 +12,11 @@ export default Ember.Controller.extend({
   setFunctions: function(){
     var t = this;
 
-    var create = function(formName, formLive){
-      if(!formName){
-        t.set('errorMessage', 'Invalid CTF name');
-        t.set('errorFields', {'name': true});
-        return;
-      }
-      var name = formName;
-      var live = false;
-      if(formLive){
-        live = true;
-      }
-
+    var createCtf = function(name, live){
       var ctf = t.store.createRecord('ctf', {
         name: name,
         live: live,
       });
-
       ctf.save().then(function(ctf){
         t.set('modal.isAdminCtf', false);
         t.set('errorMessage', '');
@@ -50,6 +38,36 @@ export default Ember.Controller.extend({
           t.set('errorFields', {});
         }
       });
+    };
+
+    var create = function(name, live){
+      if(!name){
+        t.set('errorMessage', 'Invalid CTF name');
+        t.set('errorFields', {'name': true});
+        return;
+      }
+      if(live){
+        var live_ctf = t.get('appController.ctf');
+        if(live_ctf){
+          t.set('modal.confirmMesg', [
+            'This will replace ' + live_ctf.get('name') + ' as the current online ctf.',
+            'Are you sure?',
+          ]);
+          t.set('modal.confirmCallback', function(confirmed){
+            if(confirmed){
+              createCtf(name, true);
+            } else {
+              t.set('errorMessage', '');
+              t.set('errorFields', {});
+            }
+          });
+          t.set('modal.isConfirm', true);
+        } else {
+          createCtf(name, true);
+        }
+      } else {
+        createCtf(name, false);
+      }
     };
     this.set('create', create);
   }.observes('modal').on('init'),
