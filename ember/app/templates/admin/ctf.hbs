@@ -1,14 +1,23 @@
-Manage your ctf settings here.
-<br/>
-<br/>
-
-<button type="button" class="btn btn-success btn-login-submit edctf-submit-button pull-right" {{action "openAdminCtfModal"}}>Create CTF</button>
-<br/>
-<br/>
-<br/>
-
 <div class="container">
+  <button type="button" class="btn btn-success btn-login-submit edctf-submit-button pull-right" {{action "openAdminCtfModal"}}>Create CTF</button>
+  
   {{#if sortedCtfs}}
+    {{#if selectedCtf}}
+      <h2>Selected CTF</h2>
+      <table class="table team-info-table" style="width: 40%; float: left;">
+        <tbody>
+          <tr class="team-info">
+            <td>Name:</td>
+            <td>{{selectedCtf.name}}</td>
+          </tr>
+          <tr class="team-info">
+            <td>Live:</td>
+            <td>{{selectedCtf.live}}</td>
+          </tr>
+        </tbody>
+      </table>
+    {{/if}}
+    
     <table class="table table-hover table-condensed" style="width: 50%; float: right;">
       <thead>
         <tr>
@@ -18,13 +27,13 @@ Manage your ctf settings here.
       </thead>
       <tbody>
         {{#each sortedCtfs as |ctf|}}
-          {{#if ctf.live}}
-            <tr class="cursor-pointer scoreboard-values" style="background-color: #f9f9f9;">
+          {{#if (if-equal ctf.id selectedCtf.id)}}
+            <tr class="cursor-pointer scoreboard-values" style="background-color: #2db300;">
               <td>{{ctf.name}}</td>
               <td>{{ctf.live}}</td>
             </tr>
           {{else}}
-            <tr class="cursor-pointer scoreboard-values">
+            <tr {{action 'setSelectedCtf' ctf}} class="cursor-pointer scoreboard-values">
               <td>{{ctf.name}}</td>
               <td>{{ctf.live}}</td>
             </tr>

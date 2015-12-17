@@ -8,6 +8,11 @@ export default Ember.Controller.extend({
   errorFields: {},
   ctfSorting: ['live:desc', 'id'],
   sortedCtfs: Ember.computed.sort('model', 'ctfSorting'),
+  selectedCtf: null,
+  setSelectedCtf: function(){
+    var live_ctf = this.get('appController').get('ctf');
+    this.set('selectedCtf', live_ctf);
+  }.observes('appController.ctf'),
   create: function(){
     var t = this;
 
@@ -85,6 +90,9 @@ export default Ember.Controller.extend({
   actions: {
     openAdminCtfModal: function() {
       this.set('modal.isAdminCtf', true);
+    },
+    setSelectedCtf: function(ctf){
+      this.set('selectedCtf', ctf);
     },
   },
 });
