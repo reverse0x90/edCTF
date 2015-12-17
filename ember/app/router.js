@@ -17,6 +17,7 @@ Router.map(function() {
     this.route('ctf');
     this.route('challengeboard');
     this.route('teams');
+    this.route('config');
   });
 });
 
