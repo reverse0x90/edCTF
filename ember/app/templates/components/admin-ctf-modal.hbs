@@ -4,12 +4,12 @@
 
 
       <table class="table" style="width:100%">
-        {{#if ctfController.errorMessage}}
-          <label class="control-label"><div class="alert alert-danger" style="padding: 5px; margin-bottom: 0px;" role="alert">{{ctfController.errorMessage}}</div></label> 
+        {{#if ctfController.modalErrorMessage}}
+          <label class="control-label"><div class="alert alert-danger" style="padding: 5px; margin-bottom: 0px;" role="alert">{{ctfController.modalErrorMessage}}</div></label> 
         {{/if}}
         <tbody>
           <tr>
-            {{#if ctfController.errorFields.name}} 
+            {{#if ctfController.modalErrorFields.name}} 
               <div class="form-group has-error">
                 <td>CTF Name:</td>
                 <td>
@@ -26,7 +26,7 @@
             {{/if}}
           </tr>
           <tr>
-            {{#if ctfController.errorFields.live}} 
+            {{#if ctfController.modalErrorFields.live}} 
               <div class="form-group has-error">
                 <td>Live:</td>
                 <td>

@@ -1,46 +1,92 @@
-<div class="container">
-  <button type="button" class="btn btn-success btn-login-submit edctf-submit-button pull-right" {{action "openAdminCtfModal"}}>Create CTF</button>
-  
+<div class="container" style="position: relative;">
   {{#if sortedCtfs}}
+
+    {{!-- display selected ctfs view/edit --}}
     {{#if selectedCtf}}
-      <h2>Selected CTF</h2>
-      <table class="table team-info-table" style="width: 40%; float: left;">
-        <tbody>
-          <tr class="team-info">
-            <td>Name:</td>
-            <td>{{selectedCtf.name}}</td>
-          </tr>
-          <tr class="team-info">
-            <td>Live:</td>
-            <td>{{selectedCtf.live}}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div style="width: 40%; float: left;">
+        <h2>Selected CTF</h2>
+        {{#if selectedOption.view}}
+          <button type="button" class="btn btn-danger btn-cancel-action edctf-cancel-button  pull-right" {{action 'deleteCtf'}}>Delete</button>
+          <table class="table team-info-table">
+            <tbody>
+              <tr class="team-info">
+                <td>Name:</td>
+                <td>{{selectedCtf.name}}</td>
+              </tr>
+              <tr class="team-info">
+                <td>Live:</td>
+                <td>{{selectedCtf.live}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" class="btn btn-success btn-login-submit edctf-submit-button  pull-right" {{action 'setEditOption'}}>Edit</button>
+        {{else}}
+          {{#if selectedOption.edit}}
+            <button type="button" class="btn btn-danger btn-cancel-action edctf-cancel-button  pull-right" {{action 'deleteCtf'}}>Delete</button>
+            <table class="table team-info-table">
+              <tbody>
+                <tr class="team-info">
+                  {{#if errorFields.name}} 
+                    <div class="form-group has-error">
+                      <td>Name:</td>
+                      <td>{{input id="ctfName" type="text" value=editCtfName enter="editCtf" class="form-control" placeholder=selectedCtf.name}}</td>
+                    </div>
+                  {{else}}
+                    <div class="form-group">
+                      <td>Name:</td>
+                      <td>{{input id="ctfName" type="text" value=editCtfName enter="editCtf" class="form-control" placeholder=selectedCtf.name}}</td>
+                    </div>
+                  {{/if}}
+                </tr>
+                <tr class="team-info">
+                  {{#if errorFields.name}} 
+                    <div class="form-group has-error">
+                      <td>Live:</td>
+                      <td>{{input type="checkbox" checked=editCtfLive}}</td>
+                    </div>
+                  {{else}}
+                    <div class="form-group">
+                      <td>Live:</td>
+                      <td>{{input type="checkbox" checked=editCtfLive}}</td>
+                    </div>
+                  {{/if}}
+                </tr>
+              </tbody>
+            </table>
+            <button type="button" class="btn btn-warning edctf-warning-button pull-right" {{action 'setViewOption'}}>Cancel</button>
+            <button type="button" class="btn btn-success btn-login-submit edctf-submit-button pull-right" {{action 'editCtf' }}>Submit</button>
+          {{/if}}
+        {{/if}}
+      </div>
     {{/if}}
     
-    <table class="table table-hover table-condensed" style="width: 50%; float: right;">
-      <thead>
-        <tr>
-          <th class="scoreboard-keys">Name</th>
-          <th class="scoreboard-keys">Live</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each sortedCtfs as |ctf|}}
-          {{#if (if-equal ctf.id selectedCtf.id)}}
-            <tr class="cursor-pointer scoreboard-values" style="background-color: #2db300;">
-              <td>{{ctf.name}}</td>
-              <td>{{ctf.live}}</td>
-            </tr>
-          {{else}}
-            <tr {{action 'setSelectedCtf' ctf}} class="cursor-pointer scoreboard-values">
-              <td>{{ctf.name}}</td>
-              <td>{{ctf.live}}</td>
-            </tr>
-          {{/if}}
-        {{/each}}
-      </tbody>
-    </table>
+    {{!-- display list of ctfs --}}
+    <div style="width: 30%; float: right;">
+      <button type="button" class="btn btn-success btn-login-submit edctf-submit-button pull-right" {{action "openAdminCtfModal"}}>Create CTF</button>
+      <table class="table table-hover table-condensed">
+        <thead>
+          <tr>
+            <th class="scoreboard-keys">Name</th>
+            <th class="scoreboard-keys">Live</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each sortedCtfs as |ctf|}}
+            {{#if (if-equal ctf.id selectedCtf.id)}}
+              <tr class="cursor-pointer scoreboard-values" style="background-color: #2db300;">
+                <td>{{ctf.name}}</td>
+                <td>{{ctf.live}}</td>
+              </tr>
+            {{else}}
+              <tr {{action 'setSelectedCtf' ctf}} class="cursor-pointer scoreboard-values">
+                <td>{{ctf.name}}</td>
+                <td>{{ctf.live}}</td>
+              </tr>
+            {{/if}}
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
   {{else}}
     No CTFs available
   {{/if}}

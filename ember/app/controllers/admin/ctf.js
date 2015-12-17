@@ -4,11 +4,19 @@ export default Ember.Controller.extend({
   model: null,
   modal: {},
   appController: null,
+  editCtfName: '',
+  editCtfLive: false,
   errorMessage: '',
   errorFields: {},
+  modalErrorMessage: '',
+  modalErrorFields: {},
   ctfSorting: ['live:desc', 'id'],
   sortedCtfs: Ember.computed.sort('model', 'ctfSorting'),
   selectedCtf: null,
+  selectedOption: {
+    'view': true,
+    'edit': false,
+  },
   setSelectedCtf: function(){
     var live_ctf = this.get('appController').get('ctf');
     this.set('selectedCtf', live_ctf);
@@ -23,8 +31,8 @@ export default Ember.Controller.extend({
       });
       ctf.save().then(function(ctf){
         t.set('modal.isAdminCtf', false);
-        t.set('errorMessage', '');
-        t.set('errorFields', {});
+        t.set('modalErrorMessage', '');
+        t.set('modalErrorFields', {});
         if(ctf.get('live')){
           var live_ctf = t.get('appController.ctf');
           if(live_ctf){
@@ -35,11 +43,11 @@ export default Ember.Controller.extend({
       }, function(err){
         ctf.deleteRecord();
         if (err.errors.message){
-          t.set('errorMessage', err.errors.message);
-          t.set('errorFields', err.errors.fields);
+          t.set('modalErrorMessage', err.errors.message);
+          t.set('modalErrorFields', err.errors.fields);
         } else {
-          t.set('errorMessage', 'Server Error');
-          t.set('errorFields', {});
+          t.set('modalErrorMessage', 'Server Error');
+          t.set('modalErrorFields', {});
         }
       });
     };
@@ -47,8 +55,8 @@ export default Ember.Controller.extend({
     return function(name, live){
       // check if name is set
       if(!name){
-        t.set('errorMessage', 'Invalid CTF name');
-        t.set('errorFields', {'name': true});
+        t.set('modalErrorMessage', 'Invalid CTF name');
+        t.set('modalErrorFields', {'name': true});
         return;
       }
 
@@ -58,8 +66,8 @@ export default Ember.Controller.extend({
       }).then(function(foundCtf) {
         var found = foundCtf.get('length');
         if(found){
-          t.set('errorMessage', 'CTF name already taken');
-          t.set('errorFields', {'name': true});
+          t.set('modalErrorMessage', 'CTF name already taken');
+          t.set('modalErrorFields', {'name': true});
         } else {
           if(live){
             var live_ctf = t.get('appController.ctf');
@@ -72,8 +80,8 @@ export default Ember.Controller.extend({
                 if(confirmed){
                   createCtf(name, true);
                 } else {
-                  t.set('errorMessage', '');
-                  t.set('errorFields', {});
+                  t.set('modalErrorMessage', '');
+                  t.set('modalErrorFields', {});
                 }
               });
               t.set('modal.isConfirm', true);
@@ -93,6 +101,63 @@ export default Ember.Controller.extend({
     },
     setSelectedCtf: function(ctf){
       this.set('selectedCtf', ctf);
+      this.set('selectedOption', {
+        'view': true,
+        'edit': false,
+      });
+    },
+    setViewOption: function(){
+      this.set('selectedOption', {
+        'view': true,
+        'edit': false,
+      });
+    },
+    setEditOption: function(){
+      this.set('editCtfName', this.get('selectedCtf.name'));
+      this.set('editCtfLive', this.get('selectedCtf.live'));
+      this.set('selectedOption', {
+        'view': false,
+        'edit': true,
+      });
+    },
+    editCtf: function(){
+      var name = this.get('editCtfName');
+      var live = this.get('editCtfLive');
+      console.log('editing:', this.get('selectedCtf.id'), name, live);
+      
+      this.set('selectedOption', {
+        'view': true,
+        'edit': false,
+      });
+    },
+    deleteCtf: function(){
+      var name = this.get('selectedCtf.name');
+      var live = this.get('selectedCtf.live');
+      console.log('deleting:', this.get('selectedCtf.id'), name, live);
+
+      // set selectCtf to proper ctf
+      var liveCtf = this.get('appController').get('ctf');
+      if(liveCtf){
+        this.set('selectedCtf', liveCtf);
+      } else {
+        var nextCtfs = this.get('sortedCtfs');
+        if(nextCtfs){
+          var nextCtf = nextCtfs.get('firstObject');
+          if(nextCtf){
+            this.set('selectedCtf', nextCtf);
+          } else {
+            this.set('selectedCtf', undefined);
+          }
+        } else {
+          this.set('selectedCtf', undefined);
+        }
+      }
+      
+      // set back to view
+      this.set('selectedOption', {
+        'view': true,
+        'edit': false,
+      });
     },
   },
 });
