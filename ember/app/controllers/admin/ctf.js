@@ -72,11 +72,10 @@ export default Ember.Controller.extend({
           if(live){
             var live_ctf = t.get('appController.ctf');
             if(live_ctf){
-              t.set('modal.confirmMesg', [
+              t.send('promptConfirmation', [
                 'This will replace "' + live_ctf.get('name') + '" as the current online ctf.',
                 'Are you sure?',
-              ]);
-              t.set('modal.confirmCallback', function(confirmed){
+              ], function(confirmed){
                 if(confirmed){
                   createCtf(name, true);
                 } else {
@@ -84,7 +83,6 @@ export default Ember.Controller.extend({
                   t.set('modalErrorFields', {});
                 }
               });
-              t.set('modal.isConfirm', true);
             } else {
               createCtf(name, true);
             }
@@ -96,10 +94,17 @@ export default Ember.Controller.extend({
     };
   }.property('create'),
   actions: {
+    promptConfirmation: function(messageArray, callback){
+      this.set('modal.confirmMesg', messageArray);
+      this.set('modal.confirmCallback', callback);
+      this.set('modal.isConfirm', true);
+    },
     openAdminCtfModal: function() {
       this.set('modal.isAdminCtf', true);
     },
     setSelectedCtf: function(ctf){
+      this.set('errorMessage', '');
+      this.set('errorFields', {});
       this.set('selectedCtf', ctf);
       this.set('selectedOption', {
         'view': true,
@@ -107,12 +112,16 @@ export default Ember.Controller.extend({
       });
     },
     setViewOption: function(){
+      this.set('errorMessage', '');
+      this.set('errorFields', {});
       this.set('selectedOption', {
         'view': true,
         'edit': false,
       });
     },
     setEditOption: function(){
+      this.set('errorMessage', '');
+      this.set('errorFields', {});
       this.set('editCtfName', this.get('selectedCtf.name'));
       this.set('editCtfLive', this.get('selectedCtf.live'));
       this.set('selectedOption', {
@@ -121,42 +130,145 @@ export default Ember.Controller.extend({
       });
     },
     editCtf: function(){
+      var t = this;
+      var editCtfConfirmed = function(ctf, new_ctf){
+        ctf.set('name', new_ctf.name);
+        ctf.set('live', new_ctf.live);
+        ctf.save().then(function(){
+          // set option to view
+          console.log('here');
+          t.set('selectedOption', {
+            'view': true,
+            'edit': false,
+          });
+        }, function(err){
+          ctf.rollbackAttributes();
+          if (err.errors.message){
+            t.set('errorMessage', err.errors.message);
+            t.set('errorFields', err.errors.fields);
+          } else {
+            t.set('errorMessage', 'Server Error, unable to edit ctf');
+            t.set('errorFields', {});
+          }
+        });
+      };
+
       var name = this.get('editCtfName');
       var live = this.get('editCtfLive');
-      console.log('editing:', this.get('selectedCtf.id'), name, live);
-      
-      this.set('selectedOption', {
-        'view': true,
-        'edit': false,
-      });
-    },
-    deleteCtf: function(){
-      var name = this.get('selectedCtf.name');
-      var live = this.get('selectedCtf.live');
-      console.log('deleting:', this.get('selectedCtf.id'), name, live);
-
-      // set selectCtf to proper ctf
-      var liveCtf = this.get('appController').get('ctf');
-      if(liveCtf){
-        this.set('selectedCtf', liveCtf);
+      var ctf = this.get('selectedCtf');
+      if(live === ctf.get('live')){
+        editCtfConfirmed(ctf, {
+          'name': name,
+          'live': live,
+        });
       } else {
-        var nextCtfs = this.get('sortedCtfs');
-        if(nextCtfs){
-          var nextCtf = nextCtfs.get('firstObject');
-          if(nextCtf){
-            this.set('selectedCtf', nextCtf);
+        var liveCtf = this.get('appController').get('ctf');
+        if(liveCtf){
+          if(liveCtf.get('live')){
+            if(liveCtf.get('id') === ctf.get('id')){
+              // liveCtf is going offline, confirm with user
+              this.send('promptConfirmation', [
+                'This will take the ctf "' + liveCtf.get('name') + '" offline.',
+                'Are you sure?',
+              ], function(confirmed){
+                if(confirmed){
+                  editCtfConfirmed(ctf, {
+                    'name': name,
+                    'live': live,
+                  });
+                }
+              });
+            } else {
+              if(live){
+                // replacing live ctf, confirm with user
+                this.send('promptConfirmation', [
+                  'This will replace "' + liveCtf.get('name') + '" as the current online ctf.',
+                  'Are you sure?',
+                ], function(confirmed){
+                  if(confirmed){
+                    editCtfConfirmed(ctf, {
+                      'name': name,
+                      'live': live,
+                    });
+                  }
+                });
+              } else {
+                editCtfConfirmed(ctf, {
+                  'name': name,
+                  'live': live,
+                });
+              }
+            }
           } else {
-            this.set('selectedCtf', undefined);
+            // if liveCtf isnt live for some reason, just update the ctf
+            editCtfConfirmed(ctf, {
+              'name': name,
+              'live': live,
+            });
           }
         } else {
-          this.set('selectedCtf', undefined);
+          editCtfConfirmed(ctf, {
+            'name': name,
+            'live': live,
+          });
         }
       }
-      
-      // set back to view
-      this.set('selectedOption', {
-        'view': true,
-        'edit': false,
+    },
+    deleteCtf: function(){
+      var t = this;
+      var ctf = this.get('selectedCtf');
+
+      this.send('promptConfirmation', [
+        'This will DELETE the ctf "' + ctf.get('name') + '" and all challenges, scoreboards, and teams associated with it.',
+        'Are you REALLY sure?!',
+      ], function(confirmed){
+        if(confirmed){
+          // disallow live ctf deletion
+          if(ctf.get('live')){
+            t.set('errorMessage', 'Cannot delete a live ctf');
+            t.set('errorFields', {});
+          } else {
+            // DELETE the ctf!
+            ctf.deleteRecord();
+            ctf.save().then(function(){
+              // replace selected ctf with another
+              var liveCtf = t.get('appController').get('ctf');
+              if(liveCtf){
+                t.set('selectedCtf', liveCtf);
+              } else {
+                var nextCtf = t.get('sortedCtfs');
+                if(nextCtf){
+                  nextCtf = nextCtf.get('firstObject');
+                  if(nextCtf){
+                    t.set('selectedCtf', nextCtf);
+                  } else {
+                    t.set('selectedCtf', undefined);
+                  }
+                } else {
+                  t.set('selectedCtf', undefined);
+                }
+              }
+              
+              // set option to view
+              t.set('selectedOption', {
+                'view': true,
+                'edit': false,
+              });
+            }, function(err){
+              ctf.rollbackAttributes();
+              if (err.errors.message){
+                t.set('errorMessage', err.errors.message);
+                t.set('errorFields', err.errors.fields);
+              } else {
+                t.set('errorMessage', 'Server Error, unable to delete ctf');
+                t.set('errorFields', {});
+              }
+            });
+          }
+        } else {
+          t.set('modalErrorMessage', '');
+          t.set('modalErrorFields', {});
+        }
       });
     },
   },

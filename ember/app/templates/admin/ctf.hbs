@@ -9,6 +9,9 @@
           <button type="button" class="btn btn-danger btn-cancel-action edctf-cancel-button  pull-right" {{action 'deleteCtf'}}>Delete</button>
           <table class="table team-info-table">
             <tbody>
+              {{#if errorMessage}}
+                <label class="control-label"><div class="alert alert-danger" style="padding: 5px; margin-bottom: 0px;" role="alert">{{errorMessage}}</div></label> 
+              {{/if}}
               <tr class="team-info">
                 <td>Name:</td>
                 <td>{{selectedCtf.name}}</td>
@@ -23,6 +26,9 @@
         {{else}}
           {{#if selectedOption.edit}}
             <button type="button" class="btn btn-danger btn-cancel-action edctf-cancel-button  pull-right" {{action 'deleteCtf'}}>Delete</button>
+            {{#if errorMessage}}
+              <label class="control-label"><div class="alert alert-danger" style="padding: 5px; margin-bottom: 0px;" role="alert">{{errorMessage}}</div></label> 
+            {{/if}}
             <table class="table team-info-table">
               <tbody>
                 <tr class="team-info">

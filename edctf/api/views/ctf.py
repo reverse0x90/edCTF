@@ -15,7 +15,7 @@ class CtfView(APIView):
 
   def error_response(self, error, errorfields={}):
     """
-    Handles error messages for post
+    Handles error messages
     """
     return Response({
       'errors': {
@@ -90,6 +90,17 @@ class CtfViewDetail(APIView):
   Manages ctf by id requests.
   """
   permission_classes = (CtfPermissionDetail,)
+
+  def error_response(self, error, errorfields={}):
+    """
+    Handles error messages
+    """
+    return Response({
+      'errors': {
+        'message': error,
+        'fields': errorfields,
+      },
+    }, status=status.HTTP_400_BAD_REQUEST)
   
   def get(self, request, id, format=None):
     """
@@ -101,18 +112,14 @@ class CtfViewDetail(APIView):
       'ctf': serializer.data,
     })
 
-  def put(self, request, id=None, format=None):
+  def put(self, request, id, format=None):
     """
     Edits a ctf
     """
-    return Response({
-      'ctf': 'test',
-    })
+    return self.error_response('PUT not implemented yet', errorfields={})
 
-  def delete(self, request, id=None, format=None):
+  def delete(self, request, id, format=None):
     """
     Deletes a ctf
     """
-    return Response({
-      'ctf': 'test',
-    })
+    return self.error_response('DELETE not implemented yet', errorfields={})
