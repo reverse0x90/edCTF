@@ -56,7 +56,7 @@ class CtfView(APIView):
       return self.error_response('CTF online status not given', errorfields={'online': True})
 
     if len(ctf_data['name']) > 100:
-      return self.error_response('CTF name too long, over 100 characters', errorfields={'online': True})
+      return self.error_response('CTF name too long, over 100 characters', errorfields={'name': True})
     name = str(ctf_data['name'])
     online = True if ctf_data['online'] else False
 
@@ -135,7 +135,7 @@ class CtfViewDetail(APIView):
       return self.error_response('CTF online status not given', errorfields={'online': True})
 
     if len(ctf_data['name']) > 100:
-      return self.error_response('CTF name too long, over 100 characters', errorfields={'online': True})
+      return self.error_response('CTF name too long, over 100 characters', errorfields={'name': True})
 
     name = str(ctf_data['name'])
     if ctf.name.lower() != name.lower() and Ctf.objects.filter(name__iexact=name).exists():

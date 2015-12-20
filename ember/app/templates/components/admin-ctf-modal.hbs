@@ -1,12 +1,12 @@
 {{#modal-dialog close="closeAdminCtfModal" translucentOverlay=true container-class="admin-ctf-modal"}}
   <h2 class="form-signin-heading" style="allign: center;">Create CTF</h2>
   <table class="table" style="width:100%">
-    {{#if ctfController.modalErrorMessage}}
-      <label class="control-label"><div class="alert alert-danger" style="padding: 5px; margin-bottom: 0px;" role="alert">{{ctfController.modalErrorMessage}}</div></label> 
+    {{#if modal.errorMessage}}
+      <label class="control-label"><div class="alert alert-danger" style="padding: 5px; margin-bottom: 0px;" role="alert">{{modal.errorMessage}}</div></label> 
     {{/if}}
     <tbody>
       <tr>
-        {{#if ctfController.modalErrorFields.name}} 
+        {{#if modal.errorFields.name}} 
           <div class="form-group has-error">
             <td>CTF Name:</td>
             <td>
@@ -23,7 +23,7 @@
         {{/if}}
       </tr>
       <tr>
-        {{#if ctfController.modalErrorFields.online}} 
+        {{#if modal.errorFields.online}} 
           <div class="form-group has-error">
             <td>Online:</td>
             <td>

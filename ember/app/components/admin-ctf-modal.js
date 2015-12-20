@@ -11,8 +11,8 @@ export default Ember.Component.extend({
       t.set('modal.isAdminCtf', false);
       t.set('name', '');
       t.set('online', true);
-      t.set('ctfController.modalErrorMessage', '');
-      t.set('ctfController.modalErrorFields', {});
+      t.set('modal.errorMessage', '');
+      t.set('modal.errorFields', {});
       if(callback){
         callback();
       }

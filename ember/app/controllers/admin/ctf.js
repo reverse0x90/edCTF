@@ -64,8 +64,8 @@ export default Ember.Controller.extend({
       });
       ctf.save().then(function(ctf){
         t.set('modal.isAdminCtf', false);
-        t.set('modalErrorMessage', '');
-        t.set('modalErrorFields', {});
+        t.set('modal.errorMessage', '');
+        t.set('modal.errorFields', {});
         if(ctf.get('online')){
           var online_ctf = t.get('appController.ctf');
           if(online_ctf){
@@ -76,18 +76,18 @@ export default Ember.Controller.extend({
       }, function(err){
         ctf.deleteRecord();
         if (err.errors.message){
-          t.set('modalErrorMessage', err.errors.message);
-          t.set('modalErrorFields', err.errors.fields);
+          t.set('modal.errorMessage', err.errors.message);
+          t.set('modal.errorFields', err.errors.fields);
         } else {
-          t.set('modalErrorMessage', 'Server error');
-          t.set('modalErrorFields', {});
+          t.set('modal.errorMessage', 'Server error');
+          t.set('modal.errorFields', {});
         }
       });
     },
     createCtf: function(name, online){
       if(!name){
-        this.set('modalErrorMessage', 'Invalid CTF name');
-        this.set('modalErrorFields', {'name': true});
+        this.set('modal.errorMessage', 'Invalid CTF name');
+        this.set('modal.errorFields', {'name': true});
         return;
       }
       var t = this;
@@ -98,8 +98,8 @@ export default Ember.Controller.extend({
       }).then(function(foundCtf) {
         var found = foundCtf.get('length');
         if(found){
-          t.set('modalErrorMessage', 'CTF name already taken');
-          t.set('modalErrorFields', {'name': true});
+          t.set('modal.errorMessage', 'CTF name already taken');
+          t.set('modal.errorFields', {'name': true});
         } else {
           if(online){
             var online_ctf = t.get('appController.ctf');
@@ -111,8 +111,8 @@ export default Ember.Controller.extend({
                 if(confirmed){
                   t.send('createCtfConfirmed', name, true);
                 } else {
-                  t.set('modalErrorMessage', '');
-                  t.set('modalErrorFields', {});
+                  t.set('modal.errorMessage', '');
+                  t.set('modal.errorFields', {});
                 }
               });
             } else {
@@ -152,6 +152,12 @@ export default Ember.Controller.extend({
       var name = this.get('editCtfName');
       var online = this.get('editCtfOnline');
       var ctf = this.get('selectedCtf');
+
+      if(!name){
+        this.set('errorMessage', 'Invalid CTF name');
+        this.set('errorFields', {'name': true});
+        return;
+      }
 
       // check if name already taken
       this.store.filter('ctf', function(ctf) {
@@ -284,8 +290,8 @@ export default Ember.Controller.extend({
             });
           }
         } else {
-          t.set('modalErrorMessage', '');
-          t.set('modalErrorFields', {});
+          t.set('errorMessage', '');
+          t.set('errorFields', {});
         }
       });
     },

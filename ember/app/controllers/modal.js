@@ -19,6 +19,8 @@ export default Ember.Controller.extend({
     adminChallenge: {},
     adminTeam: {},
     solvedChallenge: -1,
+    errorMessage: '',
+    errorFields: {},
   },
   store: null,
 });
