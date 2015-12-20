@@ -131,23 +131,24 @@ export default Ember.Controller.extend({
     },
     editCtf: function(){
       var t = this;
-      var editCtfConfirmed = function(ctf, new_ctf){
+      var editCtfConfirmed = function(ctf, new_ctf, callback){
         ctf.set('name', new_ctf.name);
         ctf.set('live', new_ctf.live);
         ctf.save().then(function(){
-          // set option to view
-          console.log('here');
           t.set('selectedOption', {
             'view': true,
             'edit': false,
           });
+          if(callback){
+            callback();
+          }
         }, function(err){
           ctf.rollbackAttributes();
           if (err.errors.message){
             t.set('errorMessage', err.errors.message);
             t.set('errorFields', err.errors.fields);
           } else {
-            t.set('errorMessage', 'Server Error, unable to edit ctf');
+            t.set('errorMessage', 'Server error, unable to edit ctf');
             t.set('errorFields', {});
           }
         });
@@ -175,6 +176,8 @@ export default Ember.Controller.extend({
                   editCtfConfirmed(ctf, {
                     'name': name,
                     'live': live,
+                  }, function(){
+                    t.get('appController').set('ctf', undefined);
                   });
                 }
               });
@@ -189,6 +192,8 @@ export default Ember.Controller.extend({
                     editCtfConfirmed(ctf, {
                       'name': name,
                       'live': live,
+                    }, function(){
+                      t.get('appController').set('ctf', ctf);
                     });
                   }
                 });
@@ -210,6 +215,10 @@ export default Ember.Controller.extend({
           editCtfConfirmed(ctf, {
             'name': name,
             'live': live,
+          }, function(){
+            if(live){
+              t.get('appController').set('ctf', ctf);
+            }
           });
         }
       }
@@ -260,7 +269,7 @@ export default Ember.Controller.extend({
                 t.set('errorMessage', err.errors.message);
                 t.set('errorFields', err.errors.fields);
               } else {
-                t.set('errorMessage', 'Server Error, unable to delete ctf');
+                t.set('errorMessage', 'Server error, unable to delete ctf');
                 t.set('errorFields', {});
               }
             });

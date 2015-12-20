@@ -94,6 +94,9 @@
       </table>
     </div>
   {{else}}
-    No CTFs available
+    <div>
+      <button type="button" class="btn btn-success btn-login-submit edctf-submit-button pull-right" {{action "openAdminCtfModal"}}>Create CTF</button>
+      No CTFs available
+    </div>
   {{/if}}
 </div>

@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from rest_framework.views import APIView
 from rest_framework import status
@@ -54,7 +55,7 @@ class CtfView(APIView):
     if 'live' not in ctf_data:
       return self.error_response('CTF live status not given', errorfields={'live': True})
 
-    name = ctf_data['name']
+    name = str(ctf_data['name'])
     if ctf_data['live']:
       live = True
     else:
@@ -62,7 +63,7 @@ class CtfView(APIView):
 
     try:
       ctf = Ctf.objects.create(name=name, live=live)
-    except IntegrityError as e:
+    except IntegrityError:
       return self.error_response('CTF name already taken', errorfields={'name': True})
     challengeboard = Challengeboard.objects.create()
     scoreboard = Scoreboard.objects.create()
@@ -106,20 +107,54 @@ class CtfViewDetail(APIView):
     """
     Gets individual ctf via ctfs/:id
     """
-    ctf = Ctf.objects.filter(id=id).first()
-    serializer = CtfSerializer(ctf, many=False, context={'request': request})
+    try:
+      ctf = Ctf.objects.get(id=id)
+    except ObjectDoesNotExist:
+      return self.error_response('CTF not found', errorfields={})
+
+    serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
     return Response({
-      'ctf': serializer.data,
+      'ctf': serialized_ctf.data,
     })
 
   def put(self, request, id, format=None):
     """
     Edits a ctf
     """
-    return self.error_response('PUT not implemented yet', errorfields={})
+    try:
+      ctf = Ctf.objects.get(id=id)
+    except ObjectDoesNotExist:
+      return self.error_response('CTF not found', errorfields={})
+
+    ctf_data = request.data['ctf']
+    if 'live' not in ctf_data or 'name' not in ctf_data:
+      return self.error_response('Edits not given', errorfields={})
+
+    ctf.name = str(ctf_data['name'])
+    ctf.live = str(ctf_data['live'])
+    try:
+      ctf.save()
+    except IntegrityError:
+      return self.error_response('CTF name already taken', errorfields={'name': True})
+
+    serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
+    return Response({
+      'ctf': serialized_ctf.data,
+    })
 
   def delete(self, request, id, format=None):
     """
     Deletes a ctf
     """
-    return self.error_response('DELETE not implemented yet', errorfields={})
+    try:
+      ctf = Ctf.objects.get(id=id)
+    except ObjectDoesNotExist:
+      return self.error_response('CTF not found', errorfields={})
+
+    if ctf.live:
+      return self.error_response('Cannot delete a live ctf', errorfields={})
+
+    ctf.delete()
+
+    # return 200 and empty object on success
+    return Response({})

@@ -11,8 +11,8 @@ class Ctf(models.Model):
   """
   name = models.CharField(max_length=250, unique=True, validators=[validate_no_xss, validate_no_html, validate_ctf_iexact])
   live = models.BooleanField(default=False)
-  challengeboard = models.OneToOneField('Challengeboard', null=True, related_name='ctfs', related_query_name='ctf')
-  scoreboard = models.OneToOneField('Scoreboard', null=True, related_name='ctfs', related_query_name='ctf')
+  challengeboard = models.OneToOneField('Challengeboard', on_delete=models.CASCADE, null=True, related_name='ctfs', related_query_name='ctf')
+  scoreboard = models.OneToOneField('Scoreboard', on_delete=models.CASCADE, null=True, related_name='ctfs', related_query_name='ctf')
   created = models.DateTimeField(auto_now_add=True)
 
   class Meta:
@@ -20,6 +20,11 @@ class Ctf(models.Model):
 
   def __unicode__(self):
     return '{}'.format(self.name)
+
+  def delete(self, *args, **kwargs):
+    self.challengeboard.delete()
+    self.scoreboard.delete()
+    super(Ctf, self).delete(*args, **kwargs)
 
 
 class Challengeboard(models.Model):
@@ -34,13 +39,17 @@ class Challengeboard(models.Model):
   def __unicode__(self):
     return '{}'.format(self.id)
 
+  def delete(self, *args, **kwargs):
+    self.categories.all().delete()
+    super(Challengeboard, self).delete(*args, **kwargs)
+
 
 class Category(models.Model):
   """
   Category model class.
   """
   name = models.CharField(max_length=50, unique=True, validators=[validate_no_xss, validate_no_html, validate_category_iexact])
-  challengeboard = models.ForeignKey('Challengeboard', related_name='categories', related_query_name='category')
+  challengeboard = models.ForeignKey('Challengeboard', on_delete=models.CASCADE, related_name='categories', related_query_name='category')
   created = models.DateTimeField(auto_now_add=True)
 
   class Meta:
@@ -49,17 +58,27 @@ class Category(models.Model):
   def __unicode__(self):
     return '{}'.format(self.name)
 
+  def delete(self, *args, **kwargs):
+    self.challenges.all().delete()
+    super(Category, self).delete(*args, **kwargs)
+
 
 class Challenge(models.Model):
   """
   Challenge model class.
   """
-  category = models.ForeignKey('Category', related_name='challenges', related_query_name='challenge')
+  category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='challenges', related_query_name='challenge')
   title = models.CharField(max_length=200, validators=[validate_no_xss, validate_no_html])
   points = models.IntegerField(default=0, validators=[validate_positive])
   description = models.CharField(max_length=10000, validators=[validate_no_xss, validate_tags, validate_attributes])
   flag = models.CharField(max_length=100)
   created = models.DateTimeField(auto_now_add=True)
+
+  class Meta:
+    verbose_name_plural = 'Challenges'
+
+  def __unicode__(self):
+    return '{} {}'.format(self.title, self.points)
 
   def delete(self, *args, **kwargs):
     # get teams before deletion
@@ -93,12 +112,6 @@ class Challenge(models.Model):
     return self.challenge_timestamps.count()
   numsolved = property(_get_number_solved)
 
-  class Meta:
-    verbose_name_plural = 'Challenges'
-
-  def __unicode__(self):
-    return '{} {}'.format(self.title, self.points)
-
 
 class Scoreboard(models.Model):
   """
@@ -113,17 +126,23 @@ class Scoreboard(models.Model):
   def __unicode__(self):
     return '{}'.format(self.id)
 
+  def delete(self, *args, **kwargs):
+    teams = self.teams.all()
+    for team in teams:
+      team.delete()
+    super(Scoreboard, self).delete(*args, **kwargs)
+
 
 class Team(models.Model):
   """
   Team model class.
   """
-  scoreboard = models.ForeignKey('Scoreboard', related_name='teams', related_query_name='team')
+  scoreboard = models.ForeignKey('Scoreboard', on_delete=models.CASCADE, related_name='teams', related_query_name='team')
   teamname = models.CharField(max_length=60, unique=True, validators=[validate_no_xss, validate_no_html, validate_team_iexact])
   points = models.IntegerField(default=0, validators=[validate_positive])
   correctflags = models.IntegerField(default=0, validators=[validate_positive])
   wrongflags = models.IntegerField(default=0, validators=[validate_positive])
-  user = models.OneToOneField(User, related_name='teams', related_query_name='team')
+  user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='teams', related_query_name='team')
   solved = models.ManyToManyField('Challenge', blank=True, related_name='solved', through='ChallengeTimestamp')
   last_timestamp = models.DateTimeField(default=datetime.fromtimestamp(0))
   created = models.DateTimeField(auto_now_add=True)
@@ -133,6 +152,12 @@ class Team(models.Model):
 
   def __unicode__(self):
     return 'team {}: {}'.format(self.id, self.teamname)
+
+  def delete(self, *args, **kwargs):
+    #User.objects.all().filter(username=self.user.username).delete()
+    self.user.delete()
+    self.challenge_timestamps.all().delete()
+    super(Team, self).delete(*args, **kwargs)
 
   def save(self, *args, **kwargs):
     self.update_points()
@@ -190,8 +215,8 @@ class ChallengeTimestamp(models.Model):
   """
   Challenge Timestamp model class.
   """
-  team = models.ForeignKey('team', related_name='challenge_timestamps', related_query_name='challenge_timestamp')
-  challenge = models.ForeignKey('challenge', related_name='challenge_timestamps', related_query_name='challenge_timestamp')
+  team = models.ForeignKey('team', on_delete=models.CASCADE, related_name='challenge_timestamps', related_query_name='challenge_timestamp')
+  challenge = models.ForeignKey('challenge', on_delete=models.CASCADE, related_name='challenge_timestamps', related_query_name='challenge_timestamp')
   created = models.DateTimeField(auto_now_add=True)
 
   class Meta:
