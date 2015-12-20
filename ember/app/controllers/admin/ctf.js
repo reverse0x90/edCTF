@@ -152,71 +152,85 @@ export default Ember.Controller.extend({
       var name = this.get('editCtfName');
       var live = this.get('editCtfLive');
       var ctf = this.get('selectedCtf');
-      if(live === ctf.get('live')){
-        this.send('editCtfConfirmed', ctf, {
-          'name': name,
-          'live': live,
-        });
-      } else {
-        var liveCtf = this.get('appController').get('ctf');
-        if(liveCtf){
-          if(liveCtf.get('live')){
-            if(liveCtf.get('id') === ctf.get('id')){
-              // liveCtf is going offline, confirm with user
-              this.send('promptConfirmation', [
-                'This will take the ctf "' + liveCtf.get('name') + '" offline.',
-                'Are you sure?',
-              ], function(confirmed){
-                if(confirmed){
-                  t.send('editCtfConfirmed', ctf, {
-                    'name': name,
-                    'live': live,
-                  }, function(){
-                    t.get('appController').set('ctf', undefined);
+
+      // check if name already taken
+      this.store.filter('ctf', function(ctf) {
+        return ctf.get('name') === name;
+      }).then(function(foundCtf) {
+        var found = foundCtf.get('length');
+        if(found){
+          t.set('errorMessage', 'CTF name already taken');
+          t.set('errorFields', {'name': true});
+        } else {
+          t.set('errorMessage', '');
+          t.set('errorFields', {});
+          if(live === ctf.get('live')){
+            t.send('editCtfConfirmed', ctf, {
+              'name': name,
+              'live': live,
+            });
+          } else {
+            var liveCtf = t.get('appController').get('ctf');
+            if(liveCtf){
+              if(liveCtf.get('live')){
+                if(liveCtf.get('id') === ctf.get('id')){
+                  // liveCtf is going offline, confirm with user
+                  t.send('promptConfirmation', [
+                    'This will take the ctf "' + liveCtf.get('name') + '" offline.',
+                    'Are you sure?',
+                  ], function(confirmed){
+                    if(confirmed){
+                      t.send('editCtfConfirmed', ctf, {
+                        'name': name,
+                        'live': live,
+                      }, function(){
+                        t.get('appController').set('ctf', undefined);
+                      });
+                    }
                   });
-                }
-              });
-            } else {
-              if(live){
-                // replacing live ctf, confirm with user
-                this.send('promptConfirmation', [
-                  'This will replace "' + liveCtf.get('name') + '" as the current online CTF.',
-                  'Are you sure?',
-                ], function(confirmed){
-                  if(confirmed){
+                } else {
+                  if(live){
+                    // replacing live ctf, confirm with user
+                    t.send('promptConfirmation', [
+                      'This will replace "' + liveCtf.get('name') + '" as the current online CTF.',
+                      'Are you sure?',
+                    ], function(confirmed){
+                      if(confirmed){
+                        t.send('editCtfConfirmed', ctf, {
+                          'name': name,
+                          'live': live,
+                        }, function(){
+                          t.get('appController').set('ctf', ctf);
+                        });
+                      }
+                    });
+                  } else {
                     t.send('editCtfConfirmed', ctf, {
                       'name': name,
                       'live': live,
-                    }, function(){
-                      t.get('appController').set('ctf', ctf);
                     });
                   }
-                });
+                }
               } else {
-                this.send('editCtfConfirmed', ctf, {
+                // if liveCtf isnt live for some reason, just update the ctf
+                t.send('editCtfConfirmed', ctf, {
                   'name': name,
                   'live': live,
                 });
               }
+            } else {
+              t.send('editCtfConfirmed', ctf, {
+                'name': name,
+                'live': live,
+              }, function(){
+                if(live){
+                  t.get('appController').set('ctf', ctf);
+                }
+              });
             }
-          } else {
-            // if liveCtf isnt live for some reason, just update the ctf
-            this.send('editCtfConfirmed', ctf, {
-              'name': name,
-              'live': live,
-            });
           }
-        } else {
-          this.send('editCtfConfirmed', ctf, {
-            'name': name,
-            'live': live,
-          }, function(){
-            if(live){
-              t.get('appController').set('ctf', ctf);
-            }
-          });
         }
-      }
+      });
     },
     deleteCtf: function(){
       var t = this;

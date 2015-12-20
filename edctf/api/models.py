@@ -9,7 +9,7 @@ class Ctf(models.Model):
   """
   Ctf model class.
   """
-  name = models.CharField(max_length=250, unique=True, validators=[validate_no_xss, validate_no_html, validate_ctf_iexact])
+  name = models.CharField(max_length=100, unique=True)
   live = models.BooleanField(default=False)
   challengeboard = models.OneToOneField('Challengeboard', on_delete=models.CASCADE, null=True, related_name='ctfs', related_query_name='ctf')
   scoreboard = models.OneToOneField('Scoreboard', on_delete=models.CASCADE, null=True, related_name='ctfs', related_query_name='ctf')

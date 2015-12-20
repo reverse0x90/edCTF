@@ -55,8 +55,13 @@ class CtfView(APIView):
     if 'live' not in ctf_data:
       return self.error_response('CTF live status not given', errorfields={'live': True})
 
+    if len(ctf_data['name']) > 100:
+      return self.error_response('CTF name too long, over 100 characters', errorfields={'live': True})
     name = str(ctf_data['name'])
     live = True if ctf_data['live'] else False
+
+    if Ctf.objects.filter(name__iexact=name).exists():
+      return self.error_response('CTF name already taken', errorfields={'name': True})
 
     try:
       ctf = Ctf.objects.create(name=name, live=live)
@@ -124,10 +129,19 @@ class CtfViewDetail(APIView):
       return self.error_response('CTF not found', errorfields={})
 
     ctf_data = request.data['ctf']
-    if 'live' not in ctf_data or 'name' not in ctf_data:
-      return self.error_response('Edits not given', errorfields={})
+    if 'name' not in ctf_data or not ctf_data['name']:
+      return self.error_response('CTF name not given', errorfields={'name': True})
+    if 'live' not in ctf_data:
+      return self.error_response('CTF live status not given', errorfields={'live': True})
 
-    ctf.name = str(ctf_data['name'])
+    if len(ctf_data['name']) > 100:
+      return self.error_response('CTF name too long, over 100 characters', errorfields={'live': True})
+
+    name = str(ctf_data['name'])
+    if ctf.name.lower() != name.lower() and Ctf.objects.filter(name__iexact=name).exists():
+      return self.error_response('CTF name already taken', errorfields={'name': True})
+
+    ctf.name = name
     ctf.live = True if ctf_data['live'] else False
 
     try:
