@@ -35,8 +35,7 @@ export default Ember.Component.extend({
     createCtf: function(){
       var name = this.get('name');
       var live = this.get('live');
-      var createCtf = this.get('ctfController.create');
-      createCtf(name, live);
+      this.get('ctfController').send('createCtf', name, live);
     },
     closeAdminCtfModal: function() {
       this.get('closeModal')();

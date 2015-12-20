@@ -18,81 +18,8 @@ export default Ember.Controller.extend({
     'edit': false,
   },
   setSelectedCtf: function(){
-    var live_ctf = this.get('appController').get('ctf');
-    this.set('selectedCtf', live_ctf);
+    this.set('selectedCtf', this.get('appController').get('ctf'));
   }.observes('appController.ctf'),
-  create: function(){
-    var t = this;
-
-    var createCtf = function(name, live){
-      var ctf = t.store.createRecord('ctf', {
-        name: name,
-        live: live,
-      });
-      ctf.save().then(function(ctf){
-        t.set('modal.isAdminCtf', false);
-        t.set('modalErrorMessage', '');
-        t.set('modalErrorFields', {});
-        if(ctf.get('live')){
-          var live_ctf = t.get('appController.ctf');
-          if(live_ctf){
-            live_ctf.set('live', false);
-          }
-          t.set('appController.ctf', ctf);
-        }
-      }, function(err){
-        ctf.deleteRecord();
-        if (err.errors.message){
-          t.set('modalErrorMessage', err.errors.message);
-          t.set('modalErrorFields', err.errors.fields);
-        } else {
-          t.set('modalErrorMessage', 'Server error');
-          t.set('modalErrorFields', {});
-        }
-      });
-    };
-
-    return function(name, live){
-      // check if name is set
-      if(!name){
-        t.set('modalErrorMessage', 'Invalid CTF name');
-        t.set('modalErrorFields', {'name': true});
-        return;
-      }
-
-      // check if name already taken
-      t.store.filter('ctf', function(ctf) {
-        return ctf.get('name') === name;
-      }).then(function(foundCtf) {
-        var found = foundCtf.get('length');
-        if(found){
-          t.set('modalErrorMessage', 'CTF name already taken');
-          t.set('modalErrorFields', {'name': true});
-        } else {
-          if(live){
-            var live_ctf = t.get('appController.ctf');
-            if(live_ctf){
-              t.send('promptConfirmation', [
-                'This will replace "' + live_ctf.get('name') + '" as the current online ctf.',
-                'Are you sure?',
-              ], function(confirmed){
-                if(confirmed){
-                  createCtf(name, true);
-                } else {
-                  t.set('modalErrorMessage', '');
-                  t.set('modalErrorFields', {});
-                }
-              });
-            } else {
-              createCtf(name, true);
-            }
-          } else {
-            createCtf(name, false);
-          }
-        }
-      });
-    };
-  }.property('create'),
   actions: {
     promptConfirmation: function(messageArray, callback){
       this.set('modal.confirmMesg', messageArray);
@@ -129,36 +56,104 @@ export default Ember.Controller.extend({
         'edit': true,
       });
     },
+    createCtfConfirmed: function(name, live){
+      var t = this;
+      var ctf = this.store.createRecord('ctf', {
+        name: name,
+        live: live,
+      });
+      ctf.save().then(function(ctf){
+        t.set('modal.isAdminCtf', false);
+        t.set('modalErrorMessage', '');
+        t.set('modalErrorFields', {});
+        if(ctf.get('live')){
+          var live_ctf = t.get('appController.ctf');
+          if(live_ctf){
+            live_ctf.set('live', false);
+          }
+          t.set('appController.ctf', ctf);
+        }
+      }, function(err){
+        ctf.deleteRecord();
+        if (err.errors.message){
+          t.set('modalErrorMessage', err.errors.message);
+          t.set('modalErrorFields', err.errors.fields);
+        } else {
+          t.set('modalErrorMessage', 'Server error');
+          t.set('modalErrorFields', {});
+        }
+      });
+    },
+    createCtf: function(name, live){
+      if(!name){
+        this.set('modalErrorMessage', 'Invalid CTF name');
+        this.set('modalErrorFields', {'name': true});
+        return;
+      }
+      var t = this;
+
+      // check if name already taken
+      this.store.filter('ctf', function(ctf) {
+        return ctf.get('name') === name;
+      }).then(function(foundCtf) {
+        var found = foundCtf.get('length');
+        if(found){
+          t.set('modalErrorMessage', 'CTF name already taken');
+          t.set('modalErrorFields', {'name': true});
+        } else {
+          if(live){
+            var live_ctf = t.get('appController.ctf');
+            if(live_ctf){
+              t.send('promptConfirmation', [
+                'This will replace "' + live_ctf.get('name') + '" as the current online ctf.',
+                'Are you sure?',
+              ], function(confirmed){
+                if(confirmed){
+                  t.send('createCtfConfirmed', name, true);
+                } else {
+                  t.set('modalErrorMessage', '');
+                  t.set('modalErrorFields', {});
+                }
+              });
+            } else {
+              t.send('createCtfConfirmed', name, true);
+            }
+          } else {
+            t.send('createCtfConfirmed', name, false);
+          }
+        }
+      });
+    },
+    editCtfConfirmed: function(ctf, new_ctf, callback){
+      var t = this;
+      ctf.set('name', new_ctf.name);
+      ctf.set('live', new_ctf.live);
+      ctf.save().then(function(){
+        t.set('selectedOption', {
+          'view': true,
+          'edit': false,
+        });
+        if(callback){
+          callback();
+        }
+      }, function(err){
+        ctf.rollbackAttributes();
+        if (err.errors.message){
+          t.set('errorMessage', err.errors.message);
+          t.set('errorFields', err.errors.fields);
+        } else {
+          t.set('errorMessage', 'Server error, unable to edit CTF');
+          t.set('errorFields', {});
+        }
+      });
+    },
     editCtf: function(){
       var t = this;
-      var editCtfConfirmed = function(ctf, new_ctf, callback){
-        ctf.set('name', new_ctf.name);
-        ctf.set('live', new_ctf.live);
-        ctf.save().then(function(){
-          t.set('selectedOption', {
-            'view': true,
-            'edit': false,
-          });
-          if(callback){
-            callback();
-          }
-        }, function(err){
-          ctf.rollbackAttributes();
-          if (err.errors.message){
-            t.set('errorMessage', err.errors.message);
-            t.set('errorFields', err.errors.fields);
-          } else {
-            t.set('errorMessage', 'Server error, unable to edit CTF');
-            t.set('errorFields', {});
-          }
-        });
-      };
-
       var name = this.get('editCtfName');
       var live = this.get('editCtfLive');
       var ctf = this.get('selectedCtf');
       if(live === ctf.get('live')){
-        editCtfConfirmed(ctf, {
+        this.send('editCtfConfirmed', ctf, {
           'name': name,
           'live': live,
         });
@@ -173,7 +168,7 @@ export default Ember.Controller.extend({
                 'Are you sure?',
               ], function(confirmed){
                 if(confirmed){
-                  editCtfConfirmed(ctf, {
+                  t.send('editCtfConfirmed', ctf, {
                     'name': name,
                     'live': live,
                   }, function(){
@@ -189,7 +184,7 @@ export default Ember.Controller.extend({
                   'Are you sure?',
                 ], function(confirmed){
                   if(confirmed){
-                    editCtfConfirmed(ctf, {
+                    t.send('editCtfConfirmed', ctf, {
                       'name': name,
                       'live': live,
                     }, function(){
@@ -198,7 +193,7 @@ export default Ember.Controller.extend({
                   }
                 });
               } else {
-                editCtfConfirmed(ctf, {
+                this.send('editCtfConfirmed', ctf, {
                   'name': name,
                   'live': live,
                 });
@@ -206,13 +201,13 @@ export default Ember.Controller.extend({
             }
           } else {
             // if liveCtf isnt live for some reason, just update the ctf
-            editCtfConfirmed(ctf, {
+            this.send('editCtfConfirmed', ctf, {
               'name': name,
               'live': live,
             });
           }
         } else {
-          editCtfConfirmed(ctf, {
+          this.send('editCtfConfirmed', ctf, {
             'name': name,
             'live': live,
           }, function(){
