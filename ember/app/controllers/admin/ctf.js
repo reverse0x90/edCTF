@@ -46,7 +46,7 @@ export default Ember.Controller.extend({
           t.set('modalErrorMessage', err.errors.message);
           t.set('modalErrorFields', err.errors.fields);
         } else {
-          t.set('modalErrorMessage', 'Server Error');
+          t.set('modalErrorMessage', 'Server error');
           t.set('modalErrorFields', {});
         }
       });
@@ -148,7 +148,7 @@ export default Ember.Controller.extend({
             t.set('errorMessage', err.errors.message);
             t.set('errorFields', err.errors.fields);
           } else {
-            t.set('errorMessage', 'Server error, unable to edit ctf');
+            t.set('errorMessage', 'Server error, unable to edit CTF');
             t.set('errorFields', {});
           }
         });
@@ -185,7 +185,7 @@ export default Ember.Controller.extend({
               if(live){
                 // replacing live ctf, confirm with user
                 this.send('promptConfirmation', [
-                  'This will replace "' + liveCtf.get('name') + '" as the current online ctf.',
+                  'This will replace "' + liveCtf.get('name') + '" as the current online CTF.',
                   'Are you sure?',
                 ], function(confirmed){
                   if(confirmed){
@@ -234,7 +234,7 @@ export default Ember.Controller.extend({
         if(confirmed){
           // disallow live ctf deletion
           if(ctf.get('live')){
-            t.set('errorMessage', 'Cannot delete a live ctf');
+            t.set('errorMessage', 'Cannot delete a live CTF');
             t.set('errorFields', {});
           } else {
             // DELETE the ctf!
@@ -269,7 +269,7 @@ export default Ember.Controller.extend({
                 t.set('errorMessage', err.errors.message);
                 t.set('errorFields', err.errors.fields);
               } else {
-                t.set('errorMessage', 'Server error, unable to delete ctf');
+                t.set('errorMessage', 'Server error, unable to delete CTF');
                 t.set('errorFields', {});
               }
             });

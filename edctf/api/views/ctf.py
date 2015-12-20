@@ -56,10 +56,7 @@ class CtfView(APIView):
       return self.error_response('CTF live status not given', errorfields={'live': True})
 
     name = str(ctf_data['name'])
-    if ctf_data['live']:
-      live = True
-    else:
-      live = False
+    live = True if ctf_data['live'] else False
 
     try:
       ctf = Ctf.objects.create(name=name, live=live)
@@ -131,7 +128,8 @@ class CtfViewDetail(APIView):
       return self.error_response('Edits not given', errorfields={})
 
     ctf.name = str(ctf_data['name'])
-    ctf.live = str(ctf_data['live'])
+    ctf.live = True if ctf_data['live'] else False
+
     try:
       ctf.save()
     except IntegrityError:
