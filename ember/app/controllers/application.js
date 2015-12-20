@@ -33,9 +33,9 @@ export default Ember.Controller.extend({
     // Update ctf model data every 30 seconds
     var interval = 1000 * 30 * 1;
     var modelReload = function() {
-      var live_ctf = this.get('ctf');
-      if (live_ctf){
-        reloadModels(live_ctf);
+      var online_ctf = this.get('ctf');
+      if (online_ctf){
+        reloadModels(online_ctf);
       }
       Ember.run.later(this, modelReload, interval);
     };

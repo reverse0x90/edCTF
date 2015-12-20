@@ -61,7 +61,7 @@ class TeamView(APIView):
   @ratelimit(key='ip', rate='5/m')
   def post(self, request, *args, **kwargs):
     """
-    Registers a new team to live ctf
+    Registers a new team to online ctf
     """
     # If user is already authenticated, logout the user.
     was_limited = getattr(request, 'limited', False)
@@ -71,15 +71,15 @@ class TeamView(APIView):
     if request.user.is_authenticated():
       logout(request)
 
-    # Get the current live ctf (aka the active ctf).
-    live_ctf = Ctf.objects.filter(live=True).first()
+    # Get the current online ctf (aka the active ctf).
+    online_ctf = Ctf.objects.filter(online=True).first()
 
-    # Sanity check currently there can only be one live ctf at a time.
-    if not live_ctf:
-      return Response({'error': 'no live ctf available'},status=status.HTTP_404_NOT_FOUND)
+    # Sanity check currently there can only be one online ctf at a time.
+    if not online_ctf:
+      return Response({'error': 'no online ctf available'},status=status.HTTP_404_NOT_FOUND)
 
-    # Get the scoreboard object associated with the live ctf.
-    scoreboard = live_ctf.scoreboard
+    # Get the scoreboard object associated with the online ctf.
+    scoreboard = online_ctf.scoreboard
 
     # Save provided registration json data.
     team_data = request.data

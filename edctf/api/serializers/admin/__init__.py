@@ -5,7 +5,7 @@ from edctf.api.models import Ctf, Challengeboard, Category, Challenge, Scoreboar
 class CtfSerializer(ModelSerializer):
   class Meta:
     model = Ctf
-    fields = ('id', 'name', 'live', 'challengeboard', 'scoreboard')
+    fields = ('id', 'name', 'online', 'challengeboard', 'scoreboard')
 
 
 class ChallengeboardSerializer(ModelSerializer):

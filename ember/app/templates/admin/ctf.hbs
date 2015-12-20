@@ -17,8 +17,8 @@
                 <td>{{selectedCtf.name}}</td>
               </tr>
               <tr class="team-info">
-                <td>Live:</td>
-                <td>{{selectedCtf.live}}</td>
+                <td>Online:</td>
+                <td>{{selectedCtf.online}}</td>
               </tr>
             </tbody>
           </table>
@@ -47,13 +47,13 @@
                 <tr class="team-info">
                   {{#if errorFields.name}} 
                     <div class="form-group has-error">
-                      <td>Live:</td>
-                      <td>{{input type="checkbox" checked=editCtfLive}}</td>
+                      <td>Online:</td>
+                      <td>{{input type="checkbox" checked=editCtfOnline}}</td>
                     </div>
                   {{else}}
                     <div class="form-group">
-                      <td>Live:</td>
-                      <td>{{input type="checkbox" checked=editCtfLive}}</td>
+                      <td>Online:</td>
+                      <td>{{input type="checkbox" checked=editCtfOnline}}</td>
                     </div>
                   {{/if}}
                 </tr>
@@ -73,7 +73,7 @@
         <thead>
           <tr>
             <th class="scoreboard-keys">Name</th>
-            <th class="scoreboard-keys">Live</th>
+            <th class="scoreboard-keys">Online</th>
           </tr>
         </thead>
         <tbody>
@@ -81,12 +81,12 @@
             {{#if (if-equal ctf.id selectedCtf.id)}}
               <tr class="cursor-pointer scoreboard-values" style="background-color: #2db300;">
                 <td>{{ctf.name}}</td>
-                <td>{{ctf.live}}</td>
+                <td>{{ctf.online}}</td>
               </tr>
             {{else}}
               <tr {{action 'setSelectedCtf' ctf}} class="cursor-pointer scoreboard-values">
                 <td>{{ctf.name}}</td>
-                <td>{{ctf.live}}</td>
+                <td>{{ctf.online}}</td>
               </tr>
             {{/if}}
           {{/each}}

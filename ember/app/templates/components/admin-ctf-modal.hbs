@@ -23,18 +23,18 @@
         {{/if}}
       </tr>
       <tr>
-        {{#if ctfController.modalErrorFields.live}} 
+        {{#if ctfController.modalErrorFields.online}} 
           <div class="form-group has-error">
-            <td>Live:</td>
+            <td>Online:</td>
             <td>
-              {{input type="checkbox" checked=live}}
+              {{input type="checkbox" checked=online}}
             </td>
           </div>
         {{else}}
           <div class="form-group">
-            <td>Live:</td>
+            <td>Online:</td>
             <td>
-              {{input type="checkbox" checked=live}}
+              {{input type="checkbox" checked=online}}
             </td>
           </div>
         {{/if}}

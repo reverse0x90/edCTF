@@ -3,14 +3,14 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   modal: {},
   ctfController: null,
-  live: true,
+  online: true,
   name: '',
   closeModal: function(){
     var t = this;
     return function(callback){
       t.set('modal.isAdminCtf', false);
       t.set('name', '');
-      t.set('live', true);
+      t.set('online', true);
       t.set('ctfController.modalErrorMessage', '');
       t.set('ctfController.modalErrorFields', {});
       if(callback){
@@ -34,8 +34,8 @@ export default Ember.Component.extend({
    actions: {
     createCtf: function(){
       var name = this.get('name');
-      var live = this.get('live');
-      this.get('ctfController').send('createCtf', name, live);
+      var online = this.get('online');
+      this.get('ctfController').send('createCtf', name, online);
     },
     closeAdminCtfModal: function() {
       this.get('closeModal')();

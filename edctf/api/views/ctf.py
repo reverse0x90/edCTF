@@ -27,13 +27,13 @@ class CtfView(APIView):
 
   def get(self, request, format=None):
     """
-    Gets all ctfs gets the live ctf via GET parameter, i.e. live=true
+    Gets all ctfs gets the online ctf via GET parameter, i.e. online=true
     """
-    if 'live' in request.query_params:
-      if request.query_params['live'] == 'true':
-        ctfs = Ctf.objects.filter(live=True)
+    if 'online' in request.query_params:
+      if request.query_params['online'] == 'true':
+        ctfs = Ctf.objects.filter(online=True)
       else:
-        ctfs = Ctf.objects.filter(live=False)
+        ctfs = Ctf.objects.filter(online=False)
     else:
       ctfs = Ctf.objects.all()
     serialized_ctfs = CtfSerializer(ctfs, many=True, context={'request': request})
@@ -45,26 +45,26 @@ class CtfView(APIView):
     """
     Create a new ctf
     """
-    # {"ctf":{"name":"e","live":true,"challengeboard":null,"scoreboard":null}}
+    # {"ctf":{"name":"e","online":true,"challengeboard":null,"scoreboard":null}}
     if 'ctf' not in request.data or not request.data['ctf']:
       return Response(status=status.HTTP_400_BAD_REQUEST)
     ctf_data = request.data['ctf']
 
     if 'name' not in ctf_data or not ctf_data['name']:
       return self.error_response('CTF name not given', errorfields={'name': True})
-    if 'live' not in ctf_data:
-      return self.error_response('CTF live status not given', errorfields={'live': True})
+    if 'online' not in ctf_data:
+      return self.error_response('CTF online status not given', errorfields={'online': True})
 
     if len(ctf_data['name']) > 100:
-      return self.error_response('CTF name too long, over 100 characters', errorfields={'live': True})
+      return self.error_response('CTF name too long, over 100 characters', errorfields={'online': True})
     name = str(ctf_data['name'])
-    live = True if ctf_data['live'] else False
+    online = True if ctf_data['online'] else False
 
     if Ctf.objects.filter(name__iexact=name).exists():
       return self.error_response('CTF name already taken', errorfields={'name': True})
 
     try:
-      ctf = Ctf.objects.create(name=name, live=live)
+      ctf = Ctf.objects.create(name=name, online=online)
     except IntegrityError:
       return self.error_response('CTF name already taken', errorfields={'name': True})
     challengeboard = Challengeboard.objects.create()
@@ -76,11 +76,11 @@ class CtfView(APIView):
 
     serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
 
-    # disable all other live ctfs
-    if live:
-      live_ctfs = Ctf.objects.exclude(id=ctf.id).filter(live=True)
-      for ctf in live_ctfs:
-        ctf.live = False
+    # disable all other online ctfs
+    if online:
+      online_ctfs = Ctf.objects.exclude(id=ctf.id).filter(online=True)
+      for ctf in online_ctfs:
+        ctf.online = False
         ctf.save()
 
     return Response({
@@ -131,18 +131,18 @@ class CtfViewDetail(APIView):
     ctf_data = request.data['ctf']
     if 'name' not in ctf_data or not ctf_data['name']:
       return self.error_response('CTF name not given', errorfields={'name': True})
-    if 'live' not in ctf_data:
-      return self.error_response('CTF live status not given', errorfields={'live': True})
+    if 'online' not in ctf_data:
+      return self.error_response('CTF online status not given', errorfields={'online': True})
 
     if len(ctf_data['name']) > 100:
-      return self.error_response('CTF name too long, over 100 characters', errorfields={'live': True})
+      return self.error_response('CTF name too long, over 100 characters', errorfields={'online': True})
 
     name = str(ctf_data['name'])
     if ctf.name.lower() != name.lower() and Ctf.objects.filter(name__iexact=name).exists():
       return self.error_response('CTF name already taken', errorfields={'name': True})
 
     ctf.name = name
-    ctf.live = True if ctf_data['live'] else False
+    ctf.online = True if ctf_data['online'] else False
 
     try:
       ctf.save()
@@ -163,8 +163,8 @@ class CtfViewDetail(APIView):
     except ObjectDoesNotExist:
       return self.error_response('CTF not found', errorfields={})
 
-    if ctf.live:
-      return self.error_response('Cannot delete a live ctf', errorfields={})
+    if ctf.online:
+      return self.error_response('Cannot delete a online ctf', errorfields={})
 
     ctf.delete()
 

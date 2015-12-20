@@ -7,7 +7,7 @@ class CtfAdmin(admin.ModelAdmin):
   """
   Sets the display for the ctf model in the django admin interface.
   """
-  list_display = ('name', 'live')
+  list_display = ('name', 'online')
 
 
 class ChallengeboardAdmin(admin.ModelAdmin):

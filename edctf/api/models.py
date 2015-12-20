@@ -10,7 +10,7 @@ class Ctf(models.Model):
   Ctf model class.
   """
   name = models.CharField(max_length=100, unique=True)
-  live = models.BooleanField(default=False)
+  online = models.BooleanField(default=False)
   challengeboard = models.OneToOneField('Challengeboard', on_delete=models.CASCADE, null=True, related_name='ctfs', related_query_name='ctf')
   scoreboard = models.OneToOneField('Scoreboard', on_delete=models.CASCADE, null=True, related_name='ctfs', related_query_name='ctf')
   created = models.DateTimeField(auto_now_add=True)

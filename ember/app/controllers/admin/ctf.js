@@ -5,12 +5,12 @@ export default Ember.Controller.extend({
   modal: {},
   appController: null,
   editCtfName: '',
-  editCtfLive: false,
+  editCtfOnline: false,
   errorMessage: '',
   errorFields: {},
   modalErrorMessage: '',
   modalErrorFields: {},
-  ctfSorting: ['live:desc', 'id'],
+  ctfSorting: ['online:desc', 'id'],
   sortedCtfs: Ember.computed.sort('model', 'ctfSorting'),
   selectedCtf: null,
   selectedOption: {
@@ -50,26 +50,26 @@ export default Ember.Controller.extend({
       this.set('errorMessage', '');
       this.set('errorFields', {});
       this.set('editCtfName', this.get('selectedCtf.name'));
-      this.set('editCtfLive', this.get('selectedCtf.live'));
+      this.set('editCtfOnline', this.get('selectedCtf.online'));
       this.set('selectedOption', {
         'view': false,
         'edit': true,
       });
     },
-    createCtfConfirmed: function(name, live){
+    createCtfConfirmed: function(name, online){
       var t = this;
       var ctf = this.store.createRecord('ctf', {
         name: name,
-        live: live,
+        online: online,
       });
       ctf.save().then(function(ctf){
         t.set('modal.isAdminCtf', false);
         t.set('modalErrorMessage', '');
         t.set('modalErrorFields', {});
-        if(ctf.get('live')){
-          var live_ctf = t.get('appController.ctf');
-          if(live_ctf){
-            live_ctf.set('live', false);
+        if(ctf.get('online')){
+          var online_ctf = t.get('appController.ctf');
+          if(online_ctf){
+            online_ctf.set('online', false);
           }
           t.set('appController.ctf', ctf);
         }
@@ -84,7 +84,7 @@ export default Ember.Controller.extend({
         }
       });
     },
-    createCtf: function(name, live){
+    createCtf: function(name, online){
       if(!name){
         this.set('modalErrorMessage', 'Invalid CTF name');
         this.set('modalErrorFields', {'name': true});
@@ -101,11 +101,11 @@ export default Ember.Controller.extend({
           t.set('modalErrorMessage', 'CTF name already taken');
           t.set('modalErrorFields', {'name': true});
         } else {
-          if(live){
-            var live_ctf = t.get('appController.ctf');
-            if(live_ctf){
+          if(online){
+            var online_ctf = t.get('appController.ctf');
+            if(online_ctf){
               t.send('promptConfirmation', [
-                'This will replace "' + live_ctf.get('name') + '" as the current online ctf.',
+                'This will replace "' + online_ctf.get('name') + '" as the current online ctf.',
                 'Are you sure?',
               ], function(confirmed){
                 if(confirmed){
@@ -127,7 +127,7 @@ export default Ember.Controller.extend({
     editCtfConfirmed: function(ctf, new_ctf, callback){
       var t = this;
       ctf.set('name', new_ctf.name);
-      ctf.set('live', new_ctf.live);
+      ctf.set('online', new_ctf.online);
       ctf.save().then(function(){
         t.set('selectedOption', {
           'view': true,
@@ -150,7 +150,7 @@ export default Ember.Controller.extend({
     editCtf: function(){
       var t = this;
       var name = this.get('editCtfName');
-      var live = this.get('editCtfLive');
+      var online = this.get('editCtfOnline');
       var ctf = this.get('selectedCtf');
 
       // check if name already taken
@@ -158,47 +158,47 @@ export default Ember.Controller.extend({
         return ctf.get('name') === name;
       }).then(function(foundCtf) {
         var found = foundCtf.get('length');
-        if(found){
+        if(found && ctf.get('name') !== name){
           t.set('errorMessage', 'CTF name already taken');
           t.set('errorFields', {'name': true});
         } else {
           t.set('errorMessage', '');
           t.set('errorFields', {});
-          if(live === ctf.get('live')){
+          if(online === ctf.get('online')){
             t.send('editCtfConfirmed', ctf, {
               'name': name,
-              'live': live,
+              'online': online,
             });
           } else {
-            var liveCtf = t.get('appController').get('ctf');
-            if(liveCtf){
-              if(liveCtf.get('live')){
-                if(liveCtf.get('id') === ctf.get('id')){
-                  // liveCtf is going offline, confirm with user
+            var onlineCtf = t.get('appController').get('ctf');
+            if(onlineCtf){
+              if(onlineCtf.get('online')){
+                if(onlineCtf.get('id') === ctf.get('id')){
+                  // onlineCtf is going offline, confirm with user
                   t.send('promptConfirmation', [
-                    'This will take the ctf "' + liveCtf.get('name') + '" offline.',
+                    'This will take the ctf "' + onlineCtf.get('name') + '" offline.',
                     'Are you sure?',
                   ], function(confirmed){
                     if(confirmed){
                       t.send('editCtfConfirmed', ctf, {
                         'name': name,
-                        'live': live,
+                        'online': online,
                       }, function(){
                         t.get('appController').set('ctf', undefined);
                       });
                     }
                   });
                 } else {
-                  if(live){
-                    // replacing live ctf, confirm with user
+                  if(online){
+                    // replacing online ctf, confirm with user
                     t.send('promptConfirmation', [
-                      'This will replace "' + liveCtf.get('name') + '" as the current online CTF.',
+                      'This will replace "' + onlineCtf.get('name') + '" as the current online CTF.',
                       'Are you sure?',
                     ], function(confirmed){
                       if(confirmed){
                         t.send('editCtfConfirmed', ctf, {
                           'name': name,
-                          'live': live,
+                          'online': online,
                         }, function(){
                           t.get('appController').set('ctf', ctf);
                         });
@@ -207,23 +207,23 @@ export default Ember.Controller.extend({
                   } else {
                     t.send('editCtfConfirmed', ctf, {
                       'name': name,
-                      'live': live,
+                      'online': online,
                     });
                   }
                 }
               } else {
-                // if liveCtf isnt live for some reason, just update the ctf
+                // if onlineCtf isnt online for some reason, just update the ctf
                 t.send('editCtfConfirmed', ctf, {
                   'name': name,
-                  'live': live,
+                  'online': online,
                 });
               }
             } else {
               t.send('editCtfConfirmed', ctf, {
                 'name': name,
-                'live': live,
+                'online': online,
               }, function(){
-                if(live){
+                if(online){
                   t.get('appController').set('ctf', ctf);
                 }
               });
@@ -241,18 +241,18 @@ export default Ember.Controller.extend({
         'Are you REALLY sure?!',
       ], function(confirmed){
         if(confirmed){
-          // disallow live ctf deletion
-          if(ctf.get('live')){
-            t.set('errorMessage', 'Cannot delete a live CTF');
+          // disallow online ctf deletion
+          if(ctf.get('online')){
+            t.set('errorMessage', 'Cannot delete a online CTF');
             t.set('errorFields', {});
           } else {
             // DELETE the ctf!
             ctf.deleteRecord();
             ctf.save().then(function(){
               // replace selected ctf with another
-              var liveCtf = t.get('appController').get('ctf');
-              if(liveCtf){
-                t.set('selectedCtf', liveCtf);
+              var onlineCtf = t.get('appController').get('ctf');
+              if(onlineCtf){
+                t.set('selectedCtf', onlineCtf);
               } else {
                 var nextCtf = t.get('sortedCtfs');
                 if(nextCtf){
