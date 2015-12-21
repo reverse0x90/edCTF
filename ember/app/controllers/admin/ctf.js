@@ -29,7 +29,7 @@ export default Ember.Controller.extend({
     openAdminCtfModal: function() {
       this.set('modal.isAdminCtf', true);
     },
-    setSelectedCtf: function(ctf){
+    changeSelectedCtf: function(ctf){
       this.set('errorMessage', '');
       this.set('errorFields', {});
       this.set('selectedCtf', ctf);

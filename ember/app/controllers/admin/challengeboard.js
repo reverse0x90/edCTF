@@ -2,6 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   appController: null,
+  ctfSorting: ['online:desc', 'id'],
+  sortedCtfs: Ember.computed.sort('model', 'ctfSorting'),
   selectedCtf: null,
   setSelectedCtf: function(){
     this.set('selectedCtf', this.get('appController').get('ctf'));
@@ -11,6 +13,9 @@ export default Ember.Controller.extend({
     this.set('selectedChallengeboard', this.get('selectedCtf').get('challengeboard'));
   }.observes('selectedCtf'),
   actions: {
+    changeSelectedCtf: function(ctf){
+      this.set('selectedCtf', ctf);
+    },
     createCategory: function(challengeboard){
       console.log('Opening create category modal, challengeboard:', challengeboard);
     },

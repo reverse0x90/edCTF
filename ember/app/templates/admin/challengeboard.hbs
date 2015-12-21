@@ -1,31 +1,53 @@
 <div class="container">
-  <div class="challenges-title">Challenges for {{selectedCtf.name}}</div>
-  <div>
-    <table class="table table-hover" style="width:100%;">
-      <tbody>
-        <tr style="vertical-align: middle !important; border-top: 0px;">
-          <button {{action "createCategory" selectedChallengeboard}} type="button" class="btn btn-success edctf-submit-button" style="vertical-align: middle !important;">
-            Create New Category
-          </button>
-        </tr>
-        {{#each selectedChallengeboard.sortedcategories as |category|}}
-          <tr class="challenge-tr">
-            {{#if category.sortedchallenges}}
-              <td {{action "editCategory" category}} class="challenge-category-name" style="width: 1%;">
-                {{category.name}}
-              </td>
-              <td class="pull-left" style="vertical-align: middle !important; width: 100%;">
-                {{#each category.sortedchallenges as |challenge|}}
-                  <button class="challengeButton challengeButton-unsolved challengeButton-xlarge sharp" {{action 'editChallenge' challenge}}>{{challenge.points}}</button>
-                {{/each}}
-                <button {{action "createChallenge" category}} type="button" class="btn btn-success btn-lg edctf-submit-button pagination-centered" style="vertical-align: middle !important; font-size: 24px; line-height: 1.33; margin: 0.15em 0.2em; font-weight: 700; height: 50%;">
-                  +
-                </button>
-              </td>
-            {{/if}}
-          </tr>
+   <div class="dropdown pull-right">
+      Selected CTF: 
+      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        {{#if selectedCtf}}
+          {{selectedCtf.name}}
+        {{else}}
+          Pick a CTF
+        {{/if}}
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        {{#each sortedCtfs as |ctf|}}
+          {{#unless (if-equal ctf.id selectedCtf.id)}}
+            <li {{action "changeSelectedCtf" ctf}}><a>{{ctf.name}}</a></li>
+          {{/unless}}
         {{/each}}
-      </tbody>
-    </table>
+      </ul>
   </div>
+  {{#if selectedCtf}}
+    <div class="challenges-title">Challenges for {{selectedCtf.name}}</div>
+    <div>
+      <table class="table table-hover" style="width:100%;">
+        <tbody>
+          <tr style="vertical-align: middle !important; border-top: 0px;">
+            <button {{action "createCategory" selectedChallengeboard}} type="button" class="btn btn-success edctf-submit-button" style="vertical-align: middle !important;">
+              Create New Category
+            </button>
+          </tr>
+          {{#each selectedChallengeboard.sortedcategories as |category|}}
+            <tr class="challenge-tr">
+              {{#if category.sortedchallenges}}
+                <td {{action "editCategory" category}} class="challenge-category-name" style="width: 1%;">
+                  {{category.name}}
+                </td>
+                <td class="pull-left" style="vertical-align: middle !important; width: 100%;">
+                  {{#each category.sortedchallenges as |challenge|}}
+                    <button class="challengeButton challengeButton-unsolved challengeButton-xlarge sharp" {{action 'editChallenge' challenge}}>{{challenge.points}}</button>
+                  {{/each}}
+                  <button {{action "createChallenge" category}} type="button" class="btn btn-success btn-lg edctf-submit-button pagination-centered" style="vertical-align: middle !important; font-size: 24px; line-height: 1.33; margin: 0.15em 0.2em; font-weight: 700; height: 50%;">
+                    +
+                  </button>
+                </td>
+              {{/if}}
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  {{else}}
+    No CTF selected!
+  {{/if}}
 </div>
