@@ -1,27 +1,27 @@
 <div class="container">
   <div class="challenges-title">Challenges for {{selectedCtf.name}}</div>
   <div>
-    <table class="table table-hover">
+    <table class="table table-hover" style="width:100%;">
       <tbody>
-        <tr class="cursor-pointer challenge-tr text-center" style="color: #909090; font-size: 18px; font-weight: 200; vertical-align: middle !important;">
-          New Category
+        <tr style="vertical-align: middle !important; border-top: 0px;">
+          <button {{action "createCategory" selectedChallengeboard}} type="button" class="btn btn-success edctf-submit-button" style="vertical-align: middle !important;">
+            Create New Category
+          </button>
         </tr>
         {{#each selectedChallengeboard.sortedcategories as |category|}}
           <tr class="challenge-tr">
             {{#if category.sortedchallenges}}
-              <td class="challenge-category-name" style="width: 1%;">
+              <td {{action "editCategory" category}} class="challenge-category-name" style="width: 1%;">
                 {{category.name}}
               </td>
-              <td class="text-center" style="vertical-align: middle !important; width: 1%;">
-                <button type="button" class="btn btn-success btn-login-submit edctf-submit-button pull-left" style="vertical-align: middle !important;">Add<br/>Challenge</button>
+              <td class="pull-left" style="vertical-align: middle !important; width: 100%;">
+                {{#each category.sortedchallenges as |challenge|}}
+                  <button class="challengeButton challengeButton-unsolved challengeButton-xlarge sharp" {{action 'editChallenge' challenge}}>{{challenge.points}}</button>
+                {{/each}}
+                <button {{action "createChallenge" category}} type="button" class="btn btn-success btn-lg edctf-submit-button pagination-centered" style="vertical-align: middle !important; font-size: 24px; line-height: 1.33; margin: 0.15em 0.2em; font-weight: 700; height: 50%;">
+                  +
+                </button>
               </td>
-              {{#each category.sortedchallenges as |challenge|}}
-                {{#if challenge.issolved}}
-                  <button class="challengeButton challengeButton-solved challengeButton-xlarge sharp" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
-                {{else}}
-                  <button class="challengeButton challengeButton-unsolved challengeButton-xlarge sharp" {{action 'openChallenge' challenge.id}}>{{challenge.points}}</button>
-                {{/if}}
-              {{/each}}
             {{/if}}
           </tr>
         {{/each}}
