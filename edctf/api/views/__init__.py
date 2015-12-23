@@ -1,5 +1,6 @@
 from challenge import ChallengeView
 from challengeboard import ChallengeboardView
+from category import CategoryView, CategoryViewDetail
 from ctf import CtfView, CtfViewDetail
 from ctftime import CtftimeView
 from scoreboard import ScoreboardView

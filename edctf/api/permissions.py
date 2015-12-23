@@ -53,10 +53,28 @@ class CategoryPermission(EdctfPermission):
   """
   PUBLIC_METHODS = []
   AUTHENTICATED_METHODS = ['GET']
-  ADMIN_METHODS = ['POST', 'PUT', 'DELETE']
+  ADMIN_METHODS = ['POST']
+
+
+class CategoryPermissionDetail(EdctfPermission):
+  """
+  Permissions for the category route
+  """
+  PUBLIC_METHODS = []
+  AUTHENTICATED_METHODS = ['GET']
+  ADMIN_METHODS = ['PUT', 'DELETE']
 
 
 class ChallengePermission(EdctfPermission):
+  """
+  Permissions for the ctf route
+  """
+  PUBLIC_METHODS = []
+  AUTHENTICATED_METHODS = ['GET']
+  ADMIN_METHODS = ['POST']
+
+
+class ChallengePermissionDetail(EdctfPermission):
   """
   Permissions for the challenge route
   """
