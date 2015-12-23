@@ -8,49 +8,6 @@ from edctf.api.permissions import ChallengePermission
 from edctf.api.serializers import ChallengeSerializer
 
 
-def check_flag(team, challenge, flag):
-  """
-  Checks a given flag against the challenge flag.
-  """
-  # Check if team has already solved the challenge.
-  res = team.solved.filter(id=challenge.id)
-  error = None
-
-  # If the team has not solved the challenge, check the flag else the team
-  # has already solved the challenge so return an error message.
-  if not res:
-    # TODO: Allow for regex flag checking in the future
-    correct = challenge.flag == flag
-    # If the user input the correct flag, update the team's correct flag
-    # count else update the wrong flags count and return an error.
-    if correct:
-      team.correctflags = team.correctflags + 1
-      team.save()
-      return True, error
-    else:
-      error = 'Invalid flag'
-      team.wrongflags = team.wrongflags + 1
-      team.save()
-      return False, error
-  else:
-    error = 'Already solved'
-    return False, error
-
-
-def update_solved(team, challenge):
-  """
-  Updates the database points for a given team.
-  """
-  # Save the time that the challenge was solved.
-  timestamp = ChallengeTimestamp.objects.create(team=team, challenge=challenge)
-  timestamp.save()
-
-  # Update the team points and last timestamp in the database.
-  team.last_timestamp = timestamp.created
-  team.save()
-  challenge.save()
-
-
 class ChallengeView(APIView):
   """
   Manages challenge requests.

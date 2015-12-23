@@ -69,10 +69,14 @@ export default Ember.Controller.extend({
       });
     },
     submitFlag: function(challengeid, flag, callback) {
-      var flagData = {'flag': flag};
+      var flagData = {
+        'flag': {
+          'key': flag,
+        },
+      };
       var namespace = this.get('store').adapterFor('application').namespace;
       Ember.$.ajax({
-        url: namespace+'/challenges/'+challengeid,
+        url: namespace+'/flags/'+challengeid,
         type: 'POST',
         data: JSON.stringify(flagData),
         dataType: 'json',
@@ -83,9 +87,17 @@ export default Ember.Controller.extend({
           xhr.setRequestHeader('X-CSRFToken', Ember.$.cookie('csrftoken'));
         },
         success: function (result){
-          callback(result.success, result.error);
-        }, error: function () {
-          callback(false, 'Something went wrong');
+          console.log(result);
+          callback(true, result);
+        }, error: function (err) {
+          var error = '';
+          if(err.responseJSON.errors){
+            error = err.responseJSON.errors.message;
+          }
+          if(!error){
+            error = 'Something went wrong';
+          }
+          callback(false, error);
         },
       });
     },

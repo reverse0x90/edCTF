@@ -45,11 +45,10 @@ class CtfView(APIView):
     """
     Create a new ctf
     """
-    # {"ctf":{"name":"e","online":true,"challengeboard":null,"scoreboard":null}}
     if 'ctf' not in request.data or not request.data['ctf']:
-      return Response(status=status.HTTP_400_BAD_REQUEST)
-    ctf_data = request.data['ctf']
+      return self.error_response('CTF not given')
 
+    ctf_data = request.data['ctf']
     if 'name' not in ctf_data or not ctf_data['name']:
       return self.error_response('CTF name not given', errorfields={'name': True})
     if 'online' not in ctf_data:
@@ -112,7 +111,7 @@ class CtfViewDetail(APIView):
     try:
       ctf = Ctf.objects.get(id=id)
     except ObjectDoesNotExist:
-      return self.error_response('CTF not found', errorfields={})
+      return self.error_response('CTF not found')
 
     serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
     return Response({
@@ -126,7 +125,10 @@ class CtfViewDetail(APIView):
     try:
       ctf = Ctf.objects.get(id=id)
     except ObjectDoesNotExist:
-      return self.error_response('CTF not found', errorfields={})
+      return self.error_response('CTF not found')
+
+    if 'ctf' not in request.data or not request.data['ctf']:
+      return self.error_response('CTF not given')
 
     ctf_data = request.data['ctf']
     if 'name' not in ctf_data or not ctf_data['name']:
@@ -161,10 +163,10 @@ class CtfViewDetail(APIView):
     try:
       ctf = Ctf.objects.get(id=id)
     except ObjectDoesNotExist:
-      return self.error_response('CTF not found', errorfields={})
+      return self.error_response('CTF not found')
 
     if ctf.online:
-      return self.error_response('Cannot delete a online ctf', errorfields={})
+      return self.error_response('Cannot delete a online ctf')
 
     ctf.delete()
 

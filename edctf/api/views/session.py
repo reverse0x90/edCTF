@@ -29,7 +29,7 @@ class SessionView(APIView):
       data['email'] = user.email
       data['isadmin'] = user.is_superuser
       try:
-        data['team'] = user.teams.id
+        data['team'] = user.team.id
       except:
         data['team'] = None
     return Response(data)

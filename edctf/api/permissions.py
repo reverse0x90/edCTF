@@ -44,7 +44,7 @@ class ChallengeboardPermission(EdctfPermission):
   """
   PUBLIC_METHODS = []
   AUTHENTICATED_METHODS = ['GET']
-  ADMIN_METHODS = ['POST', 'PUT', 'DELETE']
+  ADMIN_METHODS = []
 
 
 class CategoryPermission(EdctfPermission):
@@ -67,7 +67,7 @@ class CategoryPermissionDetail(EdctfPermission):
 
 class ChallengePermission(EdctfPermission):
   """
-  Permissions for the ctf route
+  Permissions for the challenge route
   """
   PUBLIC_METHODS = []
   AUTHENTICATED_METHODS = ['GET']
@@ -81,6 +81,24 @@ class ChallengePermissionDetail(EdctfPermission):
   PUBLIC_METHODS = []
   AUTHENTICATED_METHODS = ['GET', 'POST']
   ADMIN_METHODS = ['PUT', 'DELETE']
+
+
+class FlagPermission(EdctfPermission):
+  """
+  Permissions for the flag route
+  """
+  PUBLIC_METHODS = []
+  AUTHENTICATED_METHODS = []
+  ADMIN_METHODS = ['GET']
+
+
+class FlagPermissionDetail(EdctfPermission):
+  """
+  Permissions for the flag route
+  """
+  PUBLIC_METHODS = []
+  AUTHENTICATED_METHODS = ['POST']
+  ADMIN_METHODS = ['GET']
 
 
 class ScoreboardPermission(EdctfPermission):

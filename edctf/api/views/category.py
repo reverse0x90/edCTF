@@ -8,10 +8,9 @@ from edctf.api.serializers import CategorySerializer
 from edctf.api.permissions import CategoryPermission, CategoryPermissionDetail
 
 
-
 class CategoryView(APIView):
   """
-  Manages ctf requests.
+  Manages category requests.
   """
   permission_classes = (CategoryPermission,)
 
@@ -40,11 +39,10 @@ class CategoryView(APIView):
     """
     Create a new category
     """
-    # {"ctf":{"name":"e","online":true,"challengeboard":null,"scoreboard":null}}
     if 'category' not in request.data or not request.data['category']:
-      return Response(status=status.HTTP_400_BAD_REQUEST)
-    category_data = request.data['category']
+      return self.error_response('Category not given')
 
+    category_data = request.data['category']
     if 'name' not in category_data or not category_data['name']:
       return self.error_response('Category name not given', errorfields={'name': True})
     if 'challengeboard' not in category_data or not category_data['challengeboard']:
@@ -103,7 +101,7 @@ class CategoryViewDetail(APIView):
     try:
       category = Category.objects.get(id=id)
     except ObjectDoesNotExist:
-      return self.error_response('Category not found', errorfields={})
+      return self.error_response('Category not found')
 
     serialized_category = CategorySerializer(category, many=False, context={'request': request})
     return Response({
@@ -117,7 +115,10 @@ class CategoryViewDetail(APIView):
     try:
       category = Category.objects.get(id=id)
     except ObjectDoesNotExist:
-      return self.error_response('Category not found', errorfields={})
+      return self.error_response('Category not found')
+
+    if 'category' not in request.data or not request.data['category']:
+      return self.error_response('Category not given')
 
     category_data = request.data['category']
     if 'name' not in category_data or not category_data['name']:
@@ -148,7 +149,7 @@ class CategoryViewDetail(APIView):
     try:
       category = Category.objects.get(id=id)
     except ObjectDoesNotExist:
-      return self.error_response('Category not found', errorfields={})
+      return self.error_response('Category not found')
 
     category.delete()
 
