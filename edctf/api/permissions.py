@@ -79,7 +79,7 @@ class ChallengePermissionDetail(EdctfPermission):
   Permissions for the challenge route
   """
   PUBLIC_METHODS = []
-  AUTHENTICATED_METHODS = ['GET', 'POST']
+  AUTHENTICATED_METHODS = ['GET']
   ADMIN_METHODS = ['PUT', 'DELETE']
 
 

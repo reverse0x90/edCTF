@@ -1,11 +1,12 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-from rest_framework.views import APIView
-from rest_framework import status
-from rest_framework.response import Response
 from edctf.api.models import Ctf, Challengeboard, Scoreboard
 from edctf.api.serializers import CtfSerializer
 from edctf.api.permissions import CtfPermission, CtfPermissionDetail
+from response import error_response
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.response import Response
 
 
 class CtfView(APIView):
@@ -13,17 +14,6 @@ class CtfView(APIView):
   Manages ctf requests.
   """
   permission_classes = (CtfPermission,)
-
-  def error_response(self, error, errorfields={}):
-    """
-    Handles error messages
-    """
-    return Response({
-      'errors': {
-        'message': error,
-        'fields': errorfields,
-      },
-    }, status=status.HTTP_400_BAD_REQUEST)
 
   def get(self, request, format=None):
     """
@@ -46,26 +36,26 @@ class CtfView(APIView):
     Create a new ctf
     """
     if 'ctf' not in request.data or not request.data['ctf']:
-      return self.error_response('CTF not given')
+      return error_response('CTF not given')
 
     ctf_data = request.data['ctf']
     if 'name' not in ctf_data or not ctf_data['name']:
-      return self.error_response('CTF name not given', errorfields={'name': True})
+      return error_response('CTF name not given', errorfields={'name': True})
     if 'online' not in ctf_data:
-      return self.error_response('CTF online status not given', errorfields={'online': True})
+      return error_response('CTF online status not given', errorfields={'online': True})
 
     if len(ctf_data['name']) > 100:
-      return self.error_response('CTF name too long, over 100 characters', errorfields={'name': True})
+      return error_response('CTF name too long, over 100 characters', errorfields={'name': True})
     name = str(ctf_data['name'])
     online = True if ctf_data['online'] else False
 
     if Ctf.objects.filter(name__iexact=name).exists():
-      return self.error_response('CTF name already taken', errorfields={'name': True})
+      return error_response('CTF name already taken', errorfields={'name': True})
 
     try:
       ctf = Ctf.objects.create(name=name, online=online)
     except IntegrityError:
-      return self.error_response('CTF name already taken', errorfields={'name': True})
+      return error_response('CTF name already taken', errorfields={'name': True})
     challengeboard = Challengeboard.objects.create()
     scoreboard = Scoreboard.objects.create()
 
@@ -93,25 +83,14 @@ class CtfViewDetail(APIView):
   """
   permission_classes = (CtfPermissionDetail,)
 
-  def error_response(self, error, errorfields={}):
-    """
-    Handles error messages
-    """
-    return Response({
-      'errors': {
-        'message': error,
-        'fields': errorfields,
-      },
-    }, status=status.HTTP_400_BAD_REQUEST)
-  
   def get(self, request, id, format=None):
     """
-    Gets individual ctf via ctfs/:id
+    Gets individual ctf via id
     """
     try:
       ctf = Ctf.objects.get(id=id)
     except ObjectDoesNotExist:
-      return self.error_response('CTF not found')
+      return error_response('CTF not found')
 
     serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
     return Response({
@@ -125,23 +104,23 @@ class CtfViewDetail(APIView):
     try:
       ctf = Ctf.objects.get(id=id)
     except ObjectDoesNotExist:
-      return self.error_response('CTF not found')
+      return error_response('CTF not found')
 
     if 'ctf' not in request.data or not request.data['ctf']:
-      return self.error_response('CTF not given')
+      return error_response('CTF not given')
 
     ctf_data = request.data['ctf']
     if 'name' not in ctf_data or not ctf_data['name']:
-      return self.error_response('CTF name not given', errorfields={'name': True})
+      return error_response('CTF name not given', errorfields={'name': True})
     if 'online' not in ctf_data:
-      return self.error_response('CTF online status not given', errorfields={'online': True})
+      return error_response('CTF online status not given', errorfields={'online': True})
 
     if len(ctf_data['name']) > 100:
-      return self.error_response('CTF name too long, over 100 characters', errorfields={'name': True})
+      return error_response('CTF name too long, over 100 characters', errorfields={'name': True})
 
     name = str(ctf_data['name'])
     if ctf.name.lower() != name.lower() and Ctf.objects.filter(name__iexact=name).exists():
-      return self.error_response('CTF name already taken', errorfields={'name': True})
+      return error_response('CTF name already taken', errorfields={'name': True})
 
     ctf.name = name
     ctf.online = True if ctf_data['online'] else False
@@ -149,7 +128,7 @@ class CtfViewDetail(APIView):
     try:
       ctf.save()
     except IntegrityError:
-      return self.error_response('CTF name already taken', errorfields={'name': True})
+      return error_response('CTF name already taken', errorfields={'name': True})
 
     serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
     return Response({
@@ -163,10 +142,10 @@ class CtfViewDetail(APIView):
     try:
       ctf = Ctf.objects.get(id=id)
     except ObjectDoesNotExist:
-      return self.error_response('CTF not found')
+      return error_response('CTF not found')
 
     if ctf.online:
-      return self.error_response('Cannot delete a online ctf')
+      return error_response('Cannot delete a online ctf')
 
     ctf.delete()
 

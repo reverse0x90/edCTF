@@ -48,7 +48,7 @@ class Category(models.Model):
   """
   Category model class.
   """
-  name = models.CharField(max_length=50, unique=True, validators=[validate_no_xss, validate_no_html, validate_category_iexact])
+  name = models.CharField(max_length=50, unique=True)
   challengeboard = models.ForeignKey('Challengeboard', on_delete=models.CASCADE, related_name='categories', related_query_name='category')
   created = models.DateTimeField(auto_now_add=True)
 
@@ -68,9 +68,9 @@ class Challenge(models.Model):
   Challenge model class.
   """
   category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='challenges', related_query_name='challenge')
-  title = models.CharField(max_length=200, validators=[validate_no_xss, validate_no_html])
-  points = models.IntegerField(default=0, validators=[validate_positive])
-  description = models.CharField(max_length=10000, validators=[validate_no_xss, validate_tags, validate_attributes])
+  title = models.CharField(max_length=200)
+  points = models.IntegerField(default=0)
+  description = models.CharField(max_length=10000)
   flag = models.CharField(max_length=100)
   created = models.DateTimeField(auto_now_add=True)
 

@@ -1,6 +1,6 @@
-from challenge import ChallengeView
-from challengeboard import ChallengeboardView
 from category import CategoryView, CategoryViewDetail
+from challenge import ChallengeView, ChallengeViewDetail
+from challengeboard import ChallengeboardView
 from ctf import CtfView, CtfViewDetail
 from ctftime import CtftimeView
 from flag import FlagView, FlagViewDetail

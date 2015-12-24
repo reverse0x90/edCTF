@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from edctf.api.models import Challengeboard, Category, Challenge
 from edctf.api.permissions import ChallengeboardPermission
 from edctf.api.serializers import ChallengeboardSerializer, CategorySerializer, ChallengeSerializer
+from edctf.api.serializers.admin import ChallengeSerializer as AdminChallengeSerializer
 
 
 class ChallengeboardView(APIView):
@@ -31,7 +32,11 @@ class ChallengeboardView(APIView):
       challenges = []
       for cat in categories:
         challenges += Challenge.objects.filter(category=cat)
-      challenges_serializer = ChallengeSerializer(challenges, many=True, context={'request': request})
+
+      if request.user.is_staff:
+        challenges_serializer = AdminChallengeSerializer(challenges, many=True, context={'request': request})
+      else:
+        challenges_serializer = ChallengeSerializer(challenges, many=True, context={'request': request})
 
       # Return the serialized data.
       return Response({

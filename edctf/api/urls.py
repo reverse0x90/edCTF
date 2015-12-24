@@ -22,7 +22,7 @@ urlpatterns += [
 # routes by id
 urlpatterns += [
   url(r'^categories/(?P<id>\d+)/?$', views.CategoryViewDetail.as_view()),
-  url(r'^challenges/(?P<id>\d+)/?$', views.ChallengeView.as_view()),
+  url(r'^challenges/(?P<id>\d+)/?$', views.ChallengeViewDetail.as_view()),
   url(r'^challengeboards/(?P<id>\d+)/?$', views.ChallengeboardView.as_view()),
   url(r'^ctfs/(?P<id>\d+)/?$', views.CtfViewDetail.as_view()),
   url(r'^ctftime/(?P<id>\d+)/?$', views.CtftimeView.as_view()),

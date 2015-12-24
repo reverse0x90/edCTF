@@ -5,8 +5,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from edctf.api.models import Challenge, ChallengeTimestamp
 from edctf.api.permissions import FlagPermission, FlagPermissionDetail
-#from edctf.api.serializers import FlagSerializer
-
 
 
 def update_solved(team, challenge):

@@ -1,11 +1,13 @@
-from ratelimit.decorators import ratelimit
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
-from edctf.api.models import Challenge, ChallengeTimestamp
-from edctf.api.permissions import ChallengePermission
+from edctf.api.models import Challenge
+from edctf.api.permissions import ChallengePermission, ChallengePermissionDetail
 from edctf.api.serializers import ChallengeSerializer
+from edctf.api.serializers.admin import ChallengeSerializer as AdminChallengeSerializer
+from ratelimit.decorators import ratelimit
+from response import error_response
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
 
 
 class ChallengeView(APIView):
@@ -14,73 +16,151 @@ class ChallengeView(APIView):
   """
   permission_classes = (ChallengePermission,)
 
-  def form_response(self, success, error=''):
+  def get(self, request, format=None):
     """
-    Returns the challenge form response.
+    Gets all challenges
     """
-    # Create return data dictionary
-    data = {
-      'success': success,
-    }
-    # If error during flag check, return the error else return
-    # the flag response data.
-    if error:
-      data['error'] = error
-    return Response(data)
-
-  def get(self, request, id=None, format=None):
-    """
-    Gets all challenges or gets an individual challenge via
-    challenge/:id.
-    """
-    # If a specific challenge is requested, return that challege
-    # else return all the challenges in the database.
-    if id:
-      challenges = Challenge.objects.filter(id=id)
-    else:
-      challenges = Challenge.objects.all()
-
-    # Serialize challenge object and return the serialized data.
+    challenges = Challenge.objects.all()
     serialized_challenges = ChallengeSerializer(challenges, many=True, context={'request': request})
     return Response({
       'challenges': serialized_challenges.data,
     })
 
-  @ratelimit(key='ip', rate='10/m')
-  @ratelimit(key='user', rate='30/m')
-  def post(self, request, id=None, format=None):
+  def post(self, request, format=None):
     """
-    Checks a submitted flag for a challenge.
+    Create a new challenge
     """
-    # Verify the challege exists
-    if id:
-      was_limited = getattr(request, 'limited', False)
-      if was_limited:
-        return self.form_response(False, 'Too many flags submitted')
-      
-      try:
-        _challenge = Challenge.objects.get(id=id)
-      except:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    if 'challenge' not in request.data or not request.data['challenge']:
+      return error_response('Challenge not given')
 
-      # Get the flag data from the request json object.
-      flag_data = request.data
+    challenge_data = request.data['challenge']
+    if 'category' not in challenge_data or not challenge_data['category']:
+      return error_response('Challenge category not given', errorfields={'category': True})
+    if 'title' not in challenge_data or not challenge_data['title']:
+      return error_response('Challenge title not given', errorfields={'title': True})
+    if 'points' not in challenge_data or not challenge_data['points']:
+      return error_response('Challenge points not given', errorfields={'points': True})
+    if 'description' not in challenge_data or not challenge_data['description']:
+      return error_response('Challenge description not given', errorfields={'description': True})
+    if 'flag' not in challenge_data or not challenge_data['flag']:
+      return error_response('Challenge flag not given', errorfields={'flag': True})
 
-      # Verify flag is not blank and was set in the request.
-      if 'flag' not in flag_data:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+    try:
+      category_id = int(challenge_data['category'])
+    except ValueError:
+      return error_response('Challenge not found', errorfields={'category': True})
 
-      flag = flag_data['flag']
+    try:
+      category = Category.get(id=category_id)
+    except ObjectDoesNotExist:
+      return error_response('Challenge not found', errorfields={'category': True})
 
-      # Get the team object associated with the user's session.
-      _team = request.user.teams
+    try:
+      points = int(challenge_data['points'])
+    except ValueError:
+      return error_response('Invalid challenge points', errorfields={'points': True})
 
-      # Check if the flag is correct and return the result.
-      success, error = check_flag(_team, _challenge, flag)
-      if success:
-        update_solved(_team, _challenge)
-        return self.form_response(True)
-      else:
-        return self.form_response(False, error)
+    title = str(challenge_data['title'])
+    description = str(challenge_data['description'])
+    flag = str(challenge_data['flag'])
+
+    challenge = Category.objects.create(category=category, title=title, points=points, description=description, flag=flag)
+    if request.user.is_staff:
+      serialized_challenge = AdminChallengeSerializer(challenge, many=False, context={'request': request})
     else:
-      return Response(status=status.HTTP_404_NOT_FOUND)
+      serialized_challenge = ChallengeSerializer(challenge, many=False, context={'request': request})
+    return Response({
+      'challenge': serialized_challenge.data,
+    })
+
+
+class ChallengeViewDetail(APIView):
+  """
+  Manages challenge by id requests.
+  """
+  permission_classes = (ChallengePermissionDetail,)
+
+  def get(self, request, id, format=None):
+    """
+    Gets individual challenge via id
+    """
+    try:
+      challenge = Challenge.objects.get(id=id)
+    except ObjectDoesNotExist:
+      return error_response('Challenge not found')
+
+    if request.user.is_staff:
+      serialized_challenge = AdminChallengeSerializer(challenge, many=False, context={'request': request})
+    else:
+      serialized_challenge = ChallengeSerializer(challenge, many=False, context={'request': request})
+    return Response({
+      'challenge': serialized_challenge.data,
+    })
+
+  def put(self, request, id, format=None):
+    """
+    Edits a challenge
+    """
+    try:
+      challenge = Challenge.objects.get(id=id)
+    except ObjectDoesNotExist:
+      return error_response('Challenge not found')
+
+    if 'challenge' not in request.data or not request.data['challenge']:
+      return error_response('Challenge not given')
+
+    challenge_data = request.data['challenge']
+    if 'title' not in challenge_data or not challenge_data['title']:
+      return error_response('Challenge title not given', errorfields={'title': True})
+    if 'points' not in challenge_data or not challenge_data['points']:
+      return error_response('Challenge points not given', errorfields={'points': True})
+    if 'description' not in challenge_data or not challenge_data['description']:
+      return error_response('Challenge description not given', errorfields={'description': True})
+    if 'flag' not in challenge_data or not challenge_data['flag']:
+      return error_response('Challenge flag not given', errorfields={'flag': True})
+
+    try:
+      points = int(challenge_data['points'])
+    except ValueError:
+      return error_response('Invalid challenge points', errorfields={'points': True})
+
+    title = str(challenge_data['title'])
+    if len(title) > 200:
+      return error_response('Challenge title too long (>200)', errorfields={'title': True})
+
+    description = str(challenge_data['description'])
+    if len(description) > 10000:
+      return error_response('Challenge description too long (>10000)', errorfields={'description': True})
+
+    flag = str(challenge_data['flag'])
+    if len(flag) > 100:
+      return error_response('Challenge flag too long (>100)', errorfields={'flag': True})
+
+    challenge.title = title
+    challenge.points = points
+    challenge.description = description
+    challenge.flag = flag
+
+    challenge.save()
+    if request.user.is_staff:
+      serialized_challenge = AdminChallengeSerializer(challenge, many=False, context={'request': request})
+    else:
+      serialized_challenge = ChallengeSerializer(challenge, many=False, context={'request': request})
+    return Response({
+      'challenge': serialized_challenge.data,
+    })
+
+  def delete(self, request, id, format=None):
+    """
+    Deletes a challenge
+    """
+    try:
+      challenge = Challenge.objects.get(id=id)
+    except ObjectDoesNotExist:
+      return error_response('Challenge not found')
+
+    challenge.delete()
+
+    # return 200 and empty object on success
+    return Response({})
+
