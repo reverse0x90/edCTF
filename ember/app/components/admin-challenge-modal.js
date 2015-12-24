@@ -2,10 +2,15 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   modal: {},
+  title: '',
+  points: 0,
+  description: '',
+  flag: '',
+  challengeboardController: null,
   setupKeys: function() {
     Ember.$('body').on('keyup.modal-dialog', (e) => {
       if (e.keyCode === 27) {
-        this.set('modal.isRegister', false);
+        this.set('modal.isAdminChallenge', false);
       }
     });
   }.on('didInsertElement'),
@@ -16,19 +21,20 @@ export default Ember.Component.extend({
     Ember.$('#inputEmail').focus();
   }.on('didInsertElement'),
    actions: {
-    submitRegister: function() {
-      var email = this.get('email');
-      var username = this.get('username');
-      var teamname = this.get('teamname');
-      var password = this.get('password');
-      var confirmpassword = this.get('confirmPassword');
-      this.sendAction('sendRegister', {'email': email, 'username': username, 'teamname': teamname, 'password': password, 'confirmPassword': confirmpassword });
+    closeAdminChallengeModal: function() {
+      this.set('modal.adminCategory', null);
+      this.set('modal.adminChallenge', null);
+      this.set('modal.isAdminChallenge', false);
     },
-    openRegisterModal: function() {
-      this.set('modal.isRegister', true);
-    },
-    closeRegisterModal: function() {
-      this.set('modal.isRegister', false);
+    createChallenge: function() {
+      var challenge = {
+        category: this.get('modal.adminCategory'),
+        title: this.get('title'),
+        points: this.get('points'),
+        description: this.get('description'),
+        flag: this.get('flag'),
+      };
+      this.get('challengeboardController').send('createChallenge', challenge);
     },
   },
 });

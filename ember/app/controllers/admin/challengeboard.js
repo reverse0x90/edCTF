@@ -138,8 +138,62 @@ export default Ember.Controller.extend({
         }
       });
     },
-    createChallenge: function(category){
-      console.log('Opening create challenge modal, category:', category);
+    openCreateChallenge: function(category){
+      this.set('modal.adminCategory', category);
+      this.set('modal.adminChallenge', null);
+      this.set('modal.isAdminChallenge', true);
+    },
+    closeCreateChallenge: function(){
+      this.set('modal.isAdminChallenge', false);
+      this.set('modal.adminCategory', null);
+      this.set('modal.adminChallenge', null);
+      this.set('modal.errorFields', {});
+      this.set('modal.errorMessage', '');
+    },
+    createChallenge: function(newChallenge){
+      if(!newChallenge.title){
+        this.set('modal.errorFields', {'title': true});
+        this.set('modal.errorMessage', 'Invalid title');
+        return;
+      }
+
+      var points = Number(newChallenge.points);
+      if(!points){
+        this.set('modal.errorFields', {'points': true});
+        this.set('modal.errorMessage', 'Invalid points');
+        return;
+      }
+
+      if(!newChallenge.description){
+        this.set('modal.errorFields', {'description': true});
+        this.set('modal.errorMessage', 'Invalid description');
+        return;
+      }
+
+      if(!newChallenge.flag){
+        this.set('modal.errorFields', {'flag': true});
+        this.set('modal.errorMessage', 'Invalid flag');
+        return;
+      }
+
+      var t = this;
+      var challenge = t.store.createRecord('challenge', {
+        category: newChallenge.category,
+        title: newChallenge.title,
+        points: points,
+        description: newChallenge.description,
+        flag: newChallenge.flag,
+      });
+      challenge.save().then(function(){
+        t.send('closeCreateChallenge');
+      }, function(err){
+        challenge.rollbackAttributes();
+        if (err.errors.message){
+          t.set('modal.errorMessage', err.errors.message);
+        } else {
+          t.set('modal.errorMessage', 'Server error, unable to add challenge');
+        }
+      });
     },
     editChallenge: function(challenge){
       console.log('Opening edit challenge modal, challenge:', challenge);

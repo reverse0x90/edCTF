@@ -20,6 +20,14 @@
                 <td>Online:</td>
                 <td>{{selectedCtf.online}}</td>
               </tr>
+              <tr class="team-info">
+                <td>ctftime:</td>
+                <td>
+                  <a href={{selectedCtf.ctftime}} style="font-size: 0.7em;">
+                    {{host}}{{selectedCtf.ctftime}}
+                  </a>
+                </td>
+              </tr>
             </tbody>
           </table>
           <button type="button" class="btn btn-success btn-login-submit edctf-submit-button  pull-right" {{action 'setEditOption'}}>Edit</button>
@@ -56,6 +64,14 @@
                       <td>{{input type="checkbox" checked=editCtfOnline}}</td>
                     </div>
                   {{/if}}
+                </tr>
+                <tr class="team-info">
+                  <td>ctftime:</td>
+                  <td>
+                    <a href={{selectedCtf.ctftime}} style="font-size: 0.7em;">
+                      {{host}}{{selectedCtf.ctftime}}
+                    </a>
+                  </td>
                 </tr>
               </tbody>
             </table>

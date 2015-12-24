@@ -1,13 +1,11 @@
-from edctf.api.models import Challenge
+from django.core.exceptions import ObjectDoesNotExist
+from edctf.api.models import Category, Challenge
 from edctf.api.permissions import ChallengePermission, ChallengePermissionDetail
 from edctf.api.serializers import ChallengeSerializer
 from edctf.api.serializers.admin import ChallengeSerializer as AdminChallengeSerializer
-from ratelimit.decorators import ratelimit
 from response import error_response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import status
 
 
 class ChallengeView(APIView):
@@ -21,7 +19,11 @@ class ChallengeView(APIView):
     Gets all challenges
     """
     challenges = Challenge.objects.all()
-    serialized_challenges = ChallengeSerializer(challenges, many=True, context={'request': request})
+
+    if request.user.is_staff:
+      serialized_challenges = AdminChallengeSerializer(challenges, many=True, context={'request': request})
+    else:
+      serialized_challenges = ChallengeSerializer(challenges, many=True, context={'request': request})
     return Response({
       'challenges': serialized_challenges.data,
     })
@@ -51,7 +53,7 @@ class ChallengeView(APIView):
       return error_response('Challenge not found', errorfields={'category': True})
 
     try:
-      category = Category.get(id=category_id)
+      category = Category.objects.get(id=category_id)
     except ObjectDoesNotExist:
       return error_response('Challenge not found', errorfields={'category': True})
 
@@ -64,7 +66,7 @@ class ChallengeView(APIView):
     description = str(challenge_data['description'])
     flag = str(challenge_data['flag'])
 
-    challenge = Category.objects.create(category=category, title=title, points=points, description=description, flag=flag)
+    challenge = Challenge.objects.create(category=category, title=title, points=points, description=description, flag=flag)
     if request.user.is_staff:
       serialized_challenge = AdminChallengeSerializer(challenge, many=False, context={'request': request})
     else:

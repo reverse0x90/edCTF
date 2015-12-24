@@ -26,6 +26,9 @@ class Ctf(models.Model):
     self.scoreboard.delete()
     super(Ctf, self).delete(*args, **kwargs)
 
+  def ctftime(self):
+    return '/api/ctftime/{id}'.format(id=self.id)
+
 
 class Challengeboard(models.Model):
   """

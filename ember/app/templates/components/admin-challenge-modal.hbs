@@ -1,1 +1,75 @@
-{{yield}}
+{{#modal-dialog close='closeAdminChallengeModal' translucentOverlay=true container-class='challenge-style-modal-container'}}
+  {{!-- Creating new challenge --}}
+  {{#if modal.adminCategory}}
+    <h2 align="center" class="modal-title">Create Challenge</h2>
+    <table class="table team-info-table">
+      <tbody>
+        {{#if modal.errorMessage}}
+          <label class="control-label">
+            <div class="alert alert-danger edctf-text" style="padding: 5px; margin-bottom: 0px;" role="alert">
+              {{modal.errorMessage}}
+            </div>
+          </label>
+        {{/if}}
+        <tr class="team-info">
+          {{#if modal.errorFields.title}} 
+            <div class="form-group has-error">
+              <td>Title:</td>
+              <td>{{input id="challengeTitle" type="text" value=title enter="createChallenge" class="form-control" placeholder="Title"}}</td>
+            </div>
+          {{else}}
+            <div class="form-group">
+              <td>Title:</td>
+              <td>{{input id="challengeTitle" type="text" value=title enter="createChallenge" class="form-control" placeholder="Title"}}</td>
+            </div>
+          {{/if}}
+        </tr>
+        <tr class="team-info">
+          {{#if modal.errorFields.points}} 
+            <div class="form-group has-error">
+              <td>Points:</td>
+              <td>{{input id="challengePoints" type="number" value=points enter="createChallenge" class="form-control" placeholder=1}}</td>
+            </div>
+          {{else}}
+            <div class="form-group">
+              <td>Points:</td>
+              <td>{{input id="challengePoints" type="number" value=points enter="createChallenge" class="form-control" placeholder=1}}</td>
+            </div>
+          {{/if}}
+        </tr>
+        <tr class="team-info">
+          {{#if modal.errorFields.description}} 
+            <div class="form-group has-error">
+              <td>Description:</td>
+              <td>{{input id="challengeDescription" type="text" value=description enter="createChallenge" class="form-control" placeholder="Description"}}</td>
+            </div>
+          {{else}}
+            <div class="form-group">
+              <td>Description:</td>
+              <td>{{input id="challengeDescription" type="text" value=description enter="createChallenge" class="form-control" placeholder="Description"}}</td>
+            </div>
+          {{/if}}
+        </tr>
+        <tr class="team-info">
+          {{#if modal.errorFields.flag}} 
+            <div class="form-group has-error">
+              <td>Flag:</td>
+              <td>{{input id="challengeFlag" type="text" value=flag enter="createChallenge" class="form-control" placeholder="Flag"}}</td>
+            </div>
+          {{else}}
+            <div class="form-group">
+              <td>Flag:</td>
+              <td>{{input id="challengeFlag" type="text" value=flag enter="createChallenge" class="form-control" placeholder="Flag"}}</td>
+            </div>
+          {{/if}}
+        </tr>
+      </tbody>
+    </table>
+    <div class="edctf-button">
+      <button type="button" class="btn btn-success btn-login-submit edctf-submit-button" {{action "createChallenge"}}>Create</button>
+    </div>
+  {{else}}
+    Editing challenge
+    {{!-- Editing challenge --}}
+  {{/if}}
+{{/modal-dialog}}

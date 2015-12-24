@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   model: null,
   modal: {},
+  host: window.location.origin,
   appController: null,
   editCtfName: '',
   editCtfOnline: false,

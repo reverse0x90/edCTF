@@ -22,7 +22,7 @@
                 {{admin-ctf-modal modal=modal ctfController=adminController.ctfController}}
               {{else}}
                 {{#if modal.isAdminChallenge}}
-                  {{admin-challenge-modal modal=modal admin=adminController}}
+                  {{admin-challenge-modal modal=modal challengeboardController=adminController.challengeboardController}}
                 {{else}}
                   {{#if modal.isAdminTeam}}
                     {{admin-team-modal modal=modal admin=adminController}}

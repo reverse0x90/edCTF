@@ -76,7 +76,7 @@
                 {{#each category.sortedchallenges as |challenge|}}
                   <button class="challengeButton challengeButton-unsolved challengeButton-xlarge sharp" {{action 'editChallenge' challenge}}>{{challenge.points}}</button>
                 {{/each}}
-                <button {{action "createChallenge" category}} type="button" class="btn btn-success btn-lg edctf-submit-button pagination-centered" style="vertical-align: middle !important; font-size: 24px; line-height: 1.33; margin: 0.15em 0.2em; font-weight: 700; height: 50%;">
+                <button {{action "openCreateChallenge" category}} type="button" class="btn btn-success btn-lg edctf-submit-button pagination-centered" style="vertical-align: middle !important; font-size: 24px; line-height: 1.33; margin: 0.15em 0.2em; font-weight: 700; height: 50%;">
                   +
                 </button>
               </td>

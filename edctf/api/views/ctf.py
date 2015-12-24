@@ -2,10 +2,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from edctf.api.models import Ctf, Challengeboard, Scoreboard
 from edctf.api.serializers import CtfSerializer
+from edctf.api.serializers.admin import CtfSerializer as AdminCtfSerializer
 from edctf.api.permissions import CtfPermission, CtfPermissionDetail
 from response import error_response
 from rest_framework.views import APIView
-from rest_framework import status
 from rest_framework.response import Response
 
 
@@ -26,7 +26,11 @@ class CtfView(APIView):
         ctfs = Ctf.objects.filter(online=False)
     else:
       ctfs = Ctf.objects.all()
-    serialized_ctfs = CtfSerializer(ctfs, many=True, context={'request': request})
+
+    if request.user.is_staff:
+      serialized_ctfs = AdminCtfSerializer(ctfs, many=True, context={'request': request})
+    else:
+      serialized_ctfs = CtfSerializer(ctfs, many=True, context={'request': request})
     return Response({
       'ctfs': serialized_ctfs.data,
     })
@@ -92,7 +96,10 @@ class CtfViewDetail(APIView):
     except ObjectDoesNotExist:
       return error_response('CTF not found')
 
-    serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
+    if request.user.is_staff:
+      serialized_ctf = AdminCtfSerializer(ctf, many=False, context={'request': request})
+    else:
+      serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
     return Response({
       'ctf': serialized_ctf.data,
     })
@@ -130,7 +137,10 @@ class CtfViewDetail(APIView):
     except IntegrityError:
       return error_response('CTF name already taken', errorfields={'name': True})
 
-    serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
+    if request.user.is_staff:
+      serialized_ctf = AdminCtfSerializer(ctf, many=False, context={'request': request})
+    else:
+      serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
     return Response({
       'ctf': serialized_ctf.data,
     })

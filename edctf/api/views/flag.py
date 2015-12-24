@@ -121,8 +121,10 @@ class FlagViewDetail(APIView):
 
     key = flag_data['key']
 
-    # try except HERE
-    if not request.user.team:
+    try:
+      if not request.user.team:
+        return self.error_response('No team associated with user')
+    except ObjectDoesNotExist:
       return self.error_response('No team associated with user')
 
     team = request.user.team

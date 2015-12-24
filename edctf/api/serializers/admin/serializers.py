@@ -28,7 +28,7 @@ class ChallengeboardSerializer(ModelSerializer):
 class CtfSerializer(ModelSerializer):
   class Meta:
     model = Ctf
-    fields = ('id', 'name', 'online', 'challengeboard', 'scoreboard')
+    fields = ('id', 'name', 'online', 'ctftime', 'challengeboard', 'scoreboard')
 
 
 class ScoreboardSerializer(ModelSerializer):
