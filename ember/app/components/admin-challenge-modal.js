@@ -18,13 +18,15 @@ export default Ember.Component.extend({
     Ember.$('body').off('keyup.modal-dialog');
   }.on('willDestroyElement'),
   setupFocus: function() {
-    Ember.$('#inputEmail').focus();
+    Ember.$('#challengeTitle').focus();
   }.on('didInsertElement'),
    actions: {
     closeAdminChallengeModal: function() {
+      this.set('modal.isAdminChallenge', false);
       this.set('modal.adminCategory', null);
       this.set('modal.adminChallenge', null);
-      this.set('modal.isAdminChallenge', false);
+      this.set('modal.errorMessage', '');
+      this.set('modal.errorFields', {});
     },
     createChallenge: function() {
       var challenge = {
@@ -35,6 +37,12 @@ export default Ember.Component.extend({
         flag: this.get('flag'),
       };
       this.get('challengeboardController').send('createChallenge', challenge);
+    },
+    editChallenge: function(){
+      this.get('challengeboardController').send('editChallenge', this.get('modal.adminChallenge'));
+    },
+    deleteChallenge: function(){
+      this.get('challengeboardController').send('deleteChallenge', this.get('modal.adminChallenge'));
     },
   },
 });

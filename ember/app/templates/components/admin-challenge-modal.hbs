@@ -41,14 +41,15 @@
           {{#if modal.errorFields.description}} 
             <div class="form-group has-error">
               <td>Description:</td>
-              <td>{{input id="challengeDescription" type="text" value=description enter="createChallenge" class="form-control" placeholder="Description"}}</td>
+              <td>{{textarea id="challengeDescription" type="text" value=description class="form-control" placeholder="Description"}}</td>
             </div>
           {{else}}
             <div class="form-group">
               <td>Description:</td>
-              <td>{{input id="challengeDescription" type="text" value=description enter="createChallenge" class="form-control" placeholder="Description"}}</td>
+              <td>{{textarea id="challengeDescription" type="text" value=description class="form-control" placeholder="Description"}}</td>
             </div>
           {{/if}}
+          <td>{{{description}}}</td>
         </tr>
         <tr class="team-info">
           {{#if modal.errorFields.flag}} 
@@ -69,7 +70,77 @@
       <button type="button" class="btn btn-success btn-login-submit edctf-submit-button" {{action "createChallenge"}}>Create</button>
     </div>
   {{else}}
-    Editing challenge
     {{!-- Editing challenge --}}
+    {{#if modal.adminChallenge}}
+      <h2 align="center" class="modal-title">Edit Challenge</h2>
+      <table class="table team-info-table">
+        <tbody>
+          {{#if modal.errorMessage}}
+            <label class="control-label">
+              <div class="alert alert-danger edctf-text" style="padding: 5px; margin-bottom: 0px;" role="alert">
+                {{modal.errorMessage}}
+              </div>
+            </label>
+          {{/if}}
+          <tr class="team-info">
+            {{#if modal.errorFields.title}} 
+              <div class="form-group has-error">
+                <td>Title:</td>
+                <td>{{input id="challengeTitle" type="text" value=modal.adminChallenge.title enter="editChallenge" class="form-control" placeholder=modal.adminChallenge.title}}</td>
+              </div>
+            {{else}}
+              <div class="form-group">
+                <td>Title:</td>
+                <td>{{input id="challengeTitle" type="text" value=modal.adminChallenge.title enter="editChallengeeditChallenge" class="form-control" placeholder=modal.adminChallenge.title}}</td>
+              </div>
+            {{/if}}
+          </tr>
+          <tr class="team-info">
+            {{#if modal.errorFields.points}} 
+              <div class="form-group has-error">
+                <td>Points:</td>
+                <td>{{input id="challengePoints" type="number" value=modal.adminChallenge.points enter="editChallengeeditChallenge" class="form-control" placeholder=modal.adminChallenge.points}}</td>
+              </div>
+            {{else}}
+              <div class="form-group">
+                <td>Points:</td>
+                <td>{{input id="challengePoints" type="number" value=modal.adminChallenge.points enter="editChallengeeditChallenge" class="form-control" placeholder=modal.adminChallenge.points}}</td>
+              </div>
+            {{/if}}
+          </tr>
+          <tr class="team-info">
+            {{#if modal.errorFields.description}} 
+              <div class="form-group has-error">
+                <td>Description:</td>
+                <td>{{textarea id="challengeDescription" type="text" value=modal.adminChallenge.description class="form-control" placeholder=modal.adminChallenge.description}}</td>
+              </div>
+            {{else}}
+              <div class="form-group">
+                <td>Description:</td>
+                <td>{{textarea id="challengeDescription" type="text" value=modal.adminChallenge.description class="form-control" placeholder=modal.adminChallenge.description}}</td>
+              </div>
+            {{/if}}
+            <td>{{{modal.adminChallenge.description}}}</td>
+          </tr>
+          <tr class="team-info">
+            {{#if modal.errorFields.flag}} 
+              <div class="form-group has-error">
+                <td>Flag:</td>
+                <td>{{input id="challengeFlag" type="text" value=modal.adminChallenge.flag enter="editChallenge" class="form-control" placeholder=modal.adminChallenge.flag}}</td>
+              </div>
+            {{else}}
+              <div class="form-group">
+                <td>Flag:</td>
+                <td>{{input id="challengeFlag" type="text" value=modal.adminChallenge.flag enter="editChallenge" class="form-control" placeholder=modal.adminChallenge.flag}}</td>
+              </div>
+            {{/if}}
+          </tr>
+        </tbody>
+      </table>
+      <div class="edctf-button">
+        <button type="button" class="btn btn-success btn-login-submit edctf-submit-button" {{action "editChallenge"}}>Edit</button>
+        <button type="button" class="btn btn-danger btn-cancel-action edctf-cancel-button" {{action 'deleteChallenge'}}>Delete</button>
+      </div>
+    {{/if}}
   {{/if}}
 {{/modal-dialog}}

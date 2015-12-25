@@ -143,12 +143,12 @@ export default Ember.Controller.extend({
       this.set('modal.adminChallenge', null);
       this.set('modal.isAdminChallenge', true);
     },
-    closeCreateChallenge: function(){
+    closeChallenge: function(){
       this.set('modal.isAdminChallenge', false);
       this.set('modal.adminCategory', null);
       this.set('modal.adminChallenge', null);
-      this.set('modal.errorFields', {});
       this.set('modal.errorMessage', '');
+      this.set('modal.errorFields', {});
     },
     createChallenge: function(newChallenge){
       if(!newChallenge.title){
@@ -185,7 +185,7 @@ export default Ember.Controller.extend({
         flag: newChallenge.flag,
       });
       challenge.save().then(function(){
-        t.send('closeCreateChallenge');
+        t.send('closeChallenge');
       }, function(err){
         challenge.rollbackAttributes();
         if (err.errors.message){
@@ -195,11 +195,62 @@ export default Ember.Controller.extend({
         }
       });
     },
+    openEditChallenge: function(challenge){
+      this.set('modal.adminCategory', null);
+      this.set('modal.adminChallenge', challenge);
+      this.set('modal.isAdminChallenge', true);
+    },
     editChallenge: function(challenge){
-      console.log('Opening edit challenge modal, challenge:', challenge);
+      if(!challenge.get('title')){
+        this.set('modal.errorFields', {'title': true});
+        this.set('modal.errorMessage', 'Invalid title');
+        return;
+      }
+
+      var points = Number(challenge.get('points'));
+      if(!points){
+        this.set('modal.errorFields', {'points': true});
+        this.set('modal.errorMessage', 'Invalid points');
+        return;
+      }
+
+      if(!challenge.get('description')){
+        this.set('modal.errorFields', {'description': true});
+        this.set('modal.errorMessage', 'Invalid description');
+        return;
+      }
+
+      if(!challenge.get('flag')){
+        this.set('modal.errorFields', {'flag': true});
+        this.set('modal.errorMessage', 'Invalid flag');
+        return;
+      }
+
+      var t = this;
+      challenge.save().then(function(){
+        t.send('closeChallenge');
+      }, function(err){
+        challenge.rollbackAttributes();
+        if (err.errors.message){
+          t.set('modal.errorMessage', err.errors.message);
+        } else {
+          t.set('modal.errorMessage', 'Server error, unable to add challenge');
+        }
+      });
     },
     deleteChallenge: function(challenge){
-      console.log('Deleting challenge, challenge:', challenge);
+      var t = this;
+      challenge.deleteRecord();
+      challenge.save().then(function(){
+        t.send('closeChallenge');
+      }, function(err){
+        challenge.rollbackAttributes();
+        if (err.errors.message){
+          t.set('modal.errorMessage', err.errors.message);
+        } else {
+          t.set('modal.errorMessage', 'Server error, unable to add challenge');
+        }
+      });
     },
   },
 });
