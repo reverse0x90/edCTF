@@ -1,9 +1,8 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-from edctf.api.models import Ctf, CtfSchema, Challengeboard, Scoreboard
-from edctf.api.serializers import CtfSerializer, CtfSchemaSerializer
+from edctf.api.models import Ctf, Challengeboard, Scoreboard
+from edctf.api.serializers import CtfSerializer
 from edctf.api.serializers.admin import CtfSerializer as AdminCtfSerializer
-from edctf.api.serializers.admin import CtfSchemaSerializer as AdminCtfSchemaSerializer
 from edctf.api.permissions import CtfPermission, CtfPermissionDetail
 from response import error_response
 from rest_framework.views import APIView
@@ -22,19 +21,18 @@ class CtfView(APIView):
     """
     if 'online' in request.query_params:
       if request.query_params['online'] == 'true':
-        schemas = CtfSchema.objects.using('default').filter(online=True)
+        ctfs = Ctf.objects.filter(online=True)
       else:
-        schemas = CtfSchema.objects.using('default').filter(online=False)
+        ctfs = Ctf.objects.filter(online=False)
     else:
-      schemas = CtfSchema.objects.using('default').all()
+      ctfs = Ctf.objects.all()
 
     if request.user.is_staff:
-      serialized_schemas = AdminCtfSchemaSerializer(schemas, many=True, context={'request': request})
+      serialized_ctfs = AdminCtfSerializer(ctfs, many=True, context={'request': request})
     else:
-      serialized_schemas = CtfSchemaSerializer(schemas, many=True, context={'request': request})
-    
+      serialized_ctfs = CtfSerializer(ctfs, many=True, context={'request': request})
     return Response({
-      'ctfs': serialized_schemas.data,
+      'ctfs': serialized_ctfs.data,
     })
 
   def post(self, request, id=None, format=None):
@@ -59,35 +57,27 @@ class CtfView(APIView):
       return error_response('CTF name already taken', errorfields={'name': True})
 
     try:
-      schema = CtfSchema.objects.using('default').create(name=name, online=online)
-      if not schema.schema_name:
-        return error_response('Error adding CTF', errorfields={'name': True})
-      
-      ctf = Ctf.objects.using(schema.schema_name).create(name=schema.name, online=schema.online)
+      ctf = Ctf.objects.create(name=name, online=online)
     except IntegrityError:
-      raise
       return error_response('CTF name already taken', errorfields={'name': True})
-
-    challengeboard = Challengeboard.objects.using(schema.schema_name).create()
-    scoreboard = Scoreboard.objects.using(schema.schema_name).create()
+    challengeboard = Challengeboard.objects.create()
+    scoreboard = Scoreboard.objects.create()
 
     ctf.challengeboard = challengeboard
     ctf.scoreboard = scoreboard
     ctf.save()
 
+    serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
+
     # disable all other online ctfs
     if online:
-      online_ctfs = CtfSchema.objects.using('default').exclude(id=schema.id).filter(online=True)
-      for ctf_schema in online_ctfs:
-        ctf_schema.online = False
-        ctf_schema.save()
+      online_ctfs = Ctf.objects.exclude(id=ctf.id).filter(online=True)
+      for ctf in online_ctfs:
+        ctf.online = False
+        ctf.save()
 
-    if request.user.is_staff:
-      serialized_schema = AdminCtfSchemaSerializer(schema, many=False, context={'request': request})
-    else:
-      serialized_schema = CtfSchemaSerializer(schema, many=False, context={'request': request})
     return Response({
-      'ctf': serialized_schema.data,
+      'ctf': serialized_ctf.data,
     })
 
 
@@ -102,16 +92,16 @@ class CtfViewDetail(APIView):
     Gets individual ctf via id
     """
     try:
-      schema = CtfSchema.objects.using('default').get(id=id)
+      ctf = Ctf.objects.get(id=id)
     except ObjectDoesNotExist:
       return error_response('CTF not found')
 
     if request.user.is_staff:
-      serialized_schema = AdminCtfSchemaSerializer(schema, many=False, context={'request': request})
+      serialized_ctf = AdminCtfSerializer(ctf, many=False, context={'request': request})
     else:
-      serialized_schema = CtfSchemaSerializer(schema, many=False, context={'request': request})
+      serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
     return Response({
-      'ctf': serialized_schema.data,
+      'ctf': serialized_ctf.data,
     })
 
   def put(self, request, id, format=None):
@@ -119,11 +109,7 @@ class CtfViewDetail(APIView):
     Edits a ctf
     """
     try:
-      schema = CtfSchema.objects.using('default').get(id=id)
-      if not schema.schema_name:
-        return error_response('CTF not found')
-
-      ctf = Ctf.objects.using(schema.schema_name).get(name=schema.name)
+      ctf = Ctf.objects.get(id=id)
     except ObjectDoesNotExist:
       return error_response('CTF not found')
 
@@ -140,38 +126,23 @@ class CtfViewDetail(APIView):
       return error_response('CTF name too long, over 100 characters', errorfields={'name': True})
 
     name = str(ctf_data['name'])
-    if ctf.name.lower() != name.lower() and CtfSchema.objects.using('default').filter(name__iexact=name).exists():
+    if ctf.name.lower() != name.lower() and Ctf.objects.filter(name__iexact=name).exists():
       return error_response('CTF name already taken', errorfields={'name': True})
-    online = True if ctf_data['online'] else False
-
-    # disable all other online ctfs
-    if online:
-      online_ctfs = CtfSchema.objects.using('default').exclude(id=schema.id).filter(online=True)
-      for ctf_schema in online_ctfs:
-        ctf_schema.online = False
-        ctf_schema.save()
 
     ctf.name = name
-    ctf.online = online
-    schema.name = name
-    schema.online = online
-
-    try:
-      schema.save()
-    except IntegrityError:
-      return error_response('CTF name already taken', errorfields={'name': True})
+    ctf.online = True if ctf_data['online'] else False
 
     try:
       ctf.save()
     except IntegrityError:
-      return error_response('Error saving CTF', errorfields={'name': True})
+      return error_response('CTF name already taken', errorfields={'name': True})
 
     if request.user.is_staff:
-      serialized_schema = AdminCtfSchemaSerializer(schema, many=False, context={'request': request})
+      serialized_ctf = AdminCtfSerializer(ctf, many=False, context={'request': request})
     else:
-      serialized_schema = CtfSchemaSerializer(schema, many=False, context={'request': request})
+      serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
     return Response({
-      'ctf': serialized_schema.data,
+      'ctf': serialized_ctf.data,
     })
 
   def delete(self, request, id, format=None):
@@ -179,19 +150,14 @@ class CtfViewDetail(APIView):
     Deletes a ctf
     """
     try:
-      schema = CtfSchema.objects.using('default').get(id=id)
-      if not schema.schema_name:
-        return error_response('CTF not found')
-
-      ctf = Ctf.objects.using(schema.schema_name).get(name=schema.name)
+      ctf = Ctf.objects.get(id=id)
     except ObjectDoesNotExist:
       return error_response('CTF not found')
 
-    if schema.online:
-      return error_response('Cannot delete an online ctf')
+    if ctf.online:
+      return error_response('Cannot delete a online ctf')
 
     ctf.delete()
-    schema.delete()  # need to fix this..doesnt remove schema, since django is using it?
 
     # return 200 and empty object on success
     return Response({})

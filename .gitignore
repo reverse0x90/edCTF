@@ -3,5 +3,4 @@
 *.pyc
 *.sqlite3
 edctf/edctf_secret.py
-edctf/edctf_databases.py
 
