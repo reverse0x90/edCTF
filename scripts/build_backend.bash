@@ -51,5 +51,8 @@ python ${EDCTF_SCRIPTS}/generate_secrets.py --output ${EDCTF_DJANGO}/edctf_secre
   && python ${EDCTF_DIR}/manage.py makemigrations \
   && python ${EDCTF_DIR}/manage.py migrate auth \
   && python ${EDCTF_DIR}/manage.py migrate \
+  && touch ${EDCTF_DJANGO}/edctf_databases.py \
+  && chmod 775 ${EDCTF_DJANGO}/edctf_databases.py \
+  && sudo chown root:www-data ${EDCTF_DJANGO}/edctf_databases.py \
   && echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', '', 'admin')" \
   | python ${EDCTF_DIR}/manage.py shell

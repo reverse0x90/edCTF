@@ -1,6 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-from edctf.api.models import Ctf, Challengeboard, Scoreboard
+from edctf.api.models import Ctf, CtfSchema, Challengeboard, Scoreboard
 from edctf.api.serializers import CtfSerializer
 from edctf.api.serializers.admin import CtfSerializer as AdminCtfSerializer
 from edctf.api.permissions import CtfPermission, CtfPermissionDetail
@@ -57,11 +57,16 @@ class CtfView(APIView):
       return error_response('CTF name already taken', errorfields={'name': True})
 
     try:
-      ctf = Ctf.objects.create(name=name, online=online)
+      schema = CtfSchema.objects.using('default').create(online=online)
+      if not schema.schema_name:
+        return error_response('Error adding CTF', errorfields={'name': True})
+      
+      ctf = Ctf.objects.using(schema.schema_name).create(name=name, online=online)
     except IntegrityError:
       return error_response('CTF name already taken', errorfields={'name': True})
-    challengeboard = Challengeboard.objects.create()
-    scoreboard = Scoreboard.objects.create()
+
+    challengeboard = Challengeboard.objects.using(schema.schema_name).create()
+    scoreboard = Scoreboard.objects.using(schema.schema_name).create()
 
     ctf.challengeboard = challengeboard
     ctf.scoreboard = scoreboard
@@ -71,10 +76,10 @@ class CtfView(APIView):
 
     # disable all other online ctfs
     if online:
-      online_ctfs = Ctf.objects.exclude(id=ctf.id).filter(online=True)
-      for ctf in online_ctfs:
-        ctf.online = False
-        ctf.save()
+      online_ctfs = Ctf.objects.using('default').exclude(id=ctf.id).filter(online=True)
+      for schema in online_ctfs:
+        schema.online = False
+        schema.save()
 
     return Response({
       'ctf': serialized_ctf.data,

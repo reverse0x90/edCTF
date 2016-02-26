@@ -85,6 +85,9 @@ WSGI_APPLICATION = 'edctf.wsgi.application'
 DATABASES = {
   'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'OPTIONS': {
+      'options': '-c search_path=public',
+    },
     'NAME': edctf_secret.DB_NAME,
     'USER': edctf_secret.DB_USER,
     'PASSWORD': edctf_secret.DB_PASSWORD,
@@ -92,7 +95,16 @@ DATABASES = {
     'PORT': edctf_secret.DB_PORT,
   },
 }
-DATABASES.update(CTF_DATABASES)
+for ctfname in CTF_DATABASES:
+  DATABASES[ctfname] = {
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'OPTIONS': CTF_DATABASES[ctfname]['OPTIONS'],
+    'NAME': edctf_secret.DB_NAME,
+    'USER': edctf_secret.DB_USER,
+    'PASSWORD': edctf_secret.DB_PASSWORD,
+    'HOST': edctf_secret.DB_HOST,
+    'PORT': edctf_secret.DB_PORT,
+  }
 
 
 LANGUAGE_CODE = 'en-us'
