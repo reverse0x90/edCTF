@@ -2,6 +2,7 @@ from edctf.api.models import Category
 from edctf.api.models import Challenge
 from edctf.api.models import Challengeboard
 from edctf.api.models import Ctf
+from edctf.api.models import CtfSchema
 from edctf.api.models import Scoreboard
 from edctf.api.models import Team
 from rest_framework.serializers import ModelSerializer
@@ -28,6 +29,12 @@ class ChallengeboardSerializer(ModelSerializer):
 class CtfSerializer(ModelSerializer):
   class Meta:
     model = Ctf
+    fields = ('id', 'name', 'online', 'ctftime', 'challengeboard', 'scoreboard')
+
+
+class CtfSchemaSerializer(ModelSerializer):
+  class Meta:
+    model = CtfSchema
     fields = ('id', 'name', 'online', 'ctftime', 'challengeboard', 'scoreboard')
 
 
