@@ -6,6 +6,7 @@ ember/bower_components/
 ember/node_modules/
 ember/tmp/*
 edctf/edctf_secret.py
+edctf/edctf_databases.py
 edctf/static/admin/
 edctf/static/rest_framework/
 edctf/api/migrations/*

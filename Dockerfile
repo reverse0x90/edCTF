@@ -12,14 +12,14 @@ ENV EDCTF_SCRIPTS ${EDCTF_DIR}/scripts
 RUN apt-get update \
   && DEBIAN_FRONTEND=noninteractive \
     apt-get -y install \
-        apache2 \
-        libapache2-mod-wsgi \
-        libpq-dev \
-        postgresql=9.4* \
-        python-pip \
-        python-dev \
-        sudo \
-        openssl \
+      apache2 \
+      libapache2-mod-wsgi \
+      libpq-dev \
+      postgresql=9.4* \
+      python-pip \
+      python-dev \
+      sudo \
+      openssl \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 

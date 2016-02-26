@@ -21,6 +21,15 @@ except ImportError as err:
   err.message += ".  edctf_secret.py needs to be generated!"
   raise
 
+# import ctf database information
+try:
+  from edctf_databases import databases as CTF_DATABASES
+except ImportError as err:
+  with open(os.path.join(BASE_DIR, 'edctf/edctf_databases.py'), 'wb') as f:
+    f.write('databases = {}\n')
+  from edctf_databases import databases as CTF_DATABASES
+
+
 SECRET_KEY = edctf_secret.SECRET_KEY.decode('base64')
 DEBUG = True
 
@@ -81,8 +90,9 @@ DATABASES = {
     'PASSWORD': edctf_secret.DB_PASSWORD,
     'HOST': edctf_secret.DB_HOST,
     'PORT': edctf_secret.DB_PORT,
-  }
+  },
 }
+DATABASES.update(CTF_DATABASES)
 
 
 LANGUAGE_CODE = 'en-us'
