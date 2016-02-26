@@ -36,9 +36,6 @@
 .ctf-route {
   letter-spacing: .05em;
 }
-.dropdown:hover .dropdown-menu {
-    display: block;
-}
 
 /* style for login modal */
 .login-box-margin {
@@ -221,18 +218,4 @@ table{
   font-size: 36px;
   font-weight: 500;
   letter-spacing: .05em;
-}
-
-/* styles for admin pages */
-
-/* style for admin ctf modal */
-.admin-ctf-modal {
-  width: 25%;
-}
-
-.add-category {
-  height: 50px;
-  font-size: 28px;
-  letter-spacing: 0.05em;
-  vertical-align: middle !important;
 }

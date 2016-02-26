@@ -1,9 +1,0 @@
-from serializers import CategorySerializer
-from serializers import ChallengeSerializer
-from serializers import ChallengeboardSerializer
-from serializers import ChallengeTimestampSerializer
-from serializers import CtfSerializer
-from serializers import CtftimeSerializer
-from serializers import ScoreboardSerializer
-from serializers import TeamSerializer
-import admin

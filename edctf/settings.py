@@ -22,7 +22,7 @@ except ImportError as err:
   raise
 
 SECRET_KEY = edctf_secret.SECRET_KEY.decode('base64')
-DEBUG = True
+DEBUG = False
 
 if DEBUG:
   ALLOWED_HOSTS = []
@@ -97,7 +97,7 @@ STATICFILES_DIRS = ('/opt/edctf/edctf/static/',)
 if DEBUG:
   REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-      'edctf.api.permissions.EdctfPermission',
+      'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_PARSER_CLASSES': (
       'rest_framework.parsers.JSONParser',
@@ -106,7 +106,7 @@ if DEBUG:
 else:
   REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-      'edctf.api.permissions.EdctfPermission',
+      'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_RENDERER_CLASSES': (
       'rest_framework.renderers.JSONRenderer',

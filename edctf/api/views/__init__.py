@@ -1,10 +1,8 @@
-from category import CategoryView, CategoryViewDetail
-from challenge import ChallengeView, ChallengeViewDetail
-from challengeboard import ChallengeboardView
-from ctf import CtfView, CtfViewDetail
-from ctftime import CtftimeView
-from flag import FlagView, FlagViewDetail
-from scoreboard import ScoreboardView
-from session import SessionView
-from static import home, robots, crossdomain
-from team import TeamView
+from session import *
+from ctf import *
+from challengeboard import *
+from challenge import *
+from scoreboard import *
+from team import *
+from static import *
+from ctftime import *

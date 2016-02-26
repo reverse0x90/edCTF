@@ -9,8 +9,8 @@ def validate_ctf_iexact(value):
   so this is a workaround for now. 
   """
   # Import all current ctf models
-  from edctf.api.models import Ctf
-  if Ctf.objects.filter(name__iexact=value).exists():
+  from edctf.api.models import ctf
+  if ctf.objects.filter(name__iexact=value).exists():
     raise ValidationError('CTF already exists')
 
 def validate_category_iexact(value):
@@ -19,9 +19,9 @@ def validate_category_iexact(value):
   Django does not support unique case insensitive validation by default
   so this is a workaround for now. 
   """
-  # Import all current category models
-  from edctf.api.models import Category
-  if Category.objects.filter(name__iexact=value).exists():
+  # Import all current ctf models
+  from edctf.api.models import category
+  if category.objects.filter(name__iexact=value).exists():
     raise ValidationError('Category already exists')
 
 def validate_team_iexact(value):
@@ -30,9 +30,9 @@ def validate_team_iexact(value):
   Django does not support unique case insensitive validation by default
   so this is a workaround for now. 
   """
-  # Import all current team models
-  from edctf.api.models import Team
-  if Team.objects.filter(teamname__iexact=value).exists():
+  # Import all current ctf models
+  from edctf.api.models import team
+  if team.objects.filter(teamname__iexact=value).exists():
     raise ValidationError('Team already exists')
 
 def validate_no_xss(value):

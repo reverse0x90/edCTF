@@ -7,21 +7,11 @@ export default Ember.Component.extend({
   teamname: '',
   password: '',
   confirmPassword: '',
-  closeModal: function(){
-    var t = this;
-    return function(callback){
-      t.get('authController').set('errorMessage', '');
-      t.get('authController').set('errorFields', {});
-      t.set('modal.isRegister', false);
-      if(callback){
-        callback();
-      }
-    };
-  }.property('closeModal'),
+  classNames: ['login-box-margin'],
   setupKeys: function() {
     Ember.$('body').on('keyup.modal-dialog', (e) => {
       if (e.keyCode === 27) {
-        this.get('closeModal')();
+        this.set('modal.isRegister', false);
       }
     });
   }.on('didInsertElement'),
@@ -40,14 +30,19 @@ export default Ember.Component.extend({
       var confirmpassword = this.get('confirmPassword');
       this.sendAction('sendRegister', {'email': email, 'username': username, 'teamname': teamname, 'password': password, 'confirmPassword': confirmpassword });
     },
+    openRegisterModal: function() {
+      this.set('modal.isRegister', true);
+    },
     closeRegisterModal: function() {
-      this.get('closeModal')();
+      this.set('modal.isRegister', false);
+      this.get('authController').set('errorMessage', '');
+      this.get('authController').set('errorFields', {});
     },
     registerToLoginModal: function(){
-      var t = this;
-      this.get('closeModal')(function(){
-        t.set('modal.isLogin', true);
-      });
+      this.set('modal.isRegister', false);
+      this.set('modal.isLogin', true);
+      this.get('authController').set('errorMessage', '');
+      this.get('authController').set('errorFields', {});
     },
-  },
+  }
 });

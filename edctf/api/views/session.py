@@ -1,18 +1,18 @@
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 from rest_framework import status
 from ratelimit.decorators import ratelimit
-from edctf.api.permissions import SessionPermission
 
 
-class SessionView(APIView):
+class session_view(APIView):
   """
   Manages server side user sessions
   """
-  permission_classes = (SessionPermission,)
+  permission_classes = (AllowAny,)
 
-  def form_response(self, isauthenticated, user=None, error=''):
+  def form_response(self, isauthenticated, username='', email='', teamid='', error=''):
     """
     Returns the login form response.
     """
@@ -23,15 +23,10 @@ class SessionView(APIView):
     # If error during login, return the error else return login data.
     if error:
       data['error'] = error
-    
-    if user:
-      data['username'] = user.username
-      data['email'] = user.email
-      data['isadmin'] = user.is_superuser
-      try:
-        data['team'] = user.team.id
-      except:
-        data['team'] = None
+    else:
+      data['username'] = username
+      data['email'] = email
+      data['team'] = teamid
     return Response(data)
 
   def get(self, request, *args, **kwargs):
@@ -41,7 +36,11 @@ class SessionView(APIView):
     # If user is authenticated, return authentication data else
     # return a "not authenticated" error.
     if request.user.is_authenticated():
-      return self.form_response(True, user=request.user)
+      try:
+        return self.form_response(True, username=request.user.username, email=request.user.email, teamid=request.user.teams.id)
+      # This is temporary the django admin user doesn't have a team
+      except:
+        return self.form_response(True, username=request.user.username, email=request.user.email, teamid=None)
     return self.form_response(False, error='Not authenticated')
 
   @ratelimit(key='ip', rate='15/m')
@@ -75,7 +74,11 @@ class SessionView(APIView):
     if user is not None:
       if user.is_active:
         login(request, user)
-        return self.form_response(True, user=request.user)
+        try:
+          return self.form_response(True, username=request.user.username, email=request.user.email, teamid=request.user.teams.id)
+          # This is temporary the django admin user doesn't have a team.
+        except:
+          return self.form_response(True, username=request.user.username, email=request.user.email, teamid=None)
       return self.form_response(False, error='Acount disabled')
     return self.form_response(False, error='Invalid username or password')
 

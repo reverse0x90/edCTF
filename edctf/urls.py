@@ -8,6 +8,6 @@ urlpatterns = [
   url(r'^api/', include('edctf.api.urls')),
   url(r'^robots\.txt$', views.robots),
   url(r'^crossdomain\.xml$', views.crossdomain),
-  url(r'^djangoadmin/', include(admin.site.urls)),
+  url(r'^admin/', include(admin.site.urls)),
   url(r'^.*$', views.home),
 ]

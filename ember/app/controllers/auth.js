@@ -8,13 +8,12 @@ export default Ember.Controller.extend({
   errorFields:{},
   validator: Ember.inject.controller('validator'),
   whiteList: ['index', 'scoreboard', 'about', 'home', '404'],
-  blackList: [/challenges/, /admin/, /admin(\/.*)/],
+  blackList: ['challenges'],
   session: {
     'isAuthenticated': false,
     'username': null,
     'email': null,
     'team': null,
-    'isAdmin': false,
   },
   inwhiteList: function(string){
     if ( this.get('whiteList').indexOf(string)>=0 ) {
@@ -25,14 +24,12 @@ export default Ember.Controller.extend({
     }
   },
   inblackList: function(string){
-    var blackList = this.get('blackList');
-    for (var i=0; i < blackList.length; i++) {
-      var res = blackList[i].exec(string);
-      if(res){
-        return true;
-      }
+    if ( this.get('blackList').indexOf(string)>=0 ) {
+      return true;
     }
-    return false;
+    else {
+      return false;
+    }
   },
   checkLoggedIn: function(callback){
     if(this.get('session.isAuthenticated')){
@@ -49,7 +46,6 @@ export default Ember.Controller.extend({
             session.isAuthenticated = true;
             session.username = result.username;
             session.email = result.email;
-            session.isAdmin = result.isadmin;
             if(result.team === null){
               session.team = null;
             } else {
@@ -97,7 +93,7 @@ export default Ember.Controller.extend({
         beforeSend: function(xhr) {
           xhr.setRequestHeader("X-CSRFToken", Ember.$.cookie('csrftoken'));
         },
-        success: function (result){
+       success: function (result){
           var session = {};
           if(result.error){
             session.isAuthenticated = result.isauthenticated || false;
@@ -110,7 +106,6 @@ export default Ember.Controller.extend({
               session.isAuthenticated = true;
               session.username = result.username;
               session.email = result.email;
-              session.isAdmin = result.isadmin;
               if(result.team === null){
                 session.team = null;
               } else {
@@ -133,7 +128,7 @@ export default Ember.Controller.extend({
           validator.invalidLogin();
           t.set('errorMessage', validator.get('error'));
           t.set('errorFields', validator.get('errorFields'));
-          callback();
+          callback(false);
         },
       });
     }
@@ -192,7 +187,6 @@ export default Ember.Controller.extend({
               session.isAuthenticated = true;
               session.username = result.username;
               session.email = result.email;
-              session.isAdmin = result.isadmin;
               if(result.team === null){
                 session.team = null;
               } else {

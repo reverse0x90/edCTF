@@ -1,16 +1,16 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from edctf.api.models import Scoreboard, Team
-from edctf.api.permissions import ScoreboardPermission
-from edctf.api.serializers import ScoreboardSerializer, TeamSerializer
+from rest_framework.permissions import AllowAny
+from edctf.api.models import scoreboard, team
+from edctf.api.serializers import scoreboard_serializer, team_serializer
 import time
 
 
-class ScoreboardView(APIView):
+class scoreboard_view(APIView):
   """
   Manages scoreboard requests.
   """
-  permission_classes = (ScoreboardPermission,)
+  permission_classes = (AllowAny,)
 
   def get(self, request, id=None, format=None):
     """
@@ -21,12 +21,12 @@ class ScoreboardView(APIView):
     # return list of scoreboards.
     if id:
       # Retrieve and serialize the requested scoreboard data.
-      scoreboards = Scoreboard.objects.filter(id=id)
-      scoreboards_serializer = ScoreboardSerializer(scoreboards, many=True, context={'request': request})
+      scoreboards = scoreboard.objects.filter(id=id)
+      scoreboards_serializer = scoreboard_serializer(scoreboards, many=True, context={'request': request})
 
       # Retrieve and serialize the teams on the scoreboard.
-      teams = Team.objects.filter(scoreboard=scoreboards.first())
-      teams_serializer = TeamSerializer(teams, many=True, context={'request': request})
+      teams = team.objects.filter(scoreboard=scoreboards.first())
+      teams_serializer = team_serializer(teams, many=True, context={'request': request})
 
       # Return the serialized data.
       return Response({
@@ -35,8 +35,8 @@ class ScoreboardView(APIView):
       })
     else:
       # Retrieve and serialize the requested scoreboard data.
-      scoreboards = Scoreboard.objects.all()
-      scoreboards_serializer = ScoreboardSerializer(scoreboards, many=True, context={'request': request})
+      scoreboards = scoreboard.objects.all()
+      scoreboards_serializer = scoreboard_serializer(scoreboards, many=True, context={'request': request})
 
       # Return the serialized data.
       return Response({
