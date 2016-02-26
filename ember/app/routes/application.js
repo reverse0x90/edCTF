@@ -11,7 +11,7 @@ export default Ember.Route.extend({
     }
   },
   model: function(){
-    return this.store.query('ctf', {'live': true});
+    return this.store.query('ctf', {'online': true});
   },
   authCheck: function(transition){
     //Method to check user credentials and redirect if necessary
@@ -31,9 +31,10 @@ export default Ember.Route.extend({
     });
   },
   setupController: function (controller, model){
-    // Get first instance of live ctf
+    // Get first instance of online ctf
     controller.set('ctf', model.get('firstObject'));
     controller.set('authController', this.controllerFor('auth'));
+    controller.set('adminController', this.controllerFor('admin'));
     controller.set('validatorController', this.controllerFor('validator'));
     controller.set('modal', this.controllerFor('modal').get('modal'));
   },

@@ -1,0 +1,49 @@
+{{#modal-dialog close="closeAdminCtfModal" translucentOverlay=true container-class="admin-ctf-modal"}}
+  <h2 class="form-signin-heading" style="allign: center;">Create CTF</h2>
+  <table class="table" style="width:100%">
+    {{#if modal.errorMessage}}
+      <label class="control-label"><div class="alert alert-danger" style="padding: 5px; margin-bottom: 0px;" role="alert">{{modal.errorMessage}}</div></label> 
+    {{/if}}
+    <tbody>
+      <tr>
+        {{#if modal.errorFields.name}} 
+          <div class="form-group has-error">
+            <td>CTF Name:</td>
+            <td>
+              {{input id="ctfName" type="text" value=name enter="createCtf" class="form-control" placeholder="edCTF"}}
+            </td>
+          </div>
+        {{else}}
+          <div class="form-group">
+            <td>CTF Name:</td>
+            <td>
+              {{input id="ctfName" type="text" value=name enter="createCtf" class="form-control" placeholder="edCTF"}}
+            </td>
+          </div>
+        {{/if}}
+      </tr>
+      <tr>
+        {{#if modal.errorFields.online}} 
+          <div class="form-group has-error">
+            <td>Online:</td>
+            <td>
+              {{input type="checkbox" checked=online}}
+            </td>
+          </div>
+        {{else}}
+          <div class="form-group">
+            <td>Online:</td>
+            <td>
+              {{input type="checkbox" checked=online}}
+            </td>
+          </div>
+        {{/if}}
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="edctf-button">
+    <button type="button" class="btn btn-success btn-login-submit edctf-submit-button" {{action "createCtf"}}>Create</button>
+    <button type="button" class="btn btn-danger btn-cancel-action edctf-cancel-button" {{action "closeAdminCtfModal"}}>Cancel</button>
+  </div>
+{{/modal-dialog}}

@@ -3,7 +3,9 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   modal: {},
   authController: null,
+  adminController: null,
   validatorController: null,
+  adminSettings: {},
   ctf: null,
   session: {
     'isAuthenticated': false,
@@ -31,7 +33,10 @@ export default Ember.Controller.extend({
     // Update ctf model data every 30 seconds
     var interval = 1000 * 30 * 1;
     var modelReload = function() {
-      reloadModels(this.get('ctf'));
+      var online_ctf = this.get('ctf');
+      if (online_ctf){
+        reloadModels(online_ctf);
+      }
       Ember.run.later(this, modelReload, interval);
     };
     Ember.run.later(this, modelReload, interval);
@@ -64,10 +69,14 @@ export default Ember.Controller.extend({
       });
     },
     submitFlag: function(challengeid, flag, callback) {
-      var flagData = {'flag': flag};
+      var flagData = {
+        'flag': {
+          'key': flag,
+        },
+      };
       var namespace = this.get('store').adapterFor('application').namespace;
       Ember.$.ajax({
-        url: namespace+'/challenges/'+challengeid,
+        url: namespace+'/flags/'+challengeid,
         type: 'POST',
         data: JSON.stringify(flagData),
         dataType: 'json',
@@ -75,12 +84,20 @@ export default Ember.Controller.extend({
         crossDomain:false,
         processData: false,
         beforeSend: function(xhr) {
-          xhr.setRequestHeader("X-CSRFToken", Ember.$.cookie('csrftoken'));
+          xhr.setRequestHeader('X-CSRFToken', Ember.$.cookie('csrftoken'));
         },
         success: function (result){
-          callback(result.success, result.error);
-        }, error: function () {
-          callback(false, 'Something went wrong');
+          console.log(result);
+          callback(true, result);
+        }, error: function (err) {
+          var error = '';
+          if(err.responseJSON.errors){
+            error = err.responseJSON.errors.message;
+          }
+          if(!error){
+            error = 'Something went wrong';
+          }
+          callback(false, error);
         },
       });
     },

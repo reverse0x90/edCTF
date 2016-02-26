@@ -1,4 +1,4 @@
-<!-- Show current modal -->
+{{!-- Show current modal --}}
 {{#if modal.isLogin}}
   {{login-modal authController=authController modal=modal sendLogin="login"}}
 {{else}}
@@ -16,9 +16,28 @@
         {{else}}
           {{#if modal.isLogout}}
             {{logout-modal modal=modal logout="logout"}}
+          {{else}}
+            {{#if authController.session.isAdmin}}
+              {{#if modal.isAdminCtf}}
+                {{admin-ctf-modal modal=modal ctfController=adminController.ctfController}}
+              {{else}}
+                {{#if modal.isAdminChallenge}}
+                  {{admin-challenge-modal modal=modal challengeboardController=adminController.challengeboardController}}
+                {{else}}
+                  {{#if modal.isAdminTeam}}
+                    {{admin-team-modal modal=modal admin=adminController}}
+                  {{/if}}
+                {{/if}}
+              {{/if}}
+            {{/if}}
           {{/if}}
         {{/if}}
       {{/if}}
     {{/if}}
   {{/if}}
+{{/if}}
+
+{{!-- show confirmation modal --}}
+{{#if modal.isConfirm}}
+  {{confirm-modal modal=modal callback=modal.confirmCallback message=modal.confirmMesg}}
 {{/if}}

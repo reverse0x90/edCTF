@@ -1,22 +1,23 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from ratelimit.decorators import ratelimit
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
 from rest_framework import status
-from edctf.api.models import team, ctf
-from edctf.api.serializers import team_serializer
-from edctf.api.validators import *
-from ratelimit.decorators import ratelimit
+from edctf.api.models import Team, Ctf
+from edctf.api.permissions import TeamPermission
+from edctf.api.serializers import TeamSerializer
+from edctf.api.validators import validate_no_html, validate_no_xss
 
 
-class team_view(APIView):
+class TeamView(APIView):
   """
   Manages team requests.
   """
-  permission_classes = (AllowAny,)
+  permission_classes = (TeamPermission,)
 
-  def form_response(self, isauthenticated, username='', email='', teamid='', error='', errorfields={}):
+  def form_response(self, isauthenticated, user=None, error='', errorfields={}):
     """
     Returns the registration form response.
     """
@@ -27,12 +28,16 @@ class team_view(APIView):
     # If error during registration, return the error else return
     # the registration data.
     if error:
-        data['error'] = error
-        data['errorfields'] = errorfields
-    else:
-        data['username'] = username
-        data['email'] = email
-        data['team'] = teamid
+      data['error'] = error
+      data['errorfields'] = errorfields
+    if user:
+      data['username'] = user.username
+      data['email'] = user.email
+      data['isadmin'] = user.is_superuser
+      try:
+        data['team'] = user.teams.id
+      except:
+        data['team'] = None
     return Response(data)
 
   def get(self, request, id=None, format=None):
@@ -42,12 +47,12 @@ class team_view(APIView):
     # If a specific team is requested, return that team
     # else return all the teams.
     if id:
-      teams = team.objects.filter(id=id)
+      teams = Team.objects.filter(id=id)
     else:
-      teams = team.objects.all()
+      teams = Team.objects.all()
 
     # Serialize team object and return the serialized data.
-    teams_serializer = team_serializer(teams, many=True, context={'request': request})
+    teams_serializer = TeamSerializer(teams, many=True, context={'request': request})
 
     return Response({
       'teams': teams_serializer.data,
@@ -56,7 +61,7 @@ class team_view(APIView):
   @ratelimit(key='ip', rate='5/m')
   def post(self, request, *args, **kwargs):
     """
-    Registers a new team to live ctf
+    Registers a new team to online ctf
     """
     # If user is already authenticated, logout the user.
     was_limited = getattr(request, 'limited', False)
@@ -66,15 +71,15 @@ class team_view(APIView):
     if request.user.is_authenticated():
       logout(request)
 
-    # Get the current live ctf (aka the active ctf).
-    live_ctf = ctf.objects.filter(live=True)
+    # Get the current online ctf (aka the active ctf).
+    online_ctf = Ctf.objects.filter(online=True).first()
 
-    # Sanity check currently there can only be one live ctf at a time.
-    if len(live_ctf) < 1:
-      return Response(status=status.HTTP_404_NOT_FOUND)
+    # Sanity check currently there can only be one online ctf at a time.
+    if not online_ctf:
+      return Response({'error': 'no online ctf available'},status=status.HTTP_404_NOT_FOUND)
 
-    # Get the scoreboard object associated with the live ctf.
-    scoreboard = live_ctf[0].scoreboard.all()[0]
+    # Get the scoreboard object associated with the online ctf.
+    scoreboard = online_ctf.scoreboard
 
     # Save provided registration json data.
     team_data = request.data
@@ -104,7 +109,7 @@ class team_view(APIView):
         return self.form_response(False, error=e.message, errorfields={'email': True})
 
     # Check teamname field
-    check = team.objects.filter(teamname__iexact=teamname)
+    check = Team.objects.filter(teamname__iexact=teamname)
     if len(check):
       return self.form_response(False, error='Team name is taken', errorfields={'teamname': True})
     else:
@@ -144,14 +149,14 @@ class team_view(APIView):
 
     # Everything was good! Create the new user
     new_user = User.objects.create_user(username, email, password)
-    new_team = team.objects.create(scoreboard=scoreboard, teamname=teamname, user=new_user)
+    new_team = Team.objects.create(scoreboard=scoreboard, teamname=teamname, user=new_user)
 
     # Registration was successful! Now login the new user.
     user = authenticate(username=username, password=password)
     if user is not None:
       if user.is_active:
         login(request, user)
-        return self.form_response(True, username=username, email=email, teamid=new_team.id)
+        return self.form_response(True, user)
       return self.form_response(False, error='User account is disabled')
     return self.form_response(False, error='Server error')
 
