@@ -81,16 +81,16 @@ class TeamView(APIView):
     check = teams.filter(teamname__iexact=teamname)
     if len(check):
       return registration_response(False, error='Team name is taken', errorfields={'teamname': True})
+    if len(teamname) > 30:
+      return registration_response(False, error='Teamname too long, 30 characters max')
 
     check = User.objects.filter(username__iexact=enc_username)
     if len(check):
       return registration_response(False, error='Username is taken', errorfields={'username': True})
-
-    # check for username length, since django default is 30
     if len(username) > 25:
       return registration_response(False, error='Username too long, 25 characters max')
 
-    # Create temp user to validate input.
+    # Create temp user to validate input
     temp_user = User(username=enc_username, email=email, password=password)
     try:
       temp_user.full_clean()
@@ -106,7 +106,7 @@ class TeamView(APIView):
 
     # Everything was good! Create the new user
     new_user = User.objects.create_user(enc_username, email, password)
-    new_team = Team.objects.create(scoreboard=scoreboard, teamname=teamname, user=new_user, email=email)
+    new_team = Team.objects.create(scoreboard=scoreboard, teamname=teamname, user=new_user, email=email, username=username)
 
     # Registration was successful! Now login the new user.
     user = authenticate(username=enc_username, password=password)
@@ -173,6 +173,7 @@ class TeamViewDetail(APIView):
     # if non- admin do email-authentication tokens
     user.email = email
     user.password = password
+    team.email = email
 
     try:
       user.save()

@@ -10,7 +10,8 @@ class Team(models.Model):
   Team model class.
   """
   scoreboard = models.ForeignKey('Scoreboard', on_delete=models.CASCADE, related_name='teams', related_query_name='team')
-  teamname = models.CharField(max_length=60)
+  teamname = models.CharField(max_length=30)
+  username = models.CharField(max_length=30)
   email = models.EmailField()
   points = models.IntegerField(default=0, validators=[validate_positive])
   correctflags = models.IntegerField(default=0, validators=[validate_positive])
@@ -35,23 +36,6 @@ class Team(models.Model):
     self.update_points()
     self.update_last_timestamp()
     super(Team, self).save(*args, **kwargs)
-
-  def update_points(self):
-    """
-    Updates the team's points.  Is not saved.
-    """
-    if self.id:
-      points = 0
-      solved = self.solved.all()
-      for challenge in solved:
-        points += challenge.points
-      self.points = points
-
-  def update_last_timestamp(self):
-    if self.id:
-      timestamp = self.challenge_timestamps.order_by('-created').first()
-      if timestamp:
-        self.last_timestamp = timestamp.created
 
   def solves(self):
     challenge_timestamps = []
@@ -82,3 +66,19 @@ class Team(models.Model):
     """
     return self.points
 
+  def update_points(self):
+    """
+    Updates the team's points.  Is not saved.
+    """
+    if self.id:
+      points = 0
+      solved = self.solved.all()
+      for challenge in solved:
+        points += challenge.points
+      self.points = points
+
+  def update_last_timestamp(self):
+    if self.id:
+      timestamp = self.challenge_timestamps.order_by('-created').first()
+      if timestamp:
+        self.last_timestamp = timestamp.created
