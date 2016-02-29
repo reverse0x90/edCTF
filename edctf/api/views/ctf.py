@@ -56,6 +56,17 @@ class CtfView(APIView):
     if Ctf.objects.filter(name__iexact=name).exists():
       return error_response('CTF name already taken', errorfields={'name': True})
 
+    # disable all other online ctfs
+    if online:
+      online_ctfs = Ctf.objects.exclude(id=ctf.id).filter(online=True)
+      for ctf in online_ctfs:
+        if ctf.online:
+          ctf.online = False
+          for team in ctf.scoreboard.teams:
+            team.user.is_active = False
+            team.user.save()
+          ctf.save()
+
     try:
       ctf = Ctf.objects.create(name=name, online=online)
     except IntegrityError:
@@ -65,17 +76,12 @@ class CtfView(APIView):
 
     ctf.challengeboard = challengeboard
     ctf.scoreboard = scoreboard
-    ctf.save()
+    try:
+      ctf.save()
+    except IntegrityError:
+      return error_response('CTF name already taken', errorfields={'name': True})
 
     serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
-
-    # disable all other online ctfs
-    if online:
-      online_ctfs = Ctf.objects.exclude(id=ctf.id).filter(online=True)
-      for ctf in online_ctfs:
-        ctf.online = False
-        ctf.save()
-
     return Response({
       'ctf': serialized_ctf.data,
     })
@@ -128,10 +134,27 @@ class CtfViewDetail(APIView):
     name = str(ctf_data['name'])
     if ctf.name.lower() != name.lower() and Ctf.objects.filter(name__iexact=name).exists():
       return error_response('CTF name already taken', errorfields={'name': True})
+    online = True if ctf_data['online'] else False
+
+    # if ctf is going offline, deactivate users
+    if ctf.online and not online:
+      for team in ctf.scoreboard.teams:
+        team.user.is_active = False
+        team.user.save()
+
+    # disable all other online ctfs
+    if online:
+      online_ctfs = Ctf.objects.exclude(id=ctf.id).filter(online=True)
+      for _ctf in online_ctfs:
+        if _ctf.online:
+          _ctf.online = False
+          for team in _ctf.scoreboard.teams:
+            team.user.is_active = False
+            team.user.save()
+          _ctf.save()
 
     ctf.name = name
-    ctf.online = True if ctf_data['online'] else False
-
+    ctf.online = online
     try:
       ctf.save()
     except IntegrityError:
