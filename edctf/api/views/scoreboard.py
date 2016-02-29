@@ -44,14 +44,14 @@ class ScoreboardViewDetail(APIView):
       scoreboard = Scoreboard.objects.get(id=id)
     except ObjectDoesNotExist:
       return error_response('Challengeboard not found')
-    teams = scoreboard.teams
-
-    # if admin, do server side sorting
 
     if request.user.is_staff:
+      teams = scoreboard.teams
+      # do server side sorting
       serialized_scoreboard = AdminScoreboardSerializer(scoreboard, many=False, context={'request': request})
       serialized_teams = AdminTeamSerializer(teams, many=True, context={'request': request})
     else:
+      teams = scoreboard.teams.filter(hidden=False)
       serialized_scoreboard = ScoreboardSerializer(scoreboard, many=False, context={'request': request})
       serialized_teams = TeamSerializer(teams, many=True, context={'request': request})
     return Response({

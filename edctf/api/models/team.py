@@ -19,6 +19,7 @@ class Team(models.Model):
   user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='team')
   solved = models.ManyToManyField('Challenge', blank=True, related_name='solved', through='ChallengeTimestamp')
   last_timestamp = models.DateTimeField(default=datetime.fromtimestamp(0))
+  hidden = models.BooleanField(default=False)
   created = models.DateTimeField(auto_now_add=True)
 
   class Meta:
@@ -51,6 +52,9 @@ class Team(models.Model):
     if not timestamp:
       return 0
     return int(timestamp.created.strftime('%s'))
+
+  def ctfname(self):
+    return self.scoreboard.ctfs.name
 
   def team(self):
     """

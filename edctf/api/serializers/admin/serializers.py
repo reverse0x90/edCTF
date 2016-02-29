@@ -40,4 +40,4 @@ class ScoreboardSerializer(ModelSerializer):
 class TeamSerializer(ModelSerializer):
   class Meta:
     model = Team
-    fields = ('id', 'teamname', 'points', 'correctflags', 'wrongflags', 'solves', 'lasttimestamp', 'username', 'email')
+    fields = ('id', 'teamname', 'points', 'correctflags', 'wrongflags', 'solves', 'lasttimestamp', 'username', 'email', 'hidden')

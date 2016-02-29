@@ -1,2 +1,50 @@
-View scoreboard here (shows hidden teams, more data)
-<br/>
+{{!-- View scoreboard here (shows hidden teams, more data) --}}
+<div class="container">
+  <div class="dropdown pull-right">
+      Selected CTF: 
+      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        {{#if selectedCtf}}
+          {{selectedCtf.name}}
+        {{else}}
+          Pick a CTF
+        {{/if}}
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        {{#each sortedCtfs as |ctf|}}
+          {{#unless (if-equal ctf.id selectedCtf.id)}}
+            <li {{action "changeSelectedCtf" ctf}}><a>{{ctf.name}}</a></li>
+          {{/unless}}
+        {{/each}}
+      </ul>
+    <br/>
+  </div>
+  {{#if selectedCtf}}
+    Show hidden teams: {{input type="checkbox" name="showHidden" checked=showHidden}}
+    <div class="challenges-title">Scoreboard for {{selectedCtf.name}}</div>
+    <div>
+      <table class="table table-hover table-condensed scoreboard-table" style="width:100%">
+        <thead>
+          <tr>
+            <th class="scoreboard-keys">Rank</th>
+            <th class="scoreboard-keys">Team</th>
+            <th class="scoreboard-keys">Points</th>
+            <th class="scoreboard-keys">Challenges Solved</th>
+            <th class="scoreboard-keys">Hidden</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each rankedTeams as |team|}}
+            <tr {{action 'openTeamView' team}} class="cursor-pointer scoreboard-values">
+              <td>{{team.position}}</td>
+              <td>{{team.teamname}}</td>
+              <td>{{team.points}}</td>
+              <td>{{team.numsolved}}</td>
+              <td>{{team.hidden}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  {{/if}}
+</div>

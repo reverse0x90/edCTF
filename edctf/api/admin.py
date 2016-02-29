@@ -47,7 +47,7 @@ class TeamAdmin(admin.ModelAdmin):
   Sets the display settings for the team model in the django admin
   interface.
   """
-  list_display = ('teamname', 'points')
+  list_display = ('teamname', 'points', 'ctfname')
 
 
 class ChallengeTimestampAdmin(admin.ModelAdmin):

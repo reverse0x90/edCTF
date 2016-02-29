@@ -174,6 +174,7 @@ class TeamViewDetail(APIView):
     user.email = email
     user.password = password
     team.email = email
+    #team.is_hidden = hidden
 
     try:
       user.save()

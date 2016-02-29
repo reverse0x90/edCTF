@@ -62,7 +62,7 @@ class CtfView(APIView):
       for _ctf in online_ctfs:
         if _ctf.online:
           _ctf.online = False
-          for team in ctf.scoreboard.teams:
+          for team in _ctf.scoreboard.teams.all():
             team.user.is_active = False
             team.user.save()
           _ctf.save()
