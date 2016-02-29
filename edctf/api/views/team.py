@@ -1,14 +1,17 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.core.validators import EmailValidator
 from ratelimit.decorators import ratelimit
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from response import error_response
 from edctf.api.models import Team, Ctf
 from edctf.api.permissions import TeamPermission
 from edctf.api.serializers import TeamSerializer
 from edctf.api.validators import validate_no_html, validate_no_xss
+from edctf.api.views import ctf_encode
 
 
 class TeamView(APIView):
@@ -17,7 +20,7 @@ class TeamView(APIView):
   """
   permission_classes = (TeamPermission,)
 
-  def form_response(self, isauthenticated, user=None, error='', errorfields={}):
+  def form_response(self, isauthenticated, user=None, username='', error='', errorfields={}):
     """
     Returns the registration form response.
     """
@@ -31,7 +34,7 @@ class TeamView(APIView):
       data['error'] = error
       data['errorfields'] = errorfields
     if user:
-      data['username'] = user.username
+      data['username'] = username or user.username
       data['email'] = user.email
       data['isadmin'] = user.is_superuser
       try:
@@ -72,72 +75,56 @@ class TeamView(APIView):
       logout(request)
 
     # Get the current online ctf (aka the active ctf).
-    online_ctf = Ctf.objects.filter(online=True).first()
-
-    # Sanity check currently there can only be one online ctf at a time.
-    if not online_ctf:
-      return Response({'error': 'no online ctf available'},status=status.HTTP_404_NOT_FOUND)
+    try:
+      ctf = Ctf.objects.get(online=True)
+    except:
+      return self.form_response(False, error='No online CTF, cannot register')
 
     # Get the scoreboard object associated with the online ctf.
-    scoreboard = online_ctf.scoreboard
+    scoreboard = ctf.scoreboard
+    teams = scoreboard.teams
 
     # Save provided registration json data.
     team_data = request.data
 
-    # Sanity check the json data to make sure all required parameters
-    # are included.
     if not ('username' in team_data and 'teamname' in team_data and 'email' in team_data and 'password' in team_data):
-      return Response(status=status.HTTP_400_BAD_REQUEST)
+      return self.form_response(False, error='Invalid parameters')
 
-    # Assign registration data to local variables.
+    username = team_data['username']
     teamname = team_data['teamname']
     email = team_data['email']
-    username = team_data['username']
     password = team_data['password']
+    enc_username = ctf_encode(team_data['username'])
+    if not enc_username:
+      return self.form_response(False, error='No online CTF, cannot register')
 
-    # Make validation checks on user input.
-    # This is a hacky way to make these validation checks, but it should work for now.
-    # Check email field
-    check = User.objects.filter(email__iexact=email)
+    check = teams.filter(email__iexact=email)
     if len(check):
       return self.form_response(False, error='Email is taken', errorfields={'email': True})
     else:
       try:
-        validate_no_html(email)
-        validate_no_xss(email)
+        EmailValidator(email)
       except ValidationError as e:
         return self.form_response(False, error=e.message, errorfields={'email': True})
 
-    # Check teamname field
-    check = Team.objects.filter(teamname__iexact=teamname)
+    check = teams.filter(teamname__iexact=teamname)
     if len(check):
       return self.form_response(False, error='Team name is taken', errorfields={'teamname': True})
-    else:
-      try:
-        validate_no_html(teamname)
-        validate_no_xss(teamname)
-      except ValidationError as e:
-        return self.form_response(False, error=e.message, errorfields={'teamname': True})
 
-    # Check teamname field
-    check = User.objects.filter(username__iexact=username)
+    check = User.objects.filter(username__iexact=enc_username)
     if len(check):
       return self.form_response(False, error='Username is taken', errorfields={'username': True})
-    else:
-      try:
-        validate_no_html(username)
-        validate_no_xss(username)
-      except ValidationError as e:
-        return self.form_response(False, error=e.message, errorfields={'username': True})
+
+    # check for username length, since django default is 30
+    if len(username) > 25:
+      return self.form_response(False, error='Username too long, 25 characters max')
 
     # Create temp user to validate input.
-    temp_user = User(username=username, email=email, password=password)
-
-    # Verify user model is valid, if it is add the user and team to the
-    # database else return an error message.
+    temp_user = User(username=enc_username, email=email, password=password)
     try:
       temp_user.full_clean()
     except ValidationError as e:
+      raise
       errordict = {}
       errorstr = ''
       # Get error keys
@@ -148,17 +135,15 @@ class TeamView(APIView):
       return self.form_response(False, error=errorstr, errorfields=errordict)
 
     # Everything was good! Create the new user
-    new_user = User.objects.create_user(username, email, password)
-    new_team = Team.objects.create(scoreboard=scoreboard, teamname=teamname, user=new_user)
+    new_user = User.objects.create_user(enc_username, email, password)
+    new_team = Team.objects.create(scoreboard=scoreboard, teamname=teamname, user=new_user, email=email)
 
     # Registration was successful! Now login the new user.
-    user = authenticate(username=username, password=password)
-    if user is not None:
-      if user.is_active:
-        login(request, user)
-        return self.form_response(True, user)
-      return self.form_response(False, error='User account is disabled')
-    return self.form_response(False, error='Server error')
+    user = authenticate(username=enc_username, password=password)
+    if user is not None and user.is_active:
+      login(request, user)
+      return self.form_response(True, user, username=username)
+    return self.form_response(False, error='Error with registration')
 
   def put(self, request, *args, **kwargs):
     """

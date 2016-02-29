@@ -10,7 +10,8 @@ class Team(models.Model):
   Team model class.
   """
   scoreboard = models.ForeignKey('Scoreboard', on_delete=models.CASCADE, related_name='teams', related_query_name='team')
-  teamname = models.CharField(max_length=60, unique=True, validators=[validate_no_xss, validate_no_html, validate_team_iexact])
+  teamname = models.CharField(max_length=60)
+  email = models.EmailField()
   points = models.IntegerField(default=0, validators=[validate_positive])
   correctflags = models.IntegerField(default=0, validators=[validate_positive])
   wrongflags = models.IntegerField(default=0, validators=[validate_positive])
