@@ -8,7 +8,7 @@ from edctf.api.permissions import CtftimePermission
 from edctf.api.serializers import CtftimeSerializer
 
 
-class CtftimeView(APIView):
+class CtftimeViewDetail(APIView):
   """
   Returns with ctftime scoreboard.
     https://ctftime.org/json-scoreboard-feed

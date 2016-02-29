@@ -133,6 +133,15 @@ class TeamPermission(EdctfPermission):
   Permissions for the team route
   """
   PUBLIC_METHODS = ['GET', 'POST']
+  AUTHENTICATED_METHODS = []
+  ADMIN_METHODS = []
+
+
+class TeamPermissionDetail(EdctfPermission):
+  """
+  Permissions for the team route
+  """
+  PUBLIC_METHODS = ['GET']
   AUTHENTICATED_METHODS = ['PUT']
   ADMIN_METHODS = ['DELETE']
 

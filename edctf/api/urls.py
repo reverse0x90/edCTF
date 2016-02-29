@@ -25,8 +25,8 @@ urlpatterns += [
   url(r'^challenges/(?P<id>\d+)/?$', views.ChallengeViewDetail.as_view()),
   url(r'^challengeboards/(?P<id>\d+)/?$', views.ChallengeboardViewDetail.as_view()),
   url(r'^ctfs/(?P<id>\d+)/?$', views.CtfViewDetail.as_view()),
-  url(r'^ctftime/(?P<ctf_id>\d+)/?$', views.CtftimeView.as_view()),
+  url(r'^ctftime/(?P<ctf_id>\d+)/?$', views.CtftimeViewDetail.as_view()),
   url(r'^flags/(?P<challenge_id>\d+)/?$', views.FlagViewDetail.as_view()),
-  url(r'^scoreboards/(?P<id>\d+)/?$', views.ScoreboardView.as_view()),
-  url(r'^teams/(?P<id>\d+)/?$', views.TeamView.as_view()),
+  url(r'^scoreboards/(?P<id>\d+)/?$', views.ScoreboardViewDetail.as_view()),
+  url(r'^teams/(?P<id>\d+)/?$', views.TeamViewDetail.as_view()),
 ]

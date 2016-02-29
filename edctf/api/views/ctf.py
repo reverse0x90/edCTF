@@ -58,14 +58,14 @@ class CtfView(APIView):
 
     # disable all other online ctfs
     if online:
-      online_ctfs = Ctf.objects.exclude(id=ctf.id).filter(online=True)
-      for ctf in online_ctfs:
-        if ctf.online:
-          ctf.online = False
+      online_ctfs = Ctf.objects.filter(online=True)
+      for _ctf in online_ctfs:
+        if _ctf.online:
+          _ctf.online = False
           for team in ctf.scoreboard.teams:
             team.user.is_active = False
             team.user.save()
-          ctf.save()
+          _ctf.save()
 
     try:
       ctf = Ctf.objects.create(name=name, online=online)

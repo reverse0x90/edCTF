@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from edctf.api.models import Challenge, ChallengeTimestamp
 from edctf.api.permissions import FlagPermission, FlagPermissionDetail
-from re import compile
 from response import error_response, success_response
+import re
 
 
 def update_solved(team, challenge):
@@ -33,7 +33,7 @@ def check_flag(team, challenge, flag):
   # If the team has not solved the challenge, check the flag else the team
   # has already solved the challenge so return an error message.
   if not res:
-    correct = compile(challenge.flag).match(challenge.flag)
+    correct = re.compile(r'^{flag}$'.format(flag=challenge.flag)).match(flag)
     #correct = challenge.flag == flag
     
     # If the user input the correct flag, update the team's correct flag

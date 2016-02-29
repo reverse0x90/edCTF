@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from edctf.api.models import Challengeboard, Category, Challenge
@@ -46,17 +47,17 @@ class ChallengeboardViewDetail(APIView):
     except ObjectDoesNotExist:
       return error_response('Challengeboard not found')
 
-    categories = challengeboard.categories
+    categories = challengeboard.categories.all()
     challenges = []
     for cat in categories:
-      challenges += categories.challenges
+      challenges += cat.challenges.all()
 
     if request.user.is_staff:
-      serialized_challengeboards = AdminChallengeboardSerializer(challengeboard, many=True, context={'request': request})
+      serialized_challengeboards = AdminChallengeboardSerializer(challengeboard, many=False, context={'request': request})
       serialized_categories = AdminCategorySerializer(categories, many=True, context={'request': request})
       serialized_challenges = AdminChallengeSerializer(challenges, many=True, context={'request': request})
     else:
-      serialized_challengeboards = ChallengeboardSerializer(challengeboard, many=True, context={'request': request})
+      serialized_challengeboards = ChallengeboardSerializer(challengeboard, many=False, context={'request': request})
       serialized_categories = CategorySerializer(categories, many=True, context={'request': request})
       serialized_challenges = ChallengeSerializer(challenges, many=True, context={'request': request})
     return Response({

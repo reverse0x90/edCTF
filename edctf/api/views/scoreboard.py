@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from edctf.api.models import Scoreboard, Team
@@ -45,9 +46,15 @@ class ScoreboardViewDetail(APIView):
       return error_response('Challengeboard not found')
     teams = scoreboard.teams
 
-    serialized_scoreboard = ScoreboardSerializer(scoreboard, many=True, context={'request': request})
-    serialized_teams = TeamSerializer(teams, many=True, context={'request': request})
+    # if admin, do server side sorting
+
+    if request.user.is_staff:
+      serialized_scoreboard = AdminScoreboardSerializer(scoreboard, many=False, context={'request': request})
+      serialized_teams = AdminTeamSerializer(teams, many=True, context={'request': request})
+    else:
+      serialized_scoreboard = ScoreboardSerializer(scoreboard, many=False, context={'request': request})
+      serialized_teams = TeamSerializer(teams, many=True, context={'request': request})
     return Response({
       'scoreboards': serialized_scoreboard.data,
-      'teams': teams_serializer.data,
+      'teams': serialized_teams.data,
     })
