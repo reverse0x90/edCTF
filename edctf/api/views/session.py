@@ -67,7 +67,7 @@ class SessionView(APIView):
     # Sanity check the json data to make sure all required parameters
     # are included.
     if not ('username' in login_data and 'password' in login_data):
-      return Response(status=status.HTTP_400_BAD_REQUEST)
+      return self.form_response(False, error='Invalid parameters')
 
     # Authenticate the user.
     username = login_data['username']
