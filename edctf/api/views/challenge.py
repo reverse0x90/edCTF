@@ -63,8 +63,16 @@ class ChallengeView(APIView):
       return error_response('Invalid challenge points', errorfields={'points': True})
 
     title = str(challenge_data['title'])
+    if len(title) > 200:
+      return error_response('Title greater than 200 characters', errorfields={'title': True})
+
     description = str(challenge_data['description'])
+    if len(title) > 10000:
+      return error_response('Description greater than 10000 characters', errorfields={'title': True})
+
     flag = str(challenge_data['flag'])
+    if len(title) > 100:
+      return error_response('Flag greater than 100 characters', errorfields={'title': True})
 
     challenge = Challenge.objects.create(category=category, title=title, points=points, description=description, flag=flag)
     if request.user.is_staff:
@@ -128,15 +136,15 @@ class ChallengeViewDetail(APIView):
 
     title = str(challenge_data['title'])
     if len(title) > 200:
-      return error_response('Challenge title too long (>200)', errorfields={'title': True})
+      return error_response('Title greater than 200 characters', errorfields={'title': True})
 
     description = str(challenge_data['description'])
     if len(description) > 10000:
-      return error_response('Challenge description too long (>10000)', errorfields={'description': True})
+      return error_response('Description greater than 10000 characters', errorfields={'description': True})
 
     flag = str(challenge_data['flag'])
     if len(flag) > 100:
-      return error_response('Challenge flag too long (>100)', errorfields={'flag': True})
+      return error_response('Flag greater than 100 characters', errorfields={'flag': True})
 
     challenge.title = title
     challenge.points = points
@@ -160,9 +168,6 @@ class ChallengeViewDetail(APIView):
       challenge = Challenge.objects.get(id=id)
     except ObjectDoesNotExist:
       return error_response('Challenge not found')
-
     challenge.delete()
-
-    # return 200 and empty object on success
     return Response({})
 

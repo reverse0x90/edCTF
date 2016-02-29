@@ -43,6 +43,15 @@ class ChallengeboardPermission(EdctfPermission):
   Permissions for the challengeboard route
   """
   PUBLIC_METHODS = []
+  AUTHENTICATED_METHODS = []
+  ADMIN_METHODS = ['GET']
+
+
+class ChallengeboardPermissionDetail(EdctfPermission):
+  """
+  Permissions for the challengeboard route
+  """
+  PUBLIC_METHODS = []
   AUTHENTICATED_METHODS = ['GET']
   ADMIN_METHODS = []
 

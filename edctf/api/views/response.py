@@ -12,3 +12,13 @@ def error_response(error, errorfields={}):
       'fields': errorfields,
     },
   }, status=status.HTTP_400_BAD_REQUEST)
+
+def success_response(self, message):
+    """
+    Handles successful message responses
+    """
+    return Response({
+      'success': {
+        'message': message,
+      },
+    })

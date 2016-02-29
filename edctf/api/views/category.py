@@ -1,7 +1,8 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-from edctf.api.models import Challengeboard, Category
+from edctf.api.models import Ctf, Challengeboard, Category
 from edctf.api.serializers import CategorySerializer
+from edctf.api.serializers.admin import CategorySerializer as AdminCategorySerializer
 from edctf.api.permissions import CategoryPermission, CategoryPermissionDetail
 from response import error_response
 from rest_framework.views import APIView
@@ -20,7 +21,11 @@ class CategoryView(APIView):
     Gets all categories
     """
     categories = Category.objects.all()
-    serialized_categories = CategorySerializer(categories, many=True, context={'request': request})
+
+    if request.user.is_staff:
+      serialized_categories = AdminCategorySerializer(categories, many=True, context={'request': request})
+    else:
+      serialized_categories = CategorySerializer(categories, many=True, context={'request': request})
     return Response({
       'categories': serialized_categories.data,
     })
@@ -52,15 +57,15 @@ class CategoryView(APIView):
       return error_response('Challengeboard not found', errorfields={'challengeboard': True})
 
     name = str(category_data['name'])
-    if Category.objects.filter(name__iexact=name).exists():
+    if challengeboard.categories.filter(name__iexact=name).exists():
       return error_response('Category name already taken', errorfields={'name': True})
 
     try:
       category = Category.objects.create(name=name, challengeboard=challengeboard)
+      category.save()
     except IntegrityError:
       return error_response('Category name already taken', errorfields={'name': True})
 
-    category.save()
     serialized_category = CategorySerializer(category, many=False, context={'request': request})
     return Response({
       'category': serialized_category.data,
@@ -82,7 +87,10 @@ class CategoryViewDetail(APIView):
     except ObjectDoesNotExist:
       return error_response('Category not found')
 
-    serialized_category = CategorySerializer(category, many=False, context={'request': request})
+    if request.user.is_staff:
+      serialized_category = AdminCategorySerializer(category, many=False, context={'request': request})
+    else:
+      serialized_category = CategorySerializer(category, many=False, context={'request': request})
     return Response({
       'category': serialized_category.data,
     })
@@ -110,6 +118,9 @@ class CategoryViewDetail(APIView):
     if category.name != name and Category.objects.filter(name__iexact=name).exists():
       return error_response('Category name already taken', errorfields={'name': True})
 
+    if category.challengeboard.categories.exclude(id=category.id).filter(name__iexact=name).exists():
+      return error_response('Category name already taken', errorfields={'name': True})
+
     category.name = name;
     try:
       category.save()
@@ -129,8 +140,5 @@ class CategoryViewDetail(APIView):
       category = Category.objects.get(id=id)
     except ObjectDoesNotExist:
       return error_response('Category not found')
-
     category.delete()
-
-    # return 200 and empty object on success
     return Response({})

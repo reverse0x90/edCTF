@@ -1,4 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
+from response import error_response
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -14,16 +15,16 @@ class CtftimeView(APIView):
   """
   permission_classes = (CtftimePermission,)
   
-  def get(self, request, ctf_id, format=None):
+  def get(self, request, id, format=None):
     """
     Gets minimal ctftime scoreboard according to:
       https://ctftime.org/json-scoreboard-feed
     Requires ctf id.
     """
     try:
-      ctf = Ctf.objects.get(id=ctf_id)
+      ctf = Ctf.objects.get(id=id)
     except ObjectDoesNotExist:
-      return Response(status=status.HTTP_404_NOT_FOUND)
+      return error_response('CTF not found')
 
     scoreboard = ctf.scoreboard
     teams = scoreboard.teams.order_by('-points','-last_timestamp', 'created')

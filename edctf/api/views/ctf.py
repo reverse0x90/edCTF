@@ -176,11 +176,8 @@ class CtfViewDetail(APIView):
       ctf = Ctf.objects.get(id=id)
     except ObjectDoesNotExist:
       return error_response('CTF not found')
-
     if ctf.online:
       return error_response('Cannot delete a online ctf')
 
     ctf.delete()
-
-    # return 200 and empty object on success
     return Response({})
