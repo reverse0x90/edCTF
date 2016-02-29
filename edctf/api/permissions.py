@@ -114,9 +114,18 @@ class ScoreboardPermission(EdctfPermission):
   """
   Permissions for the scoreboard route
   """
+  PUBLIC_METHODS = []
+  AUTHENTICATED_METHODS = []
+  ADMIN_METHODS = ['GET']
+
+
+class ScoreboardPermissionDetail(EdctfPermission):
+  """
+  Permissions for the scoreboard route
+  """
   PUBLIC_METHODS = ['GET']
   AUTHENTICATED_METHODS = []
-  ADMIN_METHODS = ['POST', 'PUT', 'DELETE']
+  ADMIN_METHODS = []
 
 
 class TeamPermission(EdctfPermission):

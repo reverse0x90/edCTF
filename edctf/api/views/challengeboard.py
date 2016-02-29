@@ -15,7 +15,7 @@ class ChallengeboardView(APIView):
   """
   permission_classes = (ChallengeboardPermission,)
 
-  def get(self, request, id=None, format=None):
+  def get(self, request, format=None):
     """
     Gets all challengeboards
     """

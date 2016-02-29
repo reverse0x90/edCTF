@@ -1,8 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from edctf.api.models import Scoreboard, Team
-from edctf.api.permissions import ScoreboardPermission
+from edctf.api.permissions import ScoreboardPermission, ScoreboardPermissionDetail
 from edctf.api.serializers import ScoreboardSerializer, TeamSerializer
+from edctf.api.serializers.admin import ScoreboardSerializer as AdminScoreboardSerializer
+from edctf.api.serializers.admin import TeamSerializer as AdminTeamSerializer
 import time
 
 
@@ -12,33 +14,40 @@ class ScoreboardView(APIView):
   """
   permission_classes = (ScoreboardPermission,)
 
-  def get(self, request, id=None, format=None):
+  def get(self, request, format=None):
     """
-    Get all scoreboards or gets an individual scoreboard via
-    scoreboards/:id
+    Get all scoreboards
     """
-    # If scoreboard id was requested, return that scoreboard else
-    # return list of scoreboards.
-    if id:
-      # Retrieve and serialize the requested scoreboard data.
-      scoreboards = Scoreboard.objects.filter(id=id)
-      scoreboards_serializer = ScoreboardSerializer(scoreboards, many=True, context={'request': request})
-
-      # Retrieve and serialize the teams on the scoreboard.
-      teams = Team.objects.filter(scoreboard=scoreboards.first())
-      teams_serializer = TeamSerializer(teams, many=True, context={'request': request})
-
-      # Return the serialized data.
-      return Response({
-        'scoreboards': scoreboards_serializer.data,
-        'teams': teams_serializer.data,
-      })
+    scoreboards = Scoreboard.objects.all()
+    if request.user.is_staff:
+      serialized_scoreboards = AdminScoreboardSerializer(scoreboards, many=True, context={'request': request})
     else:
-      # Retrieve and serialize the requested scoreboard data.
-      scoreboards = Scoreboard.objects.all()
-      scoreboards_serializer = ScoreboardSerializer(scoreboards, many=True, context={'request': request})
+      serialized_scoreboards = ScoreboardSerializer(scoreboards, many=True, context={'request': request})
+    return Response({
+      'scoreboards': serialized_scoreboards.data,
+    })
 
-      # Return the serialized data.
-      return Response({
-        'scoreboards': scoreboards_serializer.data,
-      })
+
+
+class ScoreboardViewDetail(APIView):
+  """
+  Manages scoreboard requests.
+  """
+  permission_classes = (ScoreboardPermissionDetail,)
+
+  def get(self, request, id, format=None):
+    """
+    Get scoreboard by id
+    """
+    try:
+      scoreboard = Scoreboard.objects.get(id=id)
+    except ObjectDoesNotExist:
+      return error_response('Challengeboard not found')
+    teams = scoreboard.teams
+
+    serialized_scoreboard = ScoreboardSerializer(scoreboard, many=True, context={'request': request})
+    serialized_teams = TeamSerializer(teams, many=True, context={'request': request})
+    return Response({
+      'scoreboards': serialized_scoreboard.data,
+      'teams': teams_serializer.data,
+    })
