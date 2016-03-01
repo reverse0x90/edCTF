@@ -45,7 +45,10 @@ class SessionView(APIView):
     # If user is authenticated, return authentication data else
     # return a "not authenticated" error.
     if request.user.is_authenticated():
-      return self.form_response(True, user=request.user)
+      try:
+        return self.form_response(True, user=request.user, username=request.user.team.username)
+      except ObjectDoesNotExist:
+        return self.form_response(True, user=request.user)
     return self.form_response(False, error='Not authenticated')
 
   @ratelimit(key='ip', rate='15/m')

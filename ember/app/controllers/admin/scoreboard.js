@@ -4,7 +4,7 @@ export default Ember.Controller.extend({
   settings: {},
   showHidden: false,
   sortTeams: ['points:desc', 'lasttimestamp:asc', 'id:asc'],
-  sortedTeams: Ember.computed.sort('selectedCtf.scoreboard.teams', 'sortTeams'),
+  sortedTeams: Ember.computed.sort('selectedScoreboard.teams', 'sortTeams'),
   rankedTeams: null,
   ctfSorting: ['online:desc', 'id'],
   sortedCtfs: Ember.computed.sort('model', 'ctfSorting'),

@@ -59,7 +59,7 @@ class TeamSerializer(ModelSerializer):
   """
   class Meta:
     model = Team
-    fields = ('id', 'teamname', 'points', 'correctflags', 'wrongflags', 'solves', 'lasttimestamp')
+    fields = ('id', 'teamname', 'points', 'correctflags', 'wrongflags', 'solves', 'lasttimestamp', 'hidden')
 
 
 class ChallengeTimestampSerializer(ModelSerializer):
