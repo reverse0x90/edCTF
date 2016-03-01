@@ -117,7 +117,11 @@
   border-radius: 6px
 }
 .challenge-tr {
-    border-collapse: collapse;
+  border-collapse: collapse;
+}
+.challenge-table .team-values > td {
+  font-size: 12px;
+  font-weight: 400;
 }
 
 table{
