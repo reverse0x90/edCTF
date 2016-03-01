@@ -2,6 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   settings: {},
+  appController: null,
+  scoreboardController: null,
   showHidden: false,
   sortTeams: ['points:desc', 'lasttimestamp:asc', 'id:asc'],
   sortedTeams: Ember.computed.sort('selectedScoreboard.teams', 'sortTeams'),
@@ -42,6 +44,12 @@ export default Ember.Controller.extend({
       this.set('modal.team', team);
       //this.set('modal.isAdminTeam', true);
       this.set('modal.isTeam', true);
-    }
+    },
+    openEditTeam: function(team){
+      this.set('modal.adminCtf', this.get('selectedCtf'));
+      this.set('modal.adminScoreboard', this.get('selectedScoreboard'));
+      this.set('modal.adminTeam', team);
+      this.set('modal.isAdminTeam', true);
+    },
   },
 });

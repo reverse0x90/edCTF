@@ -25,7 +25,7 @@
                   {{admin-challenge-modal modal=modal challengeboardController=adminController.challengeboardController}}
                 {{else}}
                   {{#if modal.isAdminTeam}}
-                    {{admin-team-modal modal=modal admin=adminController}}
+                    {{admin-team-modal modal=modal store=store scoreboardController=adminController.scoreboardController}}
                   {{/if}}
                 {{/if}}
               {{/if}}

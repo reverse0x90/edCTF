@@ -4,7 +4,7 @@ export default Ember.Component.extend({
   modal: {},
   team: {},
   challenges: [],
-  store: undefined,
+  store: null,
   challengeSorting: ['timestamp:desc'],
   sortedChallenges: Ember.computed.sort('challenges', 'challengeSorting'),
   setupKeys: function() {
@@ -28,7 +28,6 @@ export default Ember.Component.extend({
 
     var challengeTimestamps = this.get('team.solves');
     var store = this.get('store');
-
     if(challengeTimestamps){
       var t = this;
       this.get('ctf.challengeboard').then(function(){

@@ -35,7 +35,7 @@
         </thead>
         <tbody>
           {{#each rankedTeams as |team|}}
-            <tr {{action 'openTeamView' team}} class="cursor-pointer scoreboard-values">
+            <tr {{action 'openEditTeam' team}} class="cursor-pointer scoreboard-values">
               <td>{{team.position}}</td>
               <td>{{team.teamname}}</td>
               <td>{{team.points}}</td>
