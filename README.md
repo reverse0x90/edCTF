@@ -1,20 +1,23 @@
 # edCTF
+edCTF is a generic web application to rapidly deploy jeopardy-style CTF competitions.  edCTF utilizes both the EmberJS and Django frameworks to host CTFs. 
 
-edCTF is a generic web application to quickly host jeopardy-style CTF competitions.  edCTF uses EmberJS for the client half of the application, while the backend utilizes the Django framework.
-
+edCTF supports the ability to host multiple CTFs on the same application instance. There is no need to rebuild the framework.  edCTF can be quickly deployed using [Docker](https://github.com/docker/docker) containers.
 
 Current version: 1.2-beta1
 
-## Prerequisites
-
-You will need the following things properly installed on your computer.
-
+## Dependancies
 * [Docker](http://docs.docker.com/engine/installation/)
 
 ## Installation
-The following installation methods will set the Django superuser username to 'admin' with 'admin' as the password.  It is *strongly* recommended to change this password.
+Default credentials for the admin account:
+```
+username: admin
+password: admin
+```
+It is *strongly* recommended to change this password.
 
-Before installation, in order to enable HTTPS, edit the USE_SSL variable within [environment.bash](scripts/environment.bash#L39) to "true".  It will generate a self-signed certificate for temporary use.
+### SSL
+Before installation, in order to enable HTTPS, edit the USE_SSL variable within [environment.bash](scripts/environment.bash#L39) to "true".  edCTF will then generate a self-signed certificate for temporary use.  This method will be changed in a future release.
 
 ### Docker
 You can run edCTF within a Docker container with the following commands:
@@ -25,10 +28,15 @@ docker build -t edctf . \
 edCTF can then be accessed via http or https your host machine.
 
 ### Local
-You can also install edCTF locally, assuming you're using something similar to Ubuntu or Debian.
+You can also install edCTF locally, assuming you're using something similar to Ubuntu or Debian.  Dependancies that are not listed above are installed using aptitude.
 
-Simply run the production setup script:
+To deploy edCTF, run the production setup script:
 ```
 ./scripts/production.bash
 ```
 edCTF can then be accessed via http or https your host machine.
+
+## Admin Panel
+The admin panel is shown on the left after login.
+
+If more technical changes are required, the django admin interface can be accessed at ```/djangoadmin/```.
