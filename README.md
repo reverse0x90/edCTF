@@ -18,7 +18,7 @@ password: admin
 ```
 It is *strongly* recommended to change this password.
 
-### SSL
+#### SSL
 Before installation, in order to enable HTTPS, edit the USE_SSL variable within [environment.bash](scripts/environment.bash#L39) to "true".  edCTF will then generate a self-signed certificate for temporary use.  This method will be changed in a future release.
 
 ### Docker
