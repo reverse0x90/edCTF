@@ -39,4 +39,4 @@ edCTF can then be accessed via http or https your host machine.
 ## Admin Panel
 The admin panel is shown on the left after login.
 
-If more technical changes are required, the django admin interface can be accessed at ```/djangoadmin/```.
+If more technical changes are required, the django admin interface can be accessed at ```/djangoadmin/```
