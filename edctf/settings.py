@@ -84,7 +84,6 @@ DATABASES = {
   }
 }
 
-
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
@@ -97,7 +96,7 @@ STATICFILES_DIRS = ('/opt/edctf/edctf/static/',)
 if DEBUG:
   REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-      'rest_framework.permissions.IsAuthenticated',
+      'edctf.api.permissions.EdctfPermission',
     ),
     'DEFAULT_PARSER_CLASSES': (
       'rest_framework.parsers.JSONParser',
@@ -106,7 +105,7 @@ if DEBUG:
 else:
   REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-      'rest_framework.permissions.IsAuthenticated',
+      'edctf.api.permissions.EdctfPermission',
     ),
     'DEFAULT_RENDERER_CLASSES': (
       'rest_framework.renderers.JSONRenderer',
@@ -115,3 +114,6 @@ else:
       'rest_framework.parsers.JSONParser',
     ),
   }
+
+AUTH_USER_MODEL = 'auth.User'
+#AUTH_USER_MODEL = 'api.CtfUser'

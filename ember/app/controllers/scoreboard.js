@@ -6,15 +6,22 @@ export default Ember.Controller.extend({
   ctf: null,
   session: null,
   numTopTeams: 0,
-  //sortTeams: ['position'],
+  rankedTeams: null,
   sortTeams: ['points:desc', 'lasttimestamp:asc', 'id:asc'],
   sortedTeams: Ember.computed.sort('ctf.scoreboard.teams', 'sortTeams'),
   setTeamRanks: function(){
-    var teams = this.get('sortedTeams');
-    for (var i=0; i < teams.length; i++){
-      teams[i].set('position', i+1);
+    var teams = Ember.copy(this.get('sortedTeams'));
+    var position = 1;
+    var i = 0;
+    while(i < teams.length){
+      if(!teams[i].get('hidden')){
+        teams[i++].set('position', position++);
+      } else {
+        teams.removeAt(i);
+      }
     }
-  }.observes('sortedTeams'),
+    this.set('rankedTeams', teams);
+  }.observes('sortedTeams').on('init'),
   topTeamsData: {},
   setTopTeamsData: function(){
     if(!this.get('session.isAuthenticated')){
@@ -83,7 +90,7 @@ export default Ember.Controller.extend({
       return 0;
     };
 
-    var teams = this.get('sortedTeams');
+    var teams = this.get('rankedTeams');
     var numTopTeams = this.get('ctf.scoreboard.numtopteams');
     if(teams.length < numTopTeams ){
       numTopTeams = teams.length;
@@ -124,7 +131,7 @@ export default Ember.Controller.extend({
       t.set('topTeamsData', topTeamsData);
       t.set('numTopTeams', numTopTeams);
     });
-  }.observes('sortedTeams', 'session.isAuthenticated'),
+  }.observes('rankedTeams', 'session.isAuthenticated'),
   actions:{
     openTeamView: function(team){
       this.set('modal.team', team);

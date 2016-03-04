@@ -1,18 +1,22 @@
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
+from edctf.api.models import Ctf
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
 from rest_framework import status
 from ratelimit.decorators import ratelimit
+from edctf.api.permissions import SessionPermission
 
 
-class session_view(APIView):
+class SessionView(APIView):
   """
   Manages server side user sessions
   """
-  permission_classes = (AllowAny,)
+  permission_classes = (SessionPermission,)
 
-  def form_response(self, isauthenticated, username='', email='', teamid='', error=''):
+  def form_response(self, isauthenticated, user=None, username='', error=''):
     """
     Returns the login form response.
     """
@@ -23,10 +27,15 @@ class session_view(APIView):
     # If error during login, return the error else return login data.
     if error:
       data['error'] = error
-    else:
-      data['username'] = username
-      data['email'] = email
-      data['team'] = teamid
+    
+    if user:
+      data['username'] = username or user.username
+      data['email'] = user.email
+      data['isadmin'] = user.is_superuser
+      try:
+        data['team'] = user.team.id
+      except:
+        data['team'] = None
     return Response(data)
 
   def get(self, request, *args, **kwargs):
@@ -37,10 +46,9 @@ class session_view(APIView):
     # return a "not authenticated" error.
     if request.user.is_authenticated():
       try:
-        return self.form_response(True, username=request.user.username, email=request.user.email, teamid=request.user.teams.id)
-      # This is temporary the django admin user doesn't have a team
-      except:
-        return self.form_response(True, username=request.user.username, email=request.user.email, teamid=None)
+        return self.form_response(True, user=request.user, username=request.user.team.username)
+      except ObjectDoesNotExist:
+        return self.form_response(True, user=request.user)
     return self.form_response(False, error='Not authenticated')
 
   @ratelimit(key='ip', rate='15/m')
@@ -51,10 +59,6 @@ class session_view(APIView):
     was_limited = getattr(request, 'limited', False)
     if was_limited:
       return self.form_response(False, error='Too many login attempts')
-    
-    # If user is already authenticated, logout the user.
-    if request.user.is_authenticated():
-      logout(request)
 
     # Serialize the provided login json data to a python object.
     login_data = request.data
@@ -62,24 +66,31 @@ class session_view(APIView):
     # Sanity check the json data to make sure all required parameters
     # are included.
     if not ('username' in login_data and 'password' in login_data):
-      return Response(status=status.HTTP_400_BAD_REQUEST)
+      return self.form_response(False, error='Invalid parameters')
 
     # Authenticate the user.
     username = login_data['username']
     password = login_data['password']
-    user = authenticate(username=username, password=password)
 
-    # If user authentication was sucessful, login the user else
-    # return an error message.
-    if user is not None:
-      if user.is_active:
+    try:
+      get_user_model().objects.get(username=username)
+      ctfuser = False
+    except ObjectDoesNotExist:
+      ctfuser = True
+
+    if ctfuser:
+      enc_username = ctf_encode(username)
+      if not enc_username:
+        return self.form_response(False, error='No online CTF, cannot login')
+      user = authenticate(username=enc_username, password=password)
+      if user is not None and user.is_active:
         login(request, user)
-        try:
-          return self.form_response(True, username=request.user.username, email=request.user.email, teamid=request.user.teams.id)
-          # This is temporary the django admin user doesn't have a team.
-        except:
-          return self.form_response(True, username=request.user.username, email=request.user.email, teamid=None)
-      return self.form_response(False, error='Acount disabled')
+        return self.form_response(True, user=request.user, username=username)
+    else:
+      user = authenticate(username=username, password=password)
+      if user is not None and user.is_active:
+        login(request, user)
+        return self.form_response(True, user=request.user)
     return self.form_response(False, error='Invalid username or password')
 
   def delete(self, request, *args, **kwargs):
@@ -92,3 +103,26 @@ class session_view(APIView):
       logout(request)
       return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+def ctf_encode(plaintext):
+  """
+  Encodes a given plaintext with the online CTF as salt
+  """
+  try:
+    ctf = Ctf.objects.get(online=True)
+  except ObjectDoesNotExist:
+    return False
+  salt = '{id}'.format(id=ctf.id)
+  return salt+'_'+plaintext
+
+def ctf_decode(salted_ciphertext):
+  """
+  Decodes given ciphertext, returns tuple of (salt, plaintext)
+  """
+  if '_' not in salted_ciphertext:
+    return False
+  ciphertext = salted_ciphertext.split('_')
+  if len(ciphertext) < 2:
+    return False
+  salt, ciphertext = ciphertext[0], ''.join(ciphertext[1:])
+  return salt, ciphertext

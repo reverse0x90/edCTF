@@ -7,19 +7,22 @@ export default Ember.Controller.extend({
     isChallenge: false,
     isTeam: false,
     isProfile: false,
+    isAdminCtf: false,
+    isAdminTeam: false,
+    isAdminChallenge: false,
+    isConfirm: false,
+    confirmMesg: [''],
+    confirmCallback: null,
     challenge: {},
     team: {},
+    adminCtf: null,
+    adminCategory: null,
+    adminChallenge: null,
+    adminScoreboard: null,
+    adminTeam: null,
     solvedChallenge: -1,
+    errorMessage: '',
+    errorFields: {},
   },
   store: null,
-  actions: {
-    closeModal: function(){
-      this.set('modal.isLogin', false);
-      this.set('modal.isRegister', false);
-      this.set('modal.isChallenge', false);
-      this.set('modal.isTeam', false);
-      this.set('modal.isProfile', false);
-      this.set('store', this.store);
-    },
-  },
 });

@@ -1,0 +1,12 @@
+{{#modal-dialog translucentOverlay=true}}
+  <div class="modal-dialog" style="text-align: center;">
+    {{#each message as |line|}}
+      {{line}}
+      <br/>
+    {{/each}}
+    <div class="modal-footer" style="text-align: center;">
+      <button type="button" class="btn btn-success btn-login-submit edctf-submit-button" {{action "confirmationAllow"}}>Allow</button>
+      <button type="button" class="btn btn-danger btn-cancel-action edctf-cancel-button" {{action "confirmationDeny"}}>Deny</button>
+    </div>
+  </div>
+{{/modal-dialog}}
