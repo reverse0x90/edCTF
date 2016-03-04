@@ -1,84 +1,169 @@
 {{#modal-dialog close='closeProfileModal' translucentOverlay=true}}
-  <div class="modal-dialog">
-    <div class="modal-header">
-      <h1 class="modal-title team-name">{{team.teamname}}</h1>
-    </div>
+  {{#if viewProfile}}
+    <div class="modal-dialog">
+      <div class="edctf-button">
+        <button type="button" class="btn btn-warning edctf-warning-button pull-right" {{action 'toggleView'}}>Edit</button>
+      </div>
+      <div class="modal-header">
+        <h1 class="modal-title team-name">{{team.teamname}}</h1>
+      </div>
+      <div class="modal-body">
+        <table class="table team-info-table" style="width:100%">
+          <tbody>
+            <tr class="team-info">
+              <td>Username:</td>
+              <td>{{session.team.username}}</td>
+            </tr>
+            <tr class="team-info">
+              <td>Email:</td>
+              <td>{{session.team.email}}</td>
+            </tr>
+          </tbody>
+        </table>
 
-    <div class="modal-body">
-      {{!--
-      <form class="form">
-        Email:{{input type="text" value=email enter="submitRegister" class="form-control" id="inputEmail" placeholder=session.email}}
-        <br/>
-        Password:{{input type="password" value=password enter="submitRegister" class="form-control" id="inputPassword" placeholder="Password"}}
-        <br/>
-        Password Confirmation:{{input type="password" value=confirmPassword enter="submitProfile" class="form-control" id="inputPasswordConfirmation" placeholder="Confirm Password"}}
-      </form>
-      --}}
-
-      <table class="table team-info-table" style="width:100%">
-        <tbody>
-          <tr class="team-info">
-            <td>Username:</td>
-            <td>{{session.username}}</td>
-          </tr>
-          <tr class="team-info">
-            <td>Email:</td>
-            <td>{{session.email}}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table class="table table-condensed" style="width:100%">
-        <thead>
-          <tr>
-            {{#if team.position}}
-              <th class="team-keys">Rank</th>
-            {{/if}}
-            <th class="team-keys">Points</th>
-            <th class="team-keys">Correct Flags</th>
-            <th class="team-keys">Incorrect Flags</th>
-            <th class="team-keys">Challenges Solved</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="team-values">
-            {{#if team.position}}
-              <td>{{team.position}}</td>
-            {{/if}}
-            <td>{{team.points}}</td>
-            <td class="team-correct-flags">{{team.correctflags}}</td>
-            <td class="team-wrong-flags">{{team.wrongflags}}</td>
-            <td>{{team.numsolved}}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      {{#if sortedChallenges}}
-        <table class="table table-hover table-condensed team-table" style="width:100%">
+        <table class="table table-condensed" style="width:100%">
           <thead>
             <tr>
-              <th class="team-keys">Category</th>
-              <th class="team-keys">Title</th>
+              {{#if team.position}}
+                <th class="team-keys">Rank</th>
+              {{/if}}
               <th class="team-keys">Points</th>
-              <th class="team-keys">Timestamp</th>
+              <th class="team-keys">Correct Flags</th>
+              <th class="team-keys">Incorrect Flags</th>
+              <th class="team-keys">Challenges Solved</th>
             </tr>
           </thead>
           <tbody>
-            {{#each sortedChallenges as |challenge|}}
-              <tr class="team-values">
-                <td>{{challenge.title}}</td>
-                <td>{{challenge.title}}</td>
-                <td>{{challenge.points}}</td>
-                <td>{{challenge.timestamp}}</td>
-              </tr>
-            {{/each}}
+            <tr class="team-values">
+              {{#if team.position}}
+                <td>{{team.position}}</td>
+              {{/if}}
+              <td>{{team.points}}</td>
+              <td class="team-correct-flags">{{team.correctflags}}</td>
+              <td class="team-wrong-flags">{{team.wrongflags}}</td>
+              <td>{{team.numsolved}}</td>
+            </tr>
           </tbody>
         </table>
-      {{/if}}
+
+        {{#if sortedChallenges}}
+          <table class="table table-hover table-condensed team-table" style="width:100%">
+            <thead>
+              <tr>
+                <th class="team-keys">Category</th>
+                <th class="team-keys">Title</th>
+                <th class="team-keys">Points</th>
+                <th class="team-keys">Timestamp</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each sortedChallenges as |challenge|}}
+                <tr class="team-values">
+                  <td>{{challenge.title}}</td>
+                  <td>{{challenge.title}}</td>
+                  <td>{{challenge.points}}</td>
+                  <td>{{challenge.timestamp}}</td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        {{/if}}
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" {{action 'closeProfileModal'}}>Close</button>
+      </div>
     </div>
-    
-    <div class="modal-footer">
-      <button type="button" class="btn btn-default" {{action 'closeProfileModal'}}>Close</button>
+  {{else}}
+    <div class="modal-dialog">
+      <div class="edctf-button">
+        <button type="button" class="btn btn-warning edctf-warning-button pull-right" {{action 'toggleView'}}>View</button>
+      </div>
+      <div class="modal-body">
+        <table class="table team-info-table" style="width:100%">
+          <tbody>
+            {{#if modal.errorMessage}}
+              <label class="control-label">
+                <div class="alert alert-danger edctf-text" style="padding: 5px; margin-bottom: 0px;" role="alert">
+                  {{modal.errorMessage}}
+                </div>
+              </label>
+            {{/if}}
+            <tr class="team-info">
+              {{#if modal.errorFields.username}} 
+                <div class="form-group has-error">
+                  <td>Username:</td>
+                  <td>{{input id="teamUsername" type="text" value=session.team.username enter="editProfile" class="form-control" placeholder=session.team.username disabled=true}}</td>
+                </div>
+              {{else}}
+                <div class="form-group">
+                  <td>Username:</td>
+                  <td>{{input id="teamUsername" type="text" value=session.team.username enter="editProfile" class="form-control" placeholder=session.team.username disabled=true}}</td>
+                </div>
+              {{/if}}
+            </tr>
+            {{#if session.team}}
+              <tr class="team-info">
+                {{#if modal.errorFields.teamname}} 
+                  <div class="form-group has-error">
+                    <td>Team Name:</td>
+                    <td>{{input id="teamTeamname" type="text" value=session.team.teamname enter="editProfile" class="form-control" placeholder=session.team.teamname disabled=true}}</td>
+                  </div>
+                {{else}}
+                  <div class="form-group">
+                    <td>Team Name:</td>
+                    <td>{{input id="teamTeamname" type="text" value=session.team.teamname enter="editProfile" class="form-control" placeholder=session.team.teamname disabled=true}}</td>
+                  </div>
+                {{/if}}
+              </tr>
+            {{/if}}
+            <tr class="team-info">
+              {{#if modal.errorFields.email}} 
+                <div class="form-group has-error">
+                  <td>Email:</td>
+                  <td>{{input id="teamEmail" type="text" value=session.team.email enter="editProfile" class="form-control" placeholder=session.team.email}}</td>
+                </div>
+              {{else}}
+                <div class="form-group">
+                  <td>Email:</td>
+                  <td>{{input id="teamEmail" type="text" value=session.team.email enter="editProfile" class="form-control" placeholder=session.team.email}}</td>
+                </div>
+              {{/if}}
+            </tr>
+            <tr class="team-info">
+              {{#if modal.errorFields.password}} 
+                <div class="form-group has-error">
+                  <td>Password:</td>
+                  <td>{{input id="teamPassword" type="password" value=password enter="editProfile" class="form-control" placeholder='********'}}</td>
+                </div>
+              {{else}}
+                <div class="form-group">
+                  <td>Password:</td>
+                  <td>{{input id="teamPassword" type="password" value=password enter="editProfile" class="form-control" placeholder='********'}}</td>
+                </div>
+              {{/if}}
+            </tr>
+            <tr class="team-info">
+              {{#if modal.errorFields.password}} 
+                <div class="form-group has-error">
+                  <td>Confirm Password:</td>
+                  <td>{{input id="teamConfirmPassword" type="password" value=confirmPassword enter="editProfile" class="form-control" placeholder='********'}}</td>
+                </div>
+              {{else}}
+                <div class="form-group">
+                  <td>Confirm Password:</td>
+                  <td>{{input id="teamConfirmPassword" type="password" value=confirmPassword enter="editProfile" class="form-control" placeholder='********'}}</td>
+                </div>
+              {{/if}}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="modal-footer edctf-button">
+        <button type="button" class="btn btn-success btn-login-submit edctf-submit-button" {{action "editProfile"}}>Edit</button>
+        <button type="button" class="btn btn-default" {{action 'closeProfileModal'}}>Close</button>
+      </div>
     </div>
-  </div>
+  {{/if}}
 {{/modal-dialog}}

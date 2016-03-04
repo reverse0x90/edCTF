@@ -9,7 +9,7 @@ class Team(models.Model):
   """
   Team model class.
   """
-  scoreboard = models.ForeignKey('Scoreboard', on_delete=models.CASCADE, related_name='teams', related_query_name='team')
+  scoreboard = models.ForeignKey('Scoreboard', null=True, on_delete=models.CASCADE, related_name='teams', related_query_name='team')
   teamname = models.CharField(max_length=30)
   username = models.CharField(max_length=30)
   email = models.EmailField()

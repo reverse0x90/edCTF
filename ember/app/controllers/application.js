@@ -113,11 +113,65 @@ export default Ember.Controller.extend({
         t.transitionToRoute('home');
       });
     },
+    editProfile: function(session, password, confirmPassword){
+      if(!session.team){
+        this.set('modal.errorFields', {});
+        this.set('modal.errorMessage', 'User has no team');
+        return;
+      }
+
+      var t = this;
+      var team = session.team;
+      team.then(function(team){
+        if(!team.get('teamname')){
+          t.set('modal.errorFields', {'teamname': true});
+          t.set('modal.errorMessage', 'Invalid team name');
+          return;
+        }
+
+        if(!team.get('username')){
+          t.set('modal.errorFields', {'username': true});
+          t.set('modal.errorMessage', 'Invalid username');
+          return;
+        }
+
+        if(!team.get('email')){
+          t.set('modal.errorFields', {'email': true});
+          t.set('modal.errorMessage', 'Invalid email');
+          return;
+        }
+
+        if(password){
+          if(((password).localeCompare(confirmPassword))){
+            t.set('modal.errorFields', {'password': true});
+            t.set('modal.errorMessage', 'Passwords not equal');
+            return;
+          } else{
+            team.set('password', password);
+          }
+        }
+
+        team.save().then(function(){
+          t.send('closeProfileModal');
+          team.set('password', undefined);
+        }, function(err){
+          team.rollbackAttributes();
+          if (err.errors.message){
+            t.set('modal.errorMessage', err.errors.message);
+          } else {
+            t.set('modal.errorMessage', 'Server error, unable to edit team');
+          }
+        });
+      });
+    },
     openLoginModal: function() {
       this.set('modal.isLogin', true);
     },
     openRegisterModal: function() {
       this.set('modal.isRegister', true);
+    },
+    closeProfileModal: function() {
+      this.set('modal.isProfile', false);
     },
   }
 });

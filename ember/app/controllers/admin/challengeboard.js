@@ -10,11 +10,17 @@ export default Ember.Controller.extend({
   sortedCtfs: Ember.computed.sort('model', 'ctfSorting'),
   selectedCtf: null,
   setSelectedCtf: function(){
-    this.set('selectedCtf', this.get('appController').get('ctf'));
+    var ctf = this.get('appController').get('ctf');
+    if (ctf){
+      this.set('selectedCtf', ctf);
+    }
   }.observes('appController.ctf'),
   selectedChallengeboard: null,
   setSelectedChallengeboard: function(){
-    this.set('selectedChallengeboard', this.get('selectedCtf').get('challengeboard'));
+    var challengeboard = this.get('selectedCtf').get('challengeboard');
+    if (challengeboard){
+      this.set('selectedChallengeboard', challengeboard);
+    }
   }.observes('selectedCtf'),
   setFocus: function(){
     setTimeout(function(){
