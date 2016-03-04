@@ -84,7 +84,6 @@ DATABASES = {
   }
 }
 
-
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
@@ -115,3 +114,6 @@ else:
       'rest_framework.parsers.JSONParser',
     ),
   }
+
+AUTH_USER_MODEL = 'auth.User'
+#AUTH_USER_MODEL = 'api.CtfUser'

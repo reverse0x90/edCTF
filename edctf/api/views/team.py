@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.core.validators import EmailValidator
 from ratelimit.decorators import ratelimit
@@ -84,14 +84,14 @@ class TeamView(APIView):
     if len(teamname) > 30:
       return registration_response(False, error='Teamname too long, 30 characters max')
 
-    check = User.objects.filter(username__iexact=enc_username)
+    check = get_user_model().objects.filter(username__iexact=enc_username)
     if len(check):
       return registration_response(False, error='Username is taken', errorfields={'username': True})
     if len(username) > 25:
       return registration_response(False, error='Username too long, 25 characters max')
 
     # Create temp user to validate input
-    temp_user = User(username=enc_username, email=email, password=password)
+    temp_user = get_user_model()(username=enc_username, email=email, password=password)
     try:
       temp_user.full_clean()
     except ValidationError as e:
@@ -105,7 +105,7 @@ class TeamView(APIView):
       return registration_response(False, error=errorstr, errorfields=errordict)
 
     # Everything was good! Create the new user
-    new_user = User.objects.create_user(enc_username, email, password)
+    new_user = get_user_model().objects.create_user(enc_username, email, password)
     new_team = Team.objects.create(scoreboard=scoreboard, teamname=teamname, user=new_user, email=email, username=username)
 
     # Registration was successful! Now login the new user.

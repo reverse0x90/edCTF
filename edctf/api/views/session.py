@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from edctf.api.models import Ctf
 from rest_framework.views import APIView
@@ -59,10 +59,6 @@ class SessionView(APIView):
     was_limited = getattr(request, 'limited', False)
     if was_limited:
       return self.form_response(False, error='Too many login attempts')
-    
-    # If user is already authenticated, logout the user.
-    if request.user.is_authenticated():
-      logout(request)
 
     # Serialize the provided login json data to a python object.
     login_data = request.data
@@ -77,7 +73,7 @@ class SessionView(APIView):
     password = login_data['password']
 
     try:
-      User.objects.get(username=username)
+      get_user_model().objects.get(username=username)
       ctfuser = False
     except ObjectDoesNotExist:
       ctfuser = True
