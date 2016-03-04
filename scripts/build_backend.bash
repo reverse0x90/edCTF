@@ -51,5 +51,8 @@ python ${EDCTF_SCRIPTS}/generate_secrets.py --output ${EDCTF_DJANGO}/edctf_secre
   && python ${EDCTF_DIR}/manage.py makemigrations \
   && python ${EDCTF_DIR}/manage.py migrate auth \
   && python ${EDCTF_DIR}/manage.py migrate \
-  && echo "from django.contrib.auth import get_user_model; get_user_model().objects.create_superuser('admin', '', 'admin')" \
+  && echo "from django.contrib.auth import get_user_model
+from edctf.api.models import Team
+user = get_user_model().objects.create_superuser('admin', 'admin@localhost', 'admin')
+team = Team.objects.create(teamname='admin', user=user, email='admin@localhost', username='admin')" \
   | python ${EDCTF_DIR}/manage.py shell

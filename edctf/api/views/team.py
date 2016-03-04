@@ -171,9 +171,15 @@ class TeamViewDetail(APIView):
     else:
       password = None
 
-    check = team.scoreboard.teams.exclude(id=team.id).filter(email__iexact=email)
-    if len(check):
-      return error_response(error='Email taken', errorfields={'email': True})
+    if team.scoreboard:
+      check = team.scoreboard.teams.exclude(id=team.id).filter(email__iexact=email)
+      if len(check):
+        return error_response(error='Email taken', errorfields={'email': True})
+      else:
+        try:
+          EmailValidator(email)
+        except ValidationError as e:
+          return error_response(error=e.message, errorfields={'email': True})
     else:
       try:
         EmailValidator(email)
@@ -192,6 +198,12 @@ class TeamViewDetail(APIView):
       team.save()
     except IntegrityError:
       return error_response('Error modifying team')
+
+    # django logs user out on password change
+    if str(request.user.team.id) == id and password:
+      user = authenticate(username=request.user.username, password=password)
+      if user is not None and user.is_active:
+        login(request, user)
 
     # change this to similar to session
     if request.user.is_staff:
