@@ -12,11 +12,17 @@ export default Ember.Controller.extend({
   sortedCtfs: Ember.computed.sort('model', 'ctfSorting'),
   selectedCtf: null,
   setSelectedCtf: function(){
-    this.set('selectedCtf', this.get('appController').get('ctf'));
+    var ctf = this.get('appController').get('ctf');
+    if (ctf){
+      this.set('selectedCtf', ctf);
+    }
   }.observes('appController.ctf'),
   selectedScoreboard: null,
   setSelectedScoreboard: function(){
-    this.set('selectedScoreboard', this.get('selectedCtf').get('scoreboard'));
+    var scoreboard = this.get('selectedCtf').get('scoreboard');
+    if (scoreboard){
+      this.set('selectedScoreboard', scoreboard);
+    }
   }.observes('selectedCtf'),
   setTeamRanks: function(){
     var teams = Ember.copy(this.get('sortedTeams'));

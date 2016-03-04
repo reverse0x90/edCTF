@@ -44,31 +44,35 @@ export default Ember.Component.extend({
 
     if(challengeTimestamps){
       var t = this;
-      this.get('ctf.challengeboard').then(function(){
-        var challenges = [];
 
-        for (var i = 0; i < challengeTimestamps.length; i++) {
-          var id = challengeTimestamps[i][0];
-          var time = new Date(challengeTimestamps[i][1] * 1000);
-          var foundChallenge = store.peekRecord('challenge', id);
+      var challengeboard = this.get('ctf.challengeboard');
+      if (challengeboard){
+        challengeboard.then(function(){
+          var challenges = [];
 
-          if(foundChallenge){
-            var foundCategory = store.peekRecord('category', foundChallenge.get('category').id);
-            if(foundCategory){
-              var challenge = {
-                title: foundChallenge.get('title'),
-                points: foundChallenge.get('points'),
-                category: foundCategory.get('name'),
-                timestamp: time.toUTCString().replace(' GMT','')
-              };
-              challenges.push(challenge);
+          for (var i = 0; i < challengeTimestamps.length; i++) {
+            var id = challengeTimestamps[i][0];
+            var time = new Date(challengeTimestamps[i][1] * 1000);
+            var foundChallenge = store.peekRecord('challenge', id);
+
+            if(foundChallenge){
+              var foundCategory = store.peekRecord('category', foundChallenge.get('category').id);
+              if(foundCategory){
+                var challenge = {
+                  title: foundChallenge.get('title'),
+                  points: foundChallenge.get('points'),
+                  category: foundCategory.get('name'),
+                  timestamp: time.toUTCString().replace(' GMT','')
+                };
+                challenges.push(challenge);
+              }
             }
           }
-        }
-        challenges = Ember.A(challenges);
-        t.set('challenges', challenges);
-      });
-    }
+          challenges = Ember.A(challenges);
+          t.set('challenges', challenges);
+        });
+      }
+      }
   }.observes('team').on('init'),
   actions: {
     toggleView: function(){
