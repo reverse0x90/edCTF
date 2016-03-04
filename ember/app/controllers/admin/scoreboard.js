@@ -134,13 +134,12 @@ export default Ember.Controller.extend({
           this.set('modal.errorFields', {'password': true});
           this.set('modal.errorMessage', 'Passwords not equal');
           return;
+        } else{
+          team.set('password', password);
         }
-      } else {
-        password = '';
       }
 
       var t = this;
-      team.set('password', password);
       team.save().then(function(){
         t.send('closeTeam');
         team.set('password', undefined);

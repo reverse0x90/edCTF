@@ -92,19 +92,6 @@
             {{/if}}
           </tr>
           <tr class="team-info">
-            {{#if modal.errorFields.teamname}} 
-              <div class="form-group has-error">
-                <td>Team Name:</td>
-                <td>{{input id="teamTeamname" type="text" value=modal.adminTeam.teamname enter="editTeam" class="form-control" placeholder=modal.adminTeam.teamname disabled=true}}</td>
-              </div>
-            {{else}}
-              <div class="form-group">
-                <td>Team Name:</td>
-                <td>{{input id="teamTeamname" type="text" value=modal.adminTeam.teamname enter="editTeam" class="form-control" placeholder=modal.adminTeam.teamname disabled=true}}</td>
-              </div>
-            {{/if}}
-          </tr>
-          <tr class="team-info">
             {{#if modal.errorFields.username}} 
               <div class="form-group has-error">
                 <td>Username:</td>
@@ -118,15 +105,28 @@
             {{/if}}
           </tr>
           <tr class="team-info">
+            {{#if modal.errorFields.teamname}} 
+              <div class="form-group has-error">
+                <td>Team Name:</td>
+                <td>{{input id="teamTeamname" type="text" value=modal.adminTeam.teamname enter="editTeam" class="form-control" placeholder=modal.adminTeam.teamname disabled=true}}</td>
+              </div>
+            {{else}}
+              <div class="form-group">
+                <td>Team Name:</td>
+                <td>{{input id="teamTeamname" type="text" value=modal.adminTeam.teamname enter="editTeam" class="form-control" placeholder=modal.adminTeam.teamname disabled=true}}</td>
+              </div>
+            {{/if}}
+          </tr>
+          <tr class="team-info">
             {{#if modal.errorFields.email}} 
               <div class="form-group has-error">
                 <td>Email:</td>
-                <td>{{input id="teamEmail" type="text" value=modal.adminTeam.email class="form-control" placeholder=modal.adminTeam.email}}</td>
+                <td>{{input id="teamEmail" type="text" value=modal.adminTeam.email enter="editTeam" class="form-control" placeholder=modal.adminTeam.email}}</td>
               </div>
             {{else}}
               <div class="form-group">
                 <td>Email:</td>
-                <td>{{input id="teamEmail" type="text" value=modal.adminTeam.email class="form-control" placeholder=modal.adminTeam.email}}</td>
+                <td>{{input id="teamEmail" type="text" value=modal.adminTeam.email enter="editTeam" class="form-control" placeholder=modal.adminTeam.email}}</td>
               </div>
             {{/if}}
           </tr>

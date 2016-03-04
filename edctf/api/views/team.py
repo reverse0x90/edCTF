@@ -145,7 +145,7 @@ class TeamViewDetail(APIView):
     """
     # modify to have separate edit if admin
     try:
-      if request.user.team.id != id and not request.user.is_staff:
+      if str(request.user.team.id) != id and not request.user.is_staff:
         return error_response("You do not have permission to edit this team")
     except ObjectDoesNotExist:
       if not request.user.is_staff:

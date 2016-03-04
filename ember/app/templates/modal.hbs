@@ -12,7 +12,7 @@
         {{team-modal modal=modal team=modal.team store=store ctf=ctf session=session}}
       {{else}}
         {{#if modal.isProfile}}
-          {{profile-modal modal=modal session=session store=store ctf=ctf}}
+          {{profile-modal modal=modal session=session store=store ctf=ctf editProfile="editProfile"}}
         {{else}}
           {{#if modal.isLogout}}
             {{logout-modal modal=modal logout="logout"}}

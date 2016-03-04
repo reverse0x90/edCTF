@@ -4,6 +4,9 @@ export default Ember.Component.extend({
   modal: {},
   session: {},
   team: {},
+  password: '',
+  confirmPassword: '',
+  viewProfile: true,
   setupKeys: function() {
     Ember.$('body').on('keyup.modal-dialog', (e) => {
       if (e.keyCode === 27) {
@@ -19,6 +22,14 @@ export default Ember.Component.extend({
     if(team){
       var t = this;
       team.then(function(team){
+        var username = t.get('session').username;
+        var email = t.get('session').email;
+        if (username){
+          team.set('username', username);
+        }
+        if (email){
+          team.set('email', email);
+        }
         t.set('team', team);
       });
     }
@@ -60,8 +71,14 @@ export default Ember.Component.extend({
     }
   }.observes('team').on('init'),
   actions: {
+    toggleView: function(){
+      this.toggleProperty('viewProfile');
+    },
     closeProfileModal: function() {
       this.set('modal.isProfile', false);
+    },
+    editProfile: function(){
+      this.sendAction('editProfile', this.get('session'), this.get('password'), this.get('confirmPassword'));
     },
   },
 });
