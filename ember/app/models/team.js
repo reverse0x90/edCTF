@@ -6,6 +6,7 @@ export default DS.Model.extend({
   position: DS.attr('number'),
   teamname: DS.attr('string'),
   username: DS.attr('string'),
+  password: DS.attr('string'),
   email: DS.attr('string'),
   hidden: DS.attr('boolean'),
   points: DS.attr('number'),

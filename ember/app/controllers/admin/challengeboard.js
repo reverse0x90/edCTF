@@ -112,7 +112,7 @@ export default Ember.Controller.extend({
         if (err.errors.message){
           t.set('errorMessage', err.errors.message);
         } else {
-          t.set('errorMessage', 'Server error, unable to add category');
+          t.set('errorMessage', 'Server error, unable to edit category');
         }
       });
     },
@@ -234,7 +234,7 @@ export default Ember.Controller.extend({
         if (err.errors.message){
           t.set('modal.errorMessage', err.errors.message);
         } else {
-          t.set('modal.errorMessage', 'Server error, unable to add challenge');
+          t.set('modal.errorMessage', 'Server error, unable to edit challenge');
         }
       });
     },
@@ -248,7 +248,7 @@ export default Ember.Controller.extend({
         if (err.errors.message){
           t.set('modal.errorMessage', err.errors.message);
         } else {
-          t.set('modal.errorMessage', 'Server error, unable to add challenge');
+          t.set('modal.errorMessage', 'Server error, unable to delete challenge');
         }
       });
     },

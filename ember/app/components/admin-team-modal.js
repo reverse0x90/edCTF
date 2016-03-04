@@ -77,14 +77,15 @@ export default Ember.Component.extend({
         username: this.get('username'),
         email: this.get('email'),
         password: this.get('password'),
+        confirmPassword: this.get('confirmPassword'),
       };
       this.get('scoreboardController').send('createTeam', team);
     },
     editTeam: function(){
-      this.get('challengeboardController').send('editTeam', this.get('modal.adminTeam'), this.get('password'), this.get('confirmPassword'));
+      this.get('scoreboardController').send('editTeam', this.get('modal.adminTeam'), this.get('password'), this.get('confirmPassword'));
     },
     deleteTeam: function(){
-      this.get('challengeboardController').send('deleteTeam', this.get('modal.adminTeam'));
+      this.get('scoreboardController').send('deleteTeam', this.get('modal.adminTeam'));
     },
   },
 });

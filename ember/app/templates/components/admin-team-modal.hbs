@@ -9,7 +9,7 @@
       </div>
       <h2 align="center" class="modal-title">View Team</h2>
       <div class="modal-header">
-        Team Name: {{modal.adminTeam.teamname}}
+        <h3>Team Name: {{modal.adminTeam.teamname}}</h3>
       </div>
 
       <div class="modal-body">
@@ -78,6 +78,19 @@
               </div>
             </label>
           {{/if}}
+          <tr class="team-info">
+            {{#if modal.errorFields.hidden}} 
+              <div class="form-group has-error">
+                <td>Hidden:</td>
+                <td>{{input id="teamHidden" type="checkbox" checked=modal.adminTeam.hidden placeholder=modal.adminTeam.hidden disabled=true}}</td>
+              </div>
+            {{else}}
+              <div class="form-group">
+                <td>Hidden:</td>
+                <td>{{input id="teamHidden" type="checkbox" checked=modal.adminTeam.hidden placeholder=modal.adminTeam.hidden disabled=true}}</td>
+              </div>
+            {{/if}}
+          </tr>
           <tr class="team-info">
             {{#if modal.errorFields.teamname}} 
               <div class="form-group has-error">

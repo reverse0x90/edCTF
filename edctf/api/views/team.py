@@ -144,37 +144,48 @@ class TeamViewDetail(APIView):
     Edits a team
     """
     # modify to have separate edit if admin
-    if request.user.team.id != id and not request.user.is_staff:
-      return error_response("You do not have permission to edit this team")
+    try:
+      if request.user.team.id != id and not request.user.is_staff:
+        return error_response("You do not have permission to edit this team")
+    except ObjectDoesNotExist:
+      if not request.user.is_staff:
+        return error_response("You do not have permission to edit this team")
+
+    if 'team' not in request.data:
+      return error_response(error='Team not given',)
+    team_data = request.data['team']
 
     try:
-      team = Teams.objects.get(id=id)
+      team = Team.objects.get(id=id)
     except ObjectDoesNotExist:
       return error_response("Team not found")
     #user = request.user
     user = team.user
 
-    team_data = request.data
-    if not ('email' in team_data and 'password' in team_data):
-      return registration_response(False, error='Invalid parameters')
-
+    if 'email' not in team_data:
+      return error_response(error='Email not given', errorfields={'email': True})
     email = team_data['email']
-    password = team_data['password']
 
-    check = teams.filter(email__iexact=email)
+    if 'password' in team_data:
+      password = team_data['password']
+    else:
+      password = None
+
+    check = team.scoreboard.teams.exclude(id=team.id).filter(email__iexact=email)
     if len(check):
-      return registration_response(False, error='Email is taken', errorfields={'email': True})
+      return error_response(error='Email taken', errorfields={'email': True})
     else:
       try:
         EmailValidator(email)
       except ValidationError as e:
-        return registration_response(False, error=e.message, errorfields={'email': True})
+        return error_response(error=e.message, errorfields={'email': True})
 
     # if non- admin do email-authentication tokens
     user.email = email
-    user.password = password
     team.email = email
     #team.is_hidden = hidden
+    if password:
+      user.set_password(password)
 
     try:
       user.save()
@@ -188,7 +199,7 @@ class TeamViewDetail(APIView):
     else:
       serialized_team = TeamSerializer(team, many=False, context={'request': request})
     return Response({
-      'team': serialized_teamserialized_team.data,
+      'team': serialized_team.data,
     })
 
   def delete(self, request, id, format=None):
