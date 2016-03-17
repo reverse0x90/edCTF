@@ -39,18 +39,13 @@ class CtfUserManager(BaseUserManager):
       user.save(using=self._db)
       return user
 
-  def create_user(self, raw_username, email, password=None, ctf=None, **extra_fields):
+  def create_user(self, raw_username, ctf, email, password=None, **extra_fields):
     if not raw_username:
       raise ValueError('The given username must be set')
     extra_fields.setdefault('is_staff', False)
     extra_fields.setdefault('is_superuser', False)
-    if ctf:
-      try:
-        salt = str(ctf.id)
-      except:
-        raise
-    else:
-      salt = ''
+    salt = str(ctf.id)
+
     extra_fields.setdefault('salt', salt)
     username = encrypt_username(raw_username, salt=salt)
     return self._create_user(username, raw_username, email, password, **extra_fields)
@@ -90,7 +85,7 @@ class CtfUser(AbstractBaseUser):
     default=False,
     help_text=_('Designates whether the user can log into this admin site.'),
   )
-  is_admin = models.BooleanField(
+  is_superuser = models.BooleanField(
     default=False,
     help_text=_('Designates whether the user can log into this admin site.'),
   )
