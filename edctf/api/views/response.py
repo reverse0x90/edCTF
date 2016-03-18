@@ -23,7 +23,7 @@ def success_response(message):
       },
     })
 
-def registration_response(isauthenticated, user=None, username='', error='', errorfields={}):
+def registration_response(isauthenticated, user=None, error='', errorfields={}):
     """
     Returns the registration form response.
     """
@@ -37,7 +37,7 @@ def registration_response(isauthenticated, user=None, username='', error='', err
       data['error'] = error
       data['errorfields'] = errorfields
     if user:
-      data['username'] = username or user.username
+      data['username'] = user.username
       data['email'] = user.email
       data['isadmin'] = user.is_superuser
       try:
