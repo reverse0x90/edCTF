@@ -52,10 +52,6 @@ class TeamView(APIView):
     except:
       return registration_response(False, error='No online CTF, cannot register')
 
-    # Get the scoreboard object associated with the online ctf.
-    scoreboard = ctf.scoreboard
-    ctf_teams = scoreboard.teams
-
     team_data = request.data
     if not ('username' in team_data and 'teamname' in team_data and 'email' in team_data and 'password' in team_data):
       return registration_response(False, error='Invalid parameters')
@@ -65,11 +61,6 @@ class TeamView(APIView):
     email = team_data['email']
     password = team_data['password']
 
-    User = get_user_model()
-    enc_username = User.objects.encrypt_username(username, ctf)
-    enc_email = User.objects.encrypt_email(email, ctf)
-    enc_teamname = Team.objects.encrypt_teamname(teamname, ctf)
-
     # validate email
     try:
       EmailValidator(email)
@@ -77,11 +68,14 @@ class TeamView(APIView):
       return registration_response(False, error=e.message, errorfields={'email': True})
 
     # check if email exists for ctf or global
+    User = get_user_model()
+    enc_email = User.objects.encrypt_email(email, ctf)
     check = User.objects.filter(enc_email__iexact=enc_email) or User.objects.filter(enc_email__iexact=email)
     if check:
       return registration_response(False, error='Email is taken', errorfields={'email': True})
 
     # check if teamname exists for ctf or global
+    enc_teamname = Team.objects.encrypt_teamname(teamname, ctf)
     check = Team.objects.filter(enc_teamname__iexact=enc_teamname) or Team.objects.filter(enc_teamname__iexact=teamname)
     if check:
       return registration_response(False, error='Team name is taken', errorfields={'teamname': True})
@@ -89,6 +83,7 @@ class TeamView(APIView):
       return registration_response(False, error='Teamname too long, 30 characters max')
 
     # check if username exists for ctf or global
+    enc_username = User.objects.encrypt_username(username, ctf)
     check = User.objects.filter(enc_username__iexact=enc_username) or User.objects.filter(enc_username__iexact=username)
     if check:
       return registration_response(False, error='Username is taken', errorfields={'username': True})
@@ -141,7 +136,7 @@ class TeamViewDetail(APIView):
     try:
       team = Team.objects.get(id=id)
     except ObjectDoesNotExist:
-      return error_response("Team not found")
+      return error_response(error='Team not found')
 
     if request.user.is_staff:
       serialized_team = AdminTeamSerializer(team, many=False, context={'request': request})
@@ -158,10 +153,10 @@ class TeamViewDetail(APIView):
     # modify to have separate edit if admin
     try:
       if str(request.user.team.id) != id and not request.user.is_staff:
-        return error_response("You do not have permission to edit this team")
+        return error_response(error='You do not have permission to edit this team')
     except ObjectDoesNotExist:
       if not request.user.is_staff:
-        return error_response("You do not have permission to edit this team")
+        return error_response(error='You do not have permission to edit this team')
 
     if 'team' not in request.data:
       return error_response(error='Team not given',)
@@ -170,9 +165,13 @@ class TeamViewDetail(APIView):
     try:
       team = Team.objects.get(id=id)
     except ObjectDoesNotExist:
-      return error_response("Team not found")
-    #user = request.user
+      return error_response(error='Team not found')
+
     user = team.user
+    if team.scoreboard:
+      ctf = scoreboard.ctf
+    else:
+      ctf = None
 
     if 'email' not in team_data:
       return error_response(error='Email not given', errorfields={'email': True})
@@ -183,24 +182,32 @@ class TeamViewDetail(APIView):
     else:
       password = None
 
-    if team.scoreboard:
-      check = team.scoreboard.teams.exclude(id=team.id).filter(email__iexact=email)
-      if len(check):
-        return error_response(error='Email taken', errorfields={'email': True})
-      else:
-        try:
-          EmailValidator(email)
-        except ValidationError as e:
-          return error_response(error=e.message, errorfields={'email': True})
-    else:
-      try:
-        EmailValidator(email)
-      except ValidationError as e:
-        return error_response(error=e.message, errorfields={'email': True})
+    # validate email
+    try:
+      EmailValidator(email)
+    except ValidationError as e:
+      return error_response(error=e.message, errorfields={'email': True})
 
-    # if non- admin do email-authentication tokens
-    user.email = email
-    team.email = email
+    # check if email exists for ctf or global
+    User = get_user_model()
+    if ctf:
+      enc_email = User.objects.encrypt_email(email, ctf)
+      check = User.objects.exclude(id=user.id).filter(enc_email__iexact=enc_email) or User.objects.exclude(id=user.id).filter(enc_email__iexact=email)
+    else:
+      check = User.objects.exclude(id=user.id).filter(enc_email__iexact=email)
+    if check:
+      return error_response(error='Email taken', errorfields={'email': True})
+
+    # add enc_teamname/teamname checks here
+    # add enc_username/username checks here
+
+    # if non-admin do email-authentication tokens here
+    if ctf:
+      user.enc_email = User.objects.encrypt_email(email, ctf)
+      user.email = email
+    else:
+      user.enc_email = email
+      user.email = email
     #team.is_hidden = hidden
     if password:
       user.set_password(password)
@@ -209,15 +216,19 @@ class TeamViewDetail(APIView):
       user.save()
       team.save()
     except IntegrityError:
-      return error_response('Error modifying team')
+      return error_response(error='Error modifying team')
 
-    # django logs user out on password change
-    if str(request.user.team.id) == id and password:
-      user = authenticate(username=request.user.username, password=password)
-      if user is not None and user.is_active:
-        login(request, user)
+    # django logs user out on password change, so re-login
+    if password and request.user.id == user.id:
+      if ctf:
+        enc_username = User.objects.encrypt_username(request.user.username, ctf)
+        _user = authenticate(enc_username=enc_username, password=password)
+      else:
+        _user = authenticate(enc_username=request.user.username, password=password)
+      if _user is not None and _user.is_active:
+        login(request, _user)
 
-    # change this to similar to session
+    # change this to be similar to session if modifying request.user
     if request.user.is_staff:
       serialized_team = AdminTeamSerializer(team, many=False, context={'request': request})
     else:
