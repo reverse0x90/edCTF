@@ -141,7 +141,7 @@ class CtfUser(AbstractBaseUser):
   username = models.CharField(
     max_length=30,
     unique=False,
-    help_text=_('Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+    help_text=_('Required. 30 characters or fewer. Letters, digits and ./+/-/_ only.'),
     validators=[
       RegexValidator(
         r'^[\w.+-]+$',
