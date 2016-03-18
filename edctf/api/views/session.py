@@ -16,7 +16,7 @@ class SessionView(APIView):
   """
   permission_classes = (SessionPermission,)
 
-  def form_response(self, isauthenticated, user=None, username='', error=''):
+  def form_response(self, isauthenticated, user=None, error=''):
     """
     Returns the login form response.
     """
@@ -29,7 +29,7 @@ class SessionView(APIView):
       data['error'] = error
     
     if user:
-      data['username'] = username or user.username
+      data['username'] = user.username
       data['email'] = user.email
       data['isadmin'] = user.is_superuser
       try:
@@ -45,10 +45,7 @@ class SessionView(APIView):
     # If user is authenticated, return authentication data else
     # return a "not authenticated" error.
     if request.user.is_authenticated():
-      try:
-        return self.form_response(True, user=request.user, username=request.user.team.username)
-      except ObjectDoesNotExist:
-        return self.form_response(True, user=request.user)
+      return self.form_response(True, user=request.user)
     return self.form_response(False, error='Not authenticated')
 
   @ratelimit(key='ip', rate='15/m')
@@ -60,11 +57,7 @@ class SessionView(APIView):
     if was_limited:
       return self.form_response(False, error='Too many login attempts')
 
-    # Serialize the provided login json data to a python object.
     login_data = request.data
-
-    # Sanity check the json data to make sure all required parameters
-    # are included.
     if not ('username' in login_data and 'password' in login_data):
       return self.form_response(False, error='Invalid parameters')
 
@@ -72,22 +65,26 @@ class SessionView(APIView):
     username = login_data['username']
     password = login_data['password']
 
+    User = get_user_model()
     try:
-      get_user_model().objects.get(username=username)
+      User.objects.get(enc_username=username)
       ctfuser = False
     except ObjectDoesNotExist:
       ctfuser = True
 
     if ctfuser:
-      enc_username = ctf_encode(username)
-      if not enc_username:
+      try:
+        ctf = Ctf.objects.get(online=True)
+      except:
         return self.form_response(False, error='No online CTF, cannot login')
-      user = authenticate(username=enc_username, password=password)
+
+      enc_username = User.objects.encrypt_username(username, ctf)
+      user = authenticate(enc_username=enc_username, password=password)
       if user is not None and user.is_active:
         login(request, user)
-        return self.form_response(True, user=request.user, username=username)
+        return self.form_response(True, user=request.user)
     else:
-      user = authenticate(username=username, password=password)
+      user = authenticate(enc_username=username, password=password)
       if user is not None and user.is_active:
         login(request, user)
         return self.form_response(True, user=request.user)
@@ -103,26 +100,3 @@ class SessionView(APIView):
       logout(request)
       return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
-
-def ctf_encode(plaintext):
-  """
-  Encodes a given plaintext with the online CTF as salt
-  """
-  try:
-    ctf = Ctf.objects.get(online=True)
-  except ObjectDoesNotExist:
-    return False
-  salt = '{id}'.format(id=ctf.id)
-  return salt+'_'+plaintext
-
-def ctf_decode(salted_ciphertext):
-  """
-  Decodes given ciphertext, returns tuple of (salt, plaintext)
-  """
-  if '_' not in salted_ciphertext:
-    return False
-  ciphertext = salted_ciphertext.split('_')
-  if len(ciphertext) < 2:
-    return False
-  salt, ciphertext = ciphertext[0], ''.join(ciphertext[1:])
-  return salt, ciphertext

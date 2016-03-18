@@ -47,8 +47,14 @@ class TeamAdmin(admin.ModelAdmin):
   Sets the display settings for the team model in the django admin
   interface.
   """
-  list_display = ('teamname', 'points', 'ctfname')
+  list_display = ('enc_teamname', 'teamname', 'points', 'ctfname')
 
+class CtfUserAdmin(admin.ModelAdmin):
+  """
+  Sets the display settings for the ctf user model in the django admin
+  interface.
+  """
+  list_display = ('id', 'username', 'email')
 
 class ChallengeTimestampAdmin(admin.ModelAdmin):
   """
@@ -65,4 +71,5 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(Challenge, ChallengeAdmin)
 admin.site.register(Scoreboard, ScoreboardAdmin)
 admin.site.register(Team, TeamAdmin)
+admin.site.register(CtfUser, CtfUserAdmin)
 admin.site.register(ChallengeTimestamp, ChallengeTimestampAdmin)

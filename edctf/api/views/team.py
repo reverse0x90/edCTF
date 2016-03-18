@@ -12,7 +12,6 @@ from edctf.api.permissions import TeamPermission, TeamPermissionDetail
 from edctf.api.serializers import TeamSerializer
 from edctf.api.serializers.admin import TeamSerializer as AdminTeamSerializer
 from edctf.api.validators import validate_no_html, validate_no_xss
-from edctf.api.views import ctf_encode
 
 
 class TeamView(APIView):
@@ -55,7 +54,7 @@ class TeamView(APIView):
 
     # Get the scoreboard object associated with the online ctf.
     scoreboard = ctf.scoreboard
-    teams = scoreboard.teams
+    ctf_teams = scoreboard.teams
 
     team_data = request.data
     if not ('username' in team_data and 'teamname' in team_data and 'email' in team_data and 'password' in team_data):
@@ -65,33 +64,46 @@ class TeamView(APIView):
     teamname = team_data['teamname']
     email = team_data['email']
     password = team_data['password']
-    enc_username = ctf_encode(team_data['username'])
-    if not enc_username:
-      return registration_response(False, error='No online CTF, cannot register')
 
-    check = teams.filter(email__iexact=email)
-    if len(check):
+    User = get_user_model()
+    enc_username = User.objects.encrypt_username(username, ctf)
+    enc_email = User.objects.encrypt_email(email, ctf)
+    enc_teamname = Team.objects.encrypt_teamname(teamname, ctf)
+
+    # validate email
+    try:
+      EmailValidator(email)
+    except ValidationError as e:
+      return registration_response(False, error=e.message, errorfields={'email': True})
+
+    # check if email exists for ctf or global
+    check = User.objects.filter(enc_email__iexact=enc_email) or User.objects.filter(enc_email__iexact=email)
+    if check:
       return registration_response(False, error='Email is taken', errorfields={'email': True})
-    else:
-      try:
-        EmailValidator(email)
-      except ValidationError as e:
-        return registration_response(False, error=e.message, errorfields={'email': True})
 
-    check = teams.filter(teamname__iexact=teamname)
-    if len(check):
+    # check if teamname exists for ctf or global
+    check = Team.objects.filter(enc_teamname__iexact=enc_teamname) or Team.objects.filter(enc_teamname__iexact=teamname)
+    if check:
       return registration_response(False, error='Team name is taken', errorfields={'teamname': True})
     if len(teamname) > 30:
       return registration_response(False, error='Teamname too long, 30 characters max')
 
-    check = get_user_model().objects.filter(username__iexact=enc_username)
-    if len(check):
+    # check if username exists for ctf or global
+    check = User.objects.filter(enc_username__iexact=enc_username) or User.objects.filter(enc_username__iexact=username)
+    if check:
       return registration_response(False, error='Username is taken', errorfields={'username': True})
-    if len(username) > 25:
-      return registration_response(False, error='Username too long, 25 characters max')
+    if len(username) > 30:
+      return registration_response(False, error='Username too long, 30 characters max')
 
     # Create temp user to validate input
-    temp_user = get_user_model()(username=enc_username, email=email, password=password)
+    temp_user = User(
+      enc_username=enc_username,
+      username=username,
+      ctf=ctf,
+      enc_email=enc_email,
+      email=email,
+      password=password
+    )
     try:
       temp_user.full_clean()
     except ValidationError as e:
@@ -105,14 +117,14 @@ class TeamView(APIView):
       return registration_response(False, error=errorstr, errorfields=errordict)
 
     # Everything was good! Create the new user
-    new_user = get_user_model().objects.create_user(enc_username, email, password)
-    new_team = Team.objects.create(scoreboard=scoreboard, teamname=teamname, user=new_user, email=email, username=username)
+    new_user = User.objects.create_user(username, ctf, email, password)
+    new_team = Team.objects.create_team(teamname, new_user, ctf)
 
     # Registration was successful! Now login the new user.
-    user = authenticate(username=enc_username, password=password)
+    user = authenticate(enc_username=enc_username, password=password)
     if user is not None and user.is_active:
       login(request, user)
-      return registration_response(True, user, username=username)
+      return registration_response(True, user)
     return registration_response(False, error='Error with registration')
 
 
