@@ -2,5 +2,6 @@
 *.db
 *.pyc
 *.sqlite3
+env/
 edctf/edctf_secret.py
 

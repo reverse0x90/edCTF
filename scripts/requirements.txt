@@ -1,5 +1,6 @@
-beautifulsoup4
+beautifulsoup4==4.4.1
 django==1.9
-django-ratelimit
-djangorestframework
-psycopg2
+django-ratelimit==0.6.0
+djangorestframework==3.3.3
+pycrypto==2.6.1
+psycopg2==2.6.1
