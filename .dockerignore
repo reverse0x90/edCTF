@@ -2,7 +2,6 @@
 *.db
 *.pyc
 *.sqlite3
-env/
 ember/bower_components/
 ember/node_modules/
 ember/tmp/*
