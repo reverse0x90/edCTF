@@ -52,10 +52,9 @@ Build the edctf image locally:
 docker build -t edctf .
 ```
 
-Start your development container:
+To start your development container, run the following in your cloned repo:
 ```
 docker run -it --restart=unless-stopped -p 8080:80 -p 4443:443 --entrypoint=/opt/edctf/scripts/start-docker-dev.bash -v "$PWD":/opt/edctf edctf
 ```
-
 The server can be accessed at https://localhost:8080.
 
