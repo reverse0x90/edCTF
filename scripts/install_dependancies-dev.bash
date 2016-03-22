@@ -9,7 +9,8 @@ sudo apt-get update \
     git \
     libapache2-mod-wsgi \
     libpq-dev \
-    nodejs \
+    npm \
+    openssl \
     postgresql \
     python-pip \
     python-dev \

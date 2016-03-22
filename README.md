@@ -42,3 +42,20 @@ Before installation, in order to enable HTTPS, edit the USE_SSL variable within 
 The admin panel is shown on the left after login.
 
 If more technical changes are required, the django admin interface can be accessed at ```/djangoadmin/```
+
+## Development
+Development for edCTF can be performed using Docker or locally with [development.bash](scripts/development.bash).
+
+### Docker
+Build the edctf image locally:
+```
+docker build -t edctf .
+```
+
+Start your development container:
+```
+docker run -it --restart=unless-stopped -p 8080:80 -p 4443:443 --entrypoint=/opt/edctf/scripts/start-docker-dev.bash -v "$PWD":/opt/edctf edctf
+```
+
+The server can be accessed at https://localhost:8080.
+
