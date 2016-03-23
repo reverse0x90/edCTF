@@ -29,11 +29,11 @@ RUN pip install -r requirements.txt
 COPY scripts ${SCRIPTS}
 
 # Build frontend css
+COPY edctf edctf
 RUN /bin/bash -c ". ${SCRIPTS}/environment.bash \
   && ${SCRIPTS}/build_frontend-prod.bash"
 
 # Build backend
-COPY edctf edctf
 COPY config config
 COPY manage.py manage.py
 RUN /bin/bash -c ". ${SCRIPTS}/environment.bash \
