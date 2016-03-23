@@ -14,7 +14,7 @@ sudo apt-get update \
     postgresql \
     python-pip \
     python-dev \
-  && sudo pip install -r ${EDCTF_SCRIPTS}/requirements.txt \
+  && sudo pip install -r ${EDCTF_DIR}/requirements.txt \
   && (sudo npm cache clean -f && sudo npm install -g n && sudo n stable) \
   && sudo npm install -g ember-cli \
   && sudo npm install -g bower

@@ -10,4 +10,4 @@ sudo apt-get update \
     postgresql \
     python-pip \
     python-dev \
-  && sudo pip install -r ${EDCTF_SCRIPTS}/requirements.txt
+  && sudo pip install -r ${EDCTF_DIR}/requirements.txt
