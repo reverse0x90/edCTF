@@ -2,10 +2,11 @@
 *.db
 *.pyc
 *.sqlite3
+npm-debug.log
 ember/bower_components/
 ember/node_modules/
 ember/tmp/*
-edctf/edctf_secret.py
+edctf/edctf_secret.*
 edctf/static/admin/
 edctf/static/rest_framework/
 edctf/api/migrations/*
