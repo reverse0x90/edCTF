@@ -1,6 +1,6 @@
 #!/bin/bash
 export WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source ${WORKDIR}/environment.bash
+. ${WORKDIR}/environment.bash
 
 set -x
 

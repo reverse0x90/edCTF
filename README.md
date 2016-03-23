@@ -22,9 +22,9 @@ It is *strongly* recommended to change this password.
 You can run edCTF within a Docker container with the following commands:
 ```
 docker build -t edctf . \
-  && docker run --restart=unless-stopped -p 80:80 -p 443:443 --name edctf_server -d edctf
+  && docker run --restart=unless-stopped -p 80:80 -p 443:443 -d edctf
 ```
-edCTF can then be accessed via http or https your host machine.
+edCTF can then be accessed at <http://localhost> or <https://localhost>
 
 ### Local
 You can also install edCTF locally, assuming you're using something similar to Ubuntu or Debian.  Dependancies that are not listed above are installed with aptitude.
@@ -56,5 +56,5 @@ To start your development container, run the following in your cloned repo:
 ```
 docker run -it --restart=unless-stopped -p 8080:80 -p 4443:443 --entrypoint=/opt/edctf/scripts/start-docker-dev.bash -v "$PWD":/opt/edctf edctf
 ```
-The server can be accessed at https://localhost:8080.
+The server can be accessed at <https://localhost:8080>.
 

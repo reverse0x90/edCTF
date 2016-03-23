@@ -7,6 +7,7 @@ export EDCTF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 # set subdirectories
 export EDCTF_EMBER="${EDCTF_DIR}/ember"
 export EDCTF_DJANGO="${EDCTF_DIR}/edctf"
+export EDCTF_DOCKER="${EDCTF_DIR}/docker"
 export EDCTF_SCRIPTS="${EDCTF_DIR}/scripts"
 export EDCTF_CONFIG_HTTP="${EDCTF_DIR}/config/http"
 export EDCTF_CONFIG_HTTPS="${EDCTF_DIR}/config/https"

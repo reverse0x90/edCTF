@@ -2,8 +2,8 @@
 # Resets the edCTF database
 # Used within the DEVELOPMENT environment.
 
-export WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source ${WORKDIR}/environment.bash
+WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+. ${WORKDIR}/environment.bash
 
 set -x
 
