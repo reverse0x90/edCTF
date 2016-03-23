@@ -2,13 +2,13 @@
 # Resets the edCTF database
 # Used within the DEVELOPMENT environment.
 
-sudo apachectl stop
-
-# set working directory
 export WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-# set environment variables
 source ${WORKDIR}/environment.bash
+
+set -x
+
+# stop apache
+sudo apachectl stop
 
 # drop database
 sudo -u postgres psql -c "DROP DATABASE ${EDCTF_DATABASE};"

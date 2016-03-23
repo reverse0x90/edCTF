@@ -1,11 +1,10 @@
 #!/bin/bash
 # Runs install, build, and run scripts to start within a develeopment environment
 
-# set working directory
 export WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+. ${WORKDIR}/environment.bash
 
-# set environment variables
-source ${WORKDIR}/environment.bash
+set -x
 
 # attempt to destroy database
 sudo -u postgres psql -c "DROP DATABASE ${EDCTF_DATABASE};"

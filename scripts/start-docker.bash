@@ -1,6 +1,8 @@
 #!/bin/bash
 # This script is used to start PostgreSQL and Apache for edCTF
 
+set -x
+
 # start apache
 /usr/sbin/apache2ctl -k restart
 
