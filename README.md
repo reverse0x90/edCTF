@@ -19,12 +19,11 @@ password: admin
 It is *strongly* recommended to change this password.
 
 ### Docker
-You can run edCTF within a Docker container with the following commands:
+You can run edCTF within a Docker container:
 ```
-docker build -t edctf . \
-  && docker run --restart=unless-stopped -p 80:80 -p 443:443 -d edctf
+./run-docker.bash
 ```
-edCTF can then be accessed at <http://localhost> or <https://localhost>
+Once the script is finished running, the edCTF container should be running and viewable at <http://localhost>.
 
 ### Local
 You can also install edCTF locally, assuming you're using something similar to Ubuntu or Debian.  Dependancies that are not listed above are installed with aptitude.
@@ -43,18 +42,20 @@ The admin panel is shown on the left after login.
 
 If more technical changes are required, the django admin interface can be accessed at ```/djangoadmin/```
 
+===
+
 ## Development
-Development for edCTF can be performed using Docker or locally with [development.bash](scripts/development.bash).
+Development for edCTF can be performed using Docker.
 
 ### Docker
-Build the edctf image locally:
+The run-docker script will build and run the container for you:
 ```
-docker build -t edctf .
-```
-
-To start your development container, run the following in your cloned repo:
-```
-docker run -it --restart=unless-stopped -p 8080:80 -p 4443:443 --entrypoint=/opt/edctf/scripts/start-docker-dev.bash -v "$PWD":/opt/edctf edctf
+./run-docker.bash -d
 ```
 The server can be accessed at <https://localhost:8080>.
 
+### Local
+To develop locally within a Debian/Ubuntu-like environment:
+```
+./scripts/development.bash
+```
