@@ -30,12 +30,12 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 # Update npm
-#RUN npm install -g n \
-#  && n 
+RUN npm install -g n \
+  && n 0.12.12
 
 # Install ember and bower
-#RUN npm install -g ember-cli
-#RUN npm install -g bower
+RUN npm install -g ember-cli
+RUN npm install -g bower
 
 COPY scripts ${SCRIPTS}
 

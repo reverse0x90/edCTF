@@ -1,6 +1,8 @@
 #!/bin/bash
 # Generates client-side items, including building ember and copying CSS
 
+set -x
+
 cd ${EDCTF_EMBER} \
   && sudo npm install \
   && bower install -q \
