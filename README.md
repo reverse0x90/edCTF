@@ -48,7 +48,7 @@ If more technical changes are required, the django admin interface can be access
 Development for edCTF can be performed using Docker.
 
 ### Docker
-The run-docker script will build and run the container for you:
+The run-docker script will build the development container, mount your local repository, and start the container:
 ```
 ./run-docker.bash -d
 ```
