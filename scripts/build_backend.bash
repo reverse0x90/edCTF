@@ -1,6 +1,9 @@
 #!/bin/bash
 # Builds server-side items, including apache config, secrets, and database
 
+SCRIPTS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+. ${SCRIPTS}/environment.bash
+
 # if USE_SSL set to true generate self-signed cert and enable ssl
 if [ "$USE_SSL" = "true" ]
 then
@@ -45,7 +48,7 @@ else
     | sed "s@\${EDCTF_ACCESS_LOG}@${EDCTF_ACCESS_LOG}@g" \
     | sudo bash -c "cat > ${APACHE_CONFIG}/000-default.conf"
 fi
-
+set -x
 # generate secrets and populate database
 python ${EDCTF_SCRIPTS}/generate_secrets.py --output ${EDCTF_DJANGO}/edctf_secret.py \
   && python ${EDCTF_DIR}/manage.py makemigrations \

@@ -21,10 +21,13 @@ done
 
 
 if $DEV; then
+  UUID=`id -u`
   echo "Creating development container..."
   set -x
   docker build -t edctf:dev -f ${EDCTF_DOCKER}/dev/Dockerfile ${EDCTF_DIR} \
-    && docker run -it --restart=unless-stopped -v ${EDCTF_DIR}:/opt/edctf -p 8080:80 -p 4443:443 edctf:dev
+    && docker run -it --restart=unless-stopped \
+      -e UUID=$UUID -e USER=$USER \
+      -v ${EDCTF_DIR}:/opt/edctf -p 8080:80 -p 4443:443 edctf:dev
 else
   echo "Creating production container..."
   set -x

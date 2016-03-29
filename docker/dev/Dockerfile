@@ -38,20 +38,10 @@ RUN npm install -g ember-cli
 RUN npm install -g bower
 
 COPY scripts ${SCRIPTS}
-
-# Build frontend css
 COPY ember ember
 COPY edctf edctf
-RUN /bin/bash -c ". ${SCRIPTS}/environment.bash \
-  && ${SCRIPTS}/build_frontend-prod.bash"
-
-# Build backend
 COPY config config
 COPY manage.py manage.py
-RUN /bin/bash -c ". ${SCRIPTS}/environment.bash \
-  && /etc/init.d/postgresql start \
-  && ${SCRIPTS}/build_backend.bash \
-  && /etc/init.d/postgresql stop"
 
 COPY docker docker
 RUN cp ${EDCTF}/docker/dev/entrypoint.bash /opt/entrypoint.bash
