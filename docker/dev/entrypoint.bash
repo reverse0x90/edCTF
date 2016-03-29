@@ -21,7 +21,8 @@ if [ ! -z "$UUID" ] && [ ! -z "$USER" ]; then
   /etc/init.d/postgresql start
 
   # Build backend
-  su $USER -c "sudo ${SCRIPTS}/build_backend.bash"
+  su $USER -c "${SCRIPTS}/build_backend.bash"
+  su $USER -c "${SCRIPTS}/reset_db.bash"
 
   # Start apache
   /usr/sbin/apache2ctl -k restart

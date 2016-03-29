@@ -15,19 +15,18 @@ class CtftimeViewDetail(APIView):
   """
   permission_classes = (CtftimePermission,)
   
-  def get(self, request, id, format=None):
+  def get(self, request, ctf_id, format=None):
     """
     Gets minimal ctftime scoreboard according to:
       https://ctftime.org/json-scoreboard-feed
     Requires ctf id.
     """
     try:
-      ctf = Ctf.objects.get(id=id)
+      ctf = Ctf.objects.get(id=ctf_id)
     except ObjectDoesNotExist:
       return error_response('CTF not found')
 
-    scoreboard = ctf.scoreboard
-    teams = scoreboard.teams.order_by('-points','-last_timestamp', 'created')
+    teams = ctf.scoreboard.teams.order_by('-points','-last_timestamp', 'created')
     teams_serialized = CtftimeSerializer(teams, many=True, context={'request': request})
 
     for pos, _team in enumerate(teams_serialized.data):
