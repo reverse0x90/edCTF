@@ -14,16 +14,17 @@ if [ ! -z "$UUID" ] && [ ! -z "$USER" ]; then
   su $USER -c "cd ${EDCTF_EMBER} \
     && npm install \
     && bower install -q \
-    && ember build -prod -o ${EDCTF_EMBER_STATIC} \
     && sudo cp -R ${DJANGO_ADMIN_STATIC} ${EDCTF_ADMIN_STATIC} \
     && sudo cp -R ${REST_FRAMEWORK_CSS_DIR} ${EDCTF_REST_STATIC}"
 
-  # Start services
-  /usr/sbin/apache2ctl -k restart \
-    && /etc/init.d/postgresql start
+  # Start postgres
+  /etc/init.d/postgresql start
 
   # Build backend
   su $USER -c "sudo ${SCRIPTS}/build_backend.bash"
+
+  # Start apache
+  /usr/sbin/apache2ctl -k restart
 
   # Entrypoint
   su $USER
