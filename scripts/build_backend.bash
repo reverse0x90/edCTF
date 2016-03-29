@@ -1,6 +1,9 @@
 #!/bin/bash
 # Builds server-side items, including apache config, secrets, and database
 
+SCRIPTS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+. ${SCRIPTS}/environment.bash
+
 # if USE_SSL set to true generate self-signed cert and enable ssl
 if [ "$USE_SSL" = "true" ]
 then

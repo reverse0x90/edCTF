@@ -1,7 +1,6 @@
-*~
-*.db
-*.pyc
-*.sqlite3
+*/*.db
+*/*.pyc
+*/*.sqlite3
 npm-debug.log
 ember/bower_components/
 ember/node_modules/
