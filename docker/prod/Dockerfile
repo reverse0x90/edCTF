@@ -26,24 +26,21 @@ RUN apt-get update \
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
+# Build Django admin css
+COPY edctf ${EDCTF}/edctf
+RUN cp -R /usr/local/lib/python2.7/dist-packages/django/contrib/admin/static/admin ${EDCTF}/edctf/static/
+
 COPY scripts ${SCRIPTS}
 
-# Build frontend css
-COPY edctf edctf
-RUN /bin/bash -c ". ${SCRIPTS}/environment.bash \
-  && ${SCRIPTS}/build_frontend-prod.bash"
-
 # Build backend
-COPY config config
-COPY manage.py manage.py
+COPY config ${EDCTF}/config
+COPY manage.py ${EDCTF}/manage.py
 RUN /bin/bash -c ". ${SCRIPTS}/environment.bash \
   && /etc/init.d/postgresql start \
   && ${SCRIPTS}/build_backend.bash \
   && /etc/init.d/postgresql stop"
 
-COPY docker docker
-RUN cp ${EDCTF}/docker/prod/entrypoint.bash /opt/entrypoint.bash
-
 EXPOSE 80
 EXPOSE 443
+COPY docker/prod/entrypoint.bash /opt/entrypoint.bash
 ENTRYPOINT ["/opt/entrypoint.bash"]

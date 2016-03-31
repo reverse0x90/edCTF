@@ -1,7 +1,5 @@
 #!/bin/bash
-
 . ${SCRIPTS}/environment.bash
-
 set -x
 
 if [ ! -z "$UUID" ] && [ ! -z "$USER" ]; then
@@ -34,8 +32,7 @@ else
   ${SCRIPTS}/build_frontend-dev.bash
 
   # Start services
-  /usr/sbin/apache2ctl -k restart \
-    && /etc/init.d/postgresql start
+  /etc/init.d/postgresql start && /usr/sbin/apache2ctl -k restart
 
   # Build backend
   ${SCRIPTS}/build_backend.bash

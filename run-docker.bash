@@ -25,12 +25,16 @@ if $DEV; then
   echo "Creating development container..."
   set -x
   docker build -t edctf:dev -f ${EDCTF_DOCKER}/dev/Dockerfile ${EDCTF_DIR} \
-    && docker run -it --restart=unless-stopped \
+    && docker run --restart=unless-stopped \
       -e UUID=$UUID -e USER=$USER \
-      -v ${EDCTF_DIR}:/opt/edctf -p 8080:80 -p 4443:443 edctf:dev
+      -v ${EDCTF_DIR}:/opt/edctf \
+      -p 8080:80 -p 4443:443 \
+      -it edctf:dev
 else
   echo "Creating production container..."
   set -x
   docker build -t edctf:prod -f ${EDCTF_DOCKER}/prod/Dockerfile ${EDCTF_DIR} \
-    && docker run --restart=unless-stopped -p 80:80 -p 443:443 --name=edctf_server -d edctf:prod
+    && docker run --restart=unless-stopped --name=edctf_server \
+      -p 80:80 -p 443:443 \
+      -di edctf:prod
 fi
