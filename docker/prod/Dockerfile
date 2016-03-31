@@ -31,16 +31,11 @@ COPY edctf ${EDCTF}/edctf
 RUN cp -R /usr/local/lib/python2.7/dist-packages/django/contrib/admin/static/admin ${EDCTF}/edctf/static/
 
 COPY scripts ${SCRIPTS}
-
-# Build backend
 COPY config ${EDCTF}/config
 COPY manage.py ${EDCTF}/manage.py
-RUN /bin/bash -c ". ${SCRIPTS}/environment.bash \
-  && /etc/init.d/postgresql start \
-  && ${SCRIPTS}/build_backend.bash \
-  && /etc/init.d/postgresql stop"
 
 EXPOSE 80
 EXPOSE 443
+
 COPY docker/prod/entrypoint.bash /opt/entrypoint.bash
 ENTRYPOINT ["/opt/entrypoint.bash"]

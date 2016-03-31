@@ -1,5 +1,7 @@
 version: "2"
 services:
+  db:
+    image: postgres
   web:
     build: 
         context: .
@@ -11,3 +13,5 @@ services:
     restart: unless-stopped
     tty: true
     stdin_open: true
+    depends_on:
+      - db
