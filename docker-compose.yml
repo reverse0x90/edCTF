@@ -7,9 +7,7 @@ services:
       POSTGRES_PASSWORD: edctf
     container_name: edctf_db
   web:
-    build: 
-        context: .
-        dockerfile: docker/prod/Dockerfile
+    build: .
     ports:
      - "80:80"
      - "443:443"
