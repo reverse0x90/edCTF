@@ -2,6 +2,9 @@ version: "2"
 services:
   db:
     image: postgres
+    environment:
+      POSTGRES_USER: edctf
+      POSTGRES_PASSWORD: edctf
   web:
     build: 
         context: .

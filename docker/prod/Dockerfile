@@ -14,7 +14,7 @@ RUN apt-get update \
         apache2 \
         libapache2-mod-wsgi \
         libpq-dev \
-        postgresql=9.4* \
+        netcat \
         python-pip \
         python-dev \
         sudo \

@@ -1,10 +1,9 @@
 #!/bin/bash
+. ${SCRIPTS}/environment.bash
 set -x
 
-. ${SCRIPTS}/environment.bash
-
-# Start services
-/etc/init.d/postgresql start
+# Wait for postgres server to finish...
+until netcat -z -w 2 db 5432; do sleep 1; done
 
 # Build backend
 ${SCRIPTS}/build_backend.bash
