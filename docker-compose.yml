@@ -5,6 +5,7 @@ services:
     environment:
       POSTGRES_USER: edctf
       POSTGRES_PASSWORD: edctf
+    container_name: edctf_db
   web:
     build: 
         context: .
@@ -12,7 +13,7 @@ services:
     ports:
      - "80:80"
      - "443:443"
-    container_name: edctf_server
+    container_name: edctf_web
     restart: unless-stopped
     tty: true
     stdin_open: true
