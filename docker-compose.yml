@@ -13,7 +13,5 @@ services:
      - "443:443"
     container_name: edctf_web
     restart: unless-stopped
-    tty: true
-    stdin_open: true
     depends_on:
       - db

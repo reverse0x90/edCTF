@@ -33,8 +33,8 @@ if $DEV; then
 else
   echo "Creating production container..."
   set -x
-  docker build -t edctf:prod -f ${EDCTF_DOCKER}/prod/Dockerfile ${EDCTF_DIR} \
+  docker build -t edctf:prod ${EDCTF_DIR} \
     && docker run --restart=unless-stopped --name=edctf_server \
       -p 80:80 -p 443:443 \
-      -di edctf:prod
+      -d edctf:prod
 fi
