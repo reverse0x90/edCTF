@@ -5,20 +5,26 @@ SCRIPTS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/scripts
 
 DEV=false
 PROD=false
+LOCAL=false
 
 OPTIND=1
-while getopts ':pd' opt
-do
-    case "$opt" in
+while getopts "dpl" opt; do
+    case $opt in
         d)
-          DEV=true;break
+          DEV=true
           ;;
         p)
-          PROD=true;break
+          PROD=true
+          ;;
+        l)
+          LOCAL=true
           ;;
     esac
 done
-
+if $DEV && $PROD; then
+  echo "Cannot build for both production and development!" 1>&2
+  exit 1
+fi
 
 if $DEV; then
   UUID=`id -u`
