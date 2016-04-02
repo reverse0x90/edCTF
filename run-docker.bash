@@ -31,7 +31,10 @@ if $DEV; then
   echo "Creating development container..."
   set -x
   docker build -t edctf:dev -f ${EDCTF_DOCKER}/dev/Dockerfile ${EDCTF_DIR} \
-    && docker run --restart=unless-stopped \
+    && docker run --name edctf_db_dev \
+      -e POSTGRES_USER=edctf -e POSTGRES_PASSWORD=edctf \
+      -d postgres \
+    && docker run --restart=unless-stopped --link edctf_db_dev:db \
       -e UUID=$UUID -e USER=$USER \
       -v ${EDCTF_DIR}:/opt/edctf \
       -p 8080:80 -p 4443:443 \
@@ -40,7 +43,10 @@ else
   echo "Creating production container..."
   set -x
   docker build -t edctf:prod ${EDCTF_DIR} \
-    && docker run --restart=unless-stopped --name=edctf_server \
+    && docker run --name edctf_db \
+      -e POSTGRES_USER=edctf -e POSTGRES_PASSWORD=edctf \
+      -d postgres \
+    && docker run --restart=unless-stopped --name=edctf_server --link edctf_db:db \
       -p 80:80 -p 443:443 \
       -d edctf:prod
 fi

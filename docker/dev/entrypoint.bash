@@ -15,12 +15,11 @@ if [ ! -z "$UUID" ] && [ ! -z "$USER" ]; then
     && sudo cp -R ${DJANGO_ADMIN_STATIC} ${EDCTF_ADMIN_STATIC} \
     && sudo cp -R ${REST_FRAMEWORK_CSS_DIR} ${EDCTF_REST_STATIC}"
 
-  # Start postgres
-  /etc/init.d/postgresql start
+  # Wait for postgres server to finish...
+  until netcat -z -w 2 db 5432; do sleep 1; done
 
   # Build backend
   su $USER -c "${SCRIPTS}/build_backend.bash"
-  su $USER -c "${SCRIPTS}/reset_db.bash"
 
   # Start apache
   /usr/sbin/apache2ctl -k restart
@@ -31,11 +30,14 @@ else
   # Build frontend
   ${SCRIPTS}/build_frontend-dev.bash
 
-  # Start services
-  /etc/init.d/postgresql start && /usr/sbin/apache2ctl -k restart
+  # Wait for postgres server to finish...
+  until netcat -z -w 2 db 5432; do sleep 1; done
 
   # Build backend
   ${SCRIPTS}/build_backend.bash
+
+  # Start apache
+  /usr/sbin/apache2ctl -k restart
 
   # Entrypoint
   /bin/bash
