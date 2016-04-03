@@ -1,9 +1,12 @@
 #!/bin/bash
-
+. ${SCRIPTS}/environment.bash
 set -x
 
-# start apache
-/usr/sbin/apache2ctl -k restart
+# Wait for postgres server to finish...
+until netcat -z -w 2 ${DB_HOST} 5432; do sleep 1; done
 
-# start postgres and display log
-sudo -u postgres /usr/lib/postgresql/9.4/bin/postgres -D /var/lib/postgresql/9.4/main -c config_file=/etc/postgresql/9.4/main/postgresql.conf
+# Build backend
+${SCRIPTS}/build_backend.bash
+
+# Entrypoint
+/usr/sbin/apache2ctl -D FOREGROUND

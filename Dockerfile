@@ -14,11 +14,11 @@ RUN apt-get update \
         apache2 \
         libapache2-mod-wsgi \
         libpq-dev \
-        postgresql=9.4* \
+        netcat \
+        openssl \
         python-pip \
         python-dev \
         sudo \
-        openssl \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
@@ -26,24 +26,16 @@ RUN apt-get update \
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
+# Build Django admin css
+COPY edctf ${EDCTF}/edctf
+RUN cp -R /usr/local/lib/python2.7/dist-packages/django/contrib/admin/static/admin ${EDCTF}/edctf/static/
+
 COPY scripts ${SCRIPTS}
-
-# Build frontend css
-COPY edctf edctf
-RUN /bin/bash -c ". ${SCRIPTS}/environment.bash \
-  && ${SCRIPTS}/build_frontend-prod.bash"
-
-# Build backend
-COPY config config
-COPY manage.py manage.py
-RUN /bin/bash -c ". ${SCRIPTS}/environment.bash \
-  && /etc/init.d/postgresql start \
-  && ${SCRIPTS}/build_backend.bash \
-  && /etc/init.d/postgresql stop"
-
-COPY docker docker
-RUN cp ${EDCTF}/docker/prod/entrypoint.bash /opt/entrypoint.bash
+COPY config ${EDCTF}/config
+COPY manage.py ${EDCTF}/manage.py
 
 EXPOSE 80
 EXPOSE 443
+
+COPY docker/prod/entrypoint.bash /opt/entrypoint.bash
 ENTRYPOINT ["/opt/entrypoint.bash"]

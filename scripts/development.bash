@@ -1,19 +1,45 @@
 #!/bin/bash
-# Runs install, build, and run scripts to start within a develeopment environment
 
-export WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-. ${WORKDIR}/environment.bash
+# Install dependancies
+sudo apt-get update \
+  && sudo apt-get -y install \
+    apache2 \
+    curl \
+    libapache2-mod-wsgi \
+    libpq-dev \
+    git \
+    npm \
+    openssl \
+    python-pip \
+    python-dev
+sudo pip install -r ${EDCTF_DIR}/requirements.txt
 
-set -x
+# Update npm
+sudo npm install -g n \
+  && sudo n 0.12.12
 
-# attempt to destroy database
-sudo -u postgres psql -c "DROP DATABASE ${EDCTF_DATABASE};"
+# Install ember and bower
+sudo npm install -g ember-cli
+sudo npm install -g bower
 
-# remove possible migration files
-rm ${EDCTF_DJANGO}/api/migrations/*initial*
+# Install ember dependancies
+cd ${EDCTF_EMBER} \
+  && npm install \
+  && bower install -q
 
-# run scripts
-${WORKDIR}/install_dependancies-dev.bash \
-  && ${WORKDIR}/build_frontend-dev.bash \
-  && ${WORKDIR}/build_backend.bash \
-  && ${WORKDIR}/start.bash
+# Copy css
+sudo cp -R ${DJANGO_ADMIN_STATIC} ${EDCTF_ADMIN_STATIC} \
+  && sudo cp -R ${REST_FRAMEWORK_CSS_DIR} ${EDCTF_REST_STATIC}
+
+# Setup database
+(sudo -u postgres psql -c "CREATE USER edctf WITH PASSWORD '${DB_PASS}';") \
+    || (sudo -u postgres psql -c "ALTER USER edctf WITH PASSWORD '${DB_PASS}';")
+sudo -u postgres psql -c "DROP DATABASE edctf;"
+sudo -u postgres psql -c "CREATE DATABASE edctf;"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE edctf to edctf;"
+
+# Build backend
+${SCRIPTS}/build_backend.bash
+
+# Restart apache
+sudo /usr/sbin/apache2ctl -k restart

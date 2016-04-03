@@ -29,7 +29,6 @@ if DEBUG:
 else:
   ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 INSTALLED_APPS = (
   'django.contrib.admin',
@@ -76,11 +75,11 @@ WSGI_APPLICATION = 'edctf.wsgi.application'
 DATABASES = {
   'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': edctf_secret.DB_NAME,
-    'USER': edctf_secret.DB_USER,
-    'PASSWORD': edctf_secret.DB_PASSWORD,
+    'NAME': 'edctf',
+    'USER': 'edctf',
+    'PASSWORD': edctf_secret.DB_PASS,
     'HOST': edctf_secret.DB_HOST,
-    'PORT': edctf_secret.DB_PORT,
+    'PORT': 5432,
   }
 }
 

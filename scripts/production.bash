@@ -1,13 +1,28 @@
 #!/bin/bash
-# Runs install, build, and run scripts to start within a production environment
 
-export WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-. ${WORKDIR}/environment.bash
+# Install dependancies
+sudo apt-get update \
+  && sudo apt-get -y install \
+    apache2 \
+    libapache2-mod-wsgi \
+    libpq-dev \
+    openssl \
+    python-pip \
+    python-dev
+sudo pip install -r ${EDCTF_DIR}/requirements.txt
 
-set -x
+# Build Django admin css
+sudo cp -R ${DJANGO_ADMIN_STATIC} ${EDCTF_ADMIN_STATIC}
 
-# run scripts
-${WORKDIR}/install_dependancies-prod.bash \
-  && ${WORKDIR}/build_frontend-prod.bash \
-  && ${WORKDIR}/build_backend.bash \
-  && ${WORKDIR}/start.bash
+# Setup database
+(sudo -u postgres psql -c "CREATE USER edctf WITH PASSWORD '${DB_PASS}';") \
+  	|| (sudo -u postgres psql -c "ALTER USER edctf WITH PASSWORD '${DB_PASS}';")
+sudo -u postgres psql -c "DROP DATABASE edctf;"
+sudo -u postgres psql -c "CREATE DATABASE edctf;"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE edctf to edctf;"
+
+# Build backend
+${SCRIPTS}/build_backend.bash
+
+# Restart apache
+sudo /usr/sbin/apache2ctl -k restart

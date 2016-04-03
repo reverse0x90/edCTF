@@ -16,12 +16,12 @@ RUN apt-get update \
         libapache2-mod-wsgi \
         libpq-dev \
         git \
+        netcat \
         npm \
-        postgresql=9.4* \
+        openssl \
         python-pip \
         python-dev \
         sudo \
-        openssl \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
