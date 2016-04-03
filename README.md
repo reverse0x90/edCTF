@@ -26,13 +26,12 @@ You can run edCTF within a Docker container using:
 Once the script is finished running, the edCTF container should be running and viewable at <http://localhost>.
 
 ### Local
-You can also install edCTF locally, assuming you're using something similar to Ubuntu or Debian.  Dependancies that are not listed above are installed with aptitude.
+You can also install edCTF locally, assuming you're using something similar to Ubuntu or Debian.  Dependancies that are not listed above are installed using aptitude.
 
-To deploy edCTF, run the production setup script with run-edctf:
+Run the run-edctf script with the -l flag to run it locally:
 ```
 ./run-edctf.bash -l
 ```
-edCTF can then be accessed via http or https your host machine.
 
 ### HTTPS
 Before installation, in order to enable HTTPS, edit the USE_SSL variable within [environment.bash](scripts/environment.bash#L39) to "true".  edCTF will then generate a self-signed certificate for temporary use.  This method will be changed in a future release.
@@ -57,5 +56,5 @@ The server can be accessed at <https://localhost:8080>.
 ### Local
 To develop locally within a Debian/Ubuntu-like environment:
 ```
-./scripts/development.bash
+./run-edctf.bash -dl
 ```
