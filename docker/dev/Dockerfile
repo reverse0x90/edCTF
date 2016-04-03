@@ -18,10 +18,10 @@ RUN apt-get update \
         git \
         netcat \
         npm \
+        openssl \
         python-pip \
         python-dev \
         sudo \
-        openssl \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 

@@ -50,7 +50,7 @@ else
 fi
 
 # generate secrets and populate database
-python ${EDCTF_SCRIPTS}/generate_secrets.py --output ${EDCTF_DJANGO}/edctf_secret.py \
+sudo python ${EDCTF_SCRIPTS}/generate_secrets.py --dbhost ${DB_HOST} --dbpass ${DB_PASS} --output ${EDCTF_DJANGO}/edctf_secret.py \
   && python ${EDCTF_DIR}/manage.py makemigrations \
   && python ${EDCTF_DIR}/manage.py migrate auth \
   && python ${EDCTF_DIR}/manage.py migrate \

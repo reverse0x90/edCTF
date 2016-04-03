@@ -15,10 +15,10 @@ RUN apt-get update \
         libapache2-mod-wsgi \
         libpq-dev \
         netcat \
+        openssl \
         python-pip \
         python-dev \
         sudo \
-        openssl \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 

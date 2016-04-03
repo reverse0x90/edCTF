@@ -75,10 +75,10 @@ WSGI_APPLICATION = 'edctf.wsgi.application'
 DATABASES = {
   'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'postgres',
+    'NAME': 'edctf',
     'USER': 'edctf',
-    'PASSWORD': edctf_secret.DB_PASSWORD,
-    'HOST': 'db',
+    'PASSWORD': edctf_secret.DB_PASS,
+    'HOST': edctf_secret.DB_HOST,
     'PORT': 5432,
   }
 }

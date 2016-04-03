@@ -16,10 +16,10 @@ if [ ! -z "$UUID" ] && [ ! -z "$USER" ]; then
     && sudo cp -R ${REST_FRAMEWORK_CSS_DIR} ${EDCTF_REST_STATIC}"
 
   # Wait for postgres server to finish...
-  until netcat -z -w 2 db 5432; do sleep 1; done
+  until netcat -z -w 2 ${DB_HOST} 5432; do sleep 1; done
 
   # Build backend
-  su $USER -c "${SCRIPTS}/build_backend.bash"
+  ${SCRIPTS}/build_backend.bash
 
   # Start apache
   /usr/sbin/apache2ctl -k restart
@@ -31,7 +31,7 @@ else
   ${SCRIPTS}/build_frontend-dev.bash
 
   # Wait for postgres server to finish...
-  until netcat -z -w 2 db 5432; do sleep 1; done
+  until netcat -z -w 2 ${DB_HOST} 5432; do sleep 1; done
 
   # Build backend
   ${SCRIPTS}/build_backend.bash
