@@ -3,18 +3,44 @@
 export SCRIPTS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/scripts
 . ${SCRIPTS}/environment.bash
 
+usage="Usage: $(basename "$0") [OPTIONS]
+
+Deploys the edctf framework.
+By default, uses Docker containers to run Apache and PostgreSQL.
+
+Options:
+    -h  display help text
+    -p  use production environment [DEFAULT]
+    -d  use development environment
+    -l  run edctf locally instead of within a Docker container
+
+Examples:
+    $(basename "$0")
+        - runs edctf
+
+    $(basename "$0") -l
+        - runs edctf locally
+
+    $(basename "$0") -d
+        - runs edctf within a development container
+"
+
 DEV=false
 PROD=false
 LOCAL=false
 
 OPTIND=1
-while getopts "dpl" opt; do
+while getopts "hpdl" opt; do
     case $opt in
-        d)
-          DEV=true
+        h)
+          echo "$usage"
+          exit
           ;;
         p)
           PROD=true
+          ;;
+        d)
+          DEV=true
           ;;
         l)
           LOCAL=true
