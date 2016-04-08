@@ -15,7 +15,7 @@ Building production container...
 ```
 When the script is finished, you can access edCTF at <http://localhost>.
 
-**Default credentials:**
+Default credentials:
 ```
 username: admin
 password: admin
