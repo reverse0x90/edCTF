@@ -69,3 +69,4 @@ If you prefer to develop without containers, simply add the ```-l``` flag:
 $ ./run-edctf.bash -dl
 Creating development environment locally...
 ```
+This will attempt to install dependencies on your local machine. These dependencies include Apache, Postgresql, Django, and EmberJS.  Once the script is finished, edCTF will be accessible at <http://localhost>.
