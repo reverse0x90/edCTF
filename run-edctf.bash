@@ -3,7 +3,9 @@
 export SCRIPTS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/scripts
 . ${SCRIPTS}/environment.bash
 
-usage="Usage: $(basename "$0") [OPTIONS]
+RED='\033[0;31m'
+NC='\033[0m'
+USAGE="Usage: $(basename "$0") [OPTIONS]
 
 Deploys the edctf framework.
 By default, uses Docker containers to run Apache and PostgreSQL.
@@ -24,6 +26,13 @@ Examples:
     $(basename "$0") -d
         - runs edctf within a development container
 "
+CHECKINSTALLED="docker ps"
+NOTINSTALLED="
+${RED}Cannot run docker${NC}
+
+Please install docker or install locally (-l) within an ubuntu environment.
+Docker installation instructions: https://docs.docker.com/engine/installation/
+"
 
 DEV=false
 PROD=false
@@ -33,7 +42,7 @@ OPTIND=1
 while getopts "hpdl" opt; do
     case $opt in
         h)
-          echo "$usage"
+          echo -e "$USAGE"
           exit
           ;;
         p)
@@ -53,6 +62,12 @@ if $DEV && $PROD; then
 fi
 
 if ! $LOCAL; then
+  `$CHECKINSTALLED > /dev/null`
+  if [ $? -ne 0 ]; then
+    echo -e "$NOTINSTALLED"
+    exit 1
+  fi
+  
   if $DEV; then
     DB_PASS=edctf
     DB_HOST=db
