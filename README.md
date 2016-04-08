@@ -3,58 +3,69 @@ edCTF is a generic web application to rapidly deploy jeopardy-style CTF competit
 
 edCTF supports the ability to host multiple CTFs on the same application instance. There is no need to rebuild the framework.
 
-edCTF can be quickly deployed using [Docker](https://github.com/docker/docker).
+By default, edCTF is deployed with [Docker](https://github.com/docker/docker) containers.
 
 Current version: 2.0.0-beta
 
-## Dependancies
-* [Docker](http://docs.docker.com/engine/installation/)
-
 ## Installation
-Default credentials for the admin account:
+Run the run-edctf script:
+```
+$ ./run-edctf.bash 
+Building production container...
+```
+When the script is finished, you can access edCTF at <http://localhost>.
+
+**Default credentials:**
 ```
 username: admin
 password: admin
 ```
 It is *strongly* recommended to change this password.
 
-### Docker
-You can run edCTF within a Docker container using:
+More information:
 ```
-./run-edctf.bash
-```
-Once the script is finished running, the edCTF container should be running and viewable at <http://localhost>.
+$ ./run-edctf.bash  -h
+Usage: run-edctf.bash [OPTIONS]
 
-### Local
-You can also install edCTF locally, assuming you're using something similar to Ubuntu or Debian.  Dependancies that are not listed above are installed using aptitude.
+Deploys the edctf framework.
+By default, uses Docker containers to run Apache and PostgreSQL.
 
-Run the run-edctf script with the -l flag to run it locally:
-```
-./run-edctf.bash -l
+Options:
+    -h  display help text
+    -p  use production environment [DEFAULT]
+    -d  use development environment
+    -l  run edctf locally instead of within a Docker container
+
+Examples:
+    run-edctf.bash
+        - runs edctf
+
+    run-edctf.bash -l
+        - runs edctf locally
+
+    run-edctf.bash -d
+        - runs edctf within a development container
 ```
 
-### HTTPS
+#### HTTPS
 Before installation, in order to enable HTTPS, edit the USE_SSL variable within [environment.bash](scripts/environment.bash#L39) to "true".  edCTF will then generate a self-signed certificate for temporary use.  This method will be changed in a future release.
 
-## Admin Panel
+#### Admin Panel
 The admin panel is shown on the left after login.
 
-If more technical changes are required, the django admin interface can be accessed at ```/djangoadmin/```
-
-===
+If more changes are required, the django admin interface can be accessed at ```/djangoadmin/```
 
 ## Development
-Development for edCTF can be performed using Docker.
-
-### Docker
+Development for edCTF can be performed using Docker or within a local ubuntu environment.
 The run-edctf script will build the development container, mount your local repository, and start the container:
 ```
-./run-edctf.bash -d
+$ ./run-edctf.bash -d
+Building development container...
 ```
-The server can be accessed at <https://localhost:8080>.
+When the script is finished, you can access edCTF at <http://localhost:8080> and develop within your local repository.
 
-### Local
-To develop locally within a Debian/Ubuntu-like environment:
+If you prefer to develop without containers, simply add the ```-l``` flag:
 ```
-./run-edctf.bash -dl
+$ ./run-edctf.bash -dl
+Creating development environment locally...
 ```
