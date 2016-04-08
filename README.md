@@ -15,14 +15,14 @@ Building production container...
 ```
 When the script is finished, you can access edCTF at <http://localhost>.
 
-Default credentials:
+#### Credentials
 ```
 username: admin
 password: admin
 ```
 It is *strongly* recommended to change this password.
 
-More information:
+#### More Information
 ```
 $ ./run-edctf.bash  -h
 Usage: run-edctf.bash [OPTIONS]
