@@ -136,19 +136,13 @@ class CtfViewDetail(APIView):
       return error_response('CTF name already taken', errorfields={'name': True})
     online = True if ctf_data['online'] else False
 
-    # if ctf is going offline, deactivate users
-    if ctf.online and not online:
-      for team in ctf.scoreboard.teams:
-        team.user.is_active = False
-        team.user.save()
-
     # disable all other online ctfs
     if online:
       online_ctfs = Ctf.objects.exclude(id=ctf.id).filter(online=True)
       for _ctf in online_ctfs:
         if _ctf.online:
           _ctf.online = False
-          for team in _ctf.scoreboard.teams:
+          for team in _ctf.scoreboard.teams.all():
             team.user.is_active = False
             team.user.save()
           _ctf.save()
