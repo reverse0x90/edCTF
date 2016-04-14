@@ -1,5 +1,5 @@
 # edCTF
-edCTF is a generic web application to rapidly deploy jeopardy-style CTF competitions.  edCTF utilizes both the EmberJS and Django frameworks to host CTFs. 
+edCTF is a generic web application to rapidly deploy jeopardy-style capture the flag (CTF) competitions.  edCTF utilizes a RESTful API and a single-page web application to host CTF competitions.  edCTF consists of both the EmberJS and Django frameworks.
 
 edCTF supports the ability to host multiple CTFs on the same application instance. There is no need to rebuild the framework.
 
