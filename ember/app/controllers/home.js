@@ -7,10 +7,8 @@ export default Ember.Controller.extend({
     var ctf = this.get('ctf');
     if(ctf){
       var t = this;
-      this.store.findRecord('home', ctf.get('id')).then(function(home) {
-        if(home){
-          t.set('html', home.get('html'));
-        }
+      ctf.get('home').then(function(home){
+        t.set('html', home.get('html'));
       });
     }
   }.observes('ctf').on('init'),

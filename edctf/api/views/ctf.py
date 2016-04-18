@@ -57,7 +57,7 @@ class CtfView(APIView):
       return error_response('CTF name too long, over 100 characters', errorfields={'name': True})
     name = str(ctf_data['name'])
     online = True if ctf_data['online'] else False
-    home = DEFAULT_HOME.format(name=name)
+    home_page = DEFAULT_HOME.format(name=name)
 
     if Ctf.objects.filter(name__iexact=name).exists():
       return error_response('CTF name already taken', errorfields={'name': True})
@@ -74,7 +74,7 @@ class CtfView(APIView):
           _ctf.save()
 
     try:
-      ctf = Ctf.objects.create(name=name, online=online, home=home)
+      ctf = Ctf.objects.create(name=name, online=online, home_page=home_page)
     except IntegrityError:
       return error_response('CTF name already taken', errorfields={'name': True})
     challengeboard = Challengeboard.objects.create()
@@ -201,7 +201,7 @@ class CtfAboutViewDetail(APIView):
     return Response({
       'about': {
         'id': ctf.id,
-        'html': ctf.about,
+        'html': ctf.about_page,
       },
     })
 
@@ -216,13 +216,17 @@ class CtfAboutViewDetail(APIView):
 
     if 'about' not in request.data:
       return error_response('about not given')
+    about = request.data['about']
 
-    ctf.about = str(request.data['about'])
+    if 'html' not in about:
+      return error_response('html not given')
+
+    ctf.about_page = str(about['html'])
     ctf.save()
     return Response({
       'about': {
         'id': ctf.id,
-        'html': ctf.about,
+        'html': ctf.about_page,
       },
     })
 
@@ -245,7 +249,7 @@ class CtfHomeViewDetail(APIView):
     return Response({
       'home': {
         'id': ctf.id,
-        'html': ctf.home,
+        'html': ctf.home_page,
       },
     })
 
@@ -260,12 +264,16 @@ class CtfHomeViewDetail(APIView):
 
     if 'home' not in request.data:
       return error_response('home not given')
+    home = request.data['home']
 
-    ctf.home = str(request.data['home'])
+    if 'html' not in home:
+      return error_response('html not given')
+
+    ctf.home_page = str(home['html'])
     ctf.save()
     return Response({
       'home': {
         'id': ctf.id,
-        'html': ctf.home,
+        'html': ctf.home_page,
       },
     })
