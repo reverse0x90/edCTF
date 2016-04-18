@@ -199,7 +199,10 @@ class CtfAboutViewDetail(APIView):
       return error_response('CTF not found')
 
     return Response({
-      'about': ctf.about,
+      'about': {
+        'id': ctf.id,
+        'html': ctf.about,
+      },
     })
 
   def put(self, request, id, format=None):
@@ -217,7 +220,10 @@ class CtfAboutViewDetail(APIView):
     ctf.about = str(request.data['about'])
     ctf.save()
     return Response({
-      'about': ctf.about,
+      'about': {
+        'id': ctf.id,
+        'html': ctf.about,
+      },
     })
 
 
@@ -237,7 +243,10 @@ class CtfHomeViewDetail(APIView):
       return error_response('CTF not found')
 
     return Response({
-      'home': ctf.home,
+      'home': {
+        'id': ctf.id,
+        'html': ctf.home,
+      },
     })
 
   def put(self, request, id, format=None):
@@ -255,5 +264,8 @@ class CtfHomeViewDetail(APIView):
     ctf.home = str(request.data['home'])
     ctf.save()
     return Response({
-      'home': ctf.home,
+      'home': {
+        'id': ctf.id,
+        'html': ctf.home,
+      },
     })

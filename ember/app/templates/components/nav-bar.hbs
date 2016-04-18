@@ -7,7 +7,15 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      {{#link-to "home" class="ctf-title cursor-pointer"}}<a class="navbar-brand">{{ctf.name}}</a>{{/link-to}}
+      {{#link-to "home" class="ctf-title cursor-pointer"}}
+        <a class="navbar-brand">
+          {{#if ctf}}
+            {{ctf.name}}
+          {{else}}
+            edCTF
+          {{/if}}
+        </a>
+      {{/link-to}}
     </div>
 
     <div class="collapse navbar-collapse" id="bs-navbar-collapse">

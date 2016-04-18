@@ -1,11 +1,7 @@
 <div class="container">
-  <h1 class="text-center">Welcome to 
-      {{#if ctf.name}}
-       {{ctf.name}}!
-      {{else}}
-        edCTF!
-      {{/if}}
-  </h1>
+  {{#if ctf}}
+    {{{html}}}
+  {{else}}
+    <h1 class="text-center">Welcome to edCTF!</h1>
+  {{/if}}
 </div>
-
-{{outlet}}
