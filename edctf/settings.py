@@ -90,7 +90,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = ('/opt/edctf/edctf/static/',)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 if DEBUG:
   REST_FRAMEWORK = {
@@ -114,5 +114,4 @@ else:
     ),
   }
 
-#AUTH_USER_MODEL = 'auth.User'
 AUTH_USER_MODEL = 'api.CtfUser'
