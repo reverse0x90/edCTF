@@ -19,5 +19,5 @@ find ${EDCTF_DJANGO}/api/migrations/ -type f -not -name '__init__.py' -and -not 
 # regenerate database
 ${EDCTF_SCRIPTS}/build_backend.bash
 
-# restart service
-${EDCTF_SCRIPTS}/start.bash
+# restart apache
+sudo apachectl start

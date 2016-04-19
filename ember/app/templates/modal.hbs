@@ -26,6 +26,10 @@
                 {{else}}
                   {{#if modal.isAdminTeam}}
                     {{admin-team-modal modal=modal store=store scoreboardController=adminController.scoreboardController}}
+                  {{else}}
+                    {{#if modal.isAdminHtml}}
+                      {{admin-html-modal modal=modal htmlPage=modal.htmlPage}}
+                    {{/if}}
                   {{/if}}
                 {{/if}}
               {{/if}}

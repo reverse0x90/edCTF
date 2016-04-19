@@ -9,6 +9,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 
+DEFAULT_HOME = """<h1 class="text-center">Welcome to {name}!</h1>
+"""
+
+
 class CtfView(APIView):
   """
   Manages ctf requests.
@@ -52,6 +56,7 @@ class CtfView(APIView):
       return error_response('CTF name too long, over 100 characters', errorfields={'name': True})
     name = str(ctf_data['name'])
     online = True if ctf_data['online'] else False
+    home_page = DEFAULT_HOME.format(name=name)
 
     if Ctf.objects.filter(name__iexact=name).exists():
       return error_response('CTF name already taken', errorfields={'name': True})
@@ -68,7 +73,7 @@ class CtfView(APIView):
           _ctf.save()
 
     try:
-      ctf = Ctf.objects.create(name=name, online=online)
+      ctf = Ctf.objects.create(name=name, online=online, home_page=home_page)
     except IntegrityError:
       return error_response('CTF name already taken', errorfields={'name': True})
     challengeboard = Challengeboard.objects.create()
@@ -175,3 +180,99 @@ class CtfViewDetail(APIView):
 
     ctf.delete()
     return Response({})
+
+
+class CtfAboutViewDetail(APIView):
+  """
+  Manages ctf about page by id requests.
+  """
+  permission_classes = (CtfPermissionDetail,)
+
+  def get(self, request, id, format=None):
+    """
+    Gets ctf about page via id
+    """
+    try:
+      ctf = Ctf.objects.get(id=id)
+    except ObjectDoesNotExist:
+      return error_response('CTF not found')
+
+    return Response({
+      'about': {
+        'id': ctf.id,
+        'html': ctf.about_page,
+      },
+    })
+
+  def put(self, request, id, format=None):
+    """
+    Edits a ctf about page
+    """
+    try:
+      ctf = Ctf.objects.get(id=id)
+    except ObjectDoesNotExist:
+      return error_response('CTF not found')
+
+    if 'about' not in request.data:
+      return error_response('about not given')
+    about = request.data['about']
+
+    if 'html' not in about:
+      return error_response('html not given')
+
+    ctf.about_page = str(about['html'])
+    ctf.save()
+    return Response({
+      'about': {
+        'id': ctf.id,
+        'html': ctf.about_page,
+      },
+    })
+
+
+class CtfHomeViewDetail(APIView):
+  """
+  Manages ctf home page by id requests.
+  """
+  permission_classes = (CtfPermissionDetail,)
+
+  def get(self, request, id, format=None):
+    """
+    Gets ctf home page via id
+    """
+    try:
+      ctf = Ctf.objects.get(id=id)
+    except ObjectDoesNotExist:
+      return error_response('CTF not found')
+
+    return Response({
+      'home': {
+        'id': ctf.id,
+        'html': ctf.home_page,
+      },
+    })
+
+  def put(self, request, id, format=None):
+    """
+    Edits a ctf home page
+    """
+    try:
+      ctf = Ctf.objects.get(id=id)
+    except ObjectDoesNotExist:
+      return error_response('CTF not found')
+
+    if 'home' not in request.data:
+      return error_response('home not given')
+    home = request.data['home']
+
+    if 'html' not in home:
+      return error_response('html not given')
+
+    ctf.home_page = str(home['html'])
+    ctf.save()
+    return Response({
+      'home': {
+        'id': ctf.id,
+        'html': ctf.home_page,
+      },
+    })

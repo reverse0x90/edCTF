@@ -65,20 +65,24 @@
                     </div>
                   {{/if}}
                 </tr>
-                <tr class="team-info">
-                  <td>ctftime:</td>
-                  <td>
-                    <a href={{selectedCtf.ctftime}} style="font-size: 0.7em;">
-                      {{host}}{{selectedCtf.ctftime}}
-                    </a>
-                  </td>
-                </tr>
               </tbody>
             </table>
             <button type="button" class="btn btn-warning edctf-warning-button pull-right" {{action 'setViewOption'}}>Cancel</button>
             <button type="button" class="btn btn-success btn-login-submit edctf-submit-button pull-right" {{action 'editCtf' }}>Submit</button>
           {{/if}}
         {{/if}}
+        <table class="table team-info-table">
+          <tbody>
+            <tr class="team-info">
+              <td>
+                <button type="button" class="btn btn-success btn-login-submit edctf-submit-button" {{action 'openCtfHomeModal' }}>Edit Home Page</button>
+              </td>
+              <td>
+                <button type="button" class="btn btn-success btn-login-submit edctf-submit-button" {{action 'openCtfAboutModal' }}>Edit About Page</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     {{/if}}
     

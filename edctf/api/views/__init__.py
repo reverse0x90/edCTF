@@ -1,7 +1,7 @@
 from category import CategoryView, CategoryViewDetail
 from challenge import ChallengeView, ChallengeViewDetail
 from challengeboard import ChallengeboardView, ChallengeboardViewDetail
-from ctf import CtfView, CtfViewDetail
+from ctf import CtfView, CtfViewDetail, CtfAboutViewDetail, CtfHomeViewDetail
 from ctftime import CtftimeViewDetail
 from flag import FlagView, FlagViewDetail
 from scoreboard import ScoreboardView, ScoreboardViewDetail

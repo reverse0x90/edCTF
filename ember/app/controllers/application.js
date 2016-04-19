@@ -16,26 +16,22 @@ export default Ember.Controller.extend({
   init: function(){
     this._super();
 
-    // Function to reload async models (currently ember doesn't support this well)
-    var reloadModels = function(parentRecord) {
-      parentRecord.reload();
-      parentRecord.eachRelationship(function(childRecord, childRelation){
-        if (childRelation.options && childRelation.options.async){
-          var id = parseInt(parentRecord.toJSON()[childRecord]);
-          var foundRecord = parentRecord.store.peekRecord(childRecord, id);
-          if (foundRecord){
-            foundRecord.reload();
-          }
-        }
-      });
-    };
-
     // Update ctf model data every 30 seconds
     var interval = 1000 * 30 * 1;
+    var reloadable = ['challengeboard', 'scoreboard'];
     var modelReload = function() {
       var online_ctf = this.get('ctf');
       if (online_ctf){
-        reloadModels(online_ctf);
+        online_ctf.reload();
+        online_ctf.eachRelationship(function(childRecord, childRelation){
+          if (reloadable.indexOf(childRecord) >= 0 && (childRelation.options && childRelation.options.async)) {
+            var id = parseInt(online_ctf.toJSON()[childRecord]);
+            var foundRecord = online_ctf.store.peekRecord(childRecord, id);
+            if (foundRecord){
+              foundRecord.reload();
+            }
+          }
+        });
       }
       Ember.run.later(this, modelReload, interval);
     };

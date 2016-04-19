@@ -1,0 +1,30 @@
+{{#modal-dialog close='closeAdminHtmlModal' translucentOverlay=true container-class='challenge-style-modal-container'}}
+  <h2 align="left" class="modal-title">
+    Edit {{pageName}} page
+    <div class="edctf-button pull-right">
+      <button type="button" class="btn btn-success btn-login-submit edctf-submit-button" {{action "editAdminHtml"}}>Edit</button>
+      <button type="button" class="btn btn-danger btn-cancel-action edctf-cancel-button" {{action 'closeAdminHtmlModal'}}>Cancel</button>
+    </div>
+  </h2>
+  {{#if modal.errorMessage}}
+    <label class="control-label">
+      <div class="alert alert-danger edctf-text" style="padding: 5px; margin-bottom: 0px;" role="alert">
+        {{modal.errorMessage}}
+      </div>
+    </label>
+  {{/if}}
+  <div>
+    {{#if modal.errorFields.html}} 
+      <div class="form-group has-error">
+        {{textarea id="challengeDescription" type="text" value=htmlPage.html class="form-control" placeholder=htmlPage.html}}
+      </div>
+    {{else}}
+      <div class="form-group">
+        {{textarea id="challengeDescription" type="text" value=htmlPage.html class="form-control" placeholder=htmlPage.html}}
+      </div>
+    {{/if}}
+  </div>
+  <div>
+    {{{htmlPage.html}}}
+  </div>
+{{/modal-dialog}}
