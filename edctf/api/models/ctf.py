@@ -1,11 +1,9 @@
 from django.db import models
 
 
-DEFAULT_HOME = """
-<h1 class="text-center">Welcome to edCTF!</h1>
+DEFAULT_HOME = """<h1 class="text-center">Welcome to edCTF!</h1>
 """
-DEFAULT_ABOUT = """
-<h1>What is CTF?</h1>
+DEFAULT_ABOUT = """<h1>What is CTF?</h1>
 <p>Capture the Flag (CTF) is a computer security competition. CTF contests are usually designed to serve as an educational exercise to give participants experience in securing a machine, as well as conducting and reacting to the sort of attacks found in the real world. Reverse-engineering, network sniffing, protocol analysis, system administration, programming, and cryptanalysis are all skills which have been required by prior CTF contests at DEF CON. There are two main styles of capture the flag competitions: attack/defense and jeopardy.</p>
 
 <p>In an attack/defense style competition, each team is given a machine (or a small network) to defend on an isolated network. Teams are scored on both their success in defending their assigned machine and on their success in attacking other team's machines. Depending on the nature of the particular CTF game, teams may either be attempting to take an opponent's flag from their machine or teams may be attempting to plant their own flag on their opponent's machine. One of the more prominent attack/defense CTF's is held every year at the hacker conference DEF CON.</p>

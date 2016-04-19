@@ -9,8 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 
-DEFAULT_HOME = """
-<h1 class="text-center">Welcome to {name}!</h1>
+DEFAULT_HOME = """<h1 class="text-center">Welcome to {name}!</h1>
 """
 
 
