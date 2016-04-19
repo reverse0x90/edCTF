@@ -296,5 +296,17 @@ export default Ember.Controller.extend({
         }
       });
     },
+    openCtfHomeModal: function(){
+      this.set('modal.errorMessage', '');
+      this.set('modal.errorFields', {});
+      this.set('modal.htmlPage', this.get('selectedCtf').get('home'));
+      this.set('modal.isAdminHtml', true);
+    },
+    openCtfAboutModal: function(){
+      this.set('modal.errorMessage', '');
+      this.set('modal.errorFields', {});
+      this.set('modal.htmlPage', this.get('selectedCtf').get('about'));
+      this.set('modal.isAdminHtml', true);
+    },
   },
 });
