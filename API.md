@@ -2,10 +2,14 @@
 
 The edCTF API utilizes a hierarchical, RESTful structure in order to allow for simple interaction and to be highly scalable.  This guide describes the API in detail.
 
+===
+
 ## Table of Contents
 * [Overview](#Overview)
 * [ctfs](#ctfs)
  * [ctfs/:id](#ctfs-id)
+
+===
 
 ## Overview
 The edCTF API is structured to support multiple CTFs on the same framework.
