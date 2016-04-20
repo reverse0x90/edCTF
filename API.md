@@ -4,8 +4,26 @@ The edCTF API utilizes a hierarchical, RESTful structure in order to allow for s
 
 ===
 
-## Table of Contents
-* [Overview](#Overview)
+
+## Overview
+The edCTF API is structured to support multiple CTFs on the same framework.
+
+To accomplish this, the API uses a hierarchical pattern where a `ctf` is the peak and smaller, more frequent, objects are placed towards the bottom, such as `teams` and `challenges`.
+
+The general structure of this can be seen as follows:
+```
+ - ctfs
+   |- challengeboards
+      |- categories
+         |- challenges
+   |- scoreboards
+      |- teams
+```
+There are more routes than those listed above.  These routes add more functionality to edCTF.  One of these for example, is the [ctftime](#ctftime) route.  More information on these routes can be seen below.
+
+===
+
+## Table of Routes
 * [abouts/:id](#abouts-id)
 * [categories](#categories)
  * [categories/:id](#categories-id)
@@ -24,24 +42,6 @@ The edCTF API utilizes a hierarchical, RESTful structure in order to allow for s
 * [session](#session)
 * [teams](#teams)
  * [teams/:id](#teams-id)
-
-===
-
-## Overview
-The edCTF API is structured to support multiple CTFs on the same framework.
-
-To accomplish this, the API uses a hierarchical pattern where a `ctf` is the peak and smaller, more frequent, objects are placed towards the bottom, such as `teams` and `challenges`.
-
-The general structure of this can be seen as follows:
-```
- - ctfs
-   |- challengeboards
-      |- categories
-         |- challenges
-   |- scoreboards
-      |- teams
-```
-There are more routes than those listed above.  These routes add more functionality to edCTF.  One of these for example, is the [ctftime](#ctftime) route.  More information on these routes can be seen below.
 
 ===
 
