@@ -34,7 +34,6 @@ class Ctf(models.Model):
     return '{}'.format(self.name)
 
   def delete(self, *args, **kwargs):
-    self.home.delete()
     self.challengeboard.delete()
     self.scoreboard.delete()
     super(Ctf, self).delete(*args, **kwargs)
