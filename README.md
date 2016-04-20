@@ -62,7 +62,9 @@ The run-edctf script will build the development container, mount your local repo
 $ ./run-edctf.bash -d
 Building development container...
 ```
-When the script is finished, you can access edCTF at <http://localhost:8080> and develop within your local repository.
+When the script is finished, you should have a bash shell within the mounted local repository at ```/opt/edctf/```.
+
+You can access edCTF at <http://localhost:8080> and begin development within your local git repository.
 
 If you prefer to develop without containers, simply add the ```-l``` flag:
 ```
@@ -70,3 +72,20 @@ $ ./run-edctf.bash -dl
 Creating development environment locally...
 ```
 This will attempt to install dependencies on your local machine. These dependencies include Apache, Postgresql, Django, and EmberJS.  Once the script is finished, edCTF will be accessible at <http://localhost>.
+
+### Ember
+EmberJS files are located in [ember/](ember/).
+
+To build the Ember project, you should run something similar to the following within the ember directory:
+```bash
+ember build --environment=production --output-path /opt/edctf/edctf/static/ember
+```
+
+This allows for Django and Apache to serve the Ember frontend.
+Be sure that commited code follows this build pattern.
+
+However, when developing, it may be faster to run using development (default):
+```bash
+ember build --output-path /opt/edctf/edctf/static/ember
+```
+You may also use the ```ember serve``` command (although this currently fails).
