@@ -6,8 +6,24 @@ The edCTF API utilizes a hierarchical, RESTful structure in order to allow for s
 
 ## Table of Contents
 * [Overview](#Overview)
+* [abouts/:id](#abouts-id)
+* [categories](#categories)
+ * [categories/:id](#categories-id)
+* [challenges](#challenges)
+ * [challenges/:id](#challenges-id)
+* [challengeboards](#challengeboards)
+ * [challengeboards/:id](#challengeboards-id)
 * [ctfs](#ctfs)
  * [ctfs/:id](#ctfs-id)
+* [ctftime/:id](#ctftime-id)
+* [flags](#flags)
+ * [flags/:id](#flags-id)
+* [homes/:id](#homes-id)
+* [scoreboards](#scoreboards)
+ * [scoreboards/:id](#scoreboards-id)
+* [session](#session)
+* [teams](#teams)
+ * [teams/:id](#teams-id)
 
 ===
 
@@ -26,6 +42,375 @@ The general structure of this can be seen as follows:
       |- teams
 ```
 There are more routes than those listed above.  These routes add more functionality to edCTF.  One of these for example, is the [ctftime](#ctftime) route.  More information on these routes can be seen below.
+
+===
+
+<a name="abouts-id"></a>
+## abouts/:id
+  <!-- brief description -->
+
+* **URL**
+
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
+
+===
+
+## categories
+  <!-- brief description -->
+
+* **URL**
+
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
+
+<a name="categories-id"></a>
+## categories/:id
+  <!-- brief description -->
+
+* **URL**
+
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
+
+===
+
+## challenges
+  <!-- brief description -->
+
+* **URL**
+
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
+
+<a name="challenges-id"></a>
+## challenges/:id
+  <!-- brief description -->
+
+* **URL**
+
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
+
+===
+
+## challengeboards
+  <!-- brief description -->
+
+* **URL**
+
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
+
+<a name="challengeboards-id"></a>
+## challengeboards/:id
+  <!-- brief description -->
+
+* **URL**
+
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
 
 ===
 
@@ -146,7 +531,584 @@ There are more routes than those listed above.  These routes add more functional
 
 <a name="ctfs-id"></a>
 ## ctfs/:id
+  <!-- brief description -->
 
+* **URL**
 
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
+
+===
+
+<a name="ctfs-id"></a>
+## ctfs/:id
+  <!-- brief description -->
+
+* **URL**
+
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
+
+===
+
+<a name="ctftime-id"></a>
+## ctftime/:id
+  <!-- brief description -->
+
+* **URL**
+
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
+
+===
+
+## flags
+  <!-- brief description -->
+
+* **URL**
+
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
+
+<a name="flags-id"></a>
+## flags/:id
+  <!-- brief description -->
+
+* **URL**
+
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
+
+===
+
+<a name="homes-id"></a>
+## homes/:id
+  <!-- brief description -->
+
+* **URL**
+
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
+
+===
+
+## scoreboards
+  <!-- brief description -->
+
+* **URL**
+
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
+
+<a name="scoreboards-id"></a>
+## scoreboards/:id
+  <!-- brief description -->
+
+* **URL**
+
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
+
+===
+
+## session
+  <!-- brief description -->
+
+* **URL**
+
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
+
+===
+
+## teams
+  <!-- brief description -->
+
+* **URL**
+
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
+
+<a name="teams-id"></a>
+## teams/:id
+  <!-- brief description -->
+
+* **URL**
+
+  <!--
+  /api/
+  -->
+
+* **Method:**
+
+  <!--
+  `GET` | `POST` | `DELETE` | `PUT`
+  -->
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+   **Optional:**
+ 
+   None
+
+* **Data Params**
+
+  <!--- Data params by request -->
+
+* **Success Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+ 
+* **Error Response:**
+
+  * **Code:** <!--- Error Code -->
+
+    **Content:**
+    <!--- JSON Response -->
+
+* **Sample Call:**
+
+  <!--- Example call using ajax -->
+
+* **Notes:**
+
+  <!--- Add notes not mentioned above -->
 
 ===
