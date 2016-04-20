@@ -71,8 +71,6 @@ There are more routes than those listed above.  These routes add more functional
   ```
 
 * **Success Response:**
-  
-  <_What should the status code be on success and is there any returned data? This is useful when people need to to know what their callbacks should expect!_>
 
   * **Code:** 200
 
@@ -148,6 +146,7 @@ There are more routes than those listed above.  These routes add more functional
 
 <a name="ctfs-id"></a>
 ## ctfs/:id
+
 
 
 ===
