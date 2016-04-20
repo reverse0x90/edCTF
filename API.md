@@ -1,4 +1,4 @@
-# edCTF API Documentation
+# API Documentation
 
 The edCTF API utilizes a hierarchical, RESTful structure in order to allow for simple interaction and to be highly scalable.  This guide describes the API in detail.
 
