@@ -1,13 +1,16 @@
-Modify users/teams here.
-Modify global permissions.
-
-<br/>
-  Have buttons that choose to display:
-  <ul>
-    <li>Global admins</li>
-    <li>Admins specific for a CTF</li>
-    <li>All users</li>
-    <li>Users for specific ctf</li>
-    <li>Search</li>
-  </ul>
-<br/>
+<div class="container">
+  <table class="table table-hover table-condensed scoreboard-table" style="width:100%">
+    <thead>
+      <tr>
+        <th class="scoreboard-keys">Team</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each teams as |team|}}
+        <tr class="cursor-pointer scoreboard-values">
+          <td>{{team.teamname}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
