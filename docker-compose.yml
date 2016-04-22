@@ -6,6 +6,7 @@ services:
       POSTGRES_USER: edctf
       POSTGRES_PASSWORD: edctf
     container_name: edctf_db
+    restart: unless-stopped
   web:
     build: .
     ports:
