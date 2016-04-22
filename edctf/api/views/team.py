@@ -24,11 +24,19 @@ class TeamView(APIView):
     """
     Gets all teams
     """
-    teams = Team.objects.all()
     if request.user.is_staff:
-      serialized_teams = TeamSerializer(teams, many=True, context={'request': request})
-    else:
+      teams = Team.objects.all()
       serialized_teams = AdminTeamSerializer(teams, many=True, context={'request': request})
+    else:
+      try:
+        ctf = Ctf.objects.get(online=True)
+      except:
+        return Response({
+          'teams': [],
+        })
+
+      teams = ctf.scoreboard.teams.filter(hidden=False)
+      serialized_teams = TeamSerializer(teams, many=True, context={'request': request})
     return Response({
       'teams': serialized_teams.data,
     })
