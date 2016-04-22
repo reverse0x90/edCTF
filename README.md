@@ -76,16 +76,19 @@ This will attempt to install dependencies on your local machine. These dependenc
 ### Ember
 EmberJS files are located in [ember/](ember/).
 
-To build the Ember project, you should run something similar to the following within the ember directory:
+To build the Ember portion for a production environment, run a command similar to the following within the ember directory:
 ```bash
 ember build --environment=production --output-path /opt/edctf/edctf/static/ember
 ```
-
 This allows for Django and Apache to serve the Ember frontend.
-Be sure that commited code follows this build pattern.
+Committed code should follow a similar pattern.  Development `ember build` code should not be in a commit.
 
-However, when developing, it may be faster to run using development (default):
+When developing, it may be faster to run using development (default):
 ```bash
 ember build --output-path /opt/edctf/edctf/static/ember
 ```
-You may also use the ```ember serve``` command (although this currently fails).
+
+You may also use the ```ember serve``` command:
+```bash
+sudo ember serve --output-path /opt/edctf/edctf/static/ember
+```

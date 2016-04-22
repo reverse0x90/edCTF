@@ -11,9 +11,11 @@ if [ ! -z "$UUID" ] && [ ! -z "$USER" ]; then
   # Build frontend
   su $USER -c "cd ${EDCTF_EMBER} \
     && npm install \
-    && bower install -q \
-    && sudo cp -R ${DJANGO_ADMIN_STATIC} ${EDCTF_ADMIN_STATIC} \
-    && sudo cp -R ${REST_FRAMEWORK_CSS_DIR} ${EDCTF_REST_STATIC}"
+    && bower install -q"
+  cp -R ${DJANGO_ADMIN_STATIC} ${EDCTF_ADMIN_STATIC} \
+    && chown -R $USER:$USER ${EDCTF_ADMIN_STATIC}
+  cp -R ${REST_FRAMEWORK_CSS_DIR} ${EDCTF_REST_STATIC} \
+    && chown -R $USER:$USER ${EDCTF_REST_STATIC}
 
   # Wait for postgres server to finish...
   until netcat -z -w 2 ${DB_HOST} 5432; do sleep 1; done

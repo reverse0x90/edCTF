@@ -83,7 +83,7 @@ if ! $LOCAL; then
         -e UUID=$UUID -e USER=$USER \
         -e DB_PASS=${DB_PASS} -e DB_HOST=${DB_HOST} \
         -v ${EDCTF_DIR}:/opt/edctf \
-        -p 8080:80 -p 4443:443 \
+        -p 8080:80 -p 4443:443 -p 4200:4200 \
         -it edctf:dev
   else
     DB_PASS=edctf
