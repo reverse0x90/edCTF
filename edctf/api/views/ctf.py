@@ -86,7 +86,10 @@ class CtfView(APIView):
     except IntegrityError:
       return error_response('CTF name already taken', errorfields={'name': True})
 
-    serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
+    if request.user.is_staff:
+      serialized_ctf = AdminCtfSerializer(ctf, many=False, context={'request': request})
+    else:
+      serialized_ctf = CtfSerializer(ctf, many=False, context={'request': request})
     return Response({
       'ctf': serialized_ctf.data,
     })
