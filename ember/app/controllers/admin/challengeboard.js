@@ -50,34 +50,33 @@ export default Ember.Controller.extend({
     createCategory: function(){
       var challengeboard = this.get('selectedChallengeboard');
       var name = this.get('newCategoryName');
-      var t =this;
+      var t = this;
 
-      // error check here
-      this.store.filter('category', function(category) {
-        return category.get('name') === name;
-      }).then(function(foundCategory) {
-        var found = foundCategory.get('length');
-        if(found){
-          t.set('errorMessage', 'Category name already taken');
-        } else {
-          var category = t.store.createRecord('category', {
-            challengeboard: challengeboard,
-            name: name,
-          });
-          category.save().then(function(){
-            t.send('closeCreateCategory');
-            t.set('newCategoryName', '');
-            t.set('errorMessage', '');
-          }, function(err){
-            category.rollbackAttributes();
-            if (err.errors.message){
-              t.set('errorMessage', err.errors.message);
-            } else {
-              t.set('errorMessage', 'Server error, unable to add category');
-            }
-          });
-        }
-      });
+      var found = challengeboard.get('categories').filter(function(category) {
+        console.log('category',category.get('name'),category.get('name') === name);
+        return category.get('name').toLowerCase() === name.toLowerCase();
+      }).get('length');
+
+      if(found){
+        this.set('errorMessage', 'Category name already taken');
+      } else {
+        var category = this.store.createRecord('category', {
+          challengeboard: challengeboard,
+          name: name,
+        });
+        category.save().then(function(){
+          t.send('closeCreateCategory');
+          t.set('newCategoryName', '');
+          t.set('errorMessage', '');
+        }, function(err){
+          category.rollbackAttributes();
+          if (err.errors.message){
+            t.set('errorMessage', err.errors.message);
+          } else {
+            t.set('errorMessage', 'Server error, unable to add category');
+          }
+        });
+      }
     },
     openEditCategory: function(category){
       var categoryCopy = {
@@ -109,18 +108,26 @@ export default Ember.Controller.extend({
         return;
       }
 
-      category.set('name', newCategory.name);
-      category.save().then(function(){
-        t.send('closeEditCategory');
-        t.set('errorMessage', '');
-      }, function(err){
-        category.rollbackAttributes();
-        if (err.errors.message){
-          t.set('errorMessage', err.errors.message);
-        } else {
-          t.set('errorMessage', 'Server error, unable to edit category');
-        }
-      });
+      var found = category.get('challengeboard').get('categories').filter(function(c) {
+        return (c.get('name').toLowerCase() === newCategory.name.toLowerCase()) && (c.get('name').toLowerCase() !== category.get('name').toLowerCase());
+      }).get('length');
+
+      if(found){
+        this.set('errorMessage', 'Category name already taken');
+      } else {
+        category.set('name', newCategory.name);
+        category.save().then(function(){
+          t.send('closeEditCategory');
+          t.set('errorMessage', '');
+        }, function(err){
+          category.rollbackAttributes();
+          if (err.errors.message){
+            t.set('errorMessage', err.errors.message);
+          } else {
+            t.set('errorMessage', 'Server error, unable to edit category');
+          }
+        });
+      }
     },
     deleteCategory: function(category){
       var t = this;

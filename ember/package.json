@@ -39,7 +39,8 @@
     "ember-export-application-global": "^1.0.3",
     "ember-modal-dialog": "0.8.1",
     "ember-moment": "4.1.0",
-    "glob": "^4.5.3"
+    "glob": "^4.5.3",
+    "morgan": "1.7.0"
   },
   "dependencies": {
     "body-parser": "^1.14.1",

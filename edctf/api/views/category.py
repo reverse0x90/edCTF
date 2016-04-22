@@ -115,9 +115,6 @@ class CategoryViewDetail(APIView):
       return error_response('Category name too long, over 50 characters', errorfields={'name': True})
 
     name = str(category_data['name'])
-    if category.name != name and Category.objects.filter(name__iexact=name).exists():
-      return error_response('Category name already taken', errorfields={'name': True})
-
     if category.challengeboard.categories.exclude(id=category.id).filter(name__iexact=name).exists():
       return error_response('Category name already taken', errorfields={'name': True})
 
