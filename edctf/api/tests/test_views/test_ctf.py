@@ -129,6 +129,3 @@ class CtfTestCase(TestCase):
             self.assertGreaterEqual(1, nonline) 
             ctfs.append(rctf)
 
-
-
-
