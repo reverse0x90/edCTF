@@ -55,6 +55,6 @@ class ScoreboardViewDetail(APIView):
       serialized_scoreboard = ScoreboardSerializer(scoreboard, many=False, context={'request': request})
       serialized_teams = TeamSerializer(teams, many=True, context={'request': request})
     return Response({
-      'scoreboards': serialized_scoreboard.data,
+      'scoreboard': serialized_scoreboard.data,
       'teams': serialized_teams.data,
     })

@@ -61,7 +61,7 @@ class ChallengeboardViewDetail(APIView):
       serialized_categories = CategorySerializer(categories, many=True, context={'request': request})
       serialized_challenges = ChallengeSerializer(challenges, many=True, context={'request': request})
     return Response({
-        'challengeboards': serialized_challengeboards.data,
+        'challengeboard': serialized_challengeboards.data,
         'categories': serialized_categories.data,
         'challenges': serialized_challenges.data,
     })

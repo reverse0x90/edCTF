@@ -6,8 +6,14 @@ from random import randint
 import json
 
 
-class CtfTestCase(TestCase):
+class CtfViewTestCase(TestCase):
     def setUp(self):
+        """
+        Creates admin user session
+        """
+        self.admin = Client()
+
+        # get admin session
         self.username = 'admin'
         self.teamname = 'admin'
         self.email = 'admin@localhost'
@@ -15,18 +21,18 @@ class CtfTestCase(TestCase):
         user = get_user_model().objects.create_superuser(self.username, self.email, self.password)
         team = Team.objects.create_team(self.teamname, user)
 
-    def test_create_online_ctf(self):
         login = json.dumps({
             'username': self.username,
             'password': self.password
         })
-
-        c = Client()
-
-        # login as admin
-        response = c.post('/api/session/', data=login, content_type='application/json')
+        response = self.admin.post('/api/session/', data=login, content_type='application/json')
         self.assertEqual(200, response.status_code)
 
+    def test_create_online_ctf(self):
+        """
+        Creates/edits/deletes a ctf
+        """
+        admin = self.admin
 
         # create a new online ctf
         create_ctf = json.dumps({
@@ -35,7 +41,7 @@ class CtfTestCase(TestCase):
                 'online': True,
             }
         })
-        response = c.post('/api/ctfs/', data=create_ctf, content_type='application/json')
+        response = admin.post('/api/ctfs/', data=create_ctf, content_type='application/json')
         ctf = response.data
         id = ctf['ctf']['id']
 
@@ -48,7 +54,7 @@ class CtfTestCase(TestCase):
         ctf['ctf']['online'] = False
         edit_ctf = json.dumps(ctf)
         url = '/api/ctfs/{id}'.format(id=id)
-        response = c.put(url, data=edit_ctf, content_type='application/json')
+        response = admin.put(url, data=edit_ctf, content_type='application/json')
         ctf2 = response.data
 
         self.assertEqual(200, response.status_code)
@@ -58,21 +64,14 @@ class CtfTestCase(TestCase):
 
 
         # delete the ctf
-        response = c.delete(url)
+        response = admin.delete(url)
         self.assertEqual(200, response.status_code)
 
     def test_create_online_offline_ctfs(self):
-        login = json.dumps({
-            'username': self.username,
-            'password': self.password
-        })
-
-        c = Client()
-
-        # login as admin
-        response = c.post('/api/session/', data=login, content_type='application/json')
-        self.assertEqual(200, response.status_code)
-
+        """
+        Creates/edits/deletes multiple ctfs
+        """
+        admin = self.admin
 
         # create 100 ctfs, randomly online
         for i in range(100):
@@ -84,7 +83,7 @@ class CtfTestCase(TestCase):
                     'online': online,
                 }
             })
-            response = c.post('/api/ctfs/', data=create_ctf, content_type='application/json')
+            response = admin.post('/api/ctfs/', data=create_ctf, content_type='application/json')
             ctf = response.data['ctf']
 
             self.assertEqual(200, response.status_code)
@@ -94,10 +93,12 @@ class CtfTestCase(TestCase):
 
         # update local ctfs, only one max should be online
         ctfs = []
-        response = c.get('/api/ctfs/',)
+        response = admin.get('/api/ctfs/',)
         self.assertEqual(200, response.status_code)
 
         remote_ctfs = response.data['ctfs']
+        self.assertEqual(100, len(remote_ctfs))
+
         nonline = 0
         for rctf in remote_ctfs:
             if rctf['online']:
@@ -111,14 +112,14 @@ class CtfTestCase(TestCase):
             ctf['online'] = True
             edit_ctf = json.dumps({'ctf': ctf})
             url = '/api/ctfs/{id}'.format(id=ctf['id'])
-            response = c.put(url, data=edit_ctf, content_type='application/json')
+            response =  admin.put(url, data=edit_ctf, content_type='application/json')
             self.assertEqual(200, response.status_code)
             self.assertEqual(True, ctf['online'])
 
 
         # update local ctfs, only one max should be online
         ctfs = []
-        response = c.get('/api/ctfs/',)
+        response =  admin.get('/api/ctfs/',)
         self.assertEqual(200, response.status_code)
 
         remote_ctfs = response.data['ctfs']
@@ -130,16 +131,10 @@ class CtfTestCase(TestCase):
             ctfs.append(rctf)
 
     def test_same_ctfname(self):
-        login = json.dumps({
-            'username': self.username,
-            'password': self.password
-        })
-
-        c = Client()
-
-        # login as admin
-        response = c.post('/api/session/', data=login, content_type='application/json')
-        self.assertEqual(200, response.status_code)
+        """
+        Checks if multiple ctfs can have the same name
+        """
+        admin = self.admin
 
         # register two ctfs with same name
         create_ctf = json.dumps({
@@ -148,9 +143,9 @@ class CtfTestCase(TestCase):
                 'online': True,
             }
         })
-        response = c.post('/api/ctfs/', data=create_ctf, content_type='application/json')
+        response =  admin.post('/api/ctfs/', data=create_ctf, content_type='application/json')
         self.assertEqual(200, response.status_code)
-        response = c.post('/api/ctfs/', data=create_ctf, content_type='application/json')
+        response =  admin.post('/api/ctfs/', data=create_ctf, content_type='application/json')
         self.assertEqual(400, response.status_code)
 
         create_ctf = json.dumps({
@@ -159,22 +154,50 @@ class CtfTestCase(TestCase):
                 'online': True,
             }
         })
-        response = c.post('/api/ctfs/', data=create_ctf, content_type='application/json')
+        response =  admin.post('/api/ctfs/', data=create_ctf, content_type='application/json')
         self.assertEqual(200, response.status_code)
 
         # edit two ctfs to have the same name
-        response = c.get('/api/ctfs/',)
+        response =  admin.get('/api/ctfs/',)
         self.assertEqual(200, response.status_code)
         ctfs = response.data['ctfs']
 
         ctfs[0]['name'] = ctfs[1]['name'] = 'somectfname'
         url0 = '/api/ctfs/{id}'.format(id=ctfs[0]['id'])
         url1 = '/api/ctfs/{id}'.format(id=ctfs[1]['id'])
-        response = c.put(url0, data=json.dumps({'ctf': ctfs[0]}), content_type='application/json')
+        response =  admin.put(url0, data=json.dumps({'ctf': ctfs[0]}), content_type='application/json')
         self.assertEqual(200, response.status_code)
-        response = c.put(url1, data=json.dumps({'ctf': ctfs[1]}), content_type='application/json')
+        response =  admin.put(url1, data=json.dumps({'ctf': ctfs[1]}), content_type='application/json')
         self.assertEqual(400, response.status_code)
 
+    def test_get_online_ctf(self):
+        """
+        Tests whether a user can view an online ctf
+        """
+        admin = self.admin
+
+        # create online ctf
+        create_ctf = json.dumps({
+            'ctf': {
+                'name': 'ctfname',
+                'online': True,
+            }
+        })
+        response =  admin.post('/api/ctfs/', data=create_ctf, content_type='application/json')
+        ctf = response.data
+        id = ctf['ctf']['id']
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual('ctfname', ctf['ctf']['name'])
+        self.assertTrue(ctf['ctf']['online'])
 
 
+        # get online ctf
+        c = Client()
+        response =  admin.get('/api/ctfs/?online=true')
+        online_ctf = response.data['ctfs'][0]
+        
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(online_ctf['name'], ctf['ctf']['name'])
+        self.assertTrue(online_ctf['online'])
 
