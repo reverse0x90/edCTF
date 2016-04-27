@@ -26,8 +26,12 @@ DEBUG = True
 
 if DEBUG:
   ALLOWED_HOSTS = []
+  RATELIMIT_ENABLE = False
 else:
   ALLOWED_HOSTS = ['*']
+  RATELIMIT_ENABLE = True
+
+
 
 # Application definition
 INSTALLED_APPS = (
