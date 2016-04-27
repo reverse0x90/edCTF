@@ -129,3 +129,52 @@ class CtfTestCase(TestCase):
             self.assertGreaterEqual(1, nonline) 
             ctfs.append(rctf)
 
+    def test_same_ctfname(self):
+        login = json.dumps({
+            'username': self.username,
+            'password': self.password
+        })
+
+        c = Client()
+
+        # login as admin
+        response = c.post('/api/session/', data=login, content_type='application/json')
+        self.assertEqual(200, response.status_code)
+
+        # register two ctfs with same name
+        create_ctf = json.dumps({
+            'ctf': {
+                'name': 'ctfname',
+                'online': True,
+            }
+        })
+        response = c.post('/api/ctfs/', data=create_ctf, content_type='application/json')
+        self.assertEqual(200, response.status_code)
+        response = c.post('/api/ctfs/', data=create_ctf, content_type='application/json')
+        self.assertEqual(400, response.status_code)
+
+        create_ctf = json.dumps({
+            'ctf': {
+                'name': 'ctfname1',
+                'online': True,
+            }
+        })
+        response = c.post('/api/ctfs/', data=create_ctf, content_type='application/json')
+        self.assertEqual(200, response.status_code)
+
+        # edit two ctfs to have the same name
+        response = c.get('/api/ctfs/',)
+        self.assertEqual(200, response.status_code)
+        ctfs = response.data['ctfs']
+
+        ctfs[0]['name'] = ctfs[1]['name'] = 'somectfname'
+        url0 = '/api/ctfs/{id}'.format(id=ctfs[0]['id'])
+        url1 = '/api/ctfs/{id}'.format(id=ctfs[1]['id'])
+        response = c.put(url0, data=json.dumps({'ctf': ctfs[0]}), content_type='application/json')
+        self.assertEqual(200, response.status_code)
+        response = c.put(url1, data=json.dumps({'ctf': ctfs[1]}), content_type='application/json')
+        self.assertEqual(400, response.status_code)
+
+
+
+
