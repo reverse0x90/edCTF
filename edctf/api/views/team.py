@@ -58,7 +58,7 @@ class TeamView(APIView):
     try:
       ctf = Ctf.objects.get(online=True)
     except:
-      return registration_response(False, error='No online CTF, cannot register')
+      return registration_response(False, error='No online CTF, cannot register', status=status.HTTP_403_FORBIDDEN)
 
     team_data = request.data
     if not ('username' in team_data and 'teamname' in team_data and 'email' in team_data and 'password' in team_data):

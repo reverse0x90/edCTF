@@ -45,20 +45,26 @@ class ChallengeboardViewTestCase(TestCase):
 
         # register normal user
         register = json.dumps({
-            "email": "a@a.com",
-            "username": "a",
-            "teamname": "a",
-            "password": "a"
+            'email': 'a@a.com',
+            'username': 'newuser',
+            'teamname': 'newuser',
+            'password': 'newuser'
         })
         response = self.user.post('/api/teams/', data=register, content_type='application/json')
         self.assertEqual(200, response.status_code)
 
     def test_nonauth_get_challengeboard(self):
+        """
+        Tests scoreboard for an unauthenticated user
+        """
         c = Client()
         response = c.get(self.url)
         self.assertEqual(403, response.status_code)
 
     def test_auth_get_challengeboard(self):
+        """
+        Tests challengeboard for an authenticated user
+        """
         response = self.user.get(self.url)
         self.assertEqual(200, response.status_code)
         self.assertEqual(self.ctf['challengeboard'], response.data['challengeboard']['id'])

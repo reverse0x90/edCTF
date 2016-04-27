@@ -23,7 +23,7 @@ def success_response(message):
       },
     })
 
-def registration_response(isauthenticated, user=None, error='', errorfields={}):
+def registration_response(isauthenticated, user=None, error='', errorfields={}, status=status.HTTP_200_OK):
     """
     Returns the registration form response.
     """
@@ -44,4 +44,4 @@ def registration_response(isauthenticated, user=None, error='', errorfields={}):
         data['team'] = user.teams.id
       except:
         data['team'] = None
-    return Response(data)
+    return Response(data, status=status)
