@@ -73,8 +73,9 @@ class CtfViewTestCase(TestCase):
         """
         admin = self.admin
 
-        # create 100 ctfs, randomly online
-        for i in range(100):
+        nctfs = 10
+        # create n ctfs, randomly online
+        for i in range(nctfs):
             ctfname = 'ctfname{i}'.format(i=i)
             online = bool(randint(0,1))
             create_ctf = json.dumps({
@@ -97,7 +98,7 @@ class CtfViewTestCase(TestCase):
         self.assertEqual(200, response.status_code)
 
         remote_ctfs = response.data['ctfs']
-        self.assertEqual(100, len(remote_ctfs))
+        self.assertEqual(nctfs, len(remote_ctfs))
 
         nonline = 0
         for rctf in remote_ctfs:

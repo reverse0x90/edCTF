@@ -177,7 +177,7 @@ class TeamViewDetail(APIView):
 
     user = team.user
     if team.scoreboard:
-      ctf = scoreboard.ctf
+      ctf = team.scoreboard.ctf
     else:
       ctf = None
 

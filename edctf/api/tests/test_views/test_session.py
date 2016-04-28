@@ -17,7 +17,7 @@ class SessionViewNoCtfTestCase(TestCase):
         self.password = 'admin'
         user = get_user_model().objects.create_superuser(self.username, self.email, self.password)
         team = Team.objects.create_team(self.teamname, user)
-    
+
     def test_admin_user_session(self):
         """
         Tests sessions for admin user
@@ -108,7 +108,7 @@ class SessionViewCtfTestCase(TestCase):
         response = self.admin.post('/api/ctfs/', data=create_ctf, content_type='application/json')
         self.assertEqual(200, response.status_code)
         self.ctf = response.data['ctf']
-    
+
     def test_admin_user_session(self):
         """
         Tests sessions for admin user
