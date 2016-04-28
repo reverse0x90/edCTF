@@ -66,9 +66,7 @@ export default Ember.Controller.extend({
     },
     submitFlag: function(challengeid, flag, callback) {
       var flagData = {
-        'flag': {
-          'key': flag,
-        },
+        'flag': flag,
       };
       var namespace = this.get('store').adapterFor('application').namespace;
       Ember.$.ajax({

@@ -151,7 +151,7 @@ class TeamViewDetail(APIView):
     else:
       serialized_team = TeamSerializer(team, many=False, context={'request': request})
     return Response({
-      'teams': serialized_team.data,
+      'team': serialized_team.data,
     })
 
   def put(self, request, id, format=None):

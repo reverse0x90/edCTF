@@ -2,7 +2,6 @@ from django.contrib.auth import get_user_model
 from django.test import Client
 from django.test import TestCase
 from edctf.api.models import Team
-import time
 import json
 
 

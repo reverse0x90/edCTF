@@ -2,7 +2,6 @@ from django.contrib.auth import get_user_model
 from django.test import Client
 from django.test import TestCase
 from edctf.api.models import Team
-from time import sleep
 import json
 
 
@@ -61,18 +60,18 @@ class TeamViewTestCase(TestCase):
 
         # edit profile
         team = json.dumps({
-            "team": {
-                "position": None,
-                "teamname": "newuser",
-                "username": "newuser",
-                "password": "newpassword",
-                "email":"a@a.com",
-                "hidden": False,
-                "points": 0,
-                "correctflags": 0,
-                "wrongflags": 0,
-                "lasttimestamp": 0,
-                "solves": [],
+            'team': {
+                'position': None,
+                'teamname': 'newuser',
+                'username': 'newuser',
+                'password': 'newpassword',
+                'email':'a@a.com',
+                'hidden': False,
+                'points': 0,
+                'correctflags': 0,
+                'wrongflags': 0,
+                'lasttimestamp': 0,
+                'solves': [],
             }
         })
         response = c.put('/api/teams/{id}'.format(id=id), data=team, content_type='application/json')
@@ -107,18 +106,18 @@ class TeamViewTestCase(TestCase):
 
         # edit user as admin
         team = json.dumps({
-            "team": {
-                "position": None,
-                "teamname": "newuser",
-                "username": "newuser",
-                "password": "newpassword",
-                "email":"a@a.com",
-                "hidden": False,
-                "points": 0,
-                "correctflags": 0,
-                "wrongflags": 0,
-                "lasttimestamp": 0,
-                "solves": [],
+            'team': {
+                'position': None,
+                'teamname': 'newuser',
+                'username': 'newuser',
+                'password': 'newpassword',
+                'email':'a@a.com',
+                'hidden': False,
+                'points': 0,
+                'correctflags': 0,
+                'wrongflags': 0,
+                'lasttimestamp': 0,
+                'solves': [],
             }
         })
         response = self.admin.put('/api/teams/{id}'.format(id=id), data=team, content_type='application/json')
