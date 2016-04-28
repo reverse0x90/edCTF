@@ -32,7 +32,6 @@ else:
   RATELIMIT_ENABLE = True
 
 
-
 # Application definition
 INSTALLED_APPS = (
   'django.contrib.admin',
