@@ -6,7 +6,7 @@ def home(request):
   """
   Sends requests to / to the ember.js clientside app
   """
-  return render_to_response('index.html', {}, RequestContext(request))
+  return render(request, 'index.html', {},  content_type="text/html")
 
 
 def robots(request):
