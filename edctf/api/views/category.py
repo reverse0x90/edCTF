@@ -62,7 +62,6 @@ class CategoryView(APIView):
 
     try:
       category = Category.objects.create(name=name, challengeboard=challengeboard)
-      category.save()
     except IntegrityError:
       return error_response('Category name already taken', errorfields={'name': True})
 

@@ -142,16 +142,16 @@ class SessionViewCtfTestCase(TestCase):
         response = c.delete('/api/session/')
         self.assertEqual(403, response.status_code)
 
-    def test_new_user_session(self):
+    def create_new_user_session(self, offset=''):
         """
         Registers a new user and tests session api
         """
         c = Client()
         register = json.dumps({
-            'email': 'a@a.com',
-            'username': 'newuser',
-            'teamname': 'newuser',
-            'password': 'newuser'
+            'email': offset + 'a@a.com',
+            'username': 'newuser' + offset,
+            'teamname': 'newuser' + offset,
+            'password': 'newuser' + offset
         })
         response = c.post('/api/teams/', data=register, content_type='application/json')
         self.assertEqual(200, response.status_code)
@@ -163,15 +163,15 @@ class SessionViewCtfTestCase(TestCase):
         self.assertEqual(403, response.status_code)
         
         login = json.dumps({
-            'username': 'newuser',
-            'password': 'newuser'+'a'
+            'username': 'newuser' + offset,
+            'password': 'newuser' + offset + 'a'
         })
         response = c.post('/api/session/', data=login, content_type='application/json')
         self.assertEqual(403, response.status_code)
 
         login = json.dumps({
-            'username': 'newuser',
-            'password': 'newuser'
+            'username': 'newuser' + offset,
+            'password': 'newuser' + offset
         })
         response = c.post('/api/session/', data=login, content_type='application/json')
         self.assertEqual(200, response.status_code)
@@ -181,3 +181,10 @@ class SessionViewCtfTestCase(TestCase):
         self.assertEqual(200, response.status_code)
         response = c.get('/api/session/')
         self.assertEqual(403, response.status_code)
+
+    def test_multiple_new_user_session(self):
+        """
+        Attempts to register multiple new users and login
+        """
+        for i in range(10):
+            self.create_new_user_session(offset=str(i))
