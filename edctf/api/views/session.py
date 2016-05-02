@@ -36,7 +36,9 @@ class SessionView(APIView):
         data['team'] = user.team.id
       except:
         data['team'] = None
-    return Response(data)
+      return Response(data)
+    else:
+      return Response(data, status=status.HTTP_403_FORBIDDEN)
 
   def get(self, request, *args, **kwargs):
     """
@@ -98,5 +100,5 @@ class SessionView(APIView):
     # error message.
     if request.user.is_authenticated():
       logout(request)
-      return Response(status=status.HTTP_204_NO_CONTENT)
+      return Response(status=status.HTTP_200_OK)
     return Response(status=status.HTTP_401_UNAUTHORIZED)

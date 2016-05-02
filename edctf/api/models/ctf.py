@@ -23,8 +23,8 @@ class Ctf(models.Model):
   online = models.BooleanField(default=False)
   home_page = models.CharField(max_length=10000, default=DEFAULT_HOME)
   about_page = models.CharField(max_length=10000, default=DEFAULT_ABOUT)
-  challengeboard = models.OneToOneField('Challengeboard', on_delete=models.CASCADE, null=True, related_name='ctfs', related_query_name='ctf')
-  scoreboard = models.OneToOneField('Scoreboard', on_delete=models.CASCADE, null=True, related_name='ctfs', related_query_name='ctf')
+  challengeboard = models.OneToOneField('Challengeboard', on_delete=models.CASCADE, null=True, related_name='ctf', related_query_name='ctf')
+  scoreboard = models.OneToOneField('Scoreboard', on_delete=models.CASCADE, null=True, related_name='ctf', related_query_name='ctf')
   created = models.DateTimeField(auto_now_add=True)
 
   class Meta:

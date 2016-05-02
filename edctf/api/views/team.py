@@ -58,7 +58,7 @@ class TeamView(APIView):
     try:
       ctf = Ctf.objects.get(online=True)
     except:
-      return registration_response(False, error='No online CTF, cannot register')
+      return registration_response(False, error='No online CTF, cannot register', status=status.HTTP_403_FORBIDDEN)
 
     team_data = request.data
     if not ('username' in team_data and 'teamname' in team_data and 'email' in team_data and 'password' in team_data):
@@ -151,7 +151,7 @@ class TeamViewDetail(APIView):
     else:
       serialized_team = TeamSerializer(team, many=False, context={'request': request})
     return Response({
-      'teams': serialized_team.data,
+      'team': serialized_team.data,
     })
 
   def put(self, request, id, format=None):
@@ -177,7 +177,7 @@ class TeamViewDetail(APIView):
 
     user = team.user
     if team.scoreboard:
-      ctf = scoreboard.ctf
+      ctf = team.scoreboard.ctf
     else:
       ctf = None
 

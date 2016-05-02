@@ -3,8 +3,6 @@ from rest_framework import routers
 from edctf.api import views
 
 
-#router = routers.SimpleRouter(trailing_slash=False)
-
 urlpatterns = []
 
 # general routes

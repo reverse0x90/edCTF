@@ -86,11 +86,7 @@ class FlagViewDetail(APIView):
     if 'flag' not in request.data or not request.data['flag']:
       return error_response('Flag not given')
 
-    flag_data = request.data['flag']
-    if 'key' not in flag_data or not flag_data['key']:
-      return error_response('Flag key not given')
-
-    key = flag_data['key']
+    flag = request.data['flag']
 
     try:
       if not request.user.team:
@@ -99,7 +95,7 @@ class FlagViewDetail(APIView):
       return error_response('No team associated with user')
 
     team = request.user.team
-    success, error = check_flag(team, challenge, key)
+    success, error = check_flag(team, challenge, flag)
     if success:
       return success_response('Correct flag')
     else:
