@@ -61,6 +61,7 @@ if $DEV && $PROD; then
   exit 1
 fi
 
+
 if ! $LOCAL; then
   `$CHECKINSTALLED > /dev/null`
   if [ $? -ne 0 ]; then
@@ -68,10 +69,17 @@ if ! $LOCAL; then
     exit 1
   fi
   
+  # development container
   if $DEV; then
     DB_PASS=edctf
     DB_HOST=db
-    UUID=`id -u`
+
+    # fix for https://github.com/boot2docker/boot2docker/issues/581
+    if [ "$(uname)" == "Darwin" ]; then
+      UUID=1000
+    else
+      UUID=`id -u`
+    fi
 
     echo "Building development container..."
     docker build -t edctf:dev -f "${EDCTF_DOCKER}/dev/Dockerfile" "${EDCTF_DIR}" \
@@ -85,6 +93,8 @@ if ! $LOCAL; then
         -v "${EDCTF_DIR}":/opt/edctf \
         -p 8080:80 -p 4443:443 -p 4200:4200 \
         -it edctf:dev
+
+  # production container
   else
     DB_PASS=edctf
     DB_HOST=db

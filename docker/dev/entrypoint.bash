@@ -4,6 +4,10 @@ set -x
 
 if [ ! -z "$UUID" ] && [ ! -z "$USER" ]; then
   adduser --shell /bin/bash --uid "$UUID" --disabled-password --gecos "" "$USER"
+
+  # fix for https://github.com/boot2docker/boot2docker/issues/581
+  usermod -a -G staff "$USER"
+
   echo >> /etc/sudoers
   echo "$USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
   echo >> /etc/sudoers

@@ -3,7 +3,7 @@ edCTF is a generic web application to rapidly deploy jeopardy-style capture the 
 
 edCTF supports the ability to host multiple CTFs on the same application instance. There is no need to redeploy for another CTF competition.  
 
-By default, edCTF is deployed with [Docker](https://github.com/docker/docker) containers.  It also runs using both the EmberJS and Django frameworks.
+By default, edCTF is deployed using [Docker](https://github.com/docker/docker) containers.  It also runs using both the EmberJS and Django frameworks.
 
 Current version: 2.0.0-beta
 
