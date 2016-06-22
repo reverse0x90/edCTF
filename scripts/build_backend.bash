@@ -2,7 +2,7 @@
 # Builds server-side items, including apache config, secrets, and database
 
 SCRIPTS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-. ${SCRIPTS}/environment.bash
+. "${SCRIPTS}/environment.bash"
 
 # if USE_SSL set to true generate self-signed cert and enable ssl
 if [ "$USE_SSL" = "true" ]
@@ -50,12 +50,12 @@ else
 fi
 set -x
 # generate secrets and populate database
-python ${EDCTF_SCRIPTS}/generate_secrets.py --dbhost ${DB_HOST} --dbpass ${DB_PASS} --output ${EDCTF_DJANGO}/edctf_secret.py \
-  && python ${EDCTF_DIR}/manage.py makemigrations \
-  && python ${EDCTF_DIR}/manage.py migrate auth \
-  && python ${EDCTF_DIR}/manage.py migrate \
+python "${EDCTF_SCRIPTS}/generate_secrets.py" --dbhost "${DB_HOST}" --dbpass "${DB_PASS}" --output "${EDCTF_DJANGO}/edctf_secret.py" \
+  && python "${EDCTF_DIR}/manage.py" makemigrations \
+  && python "${EDCTF_DIR}/manage.py" migrate auth \
+  && python "${EDCTF_DIR}/manage.py" migrate \
   && echo "from django.contrib.auth import get_user_model
 from edctf.api.models import Team
 user = get_user_model().objects.create_superuser('admin', 'admin@localhost', 'admin')
 team = Team.objects.create_team('admin', user)" \
-  | python ${EDCTF_DIR}/manage.py shell
+  | python "${EDCTF_DIR}/manage.py" shell

@@ -9,14 +9,14 @@ sudo apt-get update \
     openssl \
     python-pip \
     python-dev
-sudo pip install -r ${EDCTF_DIR}/requirements.txt
+sudo pip install -r "${EDCTF_DIR}/requirements.txt"
 
 # Build Django admin css
-sudo cp -R ${DJANGO_ADMIN_STATIC} ${EDCTF_ADMIN_STATIC}
+sudo cp -R "${DJANGO_ADMIN_STATIC}" "${EDCTF_ADMIN_STATIC}"
 
 # Setup database
 (sudo -u postgres psql -c "CREATE USER edctf WITH PASSWORD '${DB_PASS}';") \
-  	|| (sudo -u postgres psql -c "ALTER USER edctf WITH PASSWORD '${DB_PASS}';")
+  || (sudo -u postgres psql -c "ALTER USER edctf WITH PASSWORD '${DB_PASS}';")
 sudo -u postgres psql -c "DROP DATABASE edctf;"
 sudo -u postgres psql -c "CREATE DATABASE edctf;"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE edctf to edctf;"

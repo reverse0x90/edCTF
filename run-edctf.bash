@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export SCRIPTS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/scripts
-. ${SCRIPTS}/environment.bash
+. "${SCRIPTS}/environment.bash"
 
 RED='\033[0;31m'
 NC='\033[0m'
@@ -74,15 +74,15 @@ if ! $LOCAL; then
     UUID=`id -u`
 
     echo "Building development container..."
-    docker build -t edctf:dev -f ${EDCTF_DOCKER}/dev/Dockerfile ${EDCTF_DIR} \
+    docker build -t edctf:dev -f "${EDCTF_DOCKER}/dev/Dockerfile" "${EDCTF_DIR}" \
       && docker run --name edctf_db_dev \
         -e POSTGRES_DB=edctf -e POSTGRES_USER=edctf \
-        -e POSTGRES_PASSWORD=${DB_PASS} \
+        -e POSTGRES_PASSWORD="${DB_PASS}" \
         -d postgres \
-      && docker run --restart=unless-stopped --link edctf_db_dev:${DB_HOST} \
-        -e UUID=$UUID -e USER=$USER \
-        -e DB_PASS=${DB_PASS} -e DB_HOST=${DB_HOST} \
-        -v ${EDCTF_DIR}:/opt/edctf \
+      && docker run --restart=unless-stopped --link edctf_db_dev:"${DB_HOST}" \
+        -e UUID="$UUID" -e USER="$USER" \
+        -e DB_PASS="${DB_PASS}" -e DB_HOST="${DB_HOST}" \
+        -v "${EDCTF_DIR}":/opt/edctf \
         -p 8080:80 -p 4443:443 -p 4200:4200 \
         -it edctf:dev
   else
@@ -90,13 +90,13 @@ if ! $LOCAL; then
     DB_HOST=db
 
     echo "Building production container..."
-    docker build -t edctf:prod ${EDCTF_DIR} \
+    docker build -t edctf:prod "${EDCTF_DIR}" \
       && docker run --name edctf_db \
         -e POSTGRES_DB=edctf -e POSTGRES_USER=edctf \
-        -e POSTGRES_PASSWORD=${DB_PASS} \
+        -e POSTGRES_PASSWORD="${DB_PASS}" \
         -d postgres \
-      && docker run --restart=unless-stopped --name=edctf_server --link edctf_db:${DB_HOST} \
-        -e DB_PASS=${DB_PASS} -e DB_HOST=${DB_HOST} \
+      && docker run --restart=unless-stopped --name=edctf_server --link edctf_db:"${DB_HOST}" \
+        -e DB_PASS="${DB_PASS}" -e DB_HOST="${DB_HOST}" \
         -p 80:80 -p 443:443 \
         -d edctf:prod
   fi
@@ -107,13 +107,13 @@ else
 
     echo "Creating development environment locally..."
     set -x
-    ${SCRIPTS}/development.bash
+    "${SCRIPTS}/development.bash"
   else
     export DB_PASS=edctf
     export DB_HOST=localhost
 
     echo "Creating production environment locally..."
     set -x
-    ${SCRIPTS}/production.bash
+    "${SCRIPTS}/production.bash"
   fi
 fi

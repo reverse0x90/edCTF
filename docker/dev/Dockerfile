@@ -1,11 +1,11 @@
 FROM debian:jessie
 
 ENV EDCTF /opt/edctf
-ENV SCRIPTS ${EDCTF}/scripts
+ENV SCRIPTS "${EDCTF}/scripts"
 
 # Create directory structure
-RUN mkdir ${EDCTF}
-WORKDIR ${EDCTF}
+RUN mkdir "${EDCTF}"
+WORKDIR "${EDCTF}"
 
 # Install packages
 RUN apt-get update \
@@ -21,9 +21,7 @@ RUN apt-get update \
         openssl \
         python-pip \
         python-dev \
-        sudo \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
+        sudo
 
 # Install Python dependencies
 COPY requirements.txt requirements.txt
@@ -37,14 +35,14 @@ RUN npm install -g n \
 RUN npm install -g ember-cli
 RUN npm install -g bower
 
-COPY scripts ${SCRIPTS}
+COPY scripts "${SCRIPTS}"
 COPY ember ember
 COPY edctf edctf
 COPY config config
 COPY manage.py manage.py
 
 COPY docker docker
-RUN cp ${EDCTF}/docker/dev/entrypoint.bash /opt/entrypoint.bash
+RUN cp "${EDCTF}/docker/dev/entrypoint.bash" /opt/entrypoint.bash
 
 EXPOSE 80
 EXPOSE 443

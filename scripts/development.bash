@@ -12,7 +12,7 @@ sudo apt-get update \
     openssl \
     python-pip \
     python-dev
-sudo pip install -r ${EDCTF_DIR}/requirements.txt
+sudo pip install -r "${EDCTF_DIR}/requirements.txt"
 
 # Update npm
 sudo npm install -g n \
@@ -23,7 +23,7 @@ sudo npm install -g ember-cli
 sudo npm install -g bower
 
 # Install ember dependancies
-cd ${EDCTF_EMBER} \
+cd "${EDCTF_EMBER}" \
   && npm install \
   && bower install -q
 
@@ -39,7 +39,7 @@ sudo -u postgres psql -c "CREATE DATABASE edctf;"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE edctf to edctf;"
 
 # Build backend
-${SCRIPTS}/build_backend.bash
+"${SCRIPTS}/build_backend.bash"
 
 # Restart apache
 sudo /usr/sbin/apache2ctl -k restart

@@ -1,11 +1,11 @@
 FROM debian:jessie
 
 ENV EDCTF /opt/edctf
-ENV SCRIPTS ${EDCTF}/scripts
+ENV SCRIPTS "${EDCTF}/scripts"
 
 # Create directory structure
-RUN mkdir ${EDCTF}
-WORKDIR ${EDCTF}
+RUN mkdir "${EDCTF}"
+WORKDIR "${EDCTF}"
 
 # Install packages
 RUN apt-get update \
@@ -27,12 +27,12 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 # Build Django admin css
-COPY edctf ${EDCTF}/edctf
-RUN cp -R /usr/local/lib/python2.7/dist-packages/django/contrib/admin/static/admin ${EDCTF}/edctf/static/
+COPY edctf "${EDCTF}/edctf"
+RUN cp -R /usr/local/lib/python2.7/dist-packages/django/contrib/admin/static/admin "${EDCTF}/edctf/static/"
 
-COPY scripts ${SCRIPTS}
-COPY config ${EDCTF}/config
-COPY manage.py ${EDCTF}/manage.py
+COPY scripts "${SCRIPTS}"
+COPY config "${EDCTF}/config"
+COPY manage.py "${EDCTF}/manage.py"
 
 EXPOSE 80
 EXPOSE 443
