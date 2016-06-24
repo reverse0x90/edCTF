@@ -55,6 +55,8 @@ The admin panel is shown on the left after login.
 
 If more changes are required, the django admin interface can be accessed at ```/djangoadmin/```
 
+===
+
 ## Development
 Development for edCTF can be performed using Docker or within a local ubuntu environment.
 The run-edctf script will build the development container, mount your local repository, and start the container:
@@ -78,17 +80,11 @@ EmberJS files are located in [ember/](ember/).
 
 To build the Ember portion for a production environment, run a command similar to the following within the ember directory:
 ```bash
-ember build --environment=production --output-path /opt/edctf/edctf/static/ember
+ember build -prod
 ```
-This allows for Django and Apache to serve the Ember frontend.
-Committed code should follow a similar pattern.  Development `ember build` code should not be in a commit.
+This saves the Ember frontend for Apache.
 
-When developing, it may be faster to run using development (default):
+When developing, it may be faster to run using development (default), although you should only commit production build code.
 ```bash
-ember build --output-path /opt/edctf/edctf/static/ember
-```
-
-You may also use the ```ember serve``` command:
-```bash
-sudo ember serve --output-path /opt/edctf/edctf/static/ember
+ember build
 ```
