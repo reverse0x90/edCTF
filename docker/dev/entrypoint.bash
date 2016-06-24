@@ -45,6 +45,9 @@ else
   # Build backend
   "${SCRIPTS}/build_backend.bash"
 
+  # To solve Mac permission issues
+  chmod 755 /opt/edctf/edctf/edctf_secret.py
+
   # Start apache
   /usr/sbin/apache2ctl -k restart
 
