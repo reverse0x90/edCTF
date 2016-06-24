@@ -8,7 +8,8 @@ RUN mkdir "${EDCTF}"
 WORKDIR "${EDCTF}"
 
 # Install packages
-RUN apt-get update \
+RUN apt-get clean \
+  && apt-get update \
   && DEBIAN_FRONTEND=noninteractive \
     apt-get -y install \
         apache2 \
