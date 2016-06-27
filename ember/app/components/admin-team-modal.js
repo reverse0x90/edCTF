@@ -13,6 +13,7 @@ export default Ember.Component.extend({
   challenges: [],
   challengeSorting: ['timestamp:desc'],
   sortedChallenges: Ember.computed.sort('challenges', 'challengeSorting'),
+  
   setupKeys: function() {
     Ember.$('body').on('keyup.modal-dialog', (e) => {
       if (e.keyCode === 27) {
@@ -20,9 +21,11 @@ export default Ember.Component.extend({
       }
     });
   }.on('didInsertElement'),
+  
   teardownKeys: function() {
     Ember.$('body').off('keyup.modal-dialog');
   }.on('willDestroyElement'),
+  
   setChallenges: function(){
     if(!this.get('modal.adminCtf')){
       return;
@@ -58,6 +61,7 @@ export default Ember.Component.extend({
       });
     }
   }.observes('modal.adminTeam').on('init'),
+  
   actions: {
     toggleView: function(){
       this.toggleProperty('viewTeam');

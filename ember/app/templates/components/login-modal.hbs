@@ -1,44 +1,44 @@
 {{#modal-dialog translucentOverlay=true}}
-    <div class="well login-box login-box-margin">
-      <form class="form-signin">
-        <div class="form-signin-heading login-title">Sign in</div>
-        <br/>
-        {{#if authController.errorMessage}}
-         <label class="control-label"><div class="alert alert-danger edctf-text" style="padding: 5px; margin-bottom: 0px;" role="alert">{{authController.errorMessage}}</div></label>
-         {{/if}}
+  <div class="well login-box login-box-margin">
+    <form class="form-signin">
+      <div class="form-signin-heading login-title">Sign in</div>
+      <br/>
+      {{#if authController.errorMessage}}
+       <label class="control-label"><div class="alert alert-danger edctf-text" style="padding: 5px; margin-bottom: 0px;" role="alert">{{authController.errorMessage}}</div></label>
+       {{/if}}
 
-        {{#if authController.errorFields.teamname}} 
-          <div class="form-group has-error">  
-            {{input type="text" value=teamname enter="submitLogin" class="form-control edctf-text" id="inputteamname" placeholder="Team Name"}}
-          </div>
-        {{else}}
-          <div class="form-group">
-            {{input type="text" value=teamname enter="submitLogin" class="form-control edctf-text" id="inputteamname" placeholder="Team Name"}}
-          </div>
-        {{/if}}
-
-        {{#if authController.errorFields.password}}
-          <div class="form-group has-error">
-            {{input type="password" value=password enter="submitLogin" class="form-control edctf-text" id="inputPassword" placeholder="Password"}}
-          </div>
-        {{else}}
-          <div class="form-group">
-            {{input type="password" value=password enter="submitLogin" class="form-control edctf-text" id="inputPassword" placeholder="Password"}}
-          </div>
-        {{/if}}
-
-        {{!-- 
-        <div class="checkbox">
-          <label>
-           {{input type="checkbox" checked=rememberMe}} Remember me
-          </label>
+      {{#if authController.errorFields.teamname}} 
+        <div class="form-group has-error">  
+          {{input type="text" value=teamname enter="submitLogin" class="form-control edctf-text" id="inputteamname" placeholder="Team Name"}}
         </div>
-        --}}
-        <div class="edctf-button">
-          <button type="button" class="btn btn-success btn-login-submit edctf-submit-button" {{action "submitLogin"}}>Sign in</button>
-          <button type="button" class="btn btn-warning edctf-warning-button" {{action "loginToRegisterModal"}}>Register</button>
-          <button type="button" class="btn btn-danger btn-cancel-action edctf-cancel-button" {{action "closeLoginModal"}}>Cancel</button>
+      {{else}}
+        <div class="form-group">
+          {{input type="text" value=teamname enter="submitLogin" class="form-control edctf-text" id="inputteamname" placeholder="Team Name"}}
         </div>
-      </form>
-    </div>
+      {{/if}}
+
+      {{#if authController.errorFields.password}}
+        <div class="form-group has-error">
+          {{input type="password" value=password enter="submitLogin" class="form-control edctf-text" id="inputPassword" placeholder="Password"}}
+        </div>
+      {{else}}
+        <div class="form-group">
+          {{input type="password" value=password enter="submitLogin" class="form-control edctf-text" id="inputPassword" placeholder="Password"}}
+        </div>
+      {{/if}}
+
+      {{!-- 
+      <div class="checkbox">
+        <label>
+         {{input type="checkbox" checked=rememberMe Remember me
+        </label>
+      </div>
+      --}}
+      <div class="edctf-button">
+        <button type="button" class="btn btn-success btn-login-submit edctf-submit-button" {{action "submitLogin"}}>Sign in</button>
+        <button type="button" class="btn btn-warning edctf-warning-button" {{action "loginToRegisterModal"}}>Register</button>
+        <button type="button" class="btn btn-danger btn-cancel-action edctf-cancel-button" {{action "closeLoginModal"}}>Cancel</button>
+      </div>
+    </form>
+  </div>
 {{/modal-dialog}}

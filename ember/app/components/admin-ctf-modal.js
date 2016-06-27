@@ -5,8 +5,9 @@ export default Ember.Component.extend({
   ctfController: null,
   online: true,
   name: '',
+  
   closeModal: function(){
-    var t = this;
+    const t = this;
     return function(callback){
       t.set('modal.isAdminCtf', false);
       t.set('name', '');
@@ -18,6 +19,7 @@ export default Ember.Component.extend({
       }
     };
   }.property('closeModal'),
+  
   setupKeys: function() {
     Ember.$('body').on('keyup.modal-dialog', (e) => {
       if (e.keyCode === 27) {
@@ -25,16 +27,19 @@ export default Ember.Component.extend({
       }
     });
   }.on('didInsertElement'),
+  
   teardownKeys: function() {
     Ember.$('body').off('keyup.modal-dialog');
   }.on('willDestroyElement'),
+  
   setupFocus: function() {
     Ember.$('#ctfName').focus();
   }.on('didInsertElement'),
-   actions: {
+  
+  actions: {
     createCtf: function(){
-      var name = this.get('name');
-      var online = this.get('online');
+      const name = this.get('name');
+      const online = this.get('online');
       this.get('ctfController').send('createCtf', name, online);
     },
     closeAdminCtfModal: function() {

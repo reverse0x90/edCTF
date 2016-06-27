@@ -1,0 +1,17 @@
+/* style for c3 graph */
+.c3 .c3-axis-y path, .c3 .c3-axis-y line {
+    stroke: none;
+}
+.c3 .c3-axis-x path, .c3 .c3-axis-x line {
+    stroke: #CECECE;
+}
+.c3-grid line {
+  stroke: #ECECEC;
+  stroke-dasharray: none;
+}
+#chart .c3-line {
+    stroke-width: 2px;
+}
+.c3-line {
+    stroke-width: 2px;
+}

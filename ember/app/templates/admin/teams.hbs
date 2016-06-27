@@ -1,16 +1,14 @@
-<div class="container">
-  <table class="table table-hover table-condensed scoreboard-table" style="width:100%">
-    <thead>
-      <tr>
-        <th class="scoreboard-keys">Team</th>
+<table class="table table-hover table-condensed scoreboard-table" style="width:100%">
+  <thead>
+    <tr>
+      <th class="scoreboard-keys">Team</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each teams as |team|}}
+      <tr class="cursor-pointer scoreboard-values">
+        <td>{{team.teamname}}</td>
       </tr>
-    </thead>
-    <tbody>
-      {{#each teams as |team|}}
-        <tr class="cursor-pointer scoreboard-values">
-          <td>{{team.teamname}}</td>
-        </tr>
-      {{/each}}
-    </tbody>
-  </table>
-</div>
+    {{/each}}
+  </tbody>
+</table>

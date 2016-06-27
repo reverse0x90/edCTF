@@ -30,21 +30,10 @@
         <li class="ctf-route cursor-pointer"><a {{action "openProfileModal"}}>Profile</a></li>
         <li class="ctf-route cursor-pointer"><a {{action "sendLogout"}}>Logout</a></li>
       {{else}}
-          <li class="ctf-route cursor-pointer"><a {{action "openRegisterModal"}}>Register</a></li>
+        <li class="ctf-route cursor-pointer"><a {{action "openRegisterModal"}}>Register</a></li>
         <li class="ctf-route cursor-pointer"><a {{action "openLoginModal"}}>Login</a></li>
       {{/if}}
       </ul>
     </div>
   </div>
 </nav>
-
-{{#if session.isAuthenticated}}
-  {{#if session.isAdmin}}
-    <ul class="nav nav-sidebar navbar-inverse affix" style="margin-top: -20px;">
-      {{#link-to "admin.ctf" tagName="li" class="ctf-route cursor-pointer"}}<a>CTF Settings</a>{{/link-to}}
-      {{#link-to "admin.challengeboard" tagName="li" class="ctf-route cursor-pointer"}}<a>Challengeboard</a>{{/link-to}}
-      {{#link-to "admin.scoreboard" tagName="li" class="ctf-route cursor-pointer"}}<a>Scoreboard</a>{{/link-to}}
-      {{#link-to "admin.teams" tagName="li" class="ctf-route cursor-pointer"}}<a>Teams</a>{{/link-to}}
-    </ul>
-  {{/if}}
-{{/if}}

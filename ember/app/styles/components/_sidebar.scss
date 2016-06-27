@@ -1,0 +1,25 @@
+
+.navbar {
+  margin-bottom: 0px;
+}
+.main {
+  overflow: hidden;
+
+  .sidebar {
+    display: table-cell;
+    min-width: 150px;
+    background-color: #222;
+    margin-bottom: -100vh;
+    padding-bottom: 100vh;
+  }
+  .content {
+    display: table-cell;
+    width:100%;
+    vertical-align: top;
+  }  
+}
+ul.nav.nav-sidebar.navbar-inverse {
+  min-width: 150px;
+  background-image: none;
+  background-color: #222;
+}

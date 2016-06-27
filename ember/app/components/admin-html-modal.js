@@ -4,19 +4,21 @@ export default Ember.Component.extend({
   modal: {},
   htmlPage: null,
   pageName: '',
+
   set_pageName: function(){
-    var htmlPage = this.get('htmlPage');
+    const htmlPage = this.get('htmlPage');
     if(htmlPage){
-      var t = this;
+      const t = this;
       htmlPage.then(function(htmlPage){
         t.set('pageName', htmlPage.get('constructor.modelName'));
       });
     }
   }.observes('htmlPage').on('init'),
+
   actions: {
     editAdminHtml: function(){
-      var t = this;
-      var htmlPage = this.get('htmlPage');
+      let t = this;
+      let htmlPage = this.get('htmlPage');
       if(htmlPage){
         htmlPage.then(function(htmlPage){
           htmlPage.save().then(function(){
@@ -43,7 +45,7 @@ export default Ember.Component.extend({
       this.set('modal.errorMessage', '');
       this.set('modal.errorFields', {});
 
-      var htmlPage = this.get('htmlPage');
+      let htmlPage = this.get('htmlPage');
       if (htmlPage){
         htmlPage.then(function(htmlPage){
           htmlPage.rollbackAttributes();

@@ -1,0 +1,63 @@
+/* style for challenges page */
+.challenges-title {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: .05em;
+  text-transform: capitalize;
+}
+.challenge-category-name {
+  text-align: left;
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: .05em;
+  vertical-align: middle !important;
+}
+.challengeButton {
+    padding: 14px 24px;
+    margin: .15em .2em;
+    border: 0 none;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+.challengeButton:focus, .challengeButton:active:focus, .challengeButton.active:focus {
+    outline: 0 none;
+}
+.challengeButton-unsolved {
+    background: #0D4F8B;
+    color: #ffffff;
+}
+.challengeButton-unsolved:hover, .challengeButton-unsolved:focus, .challengeButton-unsolved:active, .challengeButton-unsolved.active, .open > .dropdown-toggle.btn-primary {
+    background: #33a6cc;
+}
+.challengeButton-solved {
+    background: #009900;
+    color: #ffffff;
+}
+.challengeButton-solved:hover, .challengeButton-solved:focus, .challengeButton-solved:active, .challengeButton-solved.active, .open > .dropdown-toggle.btn-primary {
+    background: #32CD32;
+}
+.challengeButton-primary:active, .challengeButton-primary.active {
+    background: #007299;
+    box-shadow: none;
+}
+.challengeButton.sharp {
+  border-radius:0;
+}
+.challengeButton-xlarge {
+  padding:23px 72px;
+  font-size: 24px;
+  line-height: 1.33;
+  border-radius: 6px
+}
+.challenge-tr {
+  border-collapse: collapse;
+}
+.challenge-table .team-values > td {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+table{
+    width:100%;
+}
