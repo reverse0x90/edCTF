@@ -1,0 +1,21 @@
+.ctf-current {
+  display: table-cell;
+  vertical-align: top;
+  width:100%;
+}
+.ctf-list {
+  display: table-cell;
+  vertical-align: top;
+  padding-left: 100px;
+  min-width: 400px;
+
+  .btn-new-ctf {
+    width: 300px;
+    margin-bottom: 15px;
+  }
+
+  .ctf-table {
+    padding:9px;
+    border: solid 1px #eee;
+  }
+}
