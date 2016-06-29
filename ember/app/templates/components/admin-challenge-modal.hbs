@@ -14,59 +14,59 @@
         <tr class="team-info">
           {{#if modal.errorFields.title}} 
             <div class="form-group has-error">
-              <td>Title:</td>
-              <td>{{input id="challengeTitle" type="text" value=title enter="createChallenge" class="form-control" placeholder="Title"}}</td>
+              <td class="challenge-modal-heading">Title:</td>
+              <td class="challenge-modal-field">{{input id="challengeTitle" type="text" value=title enter="createChallenge" class="form-control" placeholder="Title"}}</td>
             </div>
           {{else}}
             <div class="form-group">
-              <td>Title:</td>
-              <td>{{input id="challengeTitle" type="text" value=title enter="createChallenge" class="form-control" placeholder="Title"}}</td>
+              <td class="challenge-modal-heading">Title:</td>
+              <td class="challenge-modal-field">{{input id="challengeTitle" type="text" value=title enter="createChallenge" class="form-control" placeholder="Title"}}</td>
             </div>
           {{/if}}
         </tr>
         <tr class="team-info">
           {{#if modal.errorFields.points}} 
             <div class="form-group has-error">
-              <td>Points:</td>
-              <td>{{input id="challengePoints" type="number" value=points enter="createChallenge" class="form-control" placeholder=1}}</td>
+              <td class="challenge-modal-heading">Points:</td>
+              <td class="challenge-modal-field">{{input id="challengePoints" type="number" value=points enter="createChallenge" class="form-control" placeholder=1}}</td>
             </div>
           {{else}}
             <div class="form-group">
-              <td>Points:</td>
-              <td>{{input id="challengePoints" type="number" value=points enter="createChallenge" class="form-control" placeholder=1}}</td>
+              <td class="challenge-modal-heading">Points:</td>
+              <td class="challenge-modal-field">{{input id="challengePoints" type="number" value=points enter="createChallenge" class="form-control" placeholder=1}}</td>
             </div>
           {{/if}}
         </tr>
         <tr class="team-info">
           {{#if modal.errorFields.description}} 
             <div class="form-group has-error">
-              <td>Description:</td>
-              <td>{{textarea id="challengeDescription" type="text" value=description class="form-control" placeholder="Description"}}</td>
+              <td class="challenge-modal-heading">Description:</td>
+              <td class="challenge-modal-field">{{textarea id="challengeDescription" style="resize:none" type="text" value=description class="form-control" placeholder="Description"}}</td>
             </div>
           {{else}}
             <div class="form-group">
-              <td>Description:</td>
-              <td>{{textarea id="challengeDescription" type="text" value=description class="form-control" placeholder="Description"}}</td>
+              <td class="challenge-modal-heading">Description:</td>
+              <td class="challenge-modal-field">{{textarea id="challengeDescription" style="resize:none" type="text" value=description class="form-control" placeholder="Description"}}</td>
             </div>
           {{/if}}
-          <td>{{{description}}}</td>
+          {{#if description}}<span class="challenge-modal-preview">Preview</span><div class="challenge-modal-description">{{{description}}}</div>{{/if}}
         </tr>
         <tr class="team-info">
           {{#if modal.errorFields.flag}} 
             <div class="form-group has-error">
-              <td>Flag:</td>
-              <td>{{input id="challengeFlag" type="text" value=flag enter="createChallenge" class="form-control" placeholder="Flag"}}</td>
+              <td class="challenge-modal-heading">Flag:</td>
+              <td class="challenge-modal-field">{{input id="challengeFlag" type="text" value=flag enter="createChallenge" class="form-control" placeholder="Flag"}}</td>
             </div>
           {{else}}
             <div class="form-group">
-              <td>Flag:</td>
-              <td>{{input id="challengeFlag" type="text" value=flag enter="createChallenge" class="form-control" placeholder="Flag"}}</td>
+              <td class="challenge-modal-heading">Flag:</td>
+              <td class="challenge-modal-field">{{input id="challengeFlag" type="text" value=flag enter="createChallenge" class="form-control" placeholder="Flag"}}</td>
             </div>
           {{/if}}
         </tr>
       </tbody>
     </table>
-    <div class="edctf-button">
+    <div class="challenge-modal-btn">
       <button type="button" class="btn btn-success btn-login-submit edctf-submit-button" {{action "createChallenge"}}>Create</button>
     </div>
   {{else}}
@@ -85,39 +85,39 @@
           <tr class="team-info">
             {{#if modal.errorFields.title}} 
               <div class="form-group has-error">
-                <td>Title:</td>
-                <td>{{input id="challengeTitle" type="text" value=modal.adminChallenge.title enter="editChallenge" class="form-control" placeholder=modal.adminChallenge.title}}</td>
+                <td class="challenge-modal-heading">Title:</td>
+                <td class="challenge-modal-field">{{input id="challengeTitle" type="text" value=modal.adminChallenge.title enter="editChallenge" class="form-control" placeholder=modal.adminChallenge.title}}</td>
               </div>
             {{else}}
               <div class="form-group">
-                <td>Title:</td>
-                <td>{{input id="challengeTitle" type="text" value=modal.adminChallenge.title enter="editChallenge" class="form-control" placeholder=modal.adminChallenge.title}}</td>
+                <td class="challenge-modal-heading">Title:</td>
+                <td class="challenge-modal-field">{{input id="challengeTitle" type="text" value=modal.adminChallenge.title enter="editChallenge" class="form-control" placeholder=modal.adminChallenge.title}}</td>
               </div>
             {{/if}}
           </tr>
           <tr class="team-info">
             {{#if modal.errorFields.points}} 
               <div class="form-group has-error">
-                <td>Points:</td>
-                <td>{{input id="challengePoints" type="number" value=modal.adminChallenge.points enter="editChallenge" class="form-control" placeholder=modal.adminChallenge.points}}</td>
+                <td class="challenge-modal-heading">Points:</td>
+                <td class="challenge-modal-field">{{input id="challengePoints" type="number" value=modal.adminChallenge.points enter="editChallenge" class="form-control" placeholder=modal.adminChallenge.points}}</td>
               </div>
             {{else}}
               <div class="form-group">
-                <td>Points:</td>
-                <td>{{input id="challengePoints" type="number" value=modal.adminChallenge.points enter="editChallenge" class="form-control" placeholder=modal.adminChallenge.points}}</td>
+                <td class="challenge-modal-heading">Points:</td>
+                <td class="challenge-modal-field">{{input id="challengePoints" type="number" value=modal.adminChallenge.points enter="editChallenge" class="form-control" placeholder=modal.adminChallenge.points}}</td>
               </div>
             {{/if}}
           </tr>
           <tr class="team-info">
             {{#if modal.errorFields.description}} 
               <div class="form-group has-error">
-                <td>Description:</td>
-                <td>{{textarea id="challengeDescription" type="text" value=modal.adminChallenge.description class="form-control" placeholder=modal.adminChallenge.description}}</td>
+                <td class="challenge-modal-heading">Description:</td>
+                <td class="challenge-modal-field">{{textarea id="challengeDescription" style="resize:none" type="text" value=modal.adminChallenge.description class="form-control" placeholder=modal.adminChallenge.description}}</td>
               </div>
             {{else}}
               <div class="form-group">
-                <td>Description:</td>
-                <td>{{textarea id="challengeDescription" type="text" value=modal.adminChallenge.description class="form-control" placeholder=modal.adminChallenge.description}}</td>
+                <td class="challenge-modal-heading">Description:</td>
+                <td class="challenge-modal-field">{{textarea id="challengeDescription" style="resize:none" type="text" value=modal.adminChallenge.description class="form-control" placeholder=modal.adminChallenge.description}}</td>
               </div>
             {{/if}}
             <td>{{{modal.adminChallenge.description}}}</td>
@@ -125,19 +125,19 @@
           <tr class="team-info">
             {{#if modal.errorFields.flag}} 
               <div class="form-group has-error">
-                <td>Flag:</td>
-                <td>{{input id="challengeFlag" type="text" value=modal.adminChallenge.flag enter="editChallenge" class="form-control" placeholder=modal.adminChallenge.flag}}</td>
+                <td class="challenge-modal-heading">Flag:</td>
+                <td class="challenge-modal-field">{{input id="challengeFlag" type="text" value=modal.adminChallenge.flag enter="editChallenge" class="form-control" placeholder=modal.adminChallenge.flag}}</td>
               </div>
             {{else}}
               <div class="form-group">
-                <td>Flag:</td>
-                <td>{{input id="challengeFlag" type="text" value=modal.adminChallenge.flag enter="editChallenge" class="form-control" placeholder=modal.adminChallenge.flag}}</td>
+                <td class="challenge-modal-heading">Flag:</td>
+                <td class="challenge-modal-field">{{input id="challengeFlag" type="text" value=modal.adminChallenge.flag enter="editChallenge" class="form-control" placeholder=modal.adminChallenge.flag}}</td>
               </div>
             {{/if}}
           </tr>
         </tbody>
       </table>
-      <div class="edctf-button">
+      <div class="challenge-modal-btn">
         <button type="button" class="btn btn-success btn-login-submit edctf-submit-button" {{action "editChallenge"}}>Edit</button>
         <button type="button" class="btn btn-danger btn-cancel-action edctf-cancel-button" {{action 'deleteChallenge'}}>Delete</button>
       </div>

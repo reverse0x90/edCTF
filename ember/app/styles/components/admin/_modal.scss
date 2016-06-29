@@ -1,0 +1,25 @@
+// challenge-modal
+.challenge-modal-description {
+  overflow-y: scroll;
+  max-height: 150px;
+  margin-bottom: 12px;
+  border: 1px solid #eee;
+  padding: 10px;
+}
+.challenge-modal-heading {
+  min-width: 100px;
+}
+.challenge-modal-field {
+  width: 100%;
+}
+.challenge-modal-btn {
+  position: absolute;
+  letter-spacing: .05em;
+  top: 455px;
+  right: 15px;
+}
+.challenge-modal-preview {
+  background-color: white;
+  color: #bbb;
+  font-size: 11px;
+}

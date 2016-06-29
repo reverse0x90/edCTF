@@ -36,7 +36,8 @@
 
 /* style for challenges modal */
 .challenge-style-modal-container {
-  width: 50%;
+  width: 500px;
+  height:500px;
 }
 .challenge-submit {
   margin-top:2%;
@@ -77,8 +78,7 @@
 /* style for team and profile modals */
 .team-info {
   text-align: left;
-  font-size: 1.6em;
-  font-weight: bold;
+  font-size: .8em;
   letter-spacing: .05em;
   text-align: left;
 },
