@@ -37,7 +37,7 @@ export EDCTF_ACCESS_LOG="/var/log/edctf-access.log"
 
 # set apache ssl settings
 # currently installs and generates a self-signed cert when ssl is set to true
-export USE_SSL="false"
+export USE_SSL="true"
 export SSL_DIR="/etc/apache2/ssl"
 export SSL_COUNTRY="US"
 export SSL_STATE="NA"

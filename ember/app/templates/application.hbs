@@ -3,13 +3,13 @@
 {{partial 'modal'}}
 
 <div class="main">
-  <div class="sidebar">
     {{#if session.isAuthenticated}}
-      {{#if session.isAdmin}}
+      {{#if session.isAdmin}}	
+       <div class="sidebar">
         {{side-bar}}
+       </div>
       {{/if}}
     {{/if}}
-  </div>
   <div class="content">
     <div class="container">
       {{outlet}}

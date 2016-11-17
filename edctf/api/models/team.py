@@ -81,7 +81,7 @@ class Team(models.Model):
     verbose_name_plural = 'Teams'
 
   def __unicode__(self):
-    return 'team {}: {}'.format(self.id, self.raw_teamname)
+    return 'team {}: {}'.format(self.id, self.teamname)
 
   def delete(self, *args, **kwargs):
     self.user.delete()
