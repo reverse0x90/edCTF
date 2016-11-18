@@ -11,12 +11,11 @@
 }
 .challenge-modal-field {
   width: 100%;
+  min-width: 250px;
 }
 .challenge-modal-btn {
-  position: absolute;
-  letter-spacing: .05em;
-  top: 455px;
-  right: 15px;
+  letter-spacing: .05em; 
+  float: right; 
 }
 .challenge-modal-preview {
   background-color: white;

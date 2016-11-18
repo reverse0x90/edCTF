@@ -5,8 +5,12 @@
 .main {
   overflow: hidden;
 
+  .admin {
+    .sidebar, .content {
+      display: table-cell;
+    }
+  }
   .sidebar {
-    display: table-cell;
     min-width: 150px;
     background-color: #222;
     margin-bottom: -100vh;
@@ -14,10 +18,10 @@
   }
   .content {
     padding-top:20px;
-    display: table-cell;
     width:100%;
     vertical-align: top;
   }  
+
 }
 ul.nav.nav-sidebar.navbar-inverse {
   min-width: 150px;

@@ -25,19 +25,21 @@
 
 /* style for login modal */
 .login-box-margin {
-  margin:0px;
+    margin:0px;
 }
 .login-title {
-  text-align: center;
-  font-size: 30px;
-  font-weight: 400;
-  letter-spacing: .05em;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 400;
+    letter-spacing: .05em;
 }
-
+.login-modal {
+    max-width: 40%;
+}
 /* style for challenges modal */
 .challenge-style-modal-container {
-  width: 500px;
-  height:500px;
+    max-height: 80%; 
+    overflow-y: scroll; 
 }
 .challenge-submit {
   margin-top:2%;
@@ -105,7 +107,7 @@
 }
 .team-values {
   text-align: center;
-  font-size: 1.5em;
+  font-size: 1em;
   font-weight: bold;
 }
 .team-correct-flags{
